@@ -1,0 +1,79 @@
+.hero {
+  display: flex;
+  width: 100%;
+  height: 80vh;
+  min-height: 600px;
+  max-height: 900px;
+  background-color: #FDEAEB; /* Light pastel pink matching the image */
+  position: relative;
+  overflow: hidden;
+}
+
+.heroLeft {
+  flex: 0 0 42%; /* Shifting pink to the left */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-8);
+  position: relative;
+  z-index: 2;
+}
+
+.heroTitle {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 3vw, 3rem);
+  font-weight: 400; /* Standard weight for serif */
+  color: #1A1A1A; /* Very dark color for contrast */
+  line-height: 1.2;
+  text-align: center;
+  margin: 0;
+  /* Optional slight shadow for depth, though the design looks very flat and clean */
+}
+
+.heroRight {
+  flex: 0 0 58%;
+  position: relative;
+}
+
+.heroImageWrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  /* Blur out the left edge so it fades seamlessly into the pink background */
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 20%);
+  mask-image: linear-gradient(to right, transparent 0%, black 20%);
+}
+
+.heroImage {
+  object-fit: cover;
+  object-position: center 35%;
+}
+
+
+
+/* Responsive Design */
+@media (max-width: 900px) {
+  .hero {
+    flex-direction: column;
+    height: auto;
+    min-height: auto;
+  }
+
+  .heroLeft {
+    flex: none;
+    width: 100%;
+    padding: var(--space-12) var(--space-6);
+  }
+
+  .heroRight {
+    flex: none;
+    width: 100%;
+    height: 50vh;
+    min-height: 400px;
+  }
+
+  .heroImageWrapper {
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%);
+    mask-image: linear-gradient(to bottom, transparent 0%, black 15%);
+  }
+}

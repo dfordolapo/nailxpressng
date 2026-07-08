@@ -1,0 +1,192 @@
+/* ── Filter Sidebar ────────────────────────────────────────────────── */
+.sidebar {
+  width: 260px;
+  flex-shrink: 0;
+  position: sticky;
+  top: calc(var(--header-height) + var(--announcement-height) + var(--space-6));
+}
+
+.filterGroup {
+  margin-bottom: var(--space-6);
+}
+
+.filterTitle {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text);
+  margin-bottom: var(--space-3);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.filterOption {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+  cursor: pointer;
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  transition: color var(--transition-fast);
+}
+
+.filterOption:hover {
+  color: var(--color-text);
+}
+
+.checkbox {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.checkbox.checked {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.checkbox.checked svg {
+  width: 12px;
+  height: 12px;
+  color: white;
+}
+
+.filterCount {
+  margin-left: auto;
+  font-size: var(--text-xs);
+  color: var(--color-text-tertiary);
+  background: var(--color-surface);
+  padding: 1px 6px;
+  border-radius: var(--radius-full);
+}
+
+/* ── Price Range ──────────────────────────────────────────────────── */
+.priceRange {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+.priceInput {
+  flex: 1;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  text-align: center;
+  outline: none;
+  transition: border-color var(--transition-fast);
+}
+
+.priceInput:focus {
+  border-color: var(--color-primary);
+}
+
+.priceDivider {
+  color: var(--color-text-tertiary);
+  font-size: var(--text-sm);
+}
+
+/* ── Clear Filters ────────────────────────────────────────────────── */
+.clearFilters {
+  font-size: var(--text-sm);
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color var(--transition-fast);
+  margin-top: var(--space-4);
+}
+
+.clearFilters:hover {
+  color: var(--color-primary-dark);
+}
+
+/* ── Sort Bar ─────────────────────────────────────────────────────── */
+.sortBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-6);
+}
+
+.resultCount {
+  font-size: var(--text-sm);
+  color: var(--color-text-tertiary);
+}
+
+.sortSelect {
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  color: var(--color-text);
+  background: white;
+  cursor: pointer;
+  outline: none;
+  transition: border-color var(--transition-fast);
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b5b50' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+}
+
+.sortSelect:focus {
+  border-color: var(--color-primary);
+}
+
+/* ── Collection Layout ────────────────────────────────────────────── */
+.collectionLayout {
+  display: flex;
+  gap: var(--space-8);
+}
+
+.collectionMain {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ── Mobile Filter Toggle ─────────────────────────────────────────── */
+.mobileFilterBtn {
+  display: none;
+  margin-bottom: var(--space-4);
+}
+
+/* ── Responsive ───────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .sidebar {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    z-index: var(--z-modal);
+    background: var(--color-bg);
+    padding: var(--space-6);
+    overflow-y: auto;
+  }
+
+  .sidebar.open {
+    display: block;
+    animation: fadeIn var(--transition-fast);
+  }
+
+  .mobileFilterBtn {
+    display: flex;
+  }
+
+  .collectionLayout {
+    flex-direction: column;
+  }
+}
