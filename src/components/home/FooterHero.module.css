@@ -1,0 +1,116 @@
+.section {
+  background-color: var(--color-bg-warm);
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  z-index: 10;
+  min-height: 70vh;
+}
+
+.content {
+  grid-area: 1 / 1;
+  z-index: 2;
+  padding: var(--space-16) var(--space-6);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: linear-gradient(to bottom, rgba(245, 228, 230, 0.85) 0%, rgba(245, 228, 230, 0.4) 100%);
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.75rem, 5vw, 3rem);
+  font-weight: var(--weight-medium);
+  color: var(--color-text);
+  margin-bottom: var(--space-2);
+  line-height: 1.2;
+}
+
+.subtitle {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--color-primary-800);
+  font-weight: var(--weight-medium);
+  margin-bottom: var(--space-6);
+  letter-spacing: 0.05em;
+}
+
+.button {
+  display: inline-block;
+  background-color: var(--color-primary-800);
+  color: #D4AF7A;
+  padding: var(--space-3) var(--space-8);
+  border-radius: var(--radius-full);
+  font-family: var(--font-heading);
+  text-transform: none;
+  letter-spacing: 0.05em;
+  font-size: var(--text-base);
+  font-weight: var(--weight-medium);
+  transition: background-color var(--transition-base), transform var(--transition-base);
+}
+
+.button:hover {
+  background-color: var(--color-primary-900);
+  transform: translateY(-2px);
+}
+
+.imageWrapper {
+  grid-area: 1 / 1;
+  z-index: 1;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.image {
+  object-fit: cover;
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr 1.1fr;
+    min-height: 500px;
+    max-height: 600px;
+  }
+
+  .content {
+    grid-column: 1;
+    padding: var(--space-20) var(--space-12);
+    background: var(--color-bg-warm);
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .subtitle {
+    font-size: var(--text-lg);
+  }
+
+  .imageWrapper {
+    grid-column: 2;
+  }
+  
+  .imageWrapper::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    width: 25%;
+    background: linear-gradient(to right, var(--color-bg-warm) 0%, transparent 100%);
+    pointer-events: none;
+  }
+
+  .button {
+    padding: var(--space-4) var(--space-12);
+    font-size: var(--text-lg);
+  }
+}

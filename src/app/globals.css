@@ -4,45 +4,45 @@
    ═══════════════════════════════════════════════════════════════════ */
 
 /* ── Google Fonts ─────────────────────────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Upright:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Upright:wght@300;400;500;600;700&family=Epilogue:wght@300;400;500;600;700;800&display=swap');
 
 /* ── Design Tokens ────────────────────────────────────────────────── */
 :root {
-  /* Primary — Warm Rose */
-  --color-primary: #c4647a;
-  --color-primary-light: #e8899d;
-  --color-primary-dark: #9e4a5e;
-  --color-primary-50: #fdf2f4;
-  --color-primary-100: #fce4e9;
-  --color-primary-200: #facdd6;
-  --color-primary-300: #f5a3b5;
-  --color-primary-400: #e8899d;
-  --color-primary-500: #c4647a;
-  --color-primary-600: #b44d65;
-  --color-primary-700: #9e4a5e;
-  --color-primary-800: #7e3349;
-  --color-primary-900: #6b2d42;
+  /* Primary — Deep Maroon/Brown */
+  --color-primary: #7a403d;
+  --color-primary-light: #945350;
+  --color-primary-dark: #5c2c2a;
+  --color-primary-50: #fcf6f6;
+  --color-primary-100: #f7e8e8;
+  --color-primary-200: #eecbcb;
+  --color-primary-300: #e0a3a2;
+  --color-primary-400: #cc7574;
+  --color-primary-500: #b3504f;
+  --color-primary-600: #983c3a;
+  --color-primary-700: #803231;
+  --color-primary-800: #7a403d;
+  --color-primary-900: #632d2c;
 
-  /* Accent — Warm Gold */
-  --color-accent: #c9a96e;
-  --color-accent-light: #e2cc9e;
-  --color-accent-dark: #a8864d;
+  /* Accent — Warm Gold/Pink */
+  --color-accent: #d39f99;
+  --color-accent-light: #eac5c1;
+  --color-accent-dark: #b57a73;
 
   /* Neutrals */
-  --color-bg: #fefcfa;
-  --color-bg-warm: #faf6f1;
+  --color-bg: #fdf6f7;
+  --color-bg-warm: #F5E3E5;
   --color-bg-card: #ffffff;
-  --color-bg-overlay: rgba(30, 20, 15, 0.55);
-  --color-surface: #f8f4ef;
-  --color-surface-hover: #f2ece4;
+  --color-bg-overlay: rgba(107, 54, 52, 0.55);
+  --color-surface: #fdf6f7;
+  --color-surface-hover: #f5e4e6;
 
   --color-text: #2c1810;
   --color-text-secondary: #6b5b50;
   --color-text-tertiary: #9a8a7d;
-  --color-text-inverse: #fefcfa;
+  --color-text-inverse: #fdf6f7;
 
-  --color-border: #e8ddd2;
-  --color-border-light: #f0e8de;
+  --color-border: #e6cfd2;
+  --color-border-light: #f2e2e4;
 
   /* Feedback */
   --color-success: #4a9e6e;
@@ -52,7 +52,7 @@
 
   /* Typography */
   --font-heading: 'Cormorant Upright', Georgia, 'Times New Roman', serif;
-  --font-body: 'Outfit', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-body: 'Epilogue', 'Segoe UI', system-ui, -apple-system, sans-serif;
 
   --text-xs: 0.75rem;
   --text-sm: 0.875rem;
@@ -142,7 +142,7 @@ html {
 
 body {
   font-family: var(--font-body);
-  font-weight: var(--weight-regular);
+  font-weight: var(--weight-light);
   color: var(--color-text);
   background-color: var(--color-bg);
   line-height: var(--leading-normal);
@@ -347,19 +347,15 @@ ul, ol {
 
 /* ── Responsive Typography ────────────────────────────────────────── */
 @media (max-width: 768px) {
-  h1 { font-size: var(--text-3xl); }
-  h2 { font-size: var(--text-2xl); }
-  h3 { font-size: var(--text-xl); }
+  h1 { font-size: var(--text-2xl); }
+  h2 { font-size: var(--text-xl); }
+  h3 { font-size: var(--text-lg); }
   
   .section {
-    padding: var(--space-12) 0;
-  }
-
-  .section__title {
-    font-size: var(--text-2xl);
+    padding: var(--space-16) 0;
   }
 
   .container {
-    padding: 0 var(--space-4);
+    padding: 0 var(--space-6);
   }
 }

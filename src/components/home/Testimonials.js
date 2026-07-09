@@ -1,42 +1,62 @@
-import { testimonials } from "@/data/testimonials";
-import styles from "@/styles/pages/home.module.css";
+import React from 'react';
+import Image from 'next/image';
+import styles from './Testimonials.module.css';
 
-function StarIcon() {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="1" width="16" height="16">
-      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-    </svg>
-  );
-}
+const TESTIMONIALS_DATA = [
+  {
+    id: 1,
+    text: "I was skeptical at first, but these nails exceeded my expectations. They look so natural!",
+    name: "Dolapo",
+    role: "Verified Buyer",
+    avatar: "/images/testimonials/dolapo.jpg"
+  },
+  {
+    id: 2,
+    text: "Application was a breeze and they lasted for over two weeks. I'm officially hooked!",
+    name: "Teni",
+    role: "Verified Buyer",
+    avatar: "/images/testimonials/teni.jpg"
+  },
+  {
+    id: 3,
+    text: "The quality is outstanding. They are strong, don't bend, and the designs are stunning.",
+    name: "Chioma",
+    role: "Verified Buyer",
+    avatar: "/images/testimonials/chioma.jpg"
+  }
+];
 
 export default function Testimonials() {
   return (
-    <section className="section section--warm" id="testimonials">
+    <section className={styles.section}>
       <div className="container">
-        <div className="section__header">
-          <h2 className="section__title">What Our Babes Say</h2>
-          <p className="section__subtitle">
-            Real reviews from real nail lovers
-          </p>
+        <div className={styles.header}>
+          <h2 className={styles.title}>We nail it no matter the occasion</h2>
+          <p className={styles.subtitle}>You’re in good hands.</p>
         </div>
-
-        <div className={styles.testimonialGrid}>
-          {testimonials.slice(0, 3).map((t) => (
-            <div key={t.id} className={styles.testimonialCard} id={`testimonial-${t.id}`}>
-              <div className={styles.testimonialStars}>
-                {Array.from({ length: t.rating }).map((_, i) => (
-                  <StarIcon key={i} />
-                ))}
+        
+        <div className={styles.grid}>
+          {TESTIMONIALS_DATA.map((testimonial) => (
+            <div key={testimonial.id} className={styles.card}>
+              <div className={styles.quoteIcon}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M11.192 15.757c0-.907-.188-1.754-.563-2.54a5.72 5.72 0 0 0-1.503-2.025 6.08 6.08 0 0 0-2.182-1.3c-.87-.318-1.792-.477-2.767-.477h-.088c.066-.748.243-1.423.53-2.026.297-.627.693-1.168 1.189-1.623C6.262 5.312 6.84 4.966 7.5 4.73l.4-.143L6.963 2.5l-.363.119C5.1 3.12 3.86 4.025 2.888 5.3 1.91 6.574 1.42 8.163 1.42 10.067c0 1.628.32 3.033.958 4.215a7.11 7.11 0 0 0 2.65 2.843c1.112.66 2.3.99 3.562.99 1.056 0 1.925-.264 2.607-.792.682-.528 1.023-1.22 1.023-2.079c-.028-.242-.028-.352-.028-.506zm11.386 0c0-.907-.188-1.754-.563-2.54a5.72 5.72 0 0 0-1.503-2.025 6.08 6.08 0 0 0-2.182-1.3c-.87-.318-1.792-.477-2.767-.477h-.088c.066-.748.243-1.423.53-2.026.297-.627.693-1.168 1.189-1.623.495-.455 1.073-.801 1.733-1.037l.4-.143L18.35 2.5l-.363.119c-1.5.502-2.74 1.407-3.712 2.681-.978 1.274-1.468 2.863-1.468 4.767 0 1.628.32 3.033.958 4.215a7.11 7.11 0 0 0 2.65 2.843c1.112.66 2.3.99 3.562.99 1.056 0 1.925-.264 2.607-.792.682-.528 1.023-1.22 1.023-2.079c-.028-.242-.028-.352-.028-.506z"/>
+                </svg>
               </div>
-              <p className={styles.testimonialText}>&ldquo;{t.text}&rdquo;</p>
-              <div className={styles.testimonialAuthor}>
-                <div className={styles.testimonialAvatar}>
-                  {t.name.charAt(0)}
+              <p className={styles.text}>"{testimonial.text}"</p>
+              <div className={styles.author}>
+                <div className={styles.avatarWrapper}>
+                  <Image
+                    src={testimonial.avatar}
+                    alt={testimonial.name}
+                    fill
+                    sizes="40px"
+                    className={styles.avatar}
+                  />
                 </div>
-                <div>
-                  <div className={styles.testimonialName}>{t.name}</div>
-                  <div className={styles.testimonialLocation}>{t.location}</div>
-                  <div className={styles.testimonialProduct}>Purchased: {t.product}</div>
+                <div className={styles.info}>
+                  <h4 className={styles.name}>{testimonial.name}</h4>
+                  <p className={styles.role}>{testimonial.role}</p>
                 </div>
               </div>
             </div>

@@ -1,0 +1,107 @@
+.section {
+  background: linear-gradient(to bottom, var(--color-bg) 0%, var(--color-bg-warm) 100%);
+  padding: var(--space-12) 0;
+  position: relative;
+}
+
+.sectionTitle {
+  text-align: center;
+  font-family: var(--font-heading);
+  font-size: clamp(1.35rem, 4vw, 3rem);
+  font-weight: var(--weight-medium);
+  color: var(--color-text);
+  margin-bottom: var(--space-10);
+  line-height: 1.2;
+}
+
+.accordionList {
+  max-width: 680px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.item {
+  background-color: var(--color-bg);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+  border: 1.5px solid rgba(122, 64, 61, 0.2); /* Light 7A403D border */
+  transition: border-color var(--transition-base), box-shadow var(--transition-base);
+}
+
+.item:hover {
+  border-color: #7A403D; /* Active/Hover 7A403D */
+}
+
+.questionButton {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-5) var(--space-6);
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  text-align: left;
+}
+
+.questionText {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-regular);
+  color: #7A403D;
+  transition: color var(--transition-base);
+}
+
+.icon {
+  color: #7A403D;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.open .icon {
+  transform: rotate(180deg);
+}
+
+.open .questionText {
+  color: #7A403D;
+}
+
+.answerWrapper {
+  overflow: hidden;
+  transition: max-height 0.3s cubic-bezier(0, 1, 0, 1);
+}
+
+.answerContent {
+  padding: 0 var(--space-6) var(--space-5) var(--space-6);
+}
+
+.answerText {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: #7A403D;
+  line-height: 1.6;
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding: var(--space-24) 0;
+  }
+  
+  .questionButton {
+    padding: var(--space-6) var(--space-8);
+  }
+  
+  .questionText {
+    font-size: var(--text-base);
+  }
+  
+  .answerContent {
+    padding: 0 var(--space-8) var(--space-6) var(--space-8);
+  }
+}
