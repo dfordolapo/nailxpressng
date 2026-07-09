@@ -71,7 +71,8 @@
 }
 
 .image {
-  object-fit: cover;
+  object-fit: contain;
+  object-position: right;
 }
 
 @media (min-width: 768px) {
@@ -95,18 +96,6 @@
 
   .imageWrapper {
     grid-column: 2;
-  }
-  
-  .imageWrapper::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    height: 100%;
-    width: 25%;
-    background: linear-gradient(to right, var(--color-bg-warm) 0%, transparent 100%);
-    pointer-events: none;
   }
 
   .button {

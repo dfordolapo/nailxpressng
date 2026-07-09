@@ -8,21 +8,21 @@ const TESTIMONIALS_DATA = [
     text: "The quality is amazing. They look like they grew out of my fingers.",
     name: "Dolapo",
     role: "Verified Buyer",
-    avatar: "/images/testimonials/dolapo.jpg"
+    avatar: "/images/dolapo.jpg"
   },
   {
     id: 2,
     text: "Super easy to apply. And I get compliments every single time I wear them.",
     name: "Teni",
     role: "Verified Buyer",
-    avatar: "/images/testimonials/teni.jpg"
+    avatar: "/images/teni.jpg"
   },
   {
     id: 3,
     text: "Finally, press-ons that fit just right and actually stay on.",
     name: "Chioma",
     role: "Verified Buyer",
-    avatar: "/images/testimonials/chioma.jpg"
+    avatar: "/images/chioma.jpg"
   }
 ];
 

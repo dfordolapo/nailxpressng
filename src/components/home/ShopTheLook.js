@@ -16,7 +16,7 @@ export default function ShopTheLook() {
           </div>
           <div className={styles.imageWrapper}>
             <Image
-              src="/images/shop_the_look.png"
+              src="/images/customize.png"
               alt="Handmade and factory made nail sets"
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
