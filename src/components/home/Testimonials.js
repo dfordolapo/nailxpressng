@@ -5,21 +5,21 @@ import styles from './Testimonials.module.css';
 const TESTIMONIALS_DATA = [
   {
     id: 1,
-    text: "I was skeptical at first, but these nails exceeded my expectations. They look so natural!",
+    text: "The quality is amazing. They look like they grew out of my fingers.",
     name: "Dolapo",
     role: "Verified Buyer",
     avatar: "/images/testimonials/dolapo.jpg"
   },
   {
     id: 2,
-    text: "Application was a breeze and they lasted for over two weeks. I'm officially hooked!",
+    text: "Super easy to apply. And I get compliments every single time I wear them.",
     name: "Teni",
     role: "Verified Buyer",
     avatar: "/images/testimonials/teni.jpg"
   },
   {
     id: 3,
-    text: "The quality is outstanding. They are strong, don't bend, and the designs are stunning.",
+    text: "Finally, press-ons that fit just right and actually stay on.",
     name: "Chioma",
     role: "Verified Buyer",
     avatar: "/images/testimonials/chioma.jpg"

@@ -36,11 +36,12 @@
 .card {
   display: flex;
   flex-direction: column;
-  background-color: var(--color-bg);
-  border-radius: var(--radius-2xl);
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
-  border: 1px solid rgba(212, 175, 122, 0.15);
+  transition: transform var(--transition-base);
+}
+
+.card:hover {
+  transform: translateY(-5px);
 }
 
 .cardContent {
@@ -67,19 +68,18 @@
 .imageWrapper {
   position: relative;
   width: 100%;
-  aspect-ratio: 4 / 3;
-  margin-top: auto;
+  aspect-ratio: 3 / 4; /* Portrait illustration ratio */
 }
 
 .image {
   object-fit: cover;
-  object-position: center bottom;
+  border: none;
+  outline: none;
 }
 
 @media (min-width: 768px) {
   .grid {
     grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-6);
   }
   
   .section {

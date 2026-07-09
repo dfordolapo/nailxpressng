@@ -5,21 +5,18 @@ import styles from './Features.module.css';
 const FEATURES_DATA = [
   {
     id: 1,
-    title: "Premium Quality",
-    description: "Handmade artistry & factory precision.",
-    image: "/images/features/premium-quality.png"
+    image: "/images/apply.png",
+    alt: "How to apply Nail Express press-on nails"
   },
   {
     id: 2,
-    title: "Perfect Fit",
-    description: "Multiple sizes for a comfortable fit.",
-    image: "/images/features/perfect-fit.png"
+    image: "/images/removal.png",
+    alt: "Safe removal of press-on nails guide"
   },
   {
     id: 3,
-    title: "Fast Application",
-    description: "Minutes to apply, weeks to wear.",
-    image: "/images/features/fast-application.png"
+    image: "/images/tip.png",
+    alt: "Nail care tips and tricks"
   }
 ];
 
@@ -35,15 +32,12 @@ export default function Features() {
         <div className={styles.grid}>
           {FEATURES_DATA.map((feature) => (
             <div key={feature.id} className={styles.card}>
-              <div className={styles.cardContent}>
-                <h3 className={styles.cardTitle}>{feature.title}</h3>
-                <p className={styles.cardDescription}>{feature.description}</p>
-              </div>
               <div className={styles.imageWrapper}>
                 <Image
                   src={feature.image}
-                  alt={feature.title}
+                  alt={feature.alt}
                   fill
+                  unoptimized
                   sizes="(max-width: 768px) 100vw, 30vw"
                   className={styles.image}
                 />
