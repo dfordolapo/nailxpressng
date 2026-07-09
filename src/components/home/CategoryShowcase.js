@@ -4,11 +4,11 @@ import Link from 'next/link';
 import styles from './CategoryShowcase.module.css';
 
 const MOODS = [
-  { id: 'everyday', name: 'Everyday Chic', image: '/images/moods/everyday.jpg' },
-  { id: 'glamour', name: 'Bold & Glam', image: '/images/moods/glamour.jpg' },
-  { id: 'soft', name: 'Soft & Elegant', image: '/images/moods/bridal.jpg' },
-  { id: 'trendy', name: 'Trendy & Playful', image: '/images/moods/floral.jpg' },
-  { id: 'custom', name: 'Custom Sets', image: '/images/moods/art.jpg' },
+  { id: 'everyday', name: 'Everyday Chic', image: '/images/everyday.png' },
+  { id: 'glamour', name: 'Bold & Glam', image: '/images/glamour.png' },
+  { id: 'soft', name: 'Soft & Elegant', image: '/images/bridal.png' },
+  { id: 'trendy', name: 'Trendy & Playful', image: '/images/floral.png' },
+  { id: 'custom', name: 'Custom Sets', image: '/images/art.png' },
 ];
 
 export default function CategoryShowcase() {
