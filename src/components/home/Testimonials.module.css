@@ -38,10 +38,20 @@
   display: flex;
   flex-direction: column;
   background-color: var(--color-bg);
-  border: 1.5px solid #D4AF7A;
+  border: 2px solid #D4AF7A;
   border-radius: var(--radius-2xl);
   padding: var(--space-10) var(--space-8) var(--space-8);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border: 2px solid #D4AF7A;
+  border-radius: inherit;
+  filter: url(#torn-paper);
+  pointer-events: none;
 }
 
 .quoteIcon {
@@ -58,6 +68,7 @@
   align-items: center;
   justify-content: center;
   box-shadow: 0 4px 10px rgba(212, 175, 122, 0.3);
+  filter: url(#torn-paper);
 }
 
 .text {

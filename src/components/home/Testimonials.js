@@ -66,6 +66,14 @@ export default function Testimonials() {
           ))}
         </div>
       </div>
+
+      {/* SVG Filter for torn paper edge effect */}
+      <svg width="0" height="0" style={{ position: 'absolute' }}>
+        <filter id="torn-paper">
+          <feTurbulence type="fractalNoise" baseFrequency="0.075" numOctaves="2" result="noise" />
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+      </svg>
     </section>
   );
 }
