@@ -25,7 +25,7 @@ export const NAV_LINKS = [
   { label: "Handmade", href: "/handmade" },
   { label: "Factory Made", href: "/factory" },
   { label: "Custom Order", href: SOCIAL_LINKS.whatsapp },
-  { label: "Admin", href: "/admin" },
+  { label: "Admin", href: "/admin/login" },
 ];
 
 export const SORT_OPTIONS = [
