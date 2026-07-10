@@ -133,30 +133,30 @@ function HandmadeCard({ product, index }) {
     >
       <div
         ref={cardRef}
-        className={`${styles.cardInner} ${flipped ? styles.flipped : ""}`}
-        style={tiltStyle}
+        className={styles.cardInner}
+        style={!flipped ? tiltStyle : {}}
       >
-        {/* ═══ FRONT ═══ */}
-        <div className={styles.cardFront} onClick={handleFlip}>
-          <div className={styles.imageArea}>
-            <div
-              className={styles.flatLay}
-              style={{
-                background: `linear-gradient(135deg, var(--color-primary-100), var(--color-bg-warm))`,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: "3.5rem",
-              }}
-            >
-              💅
-            </div>
+        {!flipped ? (
+          /* ═══ FRONT ═══ */
+          <div className={styles.cardFront} onClick={handleFlip}>
+            <div className={styles.imageArea}>
+              <div
+                className={styles.flatLay}
+                style={{
+                  background: `linear-gradient(135deg, var(--color-primary-100), var(--color-bg-warm))`,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: "3.5rem",
+                }}
+              >
+                💅
+              </div>
 
-            {/* Shine sweep */}
-            <div className={styles.shine} />
+              {/* Shine sweep */}
+              <div className={styles.shine} />
 
-            {/* Badges */}
-            {!flipped && (
+              {/* Badges */}
               <div className={styles.badges}>
                 {discount > 0 && (
                   <span className={`${styles.badge} ${styles.badgeSale}`}>-{discount}%</span>
@@ -168,53 +168,51 @@ function HandmadeCard({ product, index }) {
                   <span className={`${styles.badge} ${styles.badgeBestseller}`}>Bestseller</span>
                 )}
               </div>
-            )}
 
-            {/* Quick Actions */}
-            <div className={styles.quickActions}>
-              <button
-                className={`${styles.quickAction} ${wishlisted ? styles.active : ""}`}
-                onClick={handleWishlist}
-                aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
-              >
-                <HeartIcon filled={wishlisted} />
-              </button>
-            </div>
-
-            {/* Glow Ring */}
-            <div className={styles.glowRing} />
-
-
-          </div>
-
-          {/* Info */}
-          <div className={styles.frontInfo}>
-            <h3 className={styles.name}>{product.name}</h3>
-            <div className={styles.priceRow}>
-              <span className={styles.price}>{formatPrice(product.price)}</span>
-              {product.compareAtPrice && (
-                <span className={styles.comparePrice}>{formatPrice(product.compareAtPrice)}</span>
-              )}
-            </div>
-            <div className={styles.rating}>
-              <div className={styles.stars}>
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <StarIcon key={i} />
-                ))}
+              {/* Quick Actions */}
+              <div className={styles.quickActions}>
+                <button
+                  className={`${styles.quickAction} ${wishlisted ? styles.active : ""}`}
+                  onClick={handleWishlist}
+                  aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
+                >
+                  <HeartIcon filled={wishlisted} />
+                </button>
               </div>
-              <span>({product.reviewCount})</span>
+
+              {/* Glow Ring */}
+              <div className={styles.glowRing} />
+
             </div>
+
+            {/* Info */}
+            <div className={styles.frontInfo}>
+              <h3 className={styles.name}>{product.name}</h3>
+              <div className={styles.priceRow}>
+                <span className={styles.price}>{formatPrice(product.price)}</span>
+                {product.compareAtPrice && (
+                  <span className={styles.comparePrice}>{formatPrice(product.compareAtPrice)}</span>
+                )}
+              </div>
+              <div className={styles.rating}>
+                <div className={styles.stars}>
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <StarIcon key={i} />
+                  ))}
+                </div>
+                <span>({product.reviewCount})</span>
+              </div>
+            </div>
+
+            {/* Flip Hint */}
+            <button className={styles.flipHint} onClick={handleFlip}>
+              Quick add
+              <FlipIcon />
+            </button>
           </div>
-
-          {/* Flip Hint */}
-          <button className={styles.flipHint} onClick={handleFlip}>
-            Quick add
-            <FlipIcon />
-          </button>
-        </div>
-
-        {/* ═══ BACK ═══ */}
-        <div className={styles.cardBack}>
+        ) : (
+          /* ═══ BACK ═══ */
+          <div className={styles.cardBack}>
           <div className={styles.backHeader}>
             <h3 className={styles.backName}>{product.name}</h3>
             <span className={styles.backPrice}>{formatPrice(product.price)}</span>
@@ -295,7 +293,7 @@ function HandmadeCard({ product, index }) {
               View Details
             </Link>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

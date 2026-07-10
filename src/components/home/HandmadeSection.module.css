@@ -93,35 +93,19 @@
   cursor: pointer;
 }
 
-/* ── Card Inner (the part that tilts + flips) ─────────────────────── */
+/* ── Card Inner (the part that tilts) ────────────────────────────── */
 .cardInner {
   position: relative;
   width: 100%;
-  transform-style: preserve-3d;
-  transition: transform 0s;
-}
-
-.cardInner.flipped {
-  transform: rotateY(180deg) !important;
-}
-
-.cardInner.flipped .badges {
-  visibility: hidden;
 }
 
 /* ── Card Front ───────────────────────────────────────────────────── */
-.cardFront,
-.cardBack {
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  border-radius: var(--radius-xl);
-  overflow: hidden;
-}
-
 .cardFront {
   position: relative;
   background: var(--color-bg-card);
   border: 1.5px solid var(--color-border-light);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -406,11 +390,11 @@
    CARD BACK (Flipped Details)
    ══════════════════════════════════════════════════════════════════════ */
 .cardBack {
-  position: absolute;
-  inset: 0;
-  transform: rotateY(180deg);
+  position: relative;
   background: var(--color-bg-card);
   border: 1.5px solid #D4AF7A;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   padding: var(--space-6);
