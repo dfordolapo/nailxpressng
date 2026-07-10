@@ -91,16 +91,21 @@
 .cardWrapper {
   perspective: 900px;
   cursor: pointer;
+  height: 100%;
 }
 
 /* ── Card Inner (the part that tilts) ────────────────────────────── */
 .cardInner {
   position: relative;
   width: 100%;
+  height: 100%;
+  display: grid;
 }
 
 /* ── Card Front ───────────────────────────────────────────────────── */
 .cardFront {
+  grid-column: 1;
+  grid-row: 1;
   position: relative;
   background: var(--color-bg-card);
   border: 1.5px solid var(--color-border-light);
@@ -396,8 +401,8 @@
    CARD BACK (Flipped Details)
    ══════════════════════════════════════════════════════════════════════ */
 .cardBack {
-  position: absolute;
-  inset: 0;
+  grid-column: 1;
+  grid-row: 1;
   background: var(--color-bg-card);
   border: 1.5px solid #D4AF7A;
   border-radius: var(--radius-xl);

@@ -2,19 +2,26 @@
 .cardWrapper {
   perspective: 900px;
   cursor: pointer;
+  height: 100%;
 }
 
 .cardInner {
   position: relative;
   width: 100%;
+  height: 100%;
+  display: grid;
 }
 
 .cardFront {
+  grid-column: 1;
+  grid-row: 1;
   border-radius: var(--radius-xl);
   overflow: hidden;
 }
 
 .cardBack {
+  grid-column: 1;
+  grid-row: 1;
   border-radius: var(--radius-xl);
   overflow: hidden;
 }
@@ -295,8 +302,6 @@
 
 /* ═══ BACK ══════════════════════════════════════════════════════════ */
 .cardBack {
-  position: absolute;
-  inset: 0;
   background: var(--color-bg-card);
   border: 1.5px solid #D4AF7A;
   display: flex;
@@ -525,15 +530,14 @@
 .viewLinkDesktop { display: inline; }
 .viewLinkMobile { display: none; }
 
-/* ── Masonry Grid ────────────────────────────────────────────────── */
+/* ── Uniform Grid (was Masonry) ────────────────────────────────────────────────── */
 .masonryGrid {
-  columns: 3;
-  column-gap: var(--space-6);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
 }
 
 .masonryItem {
-  break-inside: avoid;
-  margin-bottom: var(--space-6);
   perspective: 1200px;
 }
 
@@ -659,8 +663,7 @@
 
 /* ── Responsive ───────────────────────────────────────────────────── */
 @media (max-width: 768px) {
-  .masonryGrid { columns: 2; column-gap: var(--space-3); }
-  .masonryItem { margin-bottom: var(--space-3); }
+  .masonryGrid { grid-template-columns: repeat(2, 1fr); gap: var(--space-3); }
   .masonryItem { perspective: none; }
   .cardWrapper { perspective: none; }
 
