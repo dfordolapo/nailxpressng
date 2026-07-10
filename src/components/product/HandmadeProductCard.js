@@ -321,7 +321,6 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
               <Link
                 href={`/product/${product.slug}`}
                 className={styles.viewLink}
-                onClick={(e) => e.stopPropagation()}
               >
                 <span className={styles.viewLinkDesktop}>View Details</span>
                 <span className={styles.viewLinkMobile}>Details</span>

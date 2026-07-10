@@ -434,7 +434,6 @@ function HandmadeCard({ product, index }) {
             <Link
               href={`/product/${product.slug}`}
               className={styles.viewLink}
-              onClick={(e) => e.stopPropagation()}
             >
               View Details
             </Link>
