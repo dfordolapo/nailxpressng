@@ -130,9 +130,30 @@ const SECTIONS = [
   },
 ];
 
+function ChevronLeft() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="m15 18-6-6 6-6"/>
+    </svg>
+  );
+}
+
+function ChevronRight() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="m9 18 6-6-6-6"/>
+    </svg>
+  );
+}
+
 export default function TermsPage() {
   const [activeId, setActiveId] = useState(SECTIONS[0].id);
   const observerRef = useRef(null);
+
+  const activeIndex = SECTIONS.findIndex((s) => s.id === activeId);
+  const activeSection = SECTIONS[activeIndex];
+  const hasPrev = activeIndex > 0;
+  const hasNext = activeIndex < SECTIONS.length - 1;
 
   const setupObserver = useCallback(() => {
     if (observerRef.current) observerRef.current.disconnect();
@@ -169,27 +190,20 @@ export default function TermsPage() {
     if (el) el.scrollIntoView({ behavior: "smooth" });
   };
 
+  const goToPrev = () => {
+    if (hasPrev) scrollTo(SECTIONS[activeIndex - 1].id);
+  };
+
+  const goToNext = () => {
+    if (hasNext) scrollTo(SECTIONS[activeIndex + 1].id);
+  };
+
   return (
     <div className={styles.page}>
       <div className="container container--narrow">
         <div className={styles.header}>
           <h1 className={styles.title}>Terms &amp; Conditions</h1>
           <p className={styles.updated}>Last updated: July 2025</p>
-        </div>
-
-        {/* Mobile horizontal pill TOC */}
-        <div className={styles.mobileToc}>
-          <div className={styles.mobileTocScroll}>
-            {SECTIONS.map(({ id, title }) => (
-              <button
-                key={id}
-                className={`${styles.mobilePill} ${activeId === id ? styles.mobilePillActive : ""}`}
-                onClick={() => scrollTo(id)}
-              >
-                {title}
-              </button>
-            ))}
-          </div>
         </div>
 
         <div className={styles.layout}>
@@ -221,6 +235,32 @@ export default function TermsPage() {
               </section>
             ))}
           </div>
+        </div>
+      </div>
+
+      {/* Mobile sticky bottom bar */}
+      <div className={styles.bottomBar}>
+        <div className={styles.bottomBarInner}>
+          <button
+            className={styles.bottomBarBtn}
+            onClick={goToPrev}
+            disabled={!hasPrev}
+            aria-label="Previous section"
+          >
+            <ChevronLeft />
+          </button>
+          <div>
+            <div className={styles.bottomBarLabel}>{activeSection?.title}</div>
+            <div className={styles.bottomBarCounter}>{activeIndex + 1} of {SECTIONS.length}</div>
+          </div>
+          <button
+            className={styles.bottomBarBtn}
+            onClick={goToNext}
+            disabled={!hasNext}
+            aria-label="Next section"
+          >
+            <ChevronRight />
+          </button>
         </div>
       </div>
     </div>

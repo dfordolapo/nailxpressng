@@ -46,7 +46,6 @@ export default function Footer() {
           <div className={styles.links}>
             <Link href="/shop" className={styles.link}>shop</Link>
             <Link href="/terms" className={styles.link}>terms</Link>
-            <Link href="/privacy" className={styles.link}>privacy</Link>
             <a href={SOCIAL_LINKS?.whatsapp || "#"} target="_blank" rel="noopener noreferrer" className={styles.link}>wholesale</a>
           </div>
         </div>

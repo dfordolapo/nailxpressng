@@ -29,7 +29,6 @@ export default function FooterHero() {
         <div className={styles.footerLinks}>
           <Link href="/shop" className={styles.footerLink}>shop</Link>
           <Link href="/terms" className={styles.footerLink}>terms</Link>
-          <Link href="/privacy" className={styles.footerLink}>privacy</Link>
           <a href={SOCIAL_LINKS?.whatsapp || "#"} target="_blank" rel="noopener noreferrer" className={styles.footerLink}>wholesale</a>
         </div>
         <div className={styles.footerSocials}>
