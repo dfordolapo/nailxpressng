@@ -9,7 +9,7 @@ const SECTIONS = [
     id: "welcome",
     title: "Welcome",
     content: [
-      "Welcome to Nailexpress. We are committed to providing premium quality press-on nails and an enjoyable shopping experience. By accessing our website or placing an order with us, you agree to be bound by these Terms and Conditions. If you do not agree with any part of these terms, please refrain from using our website or purchasing our products.",
+      "Welcome to Nailexpress. We are committed to providing premium quality press-on nails and an enjoyable shopping experience. By accessing our website or placing an order with us, you agree to be bound by these Terms and Conditions. If you do not agree with any part of these terms, we advise against using our website or purchasing our products.",
     ],
   },
   {
@@ -203,10 +203,9 @@ export default function TermsPage() {
   return (
     <div className={styles.page}>
       <button className={styles.backBtn} onClick={() => router.back()} aria-label="Go back">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="m15 18-6-6 6-6"/>
         </svg>
-        <span>Back</span>
       </button>
       <div className="container container--narrow">
         <div className={styles.header}>
