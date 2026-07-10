@@ -27,9 +27,7 @@ export default function FooterHero() {
       <div className={styles.footerBar}>
         <div className={styles.footerLogo}>nailexpress</div>
         <div className={styles.footerLinks}>
-          <Link href="/shop" className={styles.footerLink}>shop</Link>
-          <Link href="/terms" className={styles.footerLink}>terms</Link>
-          <a href={SOCIAL_LINKS?.whatsapp || "#"} target="_blank" rel="noopener noreferrer" className={styles.footerLink}>wholesale</a>
+          <Link href="/terms" className={styles.footerLink}>terms & conditions</Link>
         </div>
         <div className={styles.footerSocials}>
           <a href={SOCIAL_LINKS?.instagram || "#"} target="_blank" rel="noopener noreferrer" className={styles.footerSocialLink} aria-label="Instagram">
