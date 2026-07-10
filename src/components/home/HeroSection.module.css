@@ -64,7 +64,7 @@
 .button {
   display: inline-block;
   background-color: var(--color-primary-800);
-  color: #D4AF7A;
+  color: var(--color-bg-warm);
   padding: var(--space-3) var(--space-8);
   border-radius: var(--radius-full);
   font-family: var(--font-heading);

@@ -1,18 +1,19 @@
 import React from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
+import { SOCIAL_LINKS, WHATSAPP_MESSAGES } from '@/lib/constants';
 import styles from './ShopTheLook.module.css';
 
 export default function ShopTheLook() {
+  const whatsappUrl = `${SOCIAL_LINKS.whatsapp}?text=${encodeURIComponent(WHATSAPP_MESSAGES.customOrder)}`;
   return (
     <section className={styles.section}>
       <div className="container">
         <div className={styles.grid}>
           <div className={styles.content}>
             <h2 className={styles.title}>If you can think it,<br />we can do it</h2>
-            <Link href="/custom-order" className={styles.button}>
+            <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className={styles.button}>
               Customize your set
-            </Link>
+            </a>
           </div>
           <div className={styles.imageWrapper}>
             <Image

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { nailShapes, nailLengths } from "@/data/categories";
+import { SOCIAL_LINKS } from "@/lib/constants";
 import pageStyles from "@/styles/pages/collection.module.css";
 import btnStyles from "@/styles/components/buttons.module.css";
 
@@ -53,7 +54,19 @@ export default function CustomOrderPage() {
   };
 
   const handleSubmit = () => {
-    alert("Custom order submitted! We'll reach out to you on WhatsApp or email to confirm details and pricing.");
+    const message = [
+      "Hi! I'd like to place a custom order:",
+      `Shape: ${order.shape}`,
+      `Length: ${order.length}`,
+      `Design: ${order.design}`,
+      order.color && `Color: ${order.color}`,
+      order.notes && `Notes: ${order.notes}`,
+      `Name: ${order.name}`,
+      `Email: ${order.email}`,
+      order.phone && `WhatsApp: ${order.phone}`,
+    ].filter(Boolean).join("\n");
+
+    window.open(`${SOCIAL_LINKS.whatsapp}?text=${encodeURIComponent(message)}`, "_blank");
   };
 
   return (

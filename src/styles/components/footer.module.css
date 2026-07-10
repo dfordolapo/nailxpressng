@@ -20,7 +20,7 @@
   font-weight: var(--weight-medium);
   font-style: italic;
   letter-spacing: 0.05em;
-  color: #D4AF7A;
+  color: var(--color-bg-warm);
   text-align: center;
 }
 
@@ -32,7 +32,7 @@
 .link {
   font-family: var(--font-heading);
   font-size: var(--text-xl);
-  color: #D4AF7A;
+  color: var(--color-bg-warm);
   transition: color var(--transition-base);
   letter-spacing: 0.05em;
   text-align: center;
@@ -48,7 +48,7 @@
 }
 
 .socialLink {
-  color: #D4AF7A;
+  color: var(--color-bg-warm);
   transition: transform var(--transition-base), color var(--transition-base);
   display: flex;
   align-items: center;
@@ -63,18 +63,26 @@
 @media (max-width: 768px) {
   .container {
     flex-direction: column;
-    gap: var(--space-6);
+    gap: var(--space-4);
     align-items: center;
     text-align: center;
   }
-  
+
+  .topRow {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
   .links {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-4) var(--space-8);
-    justify-items: center;
-    width: max-content;
-    margin: 0 auto;
+    display: flex;
+    gap: var(--space-4);
+  }
+
+  .link {
+    font-size: var(--text-lg);
   }
 
   .socials {

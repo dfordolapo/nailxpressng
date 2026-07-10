@@ -24,6 +24,7 @@ export default function Home() {
       <HowToMeasure />
       <GiftBoxBanner />
       <FAQSection />
+      <div style={{ height: "120px", background: "linear-gradient(to bottom, var(--color-bg), var(--color-bg-warm))" }} />
       <FooterHero />
       {/* 
         This is where we will progressively rebuild the components section by section.

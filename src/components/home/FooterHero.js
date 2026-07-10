@@ -1,31 +1,26 @@
 import React from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
+import { SOCIAL_LINKS, WHATSAPP_MESSAGES } from '@/lib/constants';
 import styles from './FooterHero.module.css';
 
 export default function FooterHero() {
+  const whatsappUrl = `${SOCIAL_LINKS.whatsapp}?text=${encodeURIComponent(WHATSAPP_MESSAGES.wholesale)}`;
   return (
     <section className={styles.section}>
-      <div className="container">
-        <div className={styles.grid}>
-          <div className={styles.content}>
-            <h2 className={styles.title}>Want one mani set<br />or a wholesale deal?</h2>
-            <p className={styles.subtitle}>We nail it, you retail it</p>
-            <Link href="/shop" className={styles.button}>
-              Shop now
-            </Link>
-          </div>
-          <div className={styles.imageWrapper}>
-            <Image
-              src="/images/footer-hero.png"
-              alt="Nail Express packaging bags and boxes"
-              fill
-              sizes="(max-width: 768px) 100vw, 50vw"
-              className={styles.image}
-            />
-          </div>
-        </div>
+      <div className={styles.overlay}>
+        <h2 className={styles.title}>Want one mani set<br />or a wholesale deal?</h2>
+        <p className={styles.subtitle}>We nail it, you retail it</p>
+        <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className={styles.button}>
+          Chat on WhatsApp
+        </a>
       </div>
+      <Image
+        src="/images/wholesale-banner.png"
+        alt="Nail Express wholesale"
+        width={1200}
+        height={600}
+        className={styles.image}
+      />
     </section>
   );
 }

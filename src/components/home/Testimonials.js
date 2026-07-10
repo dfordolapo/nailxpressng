@@ -8,21 +8,24 @@ const TESTIMONIALS_DATA = [
     text: "The quality is amazing. They look like they grew out of my fingers.",
     name: "Dolapo",
     role: "Verified Buyer",
-    avatar: "/images/dolapo.jpg"
+    avatar: "/images/dolapo.jpg",
+    color: "#C4866C",
   },
   {
     id: 2,
     text: "Super easy to apply. And I get compliments every single time I wear them.",
     name: "Teni",
     role: "Verified Buyer",
-    avatar: "/images/teni.jpg"
+    avatar: "/images/teni.jpg",
+    color: "#B84C6A",
   },
   {
     id: 3,
     text: "Finally, press-ons that fit just right and actually stay on.",
     name: "Chioma",
     role: "Verified Buyer",
-    avatar: "/images/chioma.jpg"
+    avatar: "/images/chioma.jpg",
+    color: "#8B6B8A",
   }
 ];
 
@@ -38,7 +41,7 @@ export default function Testimonials() {
         <div className={styles.grid}>
           {TESTIMONIALS_DATA.map((testimonial) => (
             <div key={testimonial.id} className={styles.card}>
-              <div className={styles.quoteIcon}>
+              <div className={styles.quoteIcon} style={{ backgroundColor: testimonial.color }}>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M11.192 15.757c0-.907-.188-1.754-.563-2.54a5.72 5.72 0 0 0-1.503-2.025 6.08 6.08 0 0 0-2.182-1.3c-.87-.318-1.792-.477-2.767-.477h-.088c.066-.748.243-1.423.53-2.026.297-.627.693-1.168 1.189-1.623C6.262 5.312 6.84 4.966 7.5 4.73l.4-.143L6.963 2.5l-.363.119C5.1 3.12 3.86 4.025 2.888 5.3 1.91 6.574 1.42 8.163 1.42 10.067c0 1.628.32 3.033.958 4.215a7.11 7.11 0 0 0 2.65 2.843c1.112.66 2.3.99 3.562.99 1.056 0 1.925-.264 2.607-.792.682-.528 1.023-1.22 1.023-2.079c-.028-.242-.028-.352-.028-.506zm11.386 0c0-.907-.188-1.754-.563-2.54a5.72 5.72 0 0 0-1.503-2.025 6.08 6.08 0 0 0-2.182-1.3c-.87-.318-1.792-.477-2.767-.477h-.088c.066-.748.243-1.423.53-2.026.297-.627.693-1.168 1.189-1.623.495-.455 1.073-.801 1.733-1.037l.4-.143L18.35 2.5l-.363.119c-1.5.502-2.74 1.407-3.712 2.681-.978 1.274-1.468 2.863-1.468 4.767 0 1.628.32 3.033.958 4.215a7.11 7.11 0 0 0 2.65 2.843c1.112.66 2.3.99 3.562.99 1.056 0 1.925-.264 2.607-.792.682-.528 1.023-1.22 1.023-2.079c-.028-.242-.028-.352-.028-.506z"/>
                 </svg>

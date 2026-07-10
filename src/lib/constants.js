@@ -8,11 +8,23 @@ export const CURRENCY_CODE = "NGN";
 export const FREE_SHIPPING_THRESHOLD = 20000; // Free shipping over ₦20,000
 export const FLAT_SHIPPING_RATE = 2500;
 
+export const SOCIAL_LINKS = {
+  instagram: "https://instagram.com/nailexpress",
+  tiktok: "https://tiktok.com/@nailexpress",
+  twitter: "https://twitter.com/nailexpress",
+  whatsapp: "https://wa.me/2348000000000",
+};
+
+export const WHATSAPP_MESSAGES = {
+  customOrder: "Hi! I'm interested in placing a custom order. I'd love to design my own nail set.",
+  wholesale: "Hi! I'm interested in wholesale pricing. I'd like to discuss bulk orders.",
+};
+
 export const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "Handmade", href: "/handmade" },
   { label: "Factory Made", href: "/factory" },
-  { label: "Custom Order", href: "/custom-order" },
+  { label: "Custom Order", href: SOCIAL_LINKS.whatsapp },
 ];
 
 export const SORT_OPTIONS = [
@@ -24,10 +36,3 @@ export const SORT_OPTIONS = [
 ];
 
 export const ANNOUNCEMENT_TEXT = "✨ Free shipping on orders over ₦20,000 ✨";
-
-export const SOCIAL_LINKS = {
-  instagram: "https://instagram.com/nailexpress",
-  tiktok: "https://tiktok.com/@nailexpress",
-  twitter: "https://twitter.com/nailexpress",
-  whatsapp: "https://wa.me/2348000000000",
-};

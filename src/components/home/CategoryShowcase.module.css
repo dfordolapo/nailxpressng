@@ -1,6 +1,6 @@
 .section {
   background: linear-gradient(to bottom, var(--color-bg) 0%, var(--color-bg-warm) 100%);
-  padding: calc(var(--space-12) + 60px) 0 var(--space-12);
+    padding: 100px 0 30px;
   text-align: center;
   position: relative;
 }
@@ -27,7 +27,7 @@
   gap: var(--space-6);
   padding-right: var(--space-6); /* seamless gap */
   width: max-content;
-  animation: scroll 40s linear infinite;
+  animation: scroll 30s linear infinite;
 }
 
 .marqueeTrack:hover {
@@ -50,7 +50,7 @@
 
 @media (min-width: 768px) {
   .section {
-    padding: calc(var(--space-24) + 60px) 0 var(--space-20);
+  padding: calc(var(--space-12) + 60px) 0 60px;
   }
 
   .card {
@@ -86,23 +86,30 @@
   bottom: 0;
   left: 50%;
   transform: translate(-50%, 50%);
-  background-color: var(--color-bg-card);
-  color: var(--color-primary-800);
+  background-color: var(--color-primary-800);
+  color: #fff;
   padding: var(--space-2) var(--space-8);
   font-family: var(--font-body);
   font-size: var(--text-sm);
   text-transform: uppercase;
   letter-spacing: 0.15em;
   font-weight: var(--weight-medium);
-  border: 1px solid #D4AF7A;
   white-space: nowrap;
-  z-index: 2;
+  text-align: center;
+}
+
+@media (max-width: 767px) {
+  .label {
+    width: 130px;
+    font-size: 0.6rem;
+    padding: var(--space-2) var(--space-4);
+  }
 }
 
 .button {
   display: inline-block;
   background-color: var(--color-primary-800);
-  color: #D4AF7A;
+  color: var(--color-bg-warm);
   padding: var(--space-3) var(--space-8);
   border-radius: var(--radius-full);
   font-family: var(--font-heading);

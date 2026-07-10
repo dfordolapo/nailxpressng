@@ -4,11 +4,11 @@ import Link from 'next/link';
 import styles from './CategoryShowcase.module.css';
 
 const MOODS = [
-  { id: 'everyday', name: 'Everyday Chic', image: '/images/everyday.png' },
-  { id: 'glamour', name: 'Bold & Glam', image: '/images/glamour.png' },
-  { id: 'soft', name: 'Soft & Elegant', image: '/images/bridal.png' },
-  { id: 'trendy', name: 'Trendy & Playful', image: '/images/floral.png' },
-  { id: 'custom', name: 'Custom Sets', image: '/images/art.png' },
+  { id: 'everyday', name: 'Everyday Chic', image: '/images/everyday.png', color: '#C4866C' },
+  { id: 'glamour', name: 'Bold & Glam', image: '/images/glamour.png', color: '#B84C6A' },
+  { id: 'soft', name: 'Soft & Elegant', image: '/images/bridal.png', color: '#D4A98C' },
+  { id: 'trendy', name: 'Trendy & Playful', image: '/images/floral.png', color: '#8B6B8A' },
+  { id: 'custom', name: 'Custom Sets', image: '/images/art.png', color: '#7A8C6B' },
 ];
 
 export default function CategoryShowcase() {
@@ -33,7 +33,7 @@ export default function CategoryShowcase() {
                   />
                 </div>
               </div>
-              <div className={styles.label}>
+              <div className={styles.label} style={{ backgroundColor: mood.color }}>
                 {mood.name}
               </div>
             </div>
