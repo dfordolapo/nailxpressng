@@ -30,7 +30,7 @@ export default function HandmadePage() {
             <h1 className={pageStyles.collectionTitle}>{category.name} Nails</h1>
             <span style={{
               position: "absolute",
-              bottom: "-6px",
+              bottom: "2px",
               left: "50%",
               transform: "translateX(-50%) rotate(-1deg)",
               width: "60%",

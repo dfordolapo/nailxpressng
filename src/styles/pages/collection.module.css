@@ -21,6 +21,7 @@
   color: var(--color-text-secondary);
   max-width: 600px;
   margin: 0 auto;
+  white-space: nowrap;
 }
 
 /* ── Product Detail Page ──────────────────────────────────────────── */
@@ -540,7 +541,9 @@
   }
 
   .collectionDescription {
-    font-size: var(--text-sm);
+    font-size: var(--text-xs);
+    text-wrap: balance;
+    white-space: normal;
   }
 
   .productLayout {
