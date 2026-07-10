@@ -113,7 +113,7 @@
 /* Main Content Area */
 .mainContent {
   flex: 1;
-  padding: 40px;
+  padding: 30px;
   background-color: #FFFFFF;
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
@@ -128,11 +128,11 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 30px;
+  margin-bottom: 25px;
 }
 
 .pageTitle {
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   font-weight: 600;
   color: var(--color-text);
   margin: 0 0 5px 0;
@@ -140,17 +140,17 @@
 
 .pageSubtitle {
   color: var(--color-text-secondary);
-  font-size: 0.95rem;
+  font-size: 0.9rem;
 }
 
 .datePicker {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 12px;
+  padding: 6px 12px;
   border: 1px solid var(--color-border);
   border-radius: 8px;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: var(--color-text-secondary);
   background: white;
 }
@@ -158,9 +158,9 @@
 .btnPrimary {
   background-color: var(--color-primary);
   color: white;
-  padding: 10px 20px;
+  padding: 8px 16px;
   border-radius: 8px;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 500;
   display: inline-flex;
   align-items: center;
@@ -250,18 +250,18 @@
 
 .table th {
   text-align: left;
-  padding: 15px 20px;
-  font-size: 0.85rem;
+  padding: 12px 15px;
+  font-size: 0.8rem;
   color: var(--color-text-tertiary);
   font-weight: 500;
   border-bottom: 1px solid var(--color-border-light);
 }
 
 .table td {
-  padding: 15px 20px;
+  padding: 12px 15px;
   border-bottom: 1px solid var(--color-border-light);
   vertical-align: middle;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
 }
 
 .table tr:last-child td {
@@ -439,38 +439,38 @@
 
 .label {
   display: block;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 500;
   color: var(--color-text);
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .input,
 .textarea {
   width: 100%;
-  padding: 12px 15px;
+  padding: 10px 12px;
   border: 1px solid var(--color-border);
   border-radius: 8px;
   font-family: inherit;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   color: var(--color-text);
   background-color: #FFFFFF;
 }
 
 .select {
   width: 100%;
-  padding: 12px 35px 12px 15px;
+  padding: 10px 30px 10px 12px;
   border: 1px solid var(--color-border);
   border-radius: 8px;
   font-family: inherit;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   color: var(--color-text);
   background-color: #FFFFFF;
   appearance: none;
   background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23666666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 12px center;
-  background-size: 16px;
+  background-position: right 10px center;
+  background-size: 14px;
 }
 
 .input:focus,
@@ -633,11 +633,41 @@
   }
 
   .mainContent {
-    padding: 20px 15px;
+    padding: 15px 10px;
     margin: 0;
     border-radius: 0;
   }
 
+  /* Typography Reductions */
+  .pageTitle { font-size: 1.3rem; }
+  .pageSubtitle { font-size: 0.85rem; }
+  .sectionTitle { font-size: 1rem; }
+  .formSectionTitle { font-size: 1rem; }
+  .statValue { font-size: 1.5rem; }
+  .statTitle { font-size: 0.8rem; }
+  .label { font-size: 0.85rem; }
+  
+  /* Inputs and Buttons Reductions */
+  .btnPrimary { 
+    padding: 8px 15px; 
+    font-size: 0.85rem; 
+  }
+  .btnSecondary { 
+    font-size: 0.85rem; 
+  }
+  .input, .textarea, .select { 
+    padding: 10px 12px; 
+    font-size: 0.85rem; 
+  }
+  .tab { 
+    padding: 6px 12px; 
+    font-size: 0.85rem; 
+  }
+  
+  /* Tables and Grids Padding Reductions */
+  .table th { padding: 10px 12px; font-size: 0.8rem; }
+  .table td { padding: 10px 12px; font-size: 0.85rem; }
+  
   .statsGrid {
     grid-template-columns: 1fr;
   }
