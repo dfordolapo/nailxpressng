@@ -39,7 +39,6 @@ export default function Home() {
       <ScrollReveal animation="fade-up" delay={100}>
         <FAQSection />
       </ScrollReveal>
-      <div style={{ height: "40px", background: "linear-gradient(to bottom, var(--color-bg), var(--color-bg-warm))" }} />
       <ScrollReveal animation="fade-up">
         <FooterHero />
       </ScrollReveal>
