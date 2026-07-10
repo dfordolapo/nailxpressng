@@ -112,7 +112,9 @@ function HandmadeCard({ product, index }) {
 
   const handleAddToCart = (e) => {
     e.stopPropagation();
-    const size = selectedSize || product.sizes[Math.floor(product.sizes.length / 2)];
+    const size = product.category === "handmade"
+      ? (selectedSize || (product.sizes ? product.sizes[Math.floor(product.sizes.length / 2)] : null))
+      : null;
     const length = product.lengths[Math.floor(product.lengths.length / 2)];
     addItem(product, qty, size, length);
     setAdded(true);

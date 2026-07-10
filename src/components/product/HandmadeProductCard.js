@@ -112,7 +112,9 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
 
   const handleAddToCart = (e) => {
     e.stopPropagation();
-    const size = selectedSize || product.sizes[Math.floor(product.sizes.length / 2)];
+    const size = product.category === "handmade"
+      ? (selectedSize || (product.sizes ? product.sizes[Math.floor(product.sizes.length / 2)] : null))
+      : null;
     const length = product.lengths[Math.floor(product.lengths.length / 2)];
     addItem(product, qty, size, length);
     setAdded(true);
@@ -234,20 +236,22 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
         {viewMode === "list" ? (
           <div className={`${styles.cardBack} ${!flipped ? styles.hidden : ""}`} onClick={handleFlip}>
             <div className={styles.backContent} onClick={(e) => e.stopPropagation()}>
-              <div className={styles.selectorGroup}>
-                <span className={styles.selectorLabel}>Select Size</span>
-                <div className={styles.sizeOptions}>
-                  {product.sizes.map((size) => (
-                    <button
-                      key={size}
-                      className={`${styles.sizePill} ${selectedSize === size ? styles.selected : ""}`}
-                      onClick={(e) => handleSizeSelect(size, e)}
-                    >
-                      {size}
-                    </button>
-                  ))}
+              {product.category === "handmade" && (
+                <div className={styles.selectorGroup}>
+                  <span className={styles.selectorLabel}>Select Size</span>
+                  <div className={styles.sizeOptions}>
+                    {product.sizes?.map((size) => (
+                      <button
+                        key={size}
+                        className={`${styles.sizePill} ${selectedSize === size ? styles.selected : ""}`}
+                        onClick={(e) => handleSizeSelect(size, e)}
+                      >
+                        {size}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
               <div className={styles.qtyRow}>
                 <span className={styles.selectorLabel}>Quantity</span>
@@ -279,20 +283,22 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
 
             <p className={styles.backDesc}>{product.shortDescription}</p>
 
-            <div className={styles.selectorGroup}>
-              <span className={styles.selectorLabel}>Select Size</span>
-              <div className={styles.sizeOptions}>
-                {product.sizes.map((size) => (
-                  <button
-                    key={size}
-                    className={`${styles.sizePill} ${selectedSize === size ? styles.selected : ""}`}
-                    onClick={(e) => handleSizeSelect(size, e)}
-                  >
-                    {size}
-                  </button>
-                ))}
+            {product.category === "handmade" && (
+              <div className={styles.selectorGroup}>
+                <span className={styles.selectorLabel}>Select Size</span>
+                <div className={styles.sizeOptions}>
+                  {product.sizes?.map((size) => (
+                    <button
+                      key={size}
+                      className={`${styles.sizePill} ${selectedSize === size ? styles.selected : ""}`}
+                      onClick={(e) => handleSizeSelect(size, e)}
+                    >
+                      {size}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             <div className={styles.qtyRow}>
               <span className={styles.selectorLabel}>Quantity</span>

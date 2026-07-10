@@ -85,7 +85,7 @@ export default function CartPage() {
                     {item.name}
                   </Link>
                   <p className={styles.cartItemMeta}>
-                    Size: {item.selectedSize} • Length: {item.selectedLength}
+                    {item.selectedSize ? `Size: ${item.selectedSize} • ` : ""}Length: {item.selectedLength}
                   </p>
                   <div className={styles.cartItemActions}>
                     <div className={styles.quantitySelector}>
