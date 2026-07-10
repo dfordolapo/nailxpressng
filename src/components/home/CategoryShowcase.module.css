@@ -1,6 +1,6 @@
 .section {
   background: linear-gradient(to bottom, var(--color-bg) 0%, var(--color-bg-warm) 100%);
-    padding: 100px 0 30px;
+    padding: 100px 0 40px;
   text-align: center;
   position: relative;
 }
