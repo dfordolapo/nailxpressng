@@ -46,7 +46,7 @@
 /* ── Image ────────────────────────────────────────────────────────── */
 .imageArea {
   position: relative;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 1.15 / 1;
   overflow: hidden;
 }
 
@@ -206,7 +206,7 @@
 .quickAction svg { width: 18px; height: 18px; }
 
 .frontInfo {
-  padding: 2px 4px 1px 4px;
+  padding: 2px 4px 0 4px;
 }
 
 .category {
@@ -284,7 +284,7 @@
   justify-content: center;
   gap: var(--space-1);
   width: 100%;
-  padding: 2px 0;
+  padding: 0;
   font-size: 9px;
   color: var(--color-text-tertiary);
   border-top: 1px solid var(--color-border-light);
@@ -503,7 +503,7 @@
 }
 
 .flipBackBtn:hover { border-color: var(--color-primary); color: var(--color-primary); }
-.flipBackBtn svg { width: 14px; height: 14px; }
+.flipBackBtn svg { width: 14px; height: 14px; transform: translateY(-1px); }
 
 .viewLink {
   flex: 1;
@@ -719,7 +719,7 @@
   .addBtn.added { width: auto; padding-left: 16px; padding-right: 16px; white-space: nowrap; }
   .addBtnContent svg { width: 10px; height: 10px; }
   .flipBackBtn, .viewLink { padding: 5px var(--space-2); font-size: 7px; }
-  .flipBackBtn svg { width: 10px; height: 10px; }
+  .flipBackBtn svg { width: 10px; height: 10px; transform: translateY(-1px); }
   .viewLinkDesktop { display: none; }
   .viewLinkMobile { display: inline; }
 
