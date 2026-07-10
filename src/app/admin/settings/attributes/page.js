@@ -43,30 +43,30 @@ export default function AdminAttributes() {
         </div>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "250px 1fr", gap: "30px", marginTop: "30px" }}>
+      <div className={styles.settingsLayout}>
         
         {/* Sidebar Nav */}
-        <div style={{ background: "var(--color-bg-card)", border: "1px solid var(--color-border)", borderRadius: "12px", overflow: "hidden", height: "fit-content" }}>
+        <div className={styles.settingsNav}>
           <div 
-            style={{ padding: "15px 20px", display: "flex", alignItems: "center", gap: "10px", cursor: "pointer", background: activeTab === "categories" ? "var(--color-bg-warm)" : "transparent", borderBottom: "1px solid var(--color-border)", color: activeTab === "categories" ? "var(--color-primary)" : "var(--color-text)", fontWeight: activeTab === "categories" ? 600 : 400 }}
+            className={`${styles.settingsNavItem} ${activeTab === "categories" ? styles.active : ""}`}
             onClick={() => setActiveTab("categories")}
           >
             <Tag size={16} /> Categories
           </div>
           <div 
-            style={{ padding: "15px 20px", display: "flex", alignItems: "center", gap: "10px", cursor: "pointer", background: activeTab === "shapes" ? "var(--color-bg-warm)" : "transparent", borderBottom: "1px solid var(--color-border)", color: activeTab === "shapes" ? "var(--color-primary)" : "var(--color-text)", fontWeight: activeTab === "shapes" ? 600 : 400 }}
+            className={`${styles.settingsNavItem} ${activeTab === "shapes" ? styles.active : ""}`}
             onClick={() => setActiveTab("shapes")}
           >
             <Shapes size={16} /> Nail Shapes
           </div>
           <div 
-            style={{ padding: "15px 20px", display: "flex", alignItems: "center", gap: "10px", cursor: "pointer", background: activeTab === "lengths" ? "var(--color-bg-warm)" : "transparent", borderBottom: "1px solid var(--color-border)", color: activeTab === "lengths" ? "var(--color-primary)" : "var(--color-text)", fontWeight: activeTab === "lengths" ? 600 : 400 }}
+            className={`${styles.settingsNavItem} ${activeTab === "lengths" ? styles.active : ""}`}
             onClick={() => setActiveTab("lengths")}
           >
             <Ruler size={16} /> Lengths
           </div>
           <div 
-            style={{ padding: "15px 20px", display: "flex", alignItems: "center", gap: "10px", cursor: "pointer", background: activeTab === "styles" ? "var(--color-bg-warm)" : "transparent", color: activeTab === "styles" ? "var(--color-primary)" : "var(--color-text)", fontWeight: activeTab === "styles" ? 600 : 400 }}
+            className={`${styles.settingsNavItem} ${activeTab === "styles" ? styles.active : ""}`}
             onClick={() => setActiveTab("styles")}
           >
             <Sparkles size={16} /> Styles & Finishes
