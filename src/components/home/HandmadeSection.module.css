@@ -701,6 +701,11 @@
     padding: var(--space-5);
   }
 
+  .backHeader { margin-bottom: 4px; padding-bottom: 4px; }
+  .backDesc { margin-bottom: 4px; }
+  .selectorGroup { margin-bottom: 4px; }
+  .qtyRow { margin-bottom: 4px; }
+
   .addBtn {
     padding: 12px 16px;
     font-size: 8px;
