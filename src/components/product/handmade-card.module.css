@@ -46,7 +46,7 @@
 /* ── Image ────────────────────────────────────────────────────────── */
 .imageArea {
   position: relative;
-  aspect-ratio: 1.15 / 1;
+  aspect-ratio: 1.3 / 1;
   overflow: hidden;
 }
 
@@ -206,7 +206,7 @@
 .quickAction svg { width: 18px; height: 18px; }
 
 .frontInfo {
-  padding: 2px 4px 0 4px;
+  padding: 0 4px;
 }
 
 .category {
@@ -222,8 +222,8 @@
   font-size: 12px;
   font-weight: var(--weight-medium);
   color: var(--color-text);
-  line-height: var(--leading-snug);
-  margin: 0 0 1px 0;
+  line-height: 1.1;
+  margin: 0;
   transition: color var(--transition-fast);
 }
 
@@ -286,8 +286,9 @@
   width: 100%;
   padding: 0;
   font-size: 9px;
+  line-height: 1;
   color: var(--color-text-tertiary);
-  border-top: 1px solid var(--color-border-light);
+  border-top: none;
   text-transform: uppercase;
   letter-spacing: 0.12em;
   font-weight: var(--weight-medium);

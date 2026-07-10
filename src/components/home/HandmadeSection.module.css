@@ -697,11 +697,13 @@
   }
 
   .frontInfo {
-    padding: var(--space-2) var(--space-2) 0;
+    padding: 0 var(--space-2);
   }
   
   .flipHint {
     padding: 0;
+    border-top: none;
+    line-height: 1;
   }
   .cardBack {
     padding: var(--space-5);
