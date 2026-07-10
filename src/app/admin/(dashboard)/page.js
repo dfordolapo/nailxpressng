@@ -42,23 +42,17 @@ export default function AdminDashboard() {
         <div className={styles.statCard}>
           <div className={styles.statTitle}>Total</div>
           <div className={styles.statValue}>128</div>
-          <Link href="/admin/products" className={styles.statLink}>
-            View all →
-          </Link>
+          <div className={styles.statTrend}>↑ 12 new this month</div>
         </div>
         <div className={styles.statCard}>
           <div className={styles.statTitle}>Handmade</div>
           <div className={styles.statValue}>68</div>
-          <Link href="/admin/products?collection=handmade" className={styles.statLink}>
-            View all →
-          </Link>
+          <div className={styles.statTrend}>↑ 8 new this month</div>
         </div>
         <div className={styles.statCard}>
           <div className={styles.statTitle}>Factory</div>
           <div className={styles.statValue}>60</div>
-          <Link href="/admin/products?collection=factory" className={styles.statLink}>
-            View all →
-          </Link>
+          <div className={styles.statTrend}>↑ 4 new this month</div>
         </div>
         <div className={styles.statCard}>
           <div className={styles.statTitle}>Featured</div>

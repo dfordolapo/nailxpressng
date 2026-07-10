@@ -740,6 +740,7 @@
   .statValue { font-size: 1.25rem; }
   .statTitle { font-size: 0.75rem; margin-bottom: 2px; }
   .statLink { font-size: 0.75rem; margin-top: 2px; }
+  .statTrend { font-size: 0.7rem; margin-top: 2px; }
 
   .grid2 {
     grid-template-columns: 1fr;
