@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import styles from "@/styles/components/footer.module.css";
 import { SOCIAL_LINKS } from "@/lib/constants";
 
@@ -31,6 +32,9 @@ function WhatsappIcon() {
 }
 
 export default function Footer() {
+  const pathname = usePathname();
+  if (pathname === "/") return null;
+
   return (
     <footer className={styles.footer} id="site-footer">
       <div className={styles.container}>
