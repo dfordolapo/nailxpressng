@@ -156,17 +156,19 @@ function HandmadeCard({ product, index }) {
             <div className={styles.shine} />
 
             {/* Badges */}
-            <div className={styles.badges}>
-              {discount > 0 && (
-                <span className={`${styles.badge} ${styles.badgeSale}`}>-{discount}%</span>
-              )}
-              {product.newArrival && (
-                <span className={`${styles.badge} ${styles.badgeNew}`}>New</span>
-              )}
-              {product.bestseller && (
-                <span className={`${styles.badge} ${styles.badgeBestseller}`}>Bestseller</span>
-              )}
-            </div>
+            {!flipped && (
+              <div className={styles.badges}>
+                {discount > 0 && (
+                  <span className={`${styles.badge} ${styles.badgeSale}`}>-{discount}%</span>
+                )}
+                {product.newArrival && (
+                  <span className={`${styles.badge} ${styles.badgeNew}`}>New</span>
+                )}
+                {product.bestseller && (
+                  <span className={`${styles.badge} ${styles.badgeBestseller}`}>Bestseller</span>
+                )}
+              </div>
+            )}
 
             {/* Quick Actions */}
             <div className={styles.quickActions}>
