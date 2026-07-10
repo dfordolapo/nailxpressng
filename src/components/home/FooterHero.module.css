@@ -81,7 +81,7 @@
 /* ── Footer bar on top of hero image ── */
 .footerBar {
   position: absolute;
-  bottom: 0;
+  bottom: 30px;
   left: 50%;
   transform: translateX(-50%);
   width: 90%;
@@ -147,7 +147,7 @@
 @media (max-width: 767px) {
   .overlay {
     padding-top: var(--space-6);
-    margin-top: -50px;
+    margin-top: -80px;
   }
 
   .footerBar {
