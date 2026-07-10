@@ -6,6 +6,18 @@
   flex-direction: column;
 }
 
+.section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(to bottom, var(--color-bg), transparent);
+  z-index: 2;
+  pointer-events: none;
+}
+
 .image {
   width: 100%;
   flex: 1;
