@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { Sparkles, Lock, Mail } from "lucide-react";
+import { Sparkles, Lock, User } from "lucide-react";
 import styles from "@/styles/login.module.css";
 import { useRouter } from "next/navigation";
 
 export default function AdminLogin() {
-  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -34,16 +34,16 @@ export default function AdminLogin() {
 
         <form onSubmit={handleLogin}>
           <div className={styles.formGroup}>
-            <label className={styles.label}>Email Address</label>
+            <label className={styles.label}>Name</label>
             <div style={{ position: "relative" }}>
-              <Mail size={18} color="#888" style={{ position: "absolute", left: "12px", top: "50%", transform: "translateY(-50%)" }} />
+              <User size={18} color="#888" style={{ position: "absolute", left: "12px", top: "50%", transform: "translateY(-50%)" }} />
               <input 
-                type="email" 
+                type="text" 
                 className={styles.input} 
                 style={{ paddingLeft: "40px" }}
-                placeholder="admin@nailexpress.ng" 
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Queen Dolapo" 
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 required
               />
             </div>
