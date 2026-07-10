@@ -210,13 +210,28 @@
 .statTitle {
   font-size: 0.9rem;
   color: var(--color-text-secondary);
-  margin-bottom: 15px;
+  margin-bottom: 5px;
 }
 
 .statTrend {
   font-size: 0.8rem;
   font-weight: 500;
   color: #22C55E;
+}
+
+.statLink {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 5px;
+}
+
+.statLink:hover {
+  text-decoration: underline;
 }
 
 /* Tables */
@@ -714,7 +729,12 @@
   .table td { padding: 10px 12px; font-size: 0.85rem; }
   
   .statsGrid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  
+  .statCard {
+    padding: 15px;
   }
 
   .grid2 {

@@ -40,29 +40,35 @@ export default function AdminDashboard() {
 
       <div className={styles.statsGrid}>
         <div className={styles.statCard}>
-          <Package size={20} color="#8B2C3D" style={{ marginBottom: "15px" }} />
+          <Package size={20} color="#8B2C3D" style={{ marginBottom: "10px" }} />
+          <div className={styles.statTitle}>Total</div>
           <div className={styles.statValue}>128</div>
-          <div className={styles.statTitle}>Total Products</div>
-          <div className={styles.statTrend}>↑ 12 new this month</div>
+          <Link href="/admin/products" className={styles.statLink}>
+            View all →
+          </Link>
         </div>
         <div className={styles.statCard}>
-          <Package size={20} color="#D97706" style={{ marginBottom: "15px" }} />
+          <Package size={20} color="#D97706" style={{ marginBottom: "10px" }} />
+          <div className={styles.statTitle}>Handmade</div>
           <div className={styles.statValue}>68</div>
-          <div className={styles.statTitle}>Handmade Products</div>
-          <div className={styles.statTrend}>↑ 8 new this month</div>
+          <Link href="/admin/products?collection=handmade" className={styles.statLink}>
+            View all →
+          </Link>
         </div>
         <div className={styles.statCard}>
-          <Package size={20} color="#7E22CE" style={{ marginBottom: "15px" }} />
+          <Package size={20} color="#7E22CE" style={{ marginBottom: "10px" }} />
+          <div className={styles.statTitle}>Factory</div>
           <div className={styles.statValue}>60</div>
-          <div className={styles.statTitle}>Factory Made Products</div>
-          <div className={styles.statTrend}>↑ 4 new this month</div>
+          <Link href="/admin/products?collection=factory" className={styles.statLink}>
+            View all →
+          </Link>
         </div>
         <div className={styles.statCard}>
-          <Star size={20} color="#D97706" style={{ marginBottom: "15px" }} />
+          <Star size={20} color="#D97706" style={{ marginBottom: "10px" }} />
+          <div className={styles.statTitle}>Featured</div>
           <div className={styles.statValue}>24</div>
-          <div className={styles.statTitle}>Featured Products</div>
-          <Link href="/admin/products" style={{ color: "#111", fontSize: "0.85rem", fontWeight: 500, textDecoration: "none" }}>
-            View all featured →
+          <Link href="/admin/products?featured=true" className={styles.statLink}>
+            View all →
           </Link>
         </div>
       </div>
