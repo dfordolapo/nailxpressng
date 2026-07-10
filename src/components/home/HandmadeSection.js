@@ -293,6 +293,7 @@ function HandmadeCard({ product, index }) {
               View Details
             </Link>
           </div>
+          </div>
         )}
       </div>
     </div>

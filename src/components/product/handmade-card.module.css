@@ -7,18 +7,14 @@
 .cardInner {
   position: relative;
   width: 100%;
-  transform-style: preserve-3d;
-  transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-.cardInner.flipped {
-  transform: rotateY(180deg) !important;
+.cardFront {
+  border-radius: var(--radius-xl);
+  overflow: hidden;
 }
 
-.cardFront,
 .cardBack {
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
   border-radius: var(--radius-xl);
   overflow: hidden;
 }
@@ -293,9 +289,7 @@
 
 /* ═══ BACK ══════════════════════════════════════════════════════════ */
 .cardBack {
-  position: absolute;
-  inset: 0;
-  transform: rotateY(180deg);
+  position: relative;
   background: var(--color-bg-card);
   border: 1.5px solid #D4AF7A;
   display: flex;
