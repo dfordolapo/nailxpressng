@@ -490,6 +490,7 @@
   gap: var(--space-1);
   padding: 4px;
   font-size: 10px;
+  line-height: 1;
   font-weight: var(--weight-medium);
   text-transform: uppercase;
   letter-spacing: 0.1em;
