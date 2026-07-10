@@ -15,7 +15,10 @@ export default function HeroSection() {
             Press-on. Slay. Repeat.
           </p>
           <div className="animate-fade-in-up" style={{ animationDelay: '300ms' }}>
-            <Link href="/shop" className={styles.button}>
+            <Link href="/shop" className={`${styles.button} ${styles.desktopBtn}`}>
+              Shop bestsellers
+            </Link>
+            <Link href="/collection-hub" className={`${styles.button} ${styles.mobileBtn}`}>
               Shop bestsellers
             </Link>
           </div>

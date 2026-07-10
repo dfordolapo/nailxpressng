@@ -532,8 +532,8 @@
 /* ── Uniform Grid (was Masonry) ────────────────────────────────────────────────── */
 .masonryGrid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-6);
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
 }
 
 .masonryItem {
@@ -661,6 +661,10 @@
 }
 
 /* ── Responsive ───────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .masonryGrid { grid-template-columns: repeat(3, 1fr); }
+}
+
 @media (max-width: 768px) {
   .masonryGrid { grid-template-columns: repeat(2, 1fr); gap: var(--space-3); }
   .masonryItem { perspective: none; }

@@ -156,7 +156,10 @@ export default function CategoryShowcase() {
       </svg>
 
       <div>
-        <Link href="/shop" className={styles.button}>
+        <Link href="/shop" className={`${styles.button} ${styles.desktopBtn}`}>
+          Explore all collections
+        </Link>
+        <Link href="/collection-hub" className={`${styles.button} ${styles.mobileBtn}`}>
           Explore all collections
         </Link>
       </div>
