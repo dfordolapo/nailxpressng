@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import styles from "@/styles/pages/terms.module.css";
 
 const SECTIONS = [
@@ -147,6 +148,7 @@ function ChevronRight() {
 }
 
 export default function TermsPage() {
+  const router = useRouter();
   const [activeId, setActiveId] = useState(SECTIONS[0].id);
   const observerRef = useRef(null);
 
@@ -200,6 +202,12 @@ export default function TermsPage() {
 
   return (
     <div className={styles.page}>
+      <button className={styles.backBtn} onClick={() => router.back()} aria-label="Go back">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="m15 18-6-6 6-6"/>
+        </svg>
+        <span>Back</span>
+      </button>
       <div className="container container--narrow">
         <div className={styles.header}>
           <h1 className={styles.title}>Terms &amp; Conditions</h1>

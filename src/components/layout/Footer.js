@@ -33,7 +33,7 @@ function WhatsappIcon() {
 
 export default function Footer() {
   const pathname = usePathname();
-  if (pathname === "/") return null;
+  if (pathname === "/" || pathname === "/terms") return null;
 
   return (
     <footer className={styles.footer} id="site-footer">
