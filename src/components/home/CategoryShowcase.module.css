@@ -1,6 +1,6 @@
 .section {
   background: linear-gradient(to bottom, var(--color-bg) 0%, var(--color-bg-warm) 100%);
-    padding: 100px 0 40px;
+  padding: 100px 0 40px;
   text-align: center;
   position: relative;
 }
@@ -16,27 +16,31 @@
 
 .gridWrapper {
   display: flex;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
   padding: var(--space-4) 0;
   margin-bottom: var(--space-10);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  touch-action: pan-x;
+  cursor: grab;
+}
+
+.gridWrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.gridWrapper:active {
+  cursor: grabbing;
 }
 
 .marqueeTrack {
   display: flex;
   flex-shrink: 0;
   gap: var(--space-6);
-  padding-right: var(--space-6); /* seamless gap */
+  padding: 0 var(--space-6);
   width: max-content;
-  animation: scroll 30s linear infinite;
-}
-
-.marqueeTrack:hover {
-  animation-play-state: paused;
-}
-
-@keyframes scroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); } /* Exactly half width due to extra padding-right */
+  user-select: none;
 }
 
 .card {
@@ -46,11 +50,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  perspective: 800px;
+  cursor: pointer;
 }
 
 @media (min-width: 768px) {
   .section {
-  padding: calc(var(--space-12) + 60px) 0 60px;
+    padding: calc(var(--space-12) + 60px) 0 60px;
   }
 
   .card {
@@ -58,11 +64,33 @@
   }
 }
 
-.imageContainer {
+.cardInner {
+  position: relative;
   width: 100%;
   aspect-ratio: 2 / 3;
+  transform-style: preserve-3d;
+  transition: transform 0.6s ease;
+}
+
+.card.flipped .cardInner {
+  transform: rotateY(180deg);
+}
+
+.cardFront,
+.cardBack {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.imageContainer {
+  width: 100%;
+  height: 100%;
   position: relative;
-  /* Torn paper edge effect */
   border: 4px solid #D4AF7A;
   padding: 6px;
   background-color: var(--color-bg-card);
@@ -103,6 +131,30 @@
     width: 130px;
     font-size: 0.6rem;
     padding: var(--space-2) var(--space-4);
+  }
+}
+
+.cardBack {
+  transform: rotateY(180deg);
+  justify-content: center;
+  gap: var(--space-4);
+  padding: var(--space-8);
+  color: #fff;
+  text-align: center;
+  border: 4px solid #D4AF7A;
+}
+
+.punLine {
+  font-family: var(--font-heading);
+  font-size: var(--text-base);
+  font-weight: var(--weight-medium);
+  line-height: 1.4;
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .punLine {
+    font-size: var(--text-lg);
   }
 }
 
