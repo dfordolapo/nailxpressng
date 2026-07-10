@@ -321,8 +321,8 @@
 
 .backHeader {
   text-align: center;
-  margin-bottom: var(--space-4);
-  padding-bottom: var(--space-3);
+  margin-bottom: var(--space-2);
+  padding-bottom: var(--space-2);
   border-bottom: 1px solid var(--color-border-light);
 }
 
@@ -344,10 +344,10 @@
   font-size: 11px;
   color: var(--color-text-secondary);
   line-height: 1.5;
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--space-2);
 }
 
-.selectorGroup { margin-bottom: var(--space-4); }
+.selectorGroup { margin-bottom: var(--space-2); }
 
 .selectorLabel {
   font-size: 10px;
@@ -380,7 +380,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--space-2);
 }
 
 .qtyRow .selectorLabel {
@@ -478,8 +478,8 @@
 
 .backActions {
   display: flex;
-  gap: var(--space-3);
-  margin-top: auto;
+  gap: var(--space-2);
+  margin-top: 4px;
 }
 
 .flipBackBtn {
@@ -488,8 +488,8 @@
   align-items: center;
   justify-content: center;
   gap: var(--space-1);
-  padding: var(--space-3);
-  font-size: 11px;
+  padding: 4px;
+  font-size: 10px;
   font-weight: var(--weight-medium);
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -509,16 +509,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--space-3);
-  font-size: 11px;
+  padding: 4px;
+  font-size: 10px;
   font-weight: var(--weight-medium);
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--color-primary);
   border: 1px solid var(--color-primary);
   border-radius: var(--radius-full);
-  text-decoration: none;
+  background: transparent;
   transition: all var(--transition-fast);
+  text-decoration: none;
 }
 
 .viewLink:hover { background: var(--color-primary); color: white; }

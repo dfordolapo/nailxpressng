@@ -310,8 +310,7 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
                 href={`/product/${product.slug}`}
                 className={styles.viewLink}
               >
-                <span className={styles.viewLinkDesktop}>View Details</span>
-                <span className={styles.viewLinkMobile}>Details</span>
+                Details
               </Link>
             </div>
           </div>

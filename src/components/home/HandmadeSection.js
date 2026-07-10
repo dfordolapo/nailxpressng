@@ -426,7 +426,7 @@ function HandmadeCard({ product, index }) {
               href={`/product/${product.slug}`}
               className={styles.viewLink}
             >
-              View Details
+              Details
             </Link>
           </div>
           </div>
