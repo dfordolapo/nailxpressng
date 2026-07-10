@@ -66,7 +66,7 @@ function HandmadeCard({ product, index }) {
   const wishlisted = isInWishlist(product.id);
 
   const handleMouseMove = useCallback((e) => {
-    if (flipped) return;
+    if (flipped || (typeof window !== 'undefined' && window.innerWidth <= 768)) return;
     const card = cardRef.current;
     if (!card) return;
     const rect = card.getBoundingClientRect();
@@ -79,7 +79,11 @@ function HandmadeCard({ product, index }) {
     setTilt({ x: rotateX, y: rotateY });
   }, [flipped]);
 
-  const handleMouseEnter = () => setIsHovering(true);
+  const handleMouseEnter = () => {
+    if (typeof window !== 'undefined' && window.innerWidth > 768) {
+      setIsHovering(true);
+    }
+  };
 
   const handleMouseLeave = () => {
     setIsHovering(false);

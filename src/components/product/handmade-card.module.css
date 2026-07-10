@@ -458,7 +458,6 @@
   border-radius: var(--radius-full);
   cursor: pointer;
   transition: all var(--transition-base);
-  overflow: hidden;
   margin-top: var(--space-2);
 }
 
