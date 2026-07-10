@@ -380,6 +380,10 @@
   margin-bottom: var(--space-4);
 }
 
+.qtyRow .selectorLabel {
+  margin-bottom: 0;
+}
+
 .qtyControl {
   display: flex;
   align-items: center;
@@ -439,9 +443,9 @@
 
 .addBtn {
   width: 100%;
-  padding: var(--space-3) var(--space-6);
+  padding: var(--space-4) var(--space-6);
   font-size: var(--text-sm);
-  font-weight: var(--weight-bold);
+  font-weight: var(--weight-medium);
   text-transform: uppercase;
   letter-spacing: 0.12em;
   border: none;
@@ -449,6 +453,7 @@
   cursor: pointer;
   transition: all var(--transition-base);
   overflow: hidden;
+  margin-top: var(--space-2);
 }
 
 .addBtn.default { background: var(--color-primary); color: white; }
@@ -688,20 +693,21 @@
 
   .glowRing { display: none; }
 
-  .cardBack { padding: var(--space-2); display: flex; flex-direction: column; gap: var(--space-2); }
+  .cardBack { padding: var(--space-4) var(--space-2); display: flex; flex-direction: column; gap: var(--space-2); border-color: transparent; }
   .backHeader { margin-bottom: var(--space-2); padding-bottom: var(--space-2); }
   .backName { font-size: 13px; }
   .backPrice { font-size: 12px; }
   .backDesc { font-size: 10px; line-height: 1.5; margin-bottom: var(--space-3); }
   .selectorGroup { margin-bottom: var(--space-3); }
   .selectorLabel { font-size: 9px; margin-bottom: var(--space-3); }
-  .sizeOptions { gap: 4px; flex-wrap: nowrap; overflow-x: auto; }
+  .sizeOptions { gap: 4px; flex-wrap: nowrap; overflow-x: auto; -ms-overflow-style: none; scrollbar-width: none; }
+  .sizeOptions::-webkit-scrollbar { display: none; }
   .sizePill { padding: 3px 8px; font-size: 10px; }
   .qtyRow { margin-bottom: var(--space-3); }
   .qtyControl { border-width: 1px; }
   .qtyBtn { width: 22px; height: 22px; font-size: 12px; }
   .qtyValue { width: 26px; height: 22px; font-size: 10px; border-width: 1px; }
-  .addBtn { padding: 6px var(--space-3); font-size: 10px; }
+  .addBtn { padding: var(--space-4) var(--space-3); font-size: 10px; margin-top: -2px; }
   .addBtnContent svg { width: 12px; height: 12px; }
   .flipBackBtn, .viewLink { padding: 5px var(--space-2); font-size: 9px; }
   .flipBackBtn svg { width: 10px; height: 10px; }
