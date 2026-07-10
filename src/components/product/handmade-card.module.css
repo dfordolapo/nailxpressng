@@ -659,6 +659,8 @@
 @media (max-width: 768px) {
   .masonryGrid { columns: 2; column-gap: var(--space-3); }
   .masonryItem { margin-bottom: var(--space-3); }
+  .masonryItem { perspective: none; }
+  .cardWrapper { perspective: none; }
 
   .onHandPreview {
     width: 44px;

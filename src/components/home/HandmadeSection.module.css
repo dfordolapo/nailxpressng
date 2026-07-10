@@ -676,6 +676,10 @@
     padding: var(--space-14) 0 var(--space-10);
   }
 
+  .cardWrapper {
+    perspective: none;
+  }
+
   .onHandPreview {
     width: 56px;
     height: 56px;
