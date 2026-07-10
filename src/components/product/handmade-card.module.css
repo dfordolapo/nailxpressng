@@ -206,7 +206,7 @@
 .quickAction svg { width: 18px; height: 18px; }
 
 .frontInfo {
-  padding: 8px 12px;
+  padding: 4px 8px;
 }
 
 .category {
@@ -219,11 +219,11 @@
 
 .name {
   font-family: var(--font-heading);
-  font-size: var(--text-base);
+  font-size: 12px;
   font-weight: var(--weight-medium);
   color: var(--color-text);
   line-height: var(--leading-snug);
-  margin: 0 0 2px 0;
+  margin: 0 0 1px 0;
   transition: color var(--transition-fast);
 }
 
@@ -246,11 +246,11 @@
   display: flex;
   align-items: baseline;
   gap: var(--space-2);
-  margin-bottom: 2px;
+  margin-bottom: 0;
 }
 
 .price {
-  font-size: var(--text-sm);
+  font-size: 11px;
   font-weight: var(--weight-bold);
   color: var(--color-text);
 }
@@ -284,8 +284,8 @@
   justify-content: center;
   gap: var(--space-1);
   width: 100%;
-  padding: 8px 0;
-  font-size: 11px;
+  padding: 4px 0;
+  font-size: 9px;
   color: var(--color-text-tertiary);
   border-top: 1px solid var(--color-border-light);
   text-transform: uppercase;
@@ -300,8 +300,8 @@
 }
 
 .flipHint svg {
-  width: 14px;
-  height: 14px;
+  width: 10px;
+  height: 10px;
   transition: transform 0.4s ease;
 }
 
