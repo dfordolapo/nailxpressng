@@ -13,6 +13,8 @@ import styles from "@/styles/components/header.module.css";
 
 export default function Header() {
   const pathname = usePathname();
+  if (pathname?.startsWith("/admin")) return null;
+  
   const { itemCount } = useCart();
   const { itemCount: wishlistCount } = useWishlist();
   const { openSearch } = useSearch();
