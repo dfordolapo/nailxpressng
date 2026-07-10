@@ -714,9 +714,10 @@
   .qtyControl { border-width: 1px; }
   .qtyBtn { width: 22px; height: 22px; font-size: 12px; }
   .qtyValue { width: 26px; height: 22px; font-size: 10px; border-width: 1px; }
-  .addBtn { padding: 12px 16px; font-size: 8px; margin-top: -2px; width: 65%; margin-left: auto; margin-right: auto; }
+  .addBtn { padding: 12px 16px; font-size: 7px; margin-top: -2px; width: 65%; margin-left: auto; margin-right: auto; }
+  .addBtn.added { width: auto; padding-left: 16px; padding-right: 16px; white-space: nowrap; }
   .addBtnContent svg { width: 10px; height: 10px; }
-  .flipBackBtn, .viewLink { padding: 5px var(--space-2); font-size: 9px; }
+  .flipBackBtn, .viewLink { padding: 5px var(--space-2); font-size: 7px; }
   .flipBackBtn svg { width: 10px; height: 10px; }
   .viewLinkDesktop { display: none; }
   .viewLinkMobile { display: inline; }
@@ -749,5 +750,6 @@
   .listGrid .cardBack .backContent .sizePill { padding: 2px 6px; font-size: 9px; }
   .listGrid .cardBack .backContent .qtyBtn { width: 22px; height: 22px; font-size: 11px; }
   .listGrid .cardBack .backContent .qtyValue { width: 24px; height: 22px; font-size: 10px; }
-  .listGrid .cardBack .backContent .addBtn { padding: 12px 16px; font-size: 8px; width: 65%; margin-left: auto; margin-right: auto; }
+  .listGrid .cardBack .backContent .addBtn { padding: 12px 16px; font-size: 7px; width: 65%; margin-left: auto; margin-right: auto; }
+  .listGrid .cardBack .backContent .addBtn.added { width: auto; padding-left: 16px; padding-right: 16px; white-space: nowrap; }
 }
