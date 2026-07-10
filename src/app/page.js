@@ -1,7 +1,6 @@
 import HeroSection from "@/components/home/HeroSection";
 import CategoryShowcase from "@/components/home/CategoryShowcase";
 import Features from "@/components/home/Features";
-import HandmadeSection from "@/components/home/HandmadeSection";
 import Testimonials from "@/components/home/Testimonials";
 import ShopTheLook from "@/components/home/ShopTheLook";
 import HowToMeasure from "@/components/home/HowToMeasure";
@@ -24,9 +23,6 @@ export default function Home() {
       </ScrollReveal>
       <ScrollReveal animation="fade-up" delay={100}>
         <Features />
-      </ScrollReveal>
-      <ScrollReveal animation="fade-up" delay={100}>
-        <HandmadeSection />
       </ScrollReveal>
       <ScrollReveal animation="fade-up" delay={100}>
         <Testimonials />

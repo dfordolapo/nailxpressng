@@ -105,6 +105,10 @@
   transform: rotateY(180deg) !important;
 }
 
+.cardInner.flipped .badges {
+  visibility: hidden;
+}
+
 /* ── Card Front ───────────────────────────────────────────────────── */
 .cardFront,
 .cardBack {
