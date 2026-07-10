@@ -12,7 +12,7 @@ export default function HeroSection() {
             The upgrade<br />is instant
           </h1>
           <p className={`${styles.subtitle} animate-fade-in-up`} style={{ animationDelay: '150ms' }}>
-            A new era of press-on nails
+            Press-on. Slay. Repeat.
           </p>
           <div className="animate-fade-in-up" style={{ animationDelay: '300ms' }}>
             <Link href="/shop" className={styles.button}>
