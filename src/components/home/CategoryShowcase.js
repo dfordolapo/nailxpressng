@@ -14,7 +14,7 @@ const MOODS = [
 export default function CategoryShowcase() {
   return (
     <section className={styles.section}>
-      <h2 className={`${styles.title} animate-fade-in-up`}>
+      <h2 className={styles.title}>
         Nails that match your every mood
       </h2>
       
@@ -49,7 +49,7 @@ export default function CategoryShowcase() {
         </filter>
       </svg>
 
-      <div className="animate-fade-in-up" style={{ animationDelay: '600ms' }}>
+      <div>
         <Link href="/shop" className={styles.button}>
           Explore all collections
         </Link>

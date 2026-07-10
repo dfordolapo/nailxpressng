@@ -7,6 +7,7 @@ import HowToMeasure from "@/components/home/HowToMeasure";
 import GiftBoxBanner from "@/components/home/GiftBoxBanner";
 import FAQSection from "@/components/home/FAQSection";
 import FooterHero from "@/components/home/FooterHero";
+import ScrollReveal from "@/components/ScrollReveal";
 
 export const metadata = {
   title: "Nailexpress — Press-On Perfection",
@@ -17,21 +18,31 @@ export default function Home() {
   return (
     <div>
       <HeroSection />
-      <CategoryShowcase />
-      <Features />
-      <Testimonials />
-      <ShopTheLook />
-      <HowToMeasure />
-      <GiftBoxBanner />
-      <FAQSection />
-      <div style={{ height: "120px", background: "linear-gradient(to bottom, var(--color-bg), var(--color-bg-warm))" }} />
-      <FooterHero />
-      {/* 
-        This is where we will progressively rebuild the components section by section.
-        Currently remaining to build:
-        - FooterHero (Done)
-        - Personalize 
-      */}
+      <ScrollReveal animation="fade-up">
+        <CategoryShowcase />
+      </ScrollReveal>
+      <ScrollReveal animation="fade-up" delay={100}>
+        <Features />
+      </ScrollReveal>
+      <ScrollReveal animation="fade-up" delay={100}>
+        <Testimonials />
+      </ScrollReveal>
+      <ScrollReveal animation="fade-left">
+        <ShopTheLook />
+      </ScrollReveal>
+      <ScrollReveal animation="fade-right">
+        <HowToMeasure />
+      </ScrollReveal>
+      <ScrollReveal animation="scale">
+        <GiftBoxBanner />
+      </ScrollReveal>
+      <ScrollReveal animation="fade-up" delay={100}>
+        <FAQSection />
+      </ScrollReveal>
+      <div style={{ height: "40px", background: "linear-gradient(to bottom, var(--color-bg), var(--color-bg-warm))" }} />
+      <ScrollReveal animation="fade-up">
+        <FooterHero />
+      </ScrollReveal>
     </div>
   );
 }

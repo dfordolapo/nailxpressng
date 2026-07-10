@@ -339,6 +339,37 @@ ul, ol {
   background: var(--color-text-tertiary);
 }
 
+/* ── Scroll Reveal ──────────────────────────────────────────────── */
+.scroll-reveal {
+  opacity: 0;
+  transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+}
+
+.scroll-reveal--fade-up {
+  transform: translateY(30px);
+}
+
+.scroll-reveal--fade-in {
+  transform: none;
+}
+
+.scroll-reveal--fade-left {
+  transform: translateX(-30px);
+}
+
+.scroll-reveal--fade-right {
+  transform: translateX(30px);
+}
+
+.scroll-reveal--scale {
+  transform: scale(0.95);
+}
+
+.scroll-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0) translateX(0) scale(1);
+}
+
 /* ── Selection ────────────────────────────────────────────────────── */
 ::selection {
   background-color: var(--color-primary-200);
