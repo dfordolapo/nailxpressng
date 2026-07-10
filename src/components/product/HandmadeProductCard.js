@@ -170,17 +170,17 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
               )}
             </div>
 
-            <div className={styles.quickActions}>
-              <button
-                className={`${styles.quickAction} ${wishlisted ? styles.active : ""}`}
-                onClick={handleWishlist}
-                aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
-              >
-                <HeartIcon filled={wishlisted} />
-              </button>
-            </div>
-
             <div className={styles.glowRing} />
+          </div>
+
+          <div className={styles.quickActions}>
+            <button
+              className={`${styles.quickAction} ${wishlisted ? styles.active : ""}`}
+              onClick={handleWishlist}
+              aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
+            >
+              <HeartIcon filled={wishlisted} />
+            </button>
           </div>
 
           {viewMode === "list" ? (

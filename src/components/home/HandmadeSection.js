@@ -172,20 +172,17 @@ function HandmadeCard({ product, index }) {
               )}
             </div>
 
-            {/* Quick Actions */}
-            <div className={styles.quickActions}>
-              <button
-                className={`${styles.quickAction} ${wishlisted ? styles.active : ""}`}
-                onClick={handleWishlist}
-                aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
-              >
-                <HeartIcon filled={wishlisted} />
-              </button>
-            </div>
-
-            {/* Glow Ring */}
             <div className={styles.glowRing} />
+          </div>
 
+          <div className={styles.quickActions}>
+            <button
+              className={`${styles.quickAction} ${wishlisted ? styles.active : ""}`}
+              onClick={handleWishlist}
+              aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
+            >
+              <HeartIcon filled={wishlisted} />
+            </button>
           </div>
 
           {/* Info */}
