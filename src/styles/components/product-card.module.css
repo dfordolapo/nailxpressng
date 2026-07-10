@@ -17,7 +17,7 @@
 /* ── Image Container ──────────────────────────────────────────────── */
 .imageContainer {
   position: relative;
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 1 / 1;
   overflow: hidden;
   background: var(--color-surface);
 }
@@ -94,7 +94,7 @@
 
 /* ── Card Info ────────────────────────────────────────────────────── */
 .info {
-  padding: var(--space-3);
+  padding: 8px 12px;
   display: flex;
   flex-direction: column;
   gap: var(--space-2);

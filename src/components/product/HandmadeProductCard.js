@@ -187,7 +187,6 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
 
           {viewMode === "list" ? (
             <div className={styles.frontInfo}>
-              <span className={styles.category}>{product.category}</span>
               <h3 className={styles.name}>{product.name}</h3>
               <div className={styles.priceRow}>
                 <span className={styles.price}>{formatPrice(product.price)}</span>
@@ -195,33 +194,16 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
                   <span className={styles.comparePrice}>{formatPrice(product.compareAtPrice)}</span>
                 )}
               </div>
-              <div className={styles.rating}>
-                <div className={styles.stars}>
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <StarIcon key={i} />
-                  ))}
-                </div>
-                <span>({product.reviewCount})</span>
-              </div>
             </div>
           ) : (
             <>
               <div className={styles.frontInfo}>
-                <span className={styles.category}>{product.category}</span>
                 <h3 className={styles.name}>{product.name}</h3>
                 <div className={styles.priceRow}>
                   <span className={styles.price}>{formatPrice(product.price)}</span>
                   {product.compareAtPrice && (
                     <span className={styles.comparePrice}>{formatPrice(product.compareAtPrice)}</span>
                   )}
-                </div>
-                <div className={styles.rating}>
-                  <div className={styles.stars}>
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <StarIcon key={i} />
-                    ))}
-                  </div>
-                  <span>({product.reviewCount})</span>
                 </div>
               </div>
               <button className={styles.flipHint} onClick={handleFlip}>
