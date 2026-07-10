@@ -116,6 +116,7 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: var(--space-6);
+  gap: var(--space-4);
 }
 
 .resultCount {
@@ -142,6 +143,51 @@
 
 .sortSelect:focus {
   border-color: var(--color-primary);
+}
+
+/* ── View Toggle ──────────────────────────────────────────────────── */
+.viewToggle {
+  display: flex;
+  align-items: center;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  padding: 3px;
+  gap: 0;
+}
+
+.viewBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 28px;
+  border: none;
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--color-text-tertiary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  padding: 0;
+}
+
+.viewBtn svg {
+  width: 15px;
+  height: 15px;
+}
+
+.viewBtn:hover {
+  color: var(--color-text-secondary);
+}
+
+.viewBtn.active {
+  background: white;
+  color: var(--color-text);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.viewDivider {
+  display: none;
 }
 
 /* ── Collection Layout ────────────────────────────────────────────── */
@@ -188,5 +234,21 @@
 
   .collectionLayout {
     flex-direction: column;
+  }
+
+  .sortBar {
+    margin-bottom: var(--space-4);
+  }
+
+  .resultCount {
+    font-size: 11px;
+  }
+
+  .sortSelect {
+    padding: var(--space-2) var(--space-3);
+    font-size: 11px;
+    padding-right: 28px;
+    background-position: right 8px center;
+    background-size: 10px;
   }
 }

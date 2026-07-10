@@ -526,6 +526,23 @@
 
 /* ── Responsive ───────────────────────────────────────────────────── */
 @media (max-width: 768px) {
+  .collectionPage {
+    padding: var(--space-8) 0;
+  }
+
+  .collectionHeader {
+    margin-bottom: var(--space-6);
+    padding-bottom: var(--space-5);
+  }
+
+  .collectionTitle {
+    font-size: var(--text-2xl);
+  }
+
+  .collectionDescription {
+    font-size: var(--text-sm);
+  }
+
   .productLayout {
     grid-template-columns: 1fr;
     gap: var(--space-8);
