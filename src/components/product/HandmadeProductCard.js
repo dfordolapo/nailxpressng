@@ -221,17 +221,17 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
               {product.category === "handmade" && (
                 <div className={styles.selectorGroup}>
                   <span className={styles.selectorLabel}>Select Size</span>
-                  <div className={styles.sizeOptions}>
+                  <select
+                    className={styles.sizeDropdown}
+                    value={selectedSize || ""}
+                    onChange={(e) => handleSizeSelect(e.target.value, e)}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <option value="" disabled>Select</option>
                     {product.sizes?.map((size) => (
-                      <button
-                        key={size}
-                        className={`${styles.sizePill} ${selectedSize === size ? styles.selected : ""}`}
-                        onClick={(e) => handleSizeSelect(size, e)}
-                      >
-                        {size}
-                      </button>
+                      <option key={size} value={size}>{size}</option>
                     ))}
-                  </div>
+                  </select>
                 </div>
               )}
 
@@ -268,17 +268,17 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
             {product.category === "handmade" && (
               <div className={styles.selectorGroup}>
                 <span className={styles.selectorLabel}>Select Size</span>
-                <div className={styles.sizeOptions}>
+                <select
+                  className={styles.sizeDropdown}
+                  value={selectedSize || ""}
+                  onChange={(e) => handleSizeSelect(e.target.value, e)}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <option value="" disabled>Select</option>
                   {product.sizes?.map((size) => (
-                    <button
-                      key={size}
-                      className={`${styles.sizePill} ${selectedSize === size ? styles.selected : ""}`}
-                      onClick={(e) => handleSizeSelect(size, e)}
-                    >
-                      {size}
-                    </button>
+                    <option key={size} value={size}>{size}</option>
                   ))}
-                </div>
+                </select>
               </div>
             )}
 

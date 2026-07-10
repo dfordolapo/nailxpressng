@@ -206,7 +206,7 @@
 .quickAction svg { width: 18px; height: 18px; }
 
 .frontInfo {
-  padding: 4px 8px;
+  padding: 2px 4px 1px 4px;
 }
 
 .category {
@@ -284,7 +284,7 @@
   justify-content: center;
   gap: var(--space-1);
   width: 100%;
-  padding: 4px 0;
+  padding: 2px 0;
   font-size: 9px;
   color: var(--color-text-tertiary);
   border-top: 1px solid var(--color-border-light);
@@ -359,34 +359,22 @@
   display: block;
 }
 
-.sizeOptions {
-  display: flex;
-  gap: var(--space-2);
-  flex-wrap: wrap;
-}
-
-.sizePill {
-  padding: 4px 10px;
+.sizeDropdown {
+  width: 100%;
+  padding: 4px 8px;
   font-size: 11px;
-  font-weight: var(--weight-regular);
-  border: 1.5px solid var(--color-border);
-  border-radius: var(--radius-full);
-  background: transparent;
-  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: white;
+  color: var(--color-text);
+  outline: none;
   cursor: pointer;
-  transition: all var(--transition-fast);
+}
+.sizeDropdown:focus {
+  border-color: var(--color-primary);
 }
 
-.sizePill:hover {
-  border-color: var(--color-primary);
-  color: var(--color-primary);
-}
 
-.sizePill.selected {
-  border-color: var(--color-primary);
-  background: var(--color-primary);
-  color: white;
-}
 
 .qtyRow {
   display: flex;
@@ -458,8 +446,8 @@
 
 .addBtn {
   width: 100%;
-  padding: var(--space-3) var(--space-4);
-  font-size: 11px;
+  padding: 6px 12px;
+  font-size: 9px;
   font-weight: var(--weight-medium);
   text-transform: uppercase;
   letter-spacing: 0.12em;
@@ -467,7 +455,7 @@
   border-radius: var(--radius-full);
   cursor: pointer;
   transition: all var(--transition-base);
-  margin-top: var(--space-2);
+  margin-top: 4px;
 }
 
 .addBtn.default { background: var(--color-primary); color: white; }

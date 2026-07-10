@@ -468,33 +468,20 @@
   display: block;
 }
 
-.sizeOptions {
-  display: flex;
-  gap: var(--space-2);
-  flex-wrap: wrap;
-}
-
-.sizePill {
-  padding: 8px 16px;
+.sizeDropdown {
+  width: 100%;
+  padding: 8px 12px;
   font-size: 12px;
-  font-weight: var(--weight-semibold);
   border: 1.5px solid var(--color-border);
-  border-radius: var(--radius-full);
-  background: transparent;
-  color: var(--color-text-secondary);
+  border-radius: var(--radius-sm);
+  background: white;
+  color: var(--color-text);
+  outline: none;
   cursor: pointer;
-  transition: all var(--transition-fast);
 }
 
-.sizePill:hover {
+.sizeDropdown:focus {
   border-color: var(--color-primary);
-  color: var(--color-primary);
-}
-
-.sizePill.selected {
-  border-color: var(--color-primary);
-  background: var(--color-primary);
-  color: white;
 }
 
 /* ── Quantity Selector ────────────────────────────────────────────── */
