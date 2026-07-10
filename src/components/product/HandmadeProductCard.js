@@ -136,51 +136,70 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
         className={styles.cardInner}
         style={!flipped ? tiltStyle : {}}
       >
-        {!flipped ? (
-          /* ═══ FRONT ═══ */
-          <div className={styles.cardFront} onClick={handleFlip}>
-            <div className={styles.imageArea}>
-              <div
-                className={styles.flatLay}
-                style={{
-                  background: `linear-gradient(135deg, var(--color-primary-100), var(--color-bg-warm))`,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: "3.5rem",
-                }}
-              >
-                💅
-              </div>
-
-              <div className={styles.shine} />
-
-              <div className={styles.badges}>
-                {discount > 0 && (
-                  <span className={`${styles.badge} ${styles.badgeSale}`}>-{discount}%</span>
-                )}
-                {product.newArrival && (
-                  <span className={`${styles.badge} ${styles.badgeNew}`}>New</span>
-                )}
-                {product.bestseller && (
-                  <span className={`${styles.badge} ${styles.badgeBestseller}`}>Bestseller</span>
-                )}
-              </div>
-
-              <div className={styles.quickActions}>
-                <button
-                  className={`${styles.quickAction} ${wishlisted ? styles.active : ""}`}
-                  onClick={handleWishlist}
-                  aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
-                >
-                  <HeartIcon filled={wishlisted} />
-                </button>
-              </div>
-
-              <div className={styles.glowRing} />
+        {/* ═══ FRONT ═══ */}
+        <div className={`${styles.cardFront} ${flipped ? styles.hidden : ""}`} onClick={handleFlip}>
+          <div className={styles.imageArea}>
+            <div
+              className={styles.flatLay}
+              style={{
+                background: `linear-gradient(135deg, var(--color-primary-100), var(--color-bg-warm))`,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "3.5rem",
+              }}
+            >
+              💅
             </div>
 
-            {viewMode === "list" ? (
+            <div className={styles.shine} />
+
+            <div className={styles.badges}>
+              {discount > 0 && (
+                <span className={`${styles.badge} ${styles.badgeSale}`}>-{discount}%</span>
+              )}
+              {product.newArrival && (
+                <span className={`${styles.badge} ${styles.badgeNew}`}>New</span>
+              )}
+              {product.bestseller && (
+                <span className={`${styles.badge} ${styles.badgeBestseller}`}>Bestseller</span>
+              )}
+            </div>
+
+            <div className={styles.quickActions}>
+              <button
+                className={`${styles.quickAction} ${wishlisted ? styles.active : ""}`}
+                onClick={handleWishlist}
+                aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
+              >
+                <HeartIcon filled={wishlisted} />
+              </button>
+            </div>
+
+            <div className={styles.glowRing} />
+          </div>
+
+          {viewMode === "list" ? (
+            <div className={styles.frontInfo}>
+              <span className={styles.category}>{product.category}</span>
+              <h3 className={styles.name}>{product.name}</h3>
+              <div className={styles.priceRow}>
+                <span className={styles.price}>{formatPrice(product.price)}</span>
+                {product.compareAtPrice && (
+                  <span className={styles.comparePrice}>{formatPrice(product.compareAtPrice)}</span>
+                )}
+              </div>
+              <div className={styles.rating}>
+                <div className={styles.stars}>
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <StarIcon key={i} />
+                  ))}
+                </div>
+                <span>({product.reviewCount})</span>
+              </div>
+            </div>
+          ) : (
+            <>
               <div className={styles.frontInfo}>
                 <span className={styles.category}>{product.category}</span>
                 <h3 className={styles.name}>{product.name}</h3>
@@ -199,83 +218,18 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
                   <span>({product.reviewCount})</span>
                 </div>
               </div>
-            ) : (
-              <>
-                <div className={styles.frontInfo}>
-                  <span className={styles.category}>{product.category}</span>
-                  <h3 className={styles.name}>{product.name}</h3>
-                  <div className={styles.priceRow}>
-                    <span className={styles.price}>{formatPrice(product.price)}</span>
-                    {product.compareAtPrice && (
-                      <span className={styles.comparePrice}>{formatPrice(product.compareAtPrice)}</span>
-                    )}
-                  </div>
-                  <div className={styles.rating}>
-                    <div className={styles.stars}>
-                      {Array.from({ length: 5 }).map((_, i) => (
-                        <StarIcon key={i} />
-                      ))}
-                    </div>
-                    <span>({product.reviewCount})</span>
-                  </div>
-                </div>
-                <button className={styles.flipHint} onClick={handleFlip}>
-                  Quick add
-                  <FlipIcon />
-                </button>
-              </>
-            )}
-          </div>
-        ) : (
-          /* ═══ BACK ═══ */
-          viewMode === "list" ? (
-            <div className={styles.cardBack} onClick={handleFlip}>
-              <div className={styles.backContent} onClick={(e) => e.stopPropagation()}>
-                <div className={styles.selectorGroup}>
-                  <span className={styles.selectorLabel}>Select Size</span>
-                  <div className={styles.sizeOptions}>
-                    {product.sizes.map((size) => (
-                      <button
-                        key={size}
-                        className={`${styles.sizePill} ${selectedSize === size ? styles.selected : ""}`}
-                        onClick={(e) => handleSizeSelect(size, e)}
-                      >
-                        {size}
-                      </button>
-                    ))}
-                  </div>
-                </div>
+              <button className={styles.flipHint} onClick={handleFlip}>
+                Quick add
+                <FlipIcon />
+              </button>
+            </>
+          )}
+        </div>
 
-                <div className={styles.qtyRow}>
-                  <span className={styles.selectorLabel}>Quantity</span>
-                  <div className={styles.qtyControl}>
-                    <button className={styles.qtyBtn} onClick={(e) => handleQty(-1, e)} disabled={qty <= 1}>−</button>
-                    <div className={styles.qtyValue}>
-                      <span className={`${styles.qtyNumber} ${qtyAnim ? styles[qtyAnim] : ""}`} key={qty}>{qty}</span>
-                    </div>
-                    <button className={styles.qtyBtn} onClick={(e) => handleQty(1, e)} disabled={qty >= 10}>+</button>
-                  </div>
-                </div>
-
-                <button
-                  className={`${styles.addBtn} ${added ? styles.added : styles.default}`}
-                  onClick={handleAddToCart}
-                >
-                  <span className={styles.addBtnContent}>
-                    {added ? (<><CheckIcon /> Added to Cart</>) : "Add to Cart"}
-                  </span>
-                </button>
-              </div>
-            </div>
-          ) : (
-            <div className={styles.cardBack}>
-              <div className={styles.backHeader}>
-                <h3 className={styles.backName}>{product.name}</h3>
-                <span className={styles.backPrice}>{formatPrice(product.price)}</span>
-              </div>
-
-              <p className={styles.backDesc}>{product.shortDescription}</p>
-
+        {/* ═══ BACK ═══ */}
+        {viewMode === "list" ? (
+          <div className={`${styles.cardBack} ${!flipped ? styles.hidden : ""}`} onClick={handleFlip}>
+            <div className={styles.backContent} onClick={(e) => e.stopPropagation()}>
               <div className={styles.selectorGroup}>
                 <span className={styles.selectorLabel}>Select Size</span>
                 <div className={styles.sizeOptions}>
@@ -310,22 +264,66 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
                   {added ? (<><CheckIcon /> Added to Cart</>) : "Add to Cart"}
                 </span>
               </button>
+            </div>
+          </div>
+        ) : (
+          <div className={`${styles.cardBack} ${!flipped ? styles.hidden : ""}`}>
+            <div className={styles.backHeader}>
+              <h3 className={styles.backName}>{product.name}</h3>
+              <span className={styles.backPrice}>{formatPrice(product.price)}</span>
+            </div>
 
-              <div className={styles.backActions}>
-                <button className={styles.flipBackBtn} onClick={handleFlip}>
-                  <ArrowLeftIcon /> Back
-                </button>
-                <Link
-                  href={`/product/${product.slug}`}
-                  className={styles.viewLink}
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <span className={styles.viewLinkDesktop}>View Details</span>
-                  <span className={styles.viewLinkMobile}>Details</span>
-                </Link>
+            <p className={styles.backDesc}>{product.shortDescription}</p>
+
+            <div className={styles.selectorGroup}>
+              <span className={styles.selectorLabel}>Select Size</span>
+              <div className={styles.sizeOptions}>
+                {product.sizes.map((size) => (
+                  <button
+                    key={size}
+                    className={`${styles.sizePill} ${selectedSize === size ? styles.selected : ""}`}
+                    onClick={(e) => handleSizeSelect(size, e)}
+                  >
+                    {size}
+                  </button>
+                ))}
               </div>
             </div>
-          )
+
+            <div className={styles.qtyRow}>
+              <span className={styles.selectorLabel}>Quantity</span>
+              <div className={styles.qtyControl}>
+                <button className={styles.qtyBtn} onClick={(e) => handleQty(-1, e)} disabled={qty <= 1}>−</button>
+                <div className={styles.qtyValue}>
+                  <span className={`${styles.qtyNumber} ${qtyAnim ? styles[qtyAnim] : ""}`} key={qty}>{qty}</span>
+                </div>
+                <button className={styles.qtyBtn} onClick={(e) => handleQty(1, e)} disabled={qty >= 10}>+</button>
+              </div>
+            </div>
+
+            <button
+              className={`${styles.addBtn} ${added ? styles.added : styles.default}`}
+              onClick={handleAddToCart}
+            >
+              <span className={styles.addBtnContent}>
+                {added ? (<><CheckIcon /> Added to Cart</>) : "Add to Cart"}
+              </span>
+            </button>
+
+            <div className={styles.backActions}>
+              <button className={styles.flipBackBtn} onClick={handleFlip}>
+                <ArrowLeftIcon /> Back
+              </button>
+              <Link
+                href={`/product/${product.slug}`}
+                className={styles.viewLink}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <span className={styles.viewLinkDesktop}>View Details</span>
+                <span className={styles.viewLinkMobile}>Details</span>
+              </Link>
+            </div>
+          </div>
         )}
       </div>
     </div>

@@ -113,6 +113,10 @@
   border-color: var(--color-border);
 }
 
+.hidden {
+  display: none;
+}
+
 /* ── Image Area ───────────────────────────────────────────────────── */
 .imageArea {
   position: relative;
@@ -390,7 +394,8 @@
    CARD BACK (Flipped Details)
    ══════════════════════════════════════════════════════════════════════ */
 .cardBack {
-  position: relative;
+  position: absolute;
+  inset: 0;
   background: var(--color-bg-card);
   border: 1.5px solid #D4AF7A;
   border-radius: var(--radius-xl);

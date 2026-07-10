@@ -19,6 +19,10 @@
   overflow: hidden;
 }
 
+.hidden {
+  display: none;
+}
+
 .cardFront {
   position: relative;
   background: var(--color-bg-card);
@@ -289,7 +293,8 @@
 
 /* ═══ BACK ══════════════════════════════════════════════════════════ */
 .cardBack {
-  position: relative;
+  position: absolute;
+  inset: 0;
   background: var(--color-bg-card);
   border: 1.5px solid #D4AF7A;
   display: flex;
