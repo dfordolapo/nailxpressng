@@ -3,39 +3,13 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Search, Heart, ShoppingBag, Menu, X } from "lucide-react";
 import { NAV_LINKS } from "@/lib/constants";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { useSearch } from "@/context/SearchContext";
 import CartDrawer from "@/components/cart/CartDrawer";
 import styles from "@/styles/components/header.module.css";
-
-function SearchIcon() {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="11" cy="11" r="8" />
-      <path d="m21 21-4.3-4.3" />
-    </svg>
-  );
-}
-
-function HeartIcon() {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
-    </svg>
-  );
-}
-
-function ShoppingBagIcon() {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
-      <path d="M3 6h18" />
-      <path d="M16 10a4 4 0 0 1-8 0" />
-    </svg>
-  );
-}
 
 export default function Header() {
   const pathname = usePathname();
@@ -97,11 +71,11 @@ export default function Header() {
               aria-label="Search"
               id="search-btn"
             >
-              <SearchIcon />
+              <Search size={22} strokeWidth={1.5} />
             </button>
 
             <Link href="/wishlist" className={styles.actionBtn} aria-label="Wishlist" id="wishlist-btn">
-              <HeartIcon />
+              <Heart size={22} strokeWidth={1.5} />
               {wishlistCount > 0 && (
                 <span className={styles.badge}>{wishlistCount}</span>
               )}
@@ -113,7 +87,7 @@ export default function Header() {
               aria-label="Cart"
               id="cart-btn"
             >
-              <ShoppingBagIcon />
+              <ShoppingBag size={22} strokeWidth={1.5} />
               {itemCount > 0 && (
                 <span className={styles.badge}>{itemCount}</span>
               )}
@@ -121,14 +95,12 @@ export default function Header() {
 
             {/* Mobile Menu Toggle */}
             <button
-              className={`${styles.menuBtn} ${mobileOpen ? styles.open : ""}`}
+              className={styles.menuBtn}
               onClick={() => setMobileOpen(!mobileOpen)}
               aria-label="Toggle menu"
               id="mobile-menu-btn"
             >
-              <span className={styles.menuLine} />
-              <span className={styles.menuLine} />
-              <span className={styles.menuLine} />
+              {mobileOpen ? <X size={22} strokeWidth={1.5} /> : <Menu size={22} strokeWidth={1.5} />}
             </button>
           </div>
         </div>

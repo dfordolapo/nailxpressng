@@ -125,7 +125,7 @@
   height: 40px;
   border-radius: var(--radius-full);
   transition: background-color var(--transition-fast), color var(--transition-fast);
-  color: var(--color-text-secondary);
+  color: var(--color-primary-800);
 }
 
 .actionBtn:hover {
@@ -164,34 +164,16 @@
   align-items: center;
   width: 40px;
   height: 40px;
-  gap: 5px;
-  border-radius: var(--radius-md);
-  transition: background-color var(--transition-fast);
+  gap: 2px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--color-primary-800);
+  transition: opacity var(--transition-fast);
 }
 
 .menuBtn:hover {
-  background-color: var(--color-surface);
-}
-
-.menuLine {
-  display: block;
-  width: 20px;
-  height: 2px;
-  background-color: var(--color-text);
-  border-radius: 1px;
-  transition: all var(--transition-base);
-}
-
-.menuBtn.open .menuLine:nth-child(1) {
-  transform: rotate(45deg) translate(5px, 5px);
-}
-
-.menuBtn.open .menuLine:nth-child(2) {
-  opacity: 0;
-}
-
-.menuBtn.open .menuLine:nth-child(3) {
-  transform: rotate(-45deg) translate(5px, -5px);
+  opacity: 0.7;
 }
 
 /* ── Mobile Nav Overlay ───────────────────────────────────────────── */
@@ -199,7 +181,7 @@
   display: none;
   position: fixed;
   inset: 0;
-  top: calc(var(--header-height) + var(--announcement-height));
+  top: var(--header-height);
   background: var(--color-bg-overlay);
   z-index: var(--z-overlay);
   animation: fadeIn var(--transition-fast);
@@ -211,13 +193,13 @@
 
 .mobileNav {
   position: fixed;
-  top: calc(var(--header-height) + var(--announcement-height));
+  top: var(--header-height);
   right: 0;
   bottom: 0;
-  width: min(320px, 85vw);
+  width: min(260px, 80vw);
   background: var(--color-bg);
   z-index: calc(var(--z-overlay) + 1);
-  padding: var(--space-8);
+  padding: var(--space-2) var(--space-6);
   animation: slideInRight var(--transition-base) ease-out;
   overflow-y: auto;
   display: flex;
@@ -227,7 +209,7 @@
 
 .mobileNavLink {
   display: block;
-  font-size: var(--text-xl);
+  font-size: var(--text-lg);
   font-family: var(--font-heading);
   font-weight: var(--weight-medium);
   color: var(--color-text);

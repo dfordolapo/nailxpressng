@@ -9,10 +9,10 @@ export const FREE_SHIPPING_THRESHOLD = 20000; // Free shipping over ₦20,000
 export const FLAT_SHIPPING_RATE = 2500;
 
 export const SOCIAL_LINKS = {
-  instagram: "https://instagram.com/nailexpress",
-  tiktok: "https://tiktok.com/@nailexpress",
-  twitter: "https://twitter.com/nailexpress",
-  whatsapp: "https://wa.me/2348000000000",
+  instagram: "https://instagram.com/nailexpress.ng",
+  tiktok: "https://tiktok.com/@nailexpress.ng",
+  telegram: "https://t.me/nailexpressng",
+  whatsapp: "https://wa.me/2349081872514",
 };
 
 export const WHATSAPP_MESSAGES = {

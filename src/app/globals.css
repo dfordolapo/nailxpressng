@@ -121,7 +121,7 @@
   /* Layout */
   --container-max: 1280px;
   --container-narrow: 960px;
-  --header-height: 72px;
+  --header-height: 56px;
   --announcement-height: 40px;
 }
 
