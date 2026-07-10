@@ -710,7 +710,7 @@
   .sizeOptions { gap: 4px; flex-wrap: nowrap; overflow-x: auto; -ms-overflow-style: none; scrollbar-width: none; }
   .sizeOptions::-webkit-scrollbar { display: none; }
   .sizePill { padding: 3px 8px; font-size: 10px; }
-  .qtyRow { margin-bottom: 4px; }
+  .qtyRow { margin-bottom: 12px; }
   .qtyControl { border-width: 1px; }
   .qtyBtn { width: 22px; height: 22px; font-size: 12px; }
   .qtyValue { width: 26px; height: 22px; font-size: 10px; border-width: 1px; }
