@@ -19,6 +19,8 @@ export default function AdminDashboard() {
   const [productToDelete, setProductToDelete] = useState(null);
   const router = useRouter();
 
+  const todayDate = new Date().toISOString().split("T")[0];
+
   const handleMenuClick = (id) => {
     setOpenMenuId(openMenuId === id ? null : id);
   };
@@ -65,7 +67,7 @@ export default function AdminDashboard() {
           <Calendar size={16} style={{ position: "absolute", left: "10px", pointerEvents: "none" }} />
           <input 
             type="date" 
-            defaultValue="2025-05-13" 
+            defaultValue={todayDate} 
             style={{ 
               border: "none", 
               outline: "none", 
