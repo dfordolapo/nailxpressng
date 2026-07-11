@@ -46,7 +46,7 @@
 /* ── Image ────────────────────────────────────────────────────────── */
 .imageArea {
   position: relative;
-  aspect-ratio: 1.5 / 1;
+  aspect-ratio: 1.3 / 1;
   overflow: hidden;
 }
 
@@ -207,7 +207,7 @@
 
 .frontInfo {
   padding: 0 4px;
-  margin-top: 14px;
+  margin-top: 4px;
 }
 
 .category {
@@ -224,7 +224,7 @@
   font-weight: var(--weight-medium);
   color: var(--color-text);
   line-height: 1.1;
-  margin: 0 0 14px 0;
+  margin: 0 0 4px 0;
   transition: color var(--transition-fast);
 }
 
@@ -247,7 +247,7 @@
   display: flex;
   align-items: baseline;
   gap: var(--space-2);
-  margin-bottom: 14px;
+  margin-bottom: 4px;
 }
 
 .price {
