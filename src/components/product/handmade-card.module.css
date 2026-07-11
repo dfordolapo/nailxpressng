@@ -37,6 +37,7 @@
   background: var(--color-bg-card);
   border: 1.5px solid var(--color-border-light);
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
 }
 
 .cardWrapper:hover .cardFront {
@@ -207,7 +208,7 @@
 
 .frontInfo {
   padding: 0 4px;
-  margin-top: 4px;
+  margin-top: 2px;
 }
 
 .category {
@@ -224,9 +225,8 @@
   font-weight: var(--weight-medium);
   color: var(--color-text);
   line-height: 1.1;
-  margin: 0 0 4px 0;
+  margin: 0 0 2px 0;
   transition: color var(--transition-fast);
-  min-height: 27px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -252,7 +252,7 @@
   display: flex;
   align-items: baseline;
   gap: var(--space-2);
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .price {
