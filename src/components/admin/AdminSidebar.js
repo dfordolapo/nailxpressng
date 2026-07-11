@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { useState, Suspense } from "react";
 import { LayoutDashboard, Package, LogOut, Sparkles, ChevronDown, Settings, Menu, X } from "lucide-react";
 import styles from "@/styles/admin.module.css";
@@ -13,6 +13,7 @@ function SidebarContent() {
   const [isProductsOpen, setIsProductsOpen] = useState(pathname.startsWith("/admin/products"));
   const [isSettingsOpen, setIsSettingsOpen] = useState(pathname.startsWith("/admin/settings"));
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const router = useRouter();
 
   return (
     <>
@@ -132,7 +133,7 @@ function SidebarContent() {
           </div>
         </nav>
 
-        <button className={styles.logoutBtn}>
+        <button className={styles.logoutBtn} onClick={() => router.push("/admin/login")}>
           <LogOut size={18} />
           Logout
         </button>

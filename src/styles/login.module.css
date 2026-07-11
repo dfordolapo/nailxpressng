@@ -74,8 +74,8 @@
 .input {
   width: 100%;
   padding: 12px 15px;
-  background: rgba(255, 255, 255, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.8);
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   font-size: 1.1rem;
   font-family: var(--font-heading), serif;
@@ -90,7 +90,7 @@
 
 .input:focus {
   border-color: var(--color-primary);
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.8);
 }
 
 .btnPrimary {
@@ -117,6 +117,11 @@
 }
 
 @media (max-width: 768px) {
+  .loginPage::before {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
   .loginCard {
     padding: 20px;
     max-width: 85%;
