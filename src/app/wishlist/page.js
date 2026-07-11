@@ -26,9 +26,7 @@ export default function WishlistPage() {
       <div className={pageStyles.wishlistPage}>
         <div className="container" style={{ textAlign: "center", padding: "var(--space-20) 0" }}>
 
-          <h1 style={{ fontFamily: "var(--font-heading)", fontSize: "var(--text-3xl)", fontStyle: "italic", marginBottom: "var(--space-3)" }}>
-            Your Wishlist is Empty
-          </h1>
+
           <p style={{ color: "var(--color-text-secondary)", marginBottom: "var(--space-8)" }}>
             Save your favorite nail sets here for later!
           </p>
@@ -96,8 +94,8 @@ export default function WishlistPage() {
                       Medium • Almond
                     </p>
                   </div>
-                  <button onClick={() => removeItem(item.id)} style={{ color: "var(--color-pink)", background: "transparent", border: "none" }}>
-                    <Heart size={20} fill="var(--color-pink)" />
+                  <button onClick={() => removeItem(item.id)} style={{ color: "var(--color-warning)", background: "transparent", border: "none" }}>
+                    <Heart size={20} fill="var(--color-warning)" />
                   </button>
                 </div>
                 
@@ -110,8 +108,10 @@ export default function WishlistPage() {
                   style={{
                     marginTop: "auto",
                     width: "fit-content",
-                    display: "flex",
+                    display: "inline-flex",
                     alignItems: "center",
+                    justifyContent: "center",
+                    flexWrap: "nowrap",
                     gap: "var(--space-2)",
                     background: "var(--color-pink-50)",
                     border: "1px solid var(--color-pink-light)",
@@ -119,10 +119,12 @@ export default function WishlistPage() {
                     padding: "4px 12px",
                     borderRadius: "4px",
                     fontSize: "0.75rem",
-                    fontWeight: 600
+                    fontWeight: 400,
+                    whiteSpace: "nowrap"
                   }}
                 >
-                  <ShoppingBag size={14} /> Move to bag
+                  <ShoppingBag size={14} strokeWidth={1.5} style={{ flexShrink: 0 }} /> 
+                  <span style={{ position: "relative", top: "1px" }}>Move to bag</span>
                 </button>
               </div>
             </div>
