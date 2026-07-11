@@ -83,7 +83,7 @@
 }
 
 .quickAction.active {
-  background: var(--color-primary);
+  background: var(--color-warning);
   color: white;
 }
 
