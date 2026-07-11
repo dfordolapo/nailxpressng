@@ -4,16 +4,16 @@ export const categories = [
     name: "Handmade",
     slug: "handmade",
     description: "Made by hand, made for you with meticulous attention to detail.",
-    image: "/images/categories/handmade.jpg",
-    tagline: "Wearable Art, Made by Hand",
+    image: "/images/handmade-collection.png",
+    tagline: "wearable art, made by hand",
   },
   {
     id: "factory",
     name: "Factory Made",
     slug: "factory",
     description: "Instant favorites for everyday glam, last-minute plans and everything in between.",
-    image: "/images/categories/factory.jpg",
-    tagline: "Precision Made, Style Perfected",
+    image: "/images/factory-collection.png",
+    tagline: "ready to wear",
   },
 ];
 

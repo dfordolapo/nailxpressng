@@ -1,6 +1,5 @@
-/* ── Cart Page ─────────────────────────────────────────────────────── */
 .cartPage {
-  padding: var(--space-12) 0;
+  padding: var(--space-6) 0 var(--space-12);
   min-height: 60vh;
 }
 
@@ -33,8 +32,8 @@
 }
 
 .cartItemImage {
-  width: 120px;
-  height: 150px;
+  width: 90px;
+  height: 90px;
   border-radius: var(--radius-md);
   overflow: hidden;
   flex-shrink: 0;
@@ -61,7 +60,7 @@
 }
 
 .cartItemMeta {
-  font-size: var(--text-sm);
+  font-size: var(--text-xs);
   color: var(--color-text-tertiary);
 }
 
@@ -74,7 +73,7 @@
 .cartItemActions {
   display: flex;
   align-items: center;
-  gap: var(--space-4);
+  justify-content: space-between;
   margin-top: var(--space-2);
 }
 
@@ -119,15 +118,93 @@
 }
 
 .removeBtn {
-  font-size: var(--text-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
   color: var(--color-text-tertiary);
-  text-decoration: underline;
-  text-underline-offset: 3px;
   transition: color var(--transition-fast);
 }
 
 .removeBtn:hover {
   color: var(--color-error);
+}
+
+/* ── Recommendations Slider ────────────────────────────────────────── */
+.recommendationsSection {
+  margin: var(--space-8) 0;
+  width: 100%;
+  overflow: hidden;
+}
+
+.recommendationsTitle {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+  margin-bottom: var(--space-4);
+}
+
+.sliderContainer {
+  display: flex;
+  gap: var(--space-4);
+  overflow-x: auto;
+  padding-bottom: var(--space-4);
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Firefox */
+  width: 100%;
+}
+.sliderContainer::-webkit-scrollbar {
+  display: none; /* Safari/Chrome */
+}
+
+.sliderItem {
+  scroll-snap-align: start;
+  flex: 0 0 140px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sliderImage {
+  width: 140px;
+  height: 140px;
+  border-radius: var(--radius-md);
+  background: var(--color-bg-warm);
+  margin-bottom: var(--space-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+}
+
+.sliderName {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  margin-bottom: var(--space-1);
+}
+
+.sliderPriceRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sliderPrice {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+}
+
+.addBtn {
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-full);
+  background: var(--color-pink);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--weight-bold);
+  font-size: 1rem;
 }
 
 /* ── Cart Summary ─────────────────────────────────────────────────── */
@@ -289,10 +366,5 @@
 
   .summaryCard {
     position: static;
-  }
-
-  .cartItemImage {
-    width: 90px;
-    height: 110px;
   }
 }

@@ -176,7 +176,7 @@ export default function CategoryShowcase({ mini = false, items = null }) {
 
       {!mini && (
         <div>
-          <Link href="/shop" className={`${styles.button} ${styles.desktopBtn}`}>
+          <Link href="/collection-hub" className={`${styles.button} ${styles.desktopBtn}`}>
             Explore all collections
           </Link>
           <Link href="/collection-hub" className={`${styles.button} ${styles.mobileBtn}`}>

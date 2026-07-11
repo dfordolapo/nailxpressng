@@ -18,7 +18,7 @@ export default function HeroSection() {
             <Link href="/shop" className={`${styles.button} ${styles.desktopBtn}`}>
               Shop bestsellers
             </Link>
-            <Link href="/collection-hub" className={`${styles.button} ${styles.mobileBtn}`}>
+            <Link href="/shop" className={`${styles.button} ${styles.mobileBtn}`}>
               Shop bestsellers
             </Link>
           </div>

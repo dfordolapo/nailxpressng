@@ -76,12 +76,7 @@ export default function Header() {
               <Search size={22} strokeWidth={1.5} />
             </button>
 
-            <Link href="/wishlist" className={styles.actionBtn} aria-label="Wishlist" id="wishlist-btn">
-              <Heart size={22} strokeWidth={1.5} />
-              {wishlistCount > 0 && (
-                <span className={styles.badge}>{wishlistCount}</span>
-              )}
-            </Link>
+
 
             <button
               className={styles.actionBtn}

@@ -15,6 +15,10 @@ export default function CheckoutPage() {
     firstName: "", lastName: "", email: "", phone: "",
     address: "", city: "", state: "", zipCode: "",
   });
+  const [shippingMethod, setShippingMethod] = useState("standard");
+  const [paymentMethod, setPaymentMethod] = useState("card");
+  
+  const finalTotal = total + (shippingMethod === "express" ? 9.99 : 4.99);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -46,132 +50,186 @@ export default function CheckoutPage() {
 
   return (
     <div className={pageStyles.checkoutPage} id="checkout-page">
-      <div className="container">
-        <h1 className={pageStyles.collectionTitle} style={{ marginBottom: "var(--space-10)" }}>Checkout</h1>
+      <div className="container" style={{ maxWidth: "600px" }}>
+        
+        {/* Header matching mockup */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "var(--space-8)" }}>
+          <Link href="/cart" style={{ color: "var(--color-text)" }}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+          </Link>
+          <h1 style={{ fontSize: "1.25rem", fontWeight: 600 }}>Checkout</h1>
+          <div style={{ position: "relative" }}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+          </div>
+        </div>
 
         <form onSubmit={handleSubmit}>
-          <div className={pageStyles.checkoutGrid}>
-            {/* Shipping Form */}
-            <div>
-              <div className={pageStyles.formSection}>
-                <h3 className={pageStyles.formSectionTitle}>Contact Information</h3>
-                <div className={pageStyles.formRow}>
-                  <div className={pageStyles.formGroup}>
-                    <label className={pageStyles.formLabel} htmlFor="firstName">First Name</label>
-                    <input className={pageStyles.formInput} type="text" id="firstName" name="firstName" value={formData.firstName} onChange={handleChange} required />
-                  </div>
-                  <div className={pageStyles.formGroup}>
-                    <label className={pageStyles.formLabel} htmlFor="lastName">Last Name</label>
-                    <input className={pageStyles.formInput} type="text" id="lastName" name="lastName" value={formData.lastName} onChange={handleChange} required />
-                  </div>
-                </div>
-                <div className={pageStyles.formRow}>
-                  <div className={pageStyles.formGroup}>
-                    <label className={pageStyles.formLabel} htmlFor="email">Email</label>
-                    <input className={pageStyles.formInput} type="email" id="email" name="email" value={formData.email} onChange={handleChange} required />
-                  </div>
-                  <div className={pageStyles.formGroup}>
-                    <label className={pageStyles.formLabel} htmlFor="phone">Phone</label>
-                    <input className={pageStyles.formInput} type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange} required placeholder="+234" />
-                  </div>
-                </div>
-              </div>
-
-              <div className={pageStyles.formSection}>
-                <h3 className={pageStyles.formSectionTitle}>Shipping Address</h3>
-                <div className={pageStyles.formGroup}>
-                  <label className={pageStyles.formLabel} htmlFor="address">Street Address</label>
-                  <input className={pageStyles.formInput} type="text" id="address" name="address" value={formData.address} onChange={handleChange} required />
-                </div>
-                <div className={pageStyles.formRow}>
-                  <div className={pageStyles.formGroup}>
-                    <label className={pageStyles.formLabel} htmlFor="city">City</label>
-                    <input className={pageStyles.formInput} type="text" id="city" name="city" value={formData.city} onChange={handleChange} required />
-                  </div>
-                  <div className={pageStyles.formGroup}>
-                    <label className={pageStyles.formLabel} htmlFor="state">State</label>
-                    <select className={pageStyles.formInput} id="state" name="state" value={formData.state} onChange={handleChange} required>
-                      <option value="">Select state</option>
-                      <option value="lagos">Lagos</option>
-                      <option value="abuja">Abuja (FCT)</option>
-                      <option value="rivers">Rivers</option>
-                      <option value="oyo">Oyo</option>
-                      <option value="kano">Kano</option>
-                      <option value="enugu">Enugu</option>
-                      <option value="anambra">Anambra</option>
-                      <option value="delta">Delta</option>
-                      <option value="edo">Edo</option>
-                      <option value="kaduna">Kaduna</option>
-                      <option value="ogun">Ogun</option>
-                      <option value="ondo">Ondo</option>
-                      <option value="kwara">Kwara</option>
-                      <option value="other">Other</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-
-              <div className={pageStyles.formSection}>
-                <h3 className={pageStyles.formSectionTitle}>Payment</h3>
-                <div style={{
-                  padding: "var(--space-6)",
-                  border: "2px dashed var(--color-border)",
-                  borderRadius: "var(--radius-lg)",
-                  textAlign: "center",
-                  color: "var(--color-text-secondary)",
-                }}>
-                  <p style={{ fontSize: "2rem", marginBottom: "var(--space-3)" }}>💳</p>
-                  <p style={{ fontWeight: 600, marginBottom: "var(--space-1)" }}>Paystack Secure Payment</p>
-                  <p style={{ fontSize: "var(--text-sm)" }}>You&apos;ll be redirected to Paystack to complete your payment securely.</p>
-                </div>
-              </div>
+          
+          {/* Step 1: Shipping Address */}
+          <div style={{ marginBottom: "var(--space-6)" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "var(--space-2)", marginBottom: "var(--space-3)" }}>
+              <div style={{ width: 24, height: 24, borderRadius: "50%", background: "var(--color-pink)", color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.875rem", fontWeight: "bold" }}>1</div>
+              <h3 style={{ fontSize: "1rem", fontWeight: 600 }}>Shipping Address</h3>
             </div>
-
-            {/* Order Summary */}
-            <div className={cartStyles.summaryCard}>
-              <h3 className={cartStyles.summaryTitle}>Order Summary</h3>
-
-              {items.map((item) => (
-                <div key={`${item.id}-${item.selectedSize}`} style={{
-                  display: "flex", justifyContent: "space-between", alignItems: "center",
-                  padding: "var(--space-3) 0", borderBottom: "1px solid var(--color-border-light)",
-                  fontSize: "var(--text-sm)",
-                }}>
-                  <div>
-                    <p style={{ fontWeight: 500 }}>{item.name}</p>
-                    <p style={{ color: "var(--color-text-tertiary)", fontSize: "var(--text-xs)" }}>
-                      {item.selectedSize} / {item.selectedLength} × {item.quantity}
-                    </p>
-                  </div>
-                  <span style={{ fontWeight: 600 }}>{formatPrice(item.price * item.quantity)}</span>
-                </div>
-              ))}
-
-              <div style={{ marginTop: "var(--space-4)" }}>
-                <div className={cartStyles.summaryRow}>
-                  <span>Subtotal</span>
-                  <span>{formatPrice(subtotal)}</span>
-                </div>
-                <div className={cartStyles.summaryRow}>
-                  <span>Shipping</span>
-                  <span className={shipping === 0 ? cartStyles.freeShipping : ""}>
-                    {shipping === 0 ? "FREE" : formatPrice(shipping)}
-                  </span>
-                </div>
-                <div className={cartStyles.summaryTotal}>
-                  <span>Total</span>
-                  <span>{formatPrice(total)}</span>
-                </div>
+            
+            <div style={{ background: "white", border: "1px solid var(--color-border-light)", borderRadius: "var(--radius-lg)", padding: "var(--space-4)", display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+              <div>
+                <p style={{ fontWeight: 500, marginBottom: "4px" }}>Dolapo Oyekanmi</p>
+                <p style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)" }}>Surulere, Lagos State<br/>Nigeria, 101283</p>
               </div>
-
-              <button
-                type="submit"
-                className={`${btnStyles.btn} ${btnStyles.primary} ${btnStyles.lg} ${btnStyles.full} ${cartStyles.checkoutBtn}`}
-                id="pay-now-btn"
+              <button type="button" style={{ color: "var(--color-pink)", fontSize: "0.875rem", fontWeight: 500 }}>Change</button>
+            </div>
+          </div>
+          
+          {/* Step 2: Shipping Method */}
+          <div style={{ marginBottom: "var(--space-6)" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "var(--space-2)", marginBottom: "var(--space-3)" }}>
+              <div style={{ width: 24, height: 24, borderRadius: "50%", background: "var(--color-pink)", color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.875rem", fontWeight: "bold" }}>2</div>
+              <h3 style={{ fontSize: "1rem", fontWeight: 600 }}>Shipping Method</h3>
+            </div>
+            
+            <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-3)" }}>
+              <div 
+                onClick={() => setShippingMethod("standard")}
+                style={{ 
+                  background: shippingMethod === "standard" ? "var(--color-pink-50)" : "white", 
+                  border: `1px solid ${shippingMethod === "standard" ? "var(--color-pink)" : "var(--color-border-light)"}`, 
+                  borderRadius: "var(--radius-lg)", padding: "var(--space-4)", display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer" 
+                }}
               >
-                Pay {formatPrice(total)} with Paystack
-              </button>
+                <div>
+                  <p style={{ fontWeight: 500, marginBottom: "2px" }}>Standard Shipping</p>
+                  <p style={{ fontSize: "0.75rem", color: "var(--color-text-tertiary)" }}>3-5 business days</p>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: "var(--space-3)" }}>
+                  <span style={{ fontWeight: 500 }}>$4.99</span>
+                  <div style={{ width: 18, height: 18, borderRadius: "50%", border: `2px solid ${shippingMethod === "standard" ? "var(--color-pink)" : "var(--color-border)"}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    {shippingMethod === "standard" && <div style={{ width: 10, height: 10, borderRadius: "50%", background: "var(--color-pink)" }}></div>}
+                  </div>
+                </div>
+              </div>
+              
+              <div 
+                onClick={() => setShippingMethod("express")}
+                style={{ 
+                  background: shippingMethod === "express" ? "var(--color-pink-50)" : "white", 
+                  border: `1px solid ${shippingMethod === "express" ? "var(--color-pink)" : "var(--color-border-light)"}`, 
+                  borderRadius: "var(--radius-lg)", padding: "var(--space-4)", display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer" 
+                }}
+              >
+                <div>
+                  <p style={{ fontWeight: 500, marginBottom: "2px" }}>Express Shipping</p>
+                  <p style={{ fontSize: "0.75rem", color: "var(--color-text-tertiary)" }}>1-2 business days</p>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: "var(--space-3)" }}>
+                  <span style={{ fontWeight: 500 }}>$9.99</span>
+                  <div style={{ width: 18, height: 18, borderRadius: "50%", border: `2px solid ${shippingMethod === "express" ? "var(--color-pink)" : "var(--color-border)"}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    {shippingMethod === "express" && <div style={{ width: 10, height: 10, borderRadius: "50%", background: "var(--color-pink)" }}></div>}
+                  </div>
+                </div>
+              </div>
+              <p style={{ fontSize: "0.75rem", color: "var(--color-text-secondary)", display: "flex", alignItems: "center", gap: "4px" }}>
+                <span style={{ color: "var(--color-pink)" }}>✓</span> Free shipping on orders over $95!
+              </p>
             </div>
+          </div>
+          
+          {/* Step 3: Payment Method */}
+          <div style={{ marginBottom: "var(--space-6)" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "var(--space-2)", marginBottom: "var(--space-3)" }}>
+              <div style={{ width: 24, height: 24, borderRadius: "50%", background: "var(--color-pink)", color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.875rem", fontWeight: "bold" }}>3</div>
+              <h3 style={{ fontSize: "1rem", fontWeight: 600 }}>Payment Method</h3>
+            </div>
+            
+            <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-3)" }}>
+              <div 
+                onClick={() => setPaymentMethod("card")}
+                style={{ 
+                  background: paymentMethod === "card" ? "var(--color-pink-50)" : "white", 
+                  border: `1px solid ${paymentMethod === "card" ? "var(--color-pink)" : "var(--color-border-light)"}`, 
+                  borderRadius: "var(--radius-lg)", padding: "var(--space-4)", display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer" 
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: "var(--space-3)" }}>
+                  <div style={{ width: 18, height: 18, borderRadius: "50%", border: `2px solid ${paymentMethod === "card" ? "var(--color-pink)" : "var(--color-border)"}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    {paymentMethod === "card" && <div style={{ width: 10, height: 10, borderRadius: "50%", background: "var(--color-pink)" }}></div>}
+                  </div>
+                  <span style={{ fontWeight: 500 }}>Card</span>
+                </div>
+                <div style={{ display: "flex", gap: "4px", fontSize: "1.25rem" }}>
+                  💳
+                </div>
+              </div>
+              
+              <div 
+                onClick={() => setPaymentMethod("paystack")}
+                style={{ 
+                  background: paymentMethod === "paystack" ? "var(--color-pink-50)" : "white", 
+                  border: `1px solid ${paymentMethod === "paystack" ? "var(--color-pink)" : "var(--color-border-light)"}`, 
+                  borderRadius: "var(--radius-lg)", padding: "var(--space-4)", display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer" 
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: "var(--space-3)" }}>
+                  <div style={{ width: 18, height: 18, borderRadius: "50%", border: `2px solid ${paymentMethod === "paystack" ? "var(--color-pink)" : "var(--color-border)"}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    {paymentMethod === "paystack" && <div style={{ width: 10, height: 10, borderRadius: "50%", background: "var(--color-pink)" }}></div>}
+                  </div>
+                  <span style={{ fontWeight: 500 }}>Paystack</span>
+                </div>
+              </div>
+              
+              <div 
+                onClick={() => setPaymentMethod("bank")}
+                style={{ 
+                  background: paymentMethod === "bank" ? "var(--color-pink-50)" : "white", 
+                  border: `1px solid ${paymentMethod === "bank" ? "var(--color-pink)" : "var(--color-border-light)"}`, 
+                  borderRadius: "var(--radius-lg)", padding: "var(--space-4)", display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer" 
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: "var(--space-3)" }}>
+                  <div style={{ width: 18, height: 18, borderRadius: "50%", border: `2px solid ${paymentMethod === "bank" ? "var(--color-pink)" : "var(--color-border)"}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    {paymentMethod === "bank" && <div style={{ width: 10, height: 10, borderRadius: "50%", background: "var(--color-pink)" }}></div>}
+                  </div>
+                  <span style={{ fontWeight: 500 }}>Bank Transfer</span>
+                </div>
+                <span>🏦</span>
+              </div>
+            </div>
+          </div>
+          
+          {/* Step 4: Order Summary */}
+          <div style={{ marginBottom: "var(--space-8)" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "var(--space-2)", marginBottom: "var(--space-3)" }}>
+              <div style={{ width: 24, height: 24, borderRadius: "50%", background: "var(--color-pink)", color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.875rem", fontWeight: "bold" }}>4</div>
+              <h3 style={{ fontSize: "1rem", fontWeight: 600 }}>Order Summary</h3>
+            </div>
+            
+            <div style={{ background: "transparent", border: "none", padding: "0 var(--space-4)" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "var(--space-2)", fontSize: "0.875rem" }}>
+                <span style={{ color: "var(--color-text-secondary)" }}>Subtotal ({items.length} items)</span>
+                <span style={{ fontWeight: 600 }}>{formatPrice(subtotal)}</span>
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "var(--space-4)", fontSize: "0.875rem" }}>
+                <span style={{ color: "var(--color-text-secondary)" }}>Shipping</span>
+                <span style={{ fontWeight: 600 }}>${shippingMethod === "express" ? "9.99" : "4.99"}</span>
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-between", fontSize: "1rem", fontWeight: 700 }}>
+                <span>Total</span>
+                <span>{formatPrice(finalTotal)}</span>
+              </div>
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            className={`${btnStyles.btn} ${btnStyles.lg} ${btnStyles.full}`}
+            style={{ background: "var(--color-btn-gradient)", color: "white", border: "none", borderRadius: "12px", marginBottom: "var(--space-4)" }}
+          >
+            Place Order ✨
+          </button>
+          
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", fontSize: "0.75rem", color: "var(--color-text-secondary)" }}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-success)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 12 11 14 15 10"></polyline></svg>
+            SSL Secured Checkout
           </div>
         </form>
       </div>

@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRightIcon } from "lucide-react";
 import { categories } from "@/data/categories";
+import { SOCIAL_LINKS, WHATSAPP_MESSAGES } from "@/lib/constants";
 import styles from "./collection-hub.module.css";
 
 export default function CollectionHub() {
@@ -34,23 +35,36 @@ export default function CollectionHub() {
     },
     {
       title: "Custom Orders",
-      description: "Have a specific design in mind? Let's bring it to life.",
-      href: "/custom-order",
-      image: "/images/customize.png",
+      description: "have a specific design in mind? let's bring it to life.",
+      href: `${SOCIAL_LINKS.whatsapp}?text=${encodeURIComponent(WHATSAPP_MESSAGES.customOrder)}`,
+      image: "/images/custom-orders.png",
     },
     {
       title: "All Products",
-      description: "Browse everything in one place.",
+      description: "browse everything in one place.",
       href: "/shop",
-      image: "/images/hero.png",
+      image: "/images/all-products.png",
     },
   ];
 
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1 className={styles.title}>Explore Collections</h1>
-        <p className={styles.subtitle}>Discover your perfect set</p>
+        <div style={{ position: "relative", display: "inline-block" }}>
+          <h1 className={styles.title}>Explore our Collections</h1>
+          <span style={{
+            position: "absolute",
+            bottom: "2px",
+            left: "50%",
+            transform: "translateX(-50%) rotate(-1deg)",
+            width: "60%",
+            height: "8px",
+            background: "linear-gradient(90deg, transparent, var(--color-accent), transparent)",
+            borderRadius: "var(--radius-full)",
+            opacity: 0.6,
+            pointerEvents: "none",
+          }} />
+        </div>
       </div>
 
       <div className={styles.hubGrid}>

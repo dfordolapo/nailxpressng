@@ -36,10 +36,14 @@
   --color-surface: #fdf6f7;
   --color-surface-hover: #f5e4e6;
 
+  --color-btn-gradient: linear-gradient(90deg, #ffa8b6, #ff7e95);
+  --color-pink: #ff7e95;
+  --color-pink-light: #ffc2cd;
+
   --color-text: #2c1810;
   --color-text-secondary: #6b5b50;
   --color-text-tertiary: #9a8a7d;
-  --color-text-inverse: #fdf6f7;
+  --color-text-inverse: #ffffff;
 
   --color-border: #e6cfd2;
   --color-border-light: #f2e2e4;
