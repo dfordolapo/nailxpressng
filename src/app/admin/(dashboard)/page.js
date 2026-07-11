@@ -58,7 +58,7 @@ export default function AdminDashboard() {
     <>
       <div className={styles.pageHeader}>
         <div>
-          <h1 className={styles.pageTitle}>Dashboard</h1>
+          <h1 className={styles.pageTitle}>Hi, Funmi,</h1>
           <p className={styles.pageSubtitle}>Here's what's happening with your store today.</p>
         </div>
         <div className={styles.datePicker} style={{ position: "relative" }}>
