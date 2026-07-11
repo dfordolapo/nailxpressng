@@ -68,6 +68,7 @@ export default function AdminDashboard() {
           <input 
             type="date" 
             defaultValue={todayDate} 
+            min="2026-07-31"
             style={{ 
               border: "none", 
               outline: "none", 
