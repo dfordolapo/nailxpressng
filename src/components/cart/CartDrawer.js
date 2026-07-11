@@ -31,8 +31,10 @@ export default function CartDrawer({ onClose }) {
           </button>
         </div>
 
-        {/* Items */}
-        <div className={styles.drawerItems}>
+        {/* Scrollable Content */}
+        <div className={styles.drawerContent}>
+          {/* Items */}
+          <div className={styles.drawerItems}>
           {items.length === 0 ? (
             <div className={styles.emptyCart}>
               <div className={styles.emptyIcon}>🛍️</div>
@@ -128,6 +130,7 @@ export default function CartDrawer({ onClose }) {
             </Link>
           </div>
         )}
+        </div>
       </div>
     </>
   );
