@@ -721,6 +721,22 @@
 }
 
 /* ── Responsive ──────────────────────────────────────────────────────── */
+@media (min-width: 1024px) {
+  .frontInfo {
+    margin-top: 8px;
+  }
+  .name {
+    margin-bottom: 8px;
+  }
+  .priceRow {
+    margin-bottom: 4px;
+  }
+  .flipHint {
+    margin-top: 10px;
+    margin-bottom: 0;
+  }
+}
+
 @media (max-width: 1024px) {
   .masonryGrid { grid-template-columns: repeat(3, 1fr); }
 }
