@@ -226,10 +226,8 @@
   line-height: 1.1;
   margin: 0 0 1px 0;
   transition: color var(--transition-fast);
-  min-height: 27px;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   overflow: hidden;
 }
 
