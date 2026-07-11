@@ -135,6 +135,7 @@
   .subtitle {
     font-size: 0.95rem;
     margin-bottom: 20px;
+    font-weight: 600;
   }
 
   .formGroup {
