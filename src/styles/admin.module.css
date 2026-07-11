@@ -201,8 +201,9 @@
 
 
 .statValue {
-  font-size: 2rem;
-  font-weight: 600;
+  font-family: 'Cormorant Upright', Georgia, serif !important;
+  font-size: 2.25rem;
+  font-weight: 700;
   color: var(--color-text);
   margin-bottom: 5px;
 }
@@ -341,6 +342,45 @@
 .actionBtn:hover {
   background-color: #F9F9F9;
   color: var(--color-primary);
+}
+
+.kebabMenu {
+  position: absolute;
+  right: 20px;
+  top: 40px;
+  background: white;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  min-width: 140px;
+  z-index: 50;
+  overflow: hidden;
+}
+
+.kebabItem {
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 10px 15px;
+  font-size: 0.85rem;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: background 0.2s;
+  width: 100%;
+}
+
+.kebabItem:hover {
+  background-color: var(--color-bg);
+}
+
+.kebabDelete {
+  color: #EF4444;
+}
+
+.kebabDelete:hover {
+  background-color: #FEF2F2;
 }
 
 /* Tabs & Filters */

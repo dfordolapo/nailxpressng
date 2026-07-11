@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Plus, Search, Filter, Edit2, Trash2, Star, ChevronLeft, ChevronRight } from "lucide-react";
+import { Plus, Search, Filter, MoreVertical, Star, ChevronLeft, ChevronRight } from "lucide-react";
 import styles from "@/styles/admin.module.css";
 
 const DUMMY_PRODUCTS = [
@@ -25,6 +25,11 @@ function ProductsContent() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [statusFilter, setStatusFilter] = useState("All");
+  const [openMenuId, setOpenMenuId] = useState(null);
+
+  const handleMenuClick = (id) => {
+    setOpenMenuId(openMenuId === id ? null : id);
+  };
   
   const filteredProducts = DUMMY_PRODUCTS.filter(product => {
     // Tab Filter
@@ -168,13 +173,23 @@ function ProductsContent() {
                     fill={product.featured ? "#F59E0B" : "none"} 
                   />
                 </td>
-                <td style={{ textAlign: "right" }}>
-                  <button className={styles.actionBtn}>
-                    <Edit2 size={16} />
+                <td style={{ textAlign: "right", position: "relative" }}>
+                  <button 
+                    onClick={() => handleMenuClick(product.id)}
+                    style={{ background: "none", border: "none", cursor: "pointer", color: "#888", padding: "4px" }}
+                  >
+                    <MoreVertical size={18} />
                   </button>
-                  <button className={styles.actionBtn} style={{ color: "#EF4444", borderColor: "#FEE2E2" }}>
-                    <Trash2 size={16} />
-                  </button>
+                  {openMenuId === product.id && (
+                    <div className={styles.kebabMenu}>
+                      <button className={styles.kebabItem} onClick={() => setOpenMenuId(null)}>Edit</button>
+                      <button className={styles.kebabItem} onClick={() => setOpenMenuId(null)}>Duplicate</button>
+                      <button className={styles.kebabItem} onClick={() => setOpenMenuId(null)}>
+                        {product.featured ? "Unfeature" : "Feature"}
+                      </button>
+                      <button className={`${styles.kebabItem} ${styles.kebabDelete}`} onClick={() => setOpenMenuId(null)}>Delete</button>
+                    </div>
+                  )}
                 </td>
               </tr>
             ))}

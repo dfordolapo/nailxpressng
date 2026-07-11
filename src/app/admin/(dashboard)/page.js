@@ -1,17 +1,24 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { Calendar, Package, ArrowUpRight, MoreVertical, Star } from "lucide-react";
 import styles from "@/styles/admin.module.css";
 
 const DUMMY_PRODUCTS = [
-  { id: 1, name: "Blush Bloom", collection: "Handmade", price: 12500, status: "In Stock", date: "May 13, 2025", image: "https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&q=80&w=80" },
-  { id: 2, name: "Red Romance", collection: "Factory Made", price: 8000, status: "In Stock", date: "May 12, 2025", image: "https://images.unsplash.com/photo-1522337360788-8b13fee7a371?auto=format&fit=crop&q=80&w=80" },
-  { id: 3, name: "Gold Luxe", collection: "Handmade", price: 15000, status: "Out of Stock", date: "May 11, 2025", image: "https://images.unsplash.com/photo-1595868228308-0118fb01b315?auto=format&fit=crop&q=80&w=80" },
-  { id: 4, name: "Soft Pink", collection: "Factory Made", price: 6500, status: "In Stock", date: "May 10, 2025", image: "https://images.unsplash.com/photo-1519014816548-bf5fe059e98b?auto=format&fit=crop&q=80&w=80" },
+  { id: 1, name: "Blush Bloom", collection: "Handmade", price: 12500, status: "In Stock", date: "May 13, 2025", image: "https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&q=80&w=80", featured: true },
+  { id: 2, name: "Red Romance", collection: "Factory Made", price: 8000, status: "In Stock", date: "May 12, 2025", image: "https://images.unsplash.com/photo-1522337360788-8b13fee7a371?auto=format&fit=crop&q=80&w=80", featured: true },
+  { id: 3, name: "Gold Luxe", collection: "Handmade", price: 15000, status: "Out of Stock", date: "May 11, 2025", image: "https://images.unsplash.com/photo-1595868228308-0118fb01b315?auto=format&fit=crop&q=80&w=80", featured: true },
+  { id: 4, name: "Soft Pink", collection: "Factory Made", price: 6500, status: "In Stock", date: "May 10, 2025", image: "https://images.unsplash.com/photo-1519014816548-bf5fe059e98b?auto=format&fit=crop&q=80&w=80", featured: false },
 ];
 
 export default function AdminDashboard() {
+  const [openMenuId, setOpenMenuId] = useState(null);
+
+  const handleMenuClick = (id) => {
+    setOpenMenuId(openMenuId === id ? null : id);
+  };
+
   return (
     <>
       <div className={styles.pageHeader}>
@@ -40,19 +47,16 @@ export default function AdminDashboard() {
 
       <div className={styles.statsGrid}>
         <div className={styles.statCard}>
-          <div className={styles.statTitle}>Total</div>
+          <div className={styles.statTitle}>Products</div>
           <div className={styles.statValue}>128</div>
-          <div className={styles.statTrend}>↑ 12 new this month</div>
         </div>
         <div className={styles.statCard}>
           <div className={styles.statTitle}>Handmade</div>
           <div className={styles.statValue}>68</div>
-          <div className={styles.statTrend}>↑ 8 new this month</div>
         </div>
         <div className={styles.statCard}>
           <div className={styles.statTitle}>Factory</div>
           <div className={styles.statValue}>60</div>
-          <div className={styles.statTrend}>↑ 4 new this month</div>
         </div>
         <div className={styles.statCard}>
           <div className={styles.statTitle}>Featured</div>
@@ -100,10 +104,23 @@ export default function AdminDashboard() {
                   </span>
                 </td>
                 <td style={{ color: "#666" }}>{product.date}</td>
-                <td style={{ textAlign: "right" }}>
-                  <button style={{ background: "none", border: "none", cursor: "pointer", color: "#888" }}>
+                <td style={{ textAlign: "right", position: "relative" }}>
+                  <button 
+                    onClick={() => handleMenuClick(product.id)}
+                    style={{ background: "none", border: "none", cursor: "pointer", color: "#888", padding: "4px" }}
+                  >
                     <MoreVertical size={18} />
                   </button>
+                  {openMenuId === product.id && (
+                    <div className={styles.kebabMenu}>
+                      <button className={styles.kebabItem} onClick={() => setOpenMenuId(null)}>Edit</button>
+                      <button className={styles.kebabItem} onClick={() => setOpenMenuId(null)}>Duplicate</button>
+                      <button className={styles.kebabItem} onClick={() => setOpenMenuId(null)}>
+                        {product.featured ? "Unfeature" : "Feature"}
+                      </button>
+                      <button className={`${styles.kebabItem} ${styles.kebabDelete}`} onClick={() => setOpenMenuId(null)}>Delete</button>
+                    </div>
+                  )}
                 </td>
               </tr>
             ))}
