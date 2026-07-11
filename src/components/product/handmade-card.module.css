@@ -207,7 +207,7 @@
 
 .frontInfo {
   padding: 0 4px;
-  margin-top: 6px;
+  margin-top: 0;
 }
 
 .category {
@@ -224,7 +224,7 @@
   font-weight: var(--weight-medium);
   color: var(--color-text);
   line-height: 1.1;
-  margin: 0;
+  margin: 0 0 3px 0;
   transition: color var(--transition-fast);
 }
 
@@ -247,7 +247,7 @@
   display: flex;
   align-items: baseline;
   gap: var(--space-2);
-  margin-bottom: 0;
+  margin-bottom: 3px;
 }
 
 .price {
