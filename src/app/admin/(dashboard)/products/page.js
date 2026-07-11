@@ -21,17 +21,50 @@ function ProductsContent() {
   const collection = searchParams.get("collection");
   const activeTab = collection === "handmade" ? "Handmade" : collection === "factory" ? "Factory Made" : "All";
   
+  const [productsList, setProductsList] = useState(DUMMY_PRODUCTS);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [statusFilter, setStatusFilter] = useState("All");
   const [openMenuId, setOpenMenuId] = useState(null);
+  const [productToDelete, setProductToDelete] = useState(null);
 
   const handleMenuClick = (id) => {
     setOpenMenuId(openMenuId === id ? null : id);
   };
+
+  const handleDeleteClick = (id) => {
+    setProductToDelete(id);
+    setOpenMenuId(null);
+  };
+
+  const confirmDelete = () => {
+    if (productToDelete) {
+      setProductsList(prev => prev.filter(p => p.id !== productToDelete));
+      setProductToDelete(null);
+    }
+  };
+
+  const handleDuplicate = (id) => {
+    const product = productsList.find(p => p.id === id);
+    if (product) {
+      const newProduct = { ...product, id: Date.now(), name: product.name + " (Copy)" };
+      setProductsList(prev => [newProduct, ...prev]);
+    }
+    setOpenMenuId(null);
+  };
+
+  const handleToggleFeature = (id) => {
+    setProductsList(prev => prev.map(p => p.id === id ? { ...p, featured: !p.featured } : p));
+    setOpenMenuId(null);
+  };
+
+  const handleEdit = (id) => {
+    router.push(`/admin/products/new?edit=${id}`);
+    setOpenMenuId(null);
+  };
   
-  const filteredProducts = DUMMY_PRODUCTS.filter(product => {
+  const filteredProducts = productsList.filter(product => {
     // Tab Filter
     if (activeTab !== "All" && product.collection !== activeTab) return false;
     
@@ -182,12 +215,12 @@ function ProductsContent() {
                   </button>
                   {openMenuId === product.id && (
                     <div className={styles.kebabMenu}>
-                      <button className={styles.kebabItem} onClick={() => setOpenMenuId(null)}>Edit</button>
-                      <button className={styles.kebabItem} onClick={() => setOpenMenuId(null)}>Duplicate</button>
-                      <button className={styles.kebabItem} onClick={() => setOpenMenuId(null)}>
+                      <button className={styles.kebabItem} onClick={() => handleEdit(product.id)}>Edit</button>
+                      <button className={styles.kebabItem} onClick={() => handleDuplicate(product.id)}>Duplicate</button>
+                      <button className={styles.kebabItem} onClick={() => handleToggleFeature(product.id)}>
                         {product.featured ? "Unfeature" : "Feature"}
                       </button>
-                      <button className={`${styles.kebabItem} ${styles.kebabDelete}`} onClick={() => setOpenMenuId(null)}>Delete</button>
+                      <button className={`${styles.kebabItem} ${styles.kebabDelete}`} onClick={() => handleDeleteClick(product.id)}>Delete</button>
                     </div>
                   )}
                 </td>
@@ -238,6 +271,19 @@ function ProductsContent() {
           ><ChevronRight size={16}/></button>
         </div>
       </div>
+
+      {productToDelete && (
+        <div className={styles.modalOverlay} onClick={() => setProductToDelete(null)}>
+          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+            <h3 className={styles.modalTitle}>Delete Product</h3>
+            <p className={styles.modalText}>Are you sure you want to delete this product? This action cannot be undone.</p>
+            <div className={styles.modalActions}>
+              <button className={styles.modalBtnCancel} onClick={() => setProductToDelete(null)}>Cancel</button>
+              <button className={styles.modalBtnDelete} onClick={confirmDelete}>Delete</button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
