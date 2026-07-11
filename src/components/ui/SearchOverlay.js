@@ -7,7 +7,7 @@ import styles from "@/styles/pages/collection.module.css";
 
 function SearchIconSVG() {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
       <circle cx="11" cy="11" r="8" />
       <path d="m21 21-4.3-4.3" />
     </svg>
@@ -16,7 +16,7 @@ function SearchIconSVG() {
 
 function CloseIcon() {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
       <path d="M18 6 6 18" />
       <path d="m6 6 12 12" />
     </svg>
@@ -52,7 +52,7 @@ export default function SearchOverlay() {
         margin: "0 auto",
         width: "100%",
       }}>
-        <h2 style={{ fontFamily: "var(--font-heading)", fontStyle: "italic", fontSize: "var(--text-2xl)" }}>
+        <h2 style={{ fontFamily: "var(--font-heading)", fontStyle: "italic", fontSize: "var(--text-xl)", color: "var(--color-text-secondary)" }}>
           Search
         </h2>
         <button
@@ -75,7 +75,7 @@ export default function SearchOverlay() {
       </div>
 
       {/* Search Input */}
-      <div style={{ maxWidth: 600, margin: "0 auto", width: "100%", padding: "0 var(--space-6)" }}>
+      <div style={{ maxWidth: 360, margin: "0 auto", width: "100%", padding: "0 var(--space-6)" }}>
         <div className={styles.searchInputWrapper}>
           <span className={styles.searchIcon}><SearchIconSVG /></span>
           <input
@@ -166,12 +166,7 @@ export default function SearchOverlay() {
           </div>
         )}
 
-        {!query && (
-          <div style={{ textAlign: "center", padding: "var(--space-12) 0", color: "var(--color-text-tertiary)" }}>
-            <p style={{ fontSize: "2rem", marginBottom: "var(--space-3)" }}>✨</p>
-            <p>Start typing to search products</p>
-          </div>
-        )}
+
       </div>
     </div>
   );

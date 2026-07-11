@@ -252,22 +252,22 @@ function ProductsContent() {
           ><ChevronLeft size={16}/></button>
           
           <button 
-            style={{ padding: "5px 12px", border: currentPage === 1 ? "1px solid var(--color-primary)" : "1px solid #EEE", background: currentPage === 1 ? "var(--color-primary-100)" : "white", color: currentPage === 1 ? "var(--color-primary)" : "#333", borderRadius: "6px", fontWeight: currentPage === 1 ? "bold" : "normal", cursor: "pointer" }}
+            style={{ padding: "5px 12px", border: currentPage === 1 ? "1px solid var(--color-bg-warm)" : "1px solid #EEE", background: currentPage === 1 ? "var(--color-bg-warm)" : "white", color: currentPage === 1 ? "var(--color-primary)" : "#333", borderRadius: "6px", fontWeight: currentPage === 1 ? "bold" : "normal", cursor: "pointer" }}
             onClick={() => setCurrentPage(1)}
           >1</button>
           <button 
-            style={{ padding: "5px 12px", border: currentPage === 2 ? "1px solid var(--color-primary)" : "1px solid #EEE", background: currentPage === 2 ? "var(--color-primary-100)" : "white", color: currentPage === 2 ? "var(--color-primary)" : "#333", borderRadius: "6px", fontWeight: currentPage === 2 ? "bold" : "normal", cursor: "pointer" }}
+            style={{ padding: "5px 12px", border: currentPage === 2 ? "1px solid var(--color-bg-warm)" : "1px solid #EEE", background: currentPage === 2 ? "var(--color-bg-warm)" : "white", color: currentPage === 2 ? "var(--color-primary)" : "#333", borderRadius: "6px", fontWeight: currentPage === 2 ? "bold" : "normal", cursor: "pointer" }}
             onClick={() => setCurrentPage(2)}
           >2</button>
           <button 
-            style={{ padding: "5px 12px", border: currentPage === 3 ? "1px solid var(--color-primary)" : "1px solid #EEE", background: currentPage === 3 ? "var(--color-primary-100)" : "white", color: currentPage === 3 ? "var(--color-primary)" : "#333", borderRadius: "6px", fontWeight: currentPage === 3 ? "bold" : "normal", cursor: "pointer" }}
+            style={{ padding: "5px 12px", border: currentPage === 3 ? "1px solid var(--color-bg-warm)" : "1px solid #EEE", background: currentPage === 3 ? "var(--color-bg-warm)" : "white", color: currentPage === 3 ? "var(--color-primary)" : "#333", borderRadius: "6px", fontWeight: currentPage === 3 ? "bold" : "normal", cursor: "pointer" }}
             onClick={() => setCurrentPage(3)}
           >3</button>
           
           <span style={{ padding: "5px" }}>...</span>
           
           <button 
-            style={{ padding: "5px 12px", border: currentPage === 21 ? "1px solid var(--color-primary)" : "1px solid #EEE", background: currentPage === 21 ? "var(--color-primary-100)" : "white", color: currentPage === 21 ? "var(--color-primary)" : "#333", borderRadius: "6px", fontWeight: currentPage === 21 ? "bold" : "normal", cursor: "pointer" }}
+            style={{ padding: "5px 12px", border: currentPage === 21 ? "1px solid var(--color-bg-warm)" : "1px solid #EEE", background: currentPage === 21 ? "var(--color-bg-warm)" : "white", color: currentPage === 21 ? "var(--color-primary)" : "#333", borderRadius: "6px", fontWeight: currentPage === 21 ? "bold" : "normal", cursor: "pointer" }}
             onClick={() => setCurrentPage(21)}
           >21</button>
           

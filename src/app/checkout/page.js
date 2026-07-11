@@ -54,13 +54,11 @@ export default function CheckoutPage() {
         
         {/* Header matching mockup */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "var(--space-8)" }}>
-          <Link href="/cart" style={{ color: "var(--color-text)" }}>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+          <Link href="/cart" style={{ color: "var(--color-primary-light)" }}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
           </Link>
           <h1 style={{ fontSize: "1.25rem", fontWeight: 600 }}>Checkout</h1>
-          <div style={{ position: "relative" }}>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
-          </div>
+          <div style={{ width: 24 }}></div>
         </div>
 
         <form onSubmit={handleSubmit}>
@@ -221,10 +219,10 @@ export default function CheckoutPage() {
 
           <button
             type="submit"
-            className={`${btnStyles.btn} ${btnStyles.lg} ${btnStyles.full}`}
-            style={{ background: "var(--color-btn-gradient)", color: "white", border: "none", borderRadius: "12px", marginBottom: "var(--space-4)" }}
+            className={`${btnStyles.btn} ${btnStyles.lg}`}
+            style={{ background: "var(--color-primary)", color: "white", border: "none", borderRadius: "12px", margin: "0 auto var(--space-4) auto", display: "flex", width: "250px", justifyContent: "center" }}
           >
-            Place Order ✨
+            Place Order
           </button>
           
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", fontSize: "0.75rem", color: "var(--color-text-secondary)" }}>

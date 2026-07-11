@@ -38,20 +38,11 @@ export default function CartPage() {
         
         {/* Header matching mockup */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "var(--space-6)" }}>
-          <Link href="/" style={{ color: "var(--color-text)" }}>
-            <ArrowLeft size={24} />
+          <Link href="/" style={{ color: "var(--color-primary-light)" }}>
+            <ArrowLeft size={24} strokeWidth={1.5} />
           </Link>
           <h1 style={{ fontSize: "1.25rem", fontWeight: 600 }}>My Cart</h1>
-          <div style={{ position: "relative" }}>
-            <ShoppingBag size={24} />
-            <span style={{ 
-              position: "absolute", top: -4, right: -4, background: "var(--color-pink)", 
-              color: "white", width: 16, height: 16, borderRadius: "50%", 
-              fontSize: "0.6rem", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "bold"
-            }}>
-              {itemCount}
-            </span>
-          </div>
+          <div style={{ width: 24 }}></div>
         </div>
 
         {/* Free Shipping Progress */}
@@ -174,10 +165,10 @@ export default function CartPage() {
             </div>
             <Link
               href="/checkout"
-              className={`${btnStyles.btn} ${btnStyles.lg} ${btnStyles.full} ${styles.checkoutBtn}`}
-              style={{ background: "var(--color-btn-gradient)", color: "white", border: "none", borderRadius: "12px", marginTop: "var(--space-6)" }}
+              className={`${btnStyles.btn} ${btnStyles.lg} ${styles.checkoutBtn}`}
+              style={{ background: "var(--color-primary)", color: "white", border: "none", borderRadius: "12px", margin: "var(--space-6) auto 0 auto", display: "flex", width: "250px", justifyContent: "center" }}
             >
-              Checkout →
+              Checkout
             </Link>
           </div>
         </div>

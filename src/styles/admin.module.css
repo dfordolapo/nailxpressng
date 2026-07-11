@@ -485,10 +485,10 @@
 }
 
 .tab.active {
-  background-color: var(--color-primary-100);
+  background-color: var(--color-bg-warm);
   color: var(--color-primary);
   font-weight: 500;
-  border-color: var(--color-primary-100);
+  border-color: var(--color-bg-warm);
 }
 
 .filters {
