@@ -75,7 +75,7 @@ export default function CheckoutPage() {
                 <p style={{ fontWeight: 500, marginBottom: "4px" }}>Dolapo Oyekanmi</p>
                 <p style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)" }}>Surulere, Lagos State<br/>Nigeria, 101283</p>
               </div>
-              <button type="button" style={{ color: "var(--color-pink)", fontSize: "0.875rem", fontWeight: 500 }}>Change</button>
+              <button type="button" style={{ color: "var(--color-pink)", fontSize: "0.75rem", fontWeight: 500 }}>Change</button>
             </div>
           </div>
           
@@ -100,7 +100,7 @@ export default function CheckoutPage() {
                   <p style={{ fontSize: "0.75rem", color: "var(--color-text-tertiary)" }}>3-5 business days</p>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: "var(--space-3)" }}>
-                  <span style={{ fontWeight: 500 }}>$4.99</span>
+                  <span style={{ fontWeight: 500 }}>{formatPrice(2500)}</span>
                   <div style={{ width: 18, height: 18, borderRadius: "50%", border: `2px solid ${shippingMethod === "standard" ? "var(--color-pink)" : "var(--color-border)"}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
                     {shippingMethod === "standard" && <div style={{ width: 10, height: 10, borderRadius: "50%", background: "var(--color-pink)" }}></div>}
                   </div>
@@ -120,14 +120,14 @@ export default function CheckoutPage() {
                   <p style={{ fontSize: "0.75rem", color: "var(--color-text-tertiary)" }}>1-2 business days</p>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: "var(--space-3)" }}>
-                  <span style={{ fontWeight: 500 }}>$9.99</span>
+                  <span style={{ fontWeight: 500 }}>{formatPrice(5000)}</span>
                   <div style={{ width: 18, height: 18, borderRadius: "50%", border: `2px solid ${shippingMethod === "express" ? "var(--color-pink)" : "var(--color-border)"}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
                     {shippingMethod === "express" && <div style={{ width: 10, height: 10, borderRadius: "50%", background: "var(--color-pink)" }}></div>}
                   </div>
                 </div>
               </div>
               <p style={{ fontSize: "0.75rem", color: "var(--color-text-secondary)", display: "flex", alignItems: "center", gap: "4px" }}>
-                <span style={{ color: "var(--color-pink)" }}>✓</span> Free shipping on orders over $95!
+                <span style={{ color: "var(--color-pink)" }}>✓</span> Free shipping on orders over {formatPrice(20000)}!
               </p>
             </div>
           </div>
