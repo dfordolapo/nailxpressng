@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { getProductsByCategory, filterProducts, sortProducts } from "@/data/products";
+import { getProductsByCategory, filterProducts, sortProducts, getFeaturedProducts } from "@/data/products";
 import { getCategoryBySlug } from "@/data/categories";
 import HandmadeProductCard from "@/components/product/HandmadeProductCard";
 import FilterSidebar from "@/components/product/FilterSidebar";
@@ -17,6 +17,10 @@ export default function FactoryPage() {
   const [filters, setFilters] = useState({ nailShape: [], style: [], length: [], priceRange: null, inStockOnly: false });
   const [sortBy, setSortBy] = useState("popular");
   const [viewMode, setViewMode] = useState("grid");
+
+  const featuredFactory = useMemo(() => {
+    return getFeaturedProducts().filter(p => p.category === "factory");
+  }, []);
 
   const filtered = useMemo(() => {
     const f = filterProducts(allProducts, filters);
@@ -45,7 +49,7 @@ export default function FactoryPage() {
           <p className={pageStyles.collectionDescription}>{category.description}</p>
         </div>
 
-        <CategoryShowcase mini />
+        <CategoryShowcase mini items={featuredFactory} />
 
         <div className={filterStyles.collectionLayout}>
           <FilterSidebar filters={filters} onFilterChange={setFilters} />

@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { ShoppingCart } from 'lucide-react';
 import styles from './CategoryShowcase.module.css';
 
 const MOODS = [
@@ -16,7 +17,17 @@ const MOODS = [
 const SCROLL_SPEED = 0.8;
 const RESUME_DELAY = 2000;
 
-export default function CategoryShowcase({ mini = false }) {
+export default function CategoryShowcase({ mini = false, items = null }) {
+  const displayItems = items ? items.map((p, i) => ({
+    id: p.id,
+    name: p.name,
+    image: MOODS[i % MOODS.length].image,
+    color: MOODS[i % MOODS.length].color,
+    isProduct: true,
+    slug: p.slug
+  })) : MOODS;
+
+  const marqueeItems = [...displayItems, ...displayItems, ...displayItems, ...displayItems];
   const [flippedId, setFlippedId] = useState(null);
   const trackRef = useRef(null);
   const autoScrollRef = useRef(null);
@@ -117,31 +128,37 @@ export default function CategoryShowcase({ mini = false }) {
       
       <div className={styles.gridWrapper} ref={trackRef}>
         <div className={styles.marqueeTrack}>
-          {[...MOODS, ...MOODS, ...MOODS, ...MOODS].map((mood, i) => (
+          {marqueeItems.map((item, i) => (
             <div
-              key={`${mood.id}-${i}`}
-              className={`${styles.card} ${flippedId === `${mood.id}-${i}` ? styles.flipped : ''}`}
-              onClick={(e) => handleFlip(e, `${mood.id}-${i}`)}
+              key={`${item.id}-${i}`}
+              className={`${styles.card} ${flippedId === `${item.id}-${i}` ? styles.flipped : ''}`}
+              onClick={(e) => handleFlip(e, `${item.id}-${i}`)}
             >
               <div className={styles.cardInner}>
                 <div className={styles.cardFront}>
                   <div className={styles.imageContainer}>
                     <div className={styles.imageInner}>
                       <Image
-                        src={mood.image}
-                        alt={`${mood.name} style press-on nails`}
+                        src={item.image}
+                        alt={item.name}
                         fill
                         sizes="(max-width: 768px) 180px, 20vw"
                         className={styles.image}
                       />
                     </div>
                   </div>
-                  <div className={styles.label} style={{ backgroundColor: mood.color }}>
-                    {mood.name}
+                  <div className={styles.label} style={{ backgroundColor: item.color }}>
+                    {item.name}
                   </div>
                 </div>
-                <div className={styles.cardBack} style={{ backgroundColor: mood.color }}>
-                  <p className={styles.punLine}>{mood.pun}</p>
+                <div className={styles.cardBack} style={{ backgroundColor: item.color }}>
+                  {item.isProduct ? (
+                    <Link href={`/product/${item.slug}`} className={styles.viewBtn} onClick={(e) => e.stopPropagation()} aria-label="View Product">
+                      <ShoppingCart size={22} strokeWidth={1.25} />
+                    </Link>
+                  ) : (
+                    <p className={styles.punLine}>{item.pun}</p>
+                  )}
                 </div>
               </div>
             </div>
