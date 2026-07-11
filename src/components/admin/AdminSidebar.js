@@ -20,9 +20,9 @@ function SidebarContent() {
       <div className={styles.mobileHeader}>
         <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
           <button className={styles.hamburgerBtn} onClick={() => setIsMobileOpen(true)}>
-            <Menu size={24} />
+            <Menu size={22} strokeWidth={1.5} />
           </button>
-          <div style={{ fontWeight: 600, fontSize: "1.1rem" }}>
+          <div style={{ fontWeight: 700, fontSize: "1.3rem", fontFamily: "'Cormorant Upright', Georgia, serif", color: "var(--color-primary)" }}>
             Nail Express Admin
           </div>
         </div>

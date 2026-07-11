@@ -54,7 +54,7 @@
 
 /* ── Logo ─────────────────────────────────────────────────────────── */
 .logo {
-  font-family: var(--font-heading);
+  font-family: 'Cormorant Upright', Georgia, serif !important;
   font-size: var(--text-2xl);
   font-weight: var(--weight-bold);
   color: var(--color-text);

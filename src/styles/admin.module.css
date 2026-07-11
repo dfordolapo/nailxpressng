@@ -27,9 +27,9 @@
 }
 
 .logoText {
-  font-family: var(--font-primary);
+  font-family: 'Cormorant Upright', Georgia, serif !important;
   font-size: 1.25rem;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--color-primary); /* Deep red/burgundy */
   text-decoration: none;
   display: flex;
@@ -243,12 +243,12 @@
 }
 
 .sectionTitle {
-  font-size: 1.1rem;
+  font-size: 1.5rem;
   font-weight: 600;
 }
 
 .viewAll {
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   color: var(--color-text);
   text-decoration: none;
   display: flex;
@@ -648,7 +648,7 @@
     display: flex;
     background: none;
     border: none;
-    color: var(--color-text);
+    color: var(--color-primary-800);
     cursor: pointer;
     padding: 0;
   }
@@ -701,7 +701,7 @@
   /* Typography Reductions */
   .pageTitle { font-size: 1.3rem; }
   .pageSubtitle { font-size: 0.85rem; }
-  .sectionTitle { font-size: 1rem; }
+  .sectionTitle { font-size: 1.3rem; }
   .formSectionTitle { font-size: 1rem; }
   .statValue { font-size: 1.5rem; }
   .statTitle { font-size: 0.8rem; }
