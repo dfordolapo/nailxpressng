@@ -781,3 +781,9 @@
 .isHandmade .frontInfo { margin-top: 14px; }
 .isHandmade .name { margin-bottom: 14px; }
 .isHandmade .priceRow { margin-bottom: 14px; }
+
+@media (max-width: 768px) {
+  .isHandmade .imageArea {
+    aspect-ratio: 1 / 1;
+  }
+}
