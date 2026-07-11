@@ -207,7 +207,7 @@
 
 .frontInfo {
   padding: 0 4px;
-  margin-top: 12px;
+  margin-top: 6px;
 }
 
 .category {
@@ -324,6 +324,7 @@
 
 .backHeader {
   text-align: center;
+  margin-top: -8px;
   margin-bottom: var(--space-1);
   padding-bottom: var(--space-2);
   border-bottom: 1px solid var(--color-border-light);
