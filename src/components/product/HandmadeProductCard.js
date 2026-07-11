@@ -220,7 +220,7 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
             <div className={styles.backContent} onClick={(e) => e.stopPropagation()}>
               {product.category === "handmade" && (
                 <div className={styles.selectorGroup}>
-                  <span className={styles.selectorLabel}>Select Size</span>
+                  <span className={styles.selectorLabel}>Size</span>
                   <select
                     className={styles.sizeDropdown}
                     value={selectedSize || ""}
@@ -258,6 +258,10 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
           </div>
         ) : (
           <div className={`${styles.cardBack} ${!flipped ? styles.hidden : ""}`}>
+            <button className={styles.flipBackBtnAbsolute} onClick={handleFlip} aria-label="Go back">
+              <ArrowLeftIcon />
+            </button>
+            
             <div className={styles.backHeader}>
               <h3 className={styles.backName}>{product.name}</h3>
               <span className={styles.backPrice}>{formatPrice(product.price)}</span>
@@ -267,7 +271,7 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
 
             {product.category === "handmade" && (
               <div className={styles.selectorGroup}>
-                <span className={styles.selectorLabel}>Select Size</span>
+                <span className={styles.selectorLabel}>Size</span>
                 <select
                   className={styles.sizeDropdown}
                   value={selectedSize || ""}
@@ -303,9 +307,6 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
             </button>
 
             <div className={styles.backActions}>
-              <button className={styles.flipBackBtn} onClick={handleFlip}>
-                <ArrowLeftIcon /> Back
-              </button>
               <Link
                 href={`/product/${product.slug}`}
                 className={styles.viewLink}

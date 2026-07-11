@@ -318,6 +318,7 @@
   flex-direction: column;
   padding: var(--space-4);
   z-index: 2;
+  position: relative;
 }
 
 .backHeader {
@@ -483,48 +484,59 @@
   margin-top: 4px;
 }
 
-.flipBackBtn {
-  flex: 1;
+.flipBackBtnAbsolute {
+  position: absolute;
+  top: 10px;
+  left: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-1);
-  padding: 4px;
-  font-size: 10px;
-  line-height: 1;
-  font-weight: var(--weight-medium);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(4px);
   color: var(--color-text-tertiary);
   border: 1px solid var(--color-border-light);
-  border-radius: var(--radius-full);
-  background: transparent;
   cursor: pointer;
+  z-index: 10;
   transition: all var(--transition-fast);
+  padding: 0;
 }
 
-.flipBackBtn:hover { border-color: var(--color-primary); color: var(--color-primary); }
-.flipBackBtn svg { width: 14px; height: 14px; transform: translateY(-1px); }
+.flipBackBtnAbsolute:hover {
+  background: white;
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.flipBackBtnAbsolute svg {
+  width: 14px;
+  height: 14px;
+}
 
 .viewLink {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 4px;
+  padding: 6px 12px;
   font-size: 10px;
   font-weight: var(--weight-medium);
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: var(--color-primary);
-  border: 1px solid var(--color-primary);
-  border-radius: var(--radius-full);
+  color: var(--color-text);
   background: transparent;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-text);
   transition: all var(--transition-fast);
   text-decoration: none;
 }
 
-.viewLink:hover { background: var(--color-primary); color: white; }
+.viewLink:hover {
+  background: var(--color-text-secondary);
+  color: white;
+}
 
 .viewLinkDesktop { display: inline; }
 .viewLinkMobile { display: none; }
@@ -602,14 +614,15 @@
 
 .listGrid .cardBack .backContent .selectorGroup {
   margin-bottom: 0;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
 }
 
 .listGrid .cardBack .backContent .selectorLabel {
   font-size: 9px;
-  margin-bottom: var(--space-1);
+  margin-bottom: 0;
   display: block;
-  text-align: center;
 }
 
 .listGrid .cardBack .backContent .sizeOptions {
@@ -719,8 +732,9 @@
   .addBtn { padding: 12px 16px; font-size: 7px; margin-top: -2px; width: 65%; margin-left: auto; margin-right: auto; }
   .addBtn.added { width: auto; padding-left: 16px; padding-right: 16px; white-space: nowrap; }
   .addBtnContent svg { width: 10px; height: 10px; }
-  .flipBackBtn, .viewLink { padding: 5px var(--space-2); font-size: 7px; }
-  .flipBackBtn svg { width: 10px; height: 10px; transform: translateY(-1px); }
+  .flipBackBtnAbsolute { top: 6px; left: 6px; width: 24px; height: 24px; }
+  .flipBackBtnAbsolute svg { width: 12px; height: 12px; }
+  .viewLink { padding: 5px var(--space-2); font-size: 7px; width: 100%; }
   .viewLinkDesktop { display: none; }
   .viewLinkMobile { display: inline; }
 
