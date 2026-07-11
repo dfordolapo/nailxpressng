@@ -49,7 +49,18 @@ export default function HandmadePage() {
           <p className={pageStyles.collectionDescription}>{category.description}</p>
         </div>
 
-        <CategoryShowcase mini items={featuredHandmade} />
+        {featuredHandmade.length > 0 && (
+          <div style={{ marginBottom: "var(--space-12)" }}>
+            <h2 style={{ fontSize: "1.5rem", marginBottom: "var(--space-6)", fontFamily: "var(--font-heading)" }}>Featured Handmade Sets</h2>
+            <div className={gridStyles.masonryGrid}>
+              {featuredHandmade.map((product) => (
+                <div key={product.id} className={gridStyles.masonryItem}>
+                  <HandmadeProductCard product={product} viewMode="grid" />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         <div className={filterStyles.collectionLayout}>
           <FilterSidebar filters={filters} onFilterChange={setFilters} />
