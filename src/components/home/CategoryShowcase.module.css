@@ -195,3 +195,44 @@
   .desktopBtn { display: none; }
   .mobileBtn { display: inline-flex; }
 }
+
+/* ── Mini Version ─────────────────────────────────────────────────── */
+.mini {
+  padding: var(--space-6) 0 0 !important;
+  background: transparent !important;
+}
+
+.mini .gridWrapper {
+  margin-bottom: var(--space-4) !important;
+  padding: 0 0 var(--space-4) !important;
+}
+
+.mini .card {
+  width: 90px !important;
+}
+
+.mini .label {
+  padding: 4px 8px !important;
+  font-size: 0.5rem !important;
+  width: auto !important;
+}
+
+@media (min-width: 768px) {
+  .mini .card {
+    width: 120px !important;
+  }
+  .mini .label {
+    font-size: 0.65rem !important;
+    padding: 6px 12px !important;
+  }
+}
+
+.mini .punLine {
+  font-size: 0.6rem !important;
+}
+
+@media (min-width: 768px) {
+  .mini .punLine {
+    font-size: 0.8rem !important;
+  }
+}

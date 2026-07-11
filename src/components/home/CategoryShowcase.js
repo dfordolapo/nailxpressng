@@ -16,7 +16,7 @@ const MOODS = [
 const SCROLL_SPEED = 0.8;
 const RESUME_DELAY = 2000;
 
-export default function CategoryShowcase() {
+export default function CategoryShowcase({ mini = false }) {
   const [flippedId, setFlippedId] = useState(null);
   const trackRef = useRef(null);
   const autoScrollRef = useRef(null);
@@ -108,10 +108,12 @@ export default function CategoryShowcase() {
   }, [pauseAutoScroll, resumeAutoScroll]);
 
   return (
-    <section className={styles.section}>
-      <h2 className={styles.title}>
-        Nails that match your every mood
-      </h2>
+    <section className={`${styles.section} ${mini ? styles.mini : ''}`}>
+      {!mini && (
+        <h2 className={styles.title}>
+          Nails that match your every mood
+        </h2>
+      )}
       
       <div className={styles.gridWrapper} ref={trackRef}>
         <div className={styles.marqueeTrack}>
@@ -155,14 +157,16 @@ export default function CategoryShowcase() {
         </filter>
       </svg>
 
-      <div>
-        <Link href="/shop" className={`${styles.button} ${styles.desktopBtn}`}>
-          Explore all collections
-        </Link>
-        <Link href="/collection-hub" className={`${styles.button} ${styles.mobileBtn}`}>
-          Explore all collections
-        </Link>
-      </div>
+      {!mini && (
+        <div>
+          <Link href="/shop" className={`${styles.button} ${styles.desktopBtn}`}>
+            Explore all collections
+          </Link>
+          <Link href="/collection-hub" className={`${styles.button} ${styles.mobileBtn}`}>
+            Explore all collections
+          </Link>
+        </div>
+      )}
     </section>
   );
 }

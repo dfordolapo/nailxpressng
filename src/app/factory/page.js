@@ -5,6 +5,7 @@ import { getProductsByCategory, filterProducts, sortProducts } from "@/data/prod
 import { getCategoryBySlug } from "@/data/categories";
 import HandmadeProductCard from "@/components/product/HandmadeProductCard";
 import FilterSidebar from "@/components/product/FilterSidebar";
+import CategoryShowcase from "@/components/home/CategoryShowcase";
 import { SORT_OPTIONS } from "@/lib/constants";
 import pageStyles from "@/styles/pages/collection.module.css";
 import filterStyles from "@/styles/components/filter.module.css";
@@ -43,6 +44,8 @@ export default function FactoryPage() {
           </div>
           <p className={pageStyles.collectionDescription}>{category.description}</p>
         </div>
+
+        <CategoryShowcase mini />
 
         <div className={filterStyles.collectionLayout}>
           <FilterSidebar filters={filters} onFilterChange={setFilters} />
