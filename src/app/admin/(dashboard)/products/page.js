@@ -7,12 +7,12 @@ import { Plus, Search, Filter, MoreVertical, Star, ChevronLeft, ChevronRight } f
 import styles from "@/styles/admin.module.css";
 
 const DUMMY_PRODUCTS = [
-  { id: 1, name: "Blush Bloom", collection: "Handmade", price: 12500, status: "In Stock", featured: true, image: "https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&q=80&w=80" },
-  { id: 2, name: "Red Romance", collection: "Factory Made", price: 8000, status: "In Stock", featured: true, image: "https://images.unsplash.com/photo-1522337360788-8b13fee7a371?auto=format&fit=crop&q=80&w=80" },
-  { id: 3, name: "Gold Luxe", collection: "Handmade", price: 15000, status: "Out of Stock", featured: true, image: "https://images.unsplash.com/photo-1595868228308-0118fb01b315?auto=format&fit=crop&q=80&w=80" },
-  { id: 4, name: "Soft Pink", collection: "Factory Made", price: 6500, status: "In Stock", featured: false, image: "https://images.unsplash.com/photo-1519014816548-bf5fe059e98b?auto=format&fit=crop&q=80&w=80" },
-  { id: 5, name: "Purple Haze", collection: "Factory Made", price: 7500, status: "In Stock", featured: false, image: "https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&q=80&w=80" },
-  { id: 6, name: "Pearl Shine", collection: "Handmade", price: 14000, status: "In Stock", featured: true, image: "https://images.unsplash.com/photo-1522337360788-8b13fee7a371?auto=format&fit=crop&q=80&w=80" },
+  { id: 1, name: "Blush Bloom", collection: "Handmade", price: 12500, stock: 24, status: "In Stock", featured: true, image: "https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&q=80&w=80" },
+  { id: 2, name: "Red Romance", collection: "Factory Made", price: 8000, stock: 15, status: "In Stock", featured: true, image: "https://images.unsplash.com/photo-1522337360788-8b13fee7a371?auto=format&fit=crop&q=80&w=80" },
+  { id: 3, name: "Gold Luxe", collection: "Handmade", price: 15000, stock: 0, status: "Out of Stock", featured: true, image: "https://images.unsplash.com/photo-1595868228308-0118fb01b315?auto=format&fit=crop&q=80&w=80" },
+  { id: 4, name: "Soft Pink", collection: "Factory Made", price: 6500, stock: 40, status: "In Stock", featured: false, image: "https://images.unsplash.com/photo-1519014816548-bf5fe059e98b?auto=format&fit=crop&q=80&w=80" },
+  { id: 5, name: "Purple Haze", collection: "Factory Made", price: 7500, stock: 12, status: "In Stock", featured: false, image: "https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&q=80&w=80" },
+  { id: 6, name: "Pearl Shine", collection: "Handmade", price: 14000, stock: 5, status: "In Stock", featured: true, image: "https://images.unsplash.com/photo-1522337360788-8b13fee7a371?auto=format&fit=crop&q=80&w=80" },
 ];
 
 function ProductsContent() {
@@ -71,8 +71,10 @@ function ProductsContent() {
     // Search Filter
     if (searchQuery && !product.name.toLowerCase().includes(searchQuery.toLowerCase())) return false;
     
-    // Status Filter
-    if (statusFilter !== "All" && product.status !== statusFilter) return false;
+    // Status/Featured Filter
+    if (statusFilter === "In Stock" && product.status !== "In Stock") return false;
+    if (statusFilter === "Out of Stock" && product.status !== "Out of Stock") return false;
+    if (statusFilter === "Featured" && !product.featured) return false;
     
     return true;
   });
@@ -152,7 +154,7 @@ function ProductsContent() {
                 boxShadow: "0 10px 25px rgba(0,0,0,0.05)",
                 zIndex: 10 
               }}>
-                <div style={{ fontWeight: 600, fontSize: "0.9rem", marginBottom: "10px" }}>Status</div>
+                <div style={{ fontWeight: 600, fontSize: "0.9rem", marginBottom: "10px" }}>Filter By</div>
                 <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
                   <label style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "0.9rem", cursor: "pointer" }}>
                     <input type="radio" name="status" checked={statusFilter === "All"} onChange={() => { setStatusFilter("All"); setCurrentPage(1); }} /> All
@@ -162,6 +164,9 @@ function ProductsContent() {
                   </label>
                   <label style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "0.9rem", cursor: "pointer" }}>
                     <input type="radio" name="status" checked={statusFilter === "Out of Stock"} onChange={() => { setStatusFilter("Out of Stock"); setCurrentPage(1); }} /> Out of Stock
+                  </label>
+                  <label style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "0.9rem", cursor: "pointer" }}>
+                    <input type="radio" name="status" checked={statusFilter === "Featured"} onChange={() => { setStatusFilter("Featured"); setCurrentPage(1); }} /> Featured
                   </label>
                 </div>
               </div>
@@ -177,7 +182,8 @@ function ProductsContent() {
               <th>Product</th>
               <th>Collection</th>
               <th>Price</th>
-              <th>Status</th>
+              <th>Stock</th>
+              <th>Availability</th>
               <th>Featured</th>
               <th style={{ textAlign: "right" }}>Actions</th>
             </tr>
@@ -194,6 +200,7 @@ function ProductsContent() {
                 </td>
                 <td style={{ color: "#555" }}>{product.collection}</td>
                 <td style={{ fontWeight: 500 }}>₦{product.price.toLocaleString()}</td>
+                <td style={{ color: "#555" }}>{product.stock}</td>
                 <td>
                   <span className={`${styles.badge} ${product.status === "In Stock" ? styles.inStock : styles.outOfStock}`}>
                     {product.status}

@@ -7,6 +7,26 @@ import { useState } from "react";
 
 export default function NewProduct() {
   const [activeTab, setActiveTab] = useState("basic");
+  const [stockQuantity, setStockQuantity] = useState("");
+  const [availability, setAvailability] = useState("In Stock");
+  const [isFeatured, setIsFeatured] = useState(false);
+
+  const handleStockChange = (e) => {
+    const val = e.target.value;
+    if (val === "") {
+      setStockQuantity("");
+      return;
+    }
+    const num = parseInt(val, 10);
+    if (num >= 0) {
+      setStockQuantity(num);
+      if (num === 0) {
+        setAvailability("Out of Stock");
+      } else if (num > 0 && stockQuantity === 0) {
+        setAvailability("In Stock");
+      }
+    }
+  };
   
   return (
     <>
@@ -199,23 +219,39 @@ export default function NewProduct() {
                 </div>
                 <div className={styles.formGroup}>
                   <label className={styles.label}>Inventory</label>
-                  <input type="number" className={styles.input} placeholder="Quantity in stock" />
+                  <input 
+                    type="number" 
+                    className={styles.input} 
+                    placeholder="Quantity in stock" 
+                    min="0"
+                    value={stockQuantity}
+                    onChange={handleStockChange}
+                  />
                 </div>
               </div>
 
               <div className={styles.grid2}>
                 <div className={styles.formGroup}>
-                  <label className={styles.label}>Status</label>
-                  <select className={styles.select}>
-                    <option>In Stock</option>
-                    <option>Out of Stock</option>
+                  <label className={styles.label}>Availability</label>
+                  <select 
+                    className={styles.select}
+                    value={availability}
+                    onChange={(e) => setAvailability(e.target.value)}
+                  >
+                    <option value="In Stock">In Stock</option>
+                    <option value="Out of Stock">Out of Stock</option>
                   </select>
                 </div>
                 <div className={styles.formGroup}>
                   <label className={styles.label}>Featured Product</label>
                   <div style={{ display: "flex", alignItems: "center", height: "46px" }}>
                     <label style={{ display: "flex", alignItems: "center", gap: "10px", cursor: "pointer" }}>
-                      <input type="checkbox" style={{ width: "18px", height: "18px", accentColor: "var(--color-primary)" }} />
+                      <input 
+                        type="checkbox" 
+                        style={{ width: "18px", height: "18px", accentColor: "var(--color-primary)" }} 
+                        checked={isFeatured}
+                        onChange={(e) => setIsFeatured(e.target.checked)}
+                      />
                       <span style={{ fontSize: "0.95rem", color: "#333" }}>Show on homepage</span>
                     </label>
                   </div>
