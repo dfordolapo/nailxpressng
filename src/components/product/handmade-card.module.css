@@ -771,3 +771,10 @@
   .listGrid .cardBack .backContent .addBtn { padding: 12px 16px; font-size: 7px; width: 65%; margin-left: auto; margin-right: auto; }
   .listGrid .cardBack .backContent .addBtn.added { width: auto; padding-left: 16px; padding-right: 16px; white-space: nowrap; }
 }
+ 
+ / *    % %  H a n d m a d e   S p e c i f i c   S p a c i n g    % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %  * /  
+ . i s H a n d m a d e   . i m a g e A r e a   {   a s p e c t - r a t i o :   1 . 5   /   1 ;   }  
+ . i s H a n d m a d e   . f r o n t I n f o   {   m a r g i n - t o p :   1 4 p x ;   }  
+ . i s H a n d m a d e   . n a m e   {   m a r g i n - b o t t o m :   1 4 p x ;   }  
+ . i s H a n d m a d e   . p r i c e R o w   {   m a r g i n - b o t t o m :   1 4 p x ;   }  
+ 

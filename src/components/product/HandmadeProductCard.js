@@ -132,7 +132,7 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
 
   return (
     <div
-      className={styles.cardWrapper}
+      className={`${styles.cardWrapper} ${product.category === "handmade" ? styles.isHandmade : ""}`}
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
