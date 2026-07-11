@@ -54,10 +54,10 @@ export default function CheckoutPage() {
         
         {/* Header matching mockup */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "var(--space-8)" }}>
-          <Link href="/cart" style={{ color: "var(--color-primary-light)" }}>
+          <Link href="/cart" style={{ color: "var(--color-primary-light)", display: "flex", alignItems: "center" }}>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
           </Link>
-          <h1 style={{ fontSize: "1.25rem", fontWeight: 600 }}>Checkout</h1>
+          <h1 style={{ fontSize: "1.25rem", fontWeight: 600, color: "var(--color-primary)", margin: 0, lineHeight: 1 }}>Checkout</h1>
           <div style={{ width: 24 }}></div>
         </div>
 

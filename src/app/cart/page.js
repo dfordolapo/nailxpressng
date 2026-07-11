@@ -38,10 +38,10 @@ export default function CartPage() {
         
         {/* Header matching mockup */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "var(--space-6)" }}>
-          <Link href="/" style={{ color: "var(--color-primary-light)" }}>
+          <Link href="/" style={{ color: "var(--color-primary-light)", display: "flex", alignItems: "center" }}>
             <ArrowLeft size={24} strokeWidth={1.5} />
           </Link>
-          <h1 style={{ fontSize: "1.25rem", fontWeight: 600 }}>My Cart</h1>
+          <h1 style={{ fontSize: "1.25rem", fontWeight: 600, color: "var(--color-primary)", margin: 0, lineHeight: 1 }}>My Cart</h1>
           <div style={{ width: 24 }}></div>
         </div>
 

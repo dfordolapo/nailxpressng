@@ -25,7 +25,7 @@ export default function WishlistPage() {
     return (
       <div className={pageStyles.wishlistPage}>
         <div className="container" style={{ textAlign: "center", padding: "var(--space-20) 0" }}>
-          <div style={{ fontSize: "4rem", marginBottom: "var(--space-6)", opacity: 0.5 }}>💝</div>
+
           <h1 style={{ fontFamily: "var(--font-heading)", fontSize: "var(--text-3xl)", fontStyle: "italic", marginBottom: "var(--space-3)" }}>
             Your Wishlist is Empty
           </h1>
@@ -43,29 +43,15 @@ export default function WishlistPage() {
   return (
     <div className={pageStyles.wishlistPage} id="wishlist-page">
       <div className="container">
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "var(--space-2)" }}>
-          <Link href="/" style={{ color: "var(--color-text)" }}>
-            <ArrowLeft size={24} />
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "var(--space-8)" }}>
+          <Link href="/" style={{ color: "var(--color-primary-light)", display: "flex", alignItems: "center" }}>
+            <ArrowLeft size={24} strokeWidth={1.5} />
           </Link>
-          <h1 style={{ fontSize: "1.25rem", fontWeight: 600 }}>My Wishlist</h1>
-          <div style={{ position: "relative" }}>
-            <Heart size={24} />
-            <span style={{ 
-              position: "absolute", top: -4, right: -4, background: "var(--color-pink)", 
-              color: "white", width: 16, height: 16, borderRadius: "50%", 
-              fontSize: "0.6rem", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "bold"
-            }}>
-              {items.length}
-            </span>
-          </div>
+          <h1 style={{ fontSize: "1.25rem", fontWeight: 600, color: "var(--color-primary)", margin: 0, lineHeight: 1 }}>My Wishlist</h1>
+          <div style={{ width: 24 }}></div>
         </div>
         
-        <p style={{ 
-          fontFamily: "var(--font-heading)", fontStyle: "italic", fontSize: "1.2rem", 
-          textAlign: "center", color: "var(--color-pink)", marginBottom: "var(--space-8)"
-        }}>
-          All the pretty things 💖
-        </p>
+
 
         <div style={{
           display: "flex",
