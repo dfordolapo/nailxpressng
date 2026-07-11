@@ -1,6 +1,6 @@
 export const SITE_NAME = "Nailexpress";
 export const SITE_TAGLINE = "Press-On Perfection";
-export const SITE_DESCRIPTION = "Premium press-on nails — handmade artistry & factory precision. Express yourself, one nail at a time.";
+export const SITE_DESCRIPTION = "Press-on perfection — handmade artistry & factory precision. Express yourself, one nail at a time.";
 
 export const CURRENCY = "₦";
 export const CURRENCY_CODE = "NGN";

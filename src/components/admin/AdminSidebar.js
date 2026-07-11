@@ -35,7 +35,7 @@ function SidebarContent() {
       <aside className={`${styles.sidebar} ${isMobileOpen ? styles.sidebarOpen : ""}`}>
         <div className={styles.sidebarLogo}>
           <Link href="/" className={styles.logoText}>
-            Nail Express <Sparkles size={16} color="var(--color-accent)" />
+            Nail Express
           </Link>
           <button className={styles.closeSidebarBtn} onClick={() => setIsMobileOpen(false)}>
             <X size={20} />

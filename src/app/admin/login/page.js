@@ -32,8 +32,7 @@ export default function AdminLogin() {
       <div className={styles.loginCard}>
 
         <p className={styles.subtitle}>
-          Back to business.<br/>
-          Log in to keep Nail Express running beautifully.
+          Welcome back, Queen.
         </p>
 
         <form onSubmit={handleLogin}>

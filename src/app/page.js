@@ -11,7 +11,7 @@ import ScrollReveal from "@/components/ScrollReveal";
 
 export const metadata = {
   title: "Nailexpress — Press-On Perfection",
-  description: "Premium press-on nails — handmade artistry & factory precision. Shop handmade and factory-made press-on nails. Express yourself, one nail at a time.",
+  description: "Press-on perfection — handmade artistry & factory precision. Shop handmade and factory-made press-on nails. Express yourself, one nail at a time.",
 };
 
 export default function Home() {

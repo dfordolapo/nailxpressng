@@ -209,8 +209,8 @@
 
 .mobileNavLink {
   display: block;
-  font-size: var(--text-lg);
-  font-family: var(--font-heading);
+  font-size: var(--text-xl);
+  font-family: var(--font-heading), serif !important;
   font-weight: var(--weight-medium);
   color: var(--color-text);
   padding: var(--space-3) 0;
