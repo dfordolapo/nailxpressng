@@ -81,7 +81,7 @@ export default function AdminAttributes() {
             <form onSubmit={handleAdd} style={{ display: "flex", gap: "10px", marginBottom: "30px" }}>
               <input 
                 type="text" 
-                placeholder={`Add new ${activeTab.slice(0, -1)}...`} 
+                placeholder={`Add new ${activeTab === 'categories' ? 'category' : activeTab.slice(0, -1)}...`}
                 className={styles.input}
                 style={{ flex: 1 }}
                 value={newValue}

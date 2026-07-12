@@ -67,7 +67,9 @@
 
 .imageWrapper {
   position: relative;
-  width: 100%;
+  width: 60%;
+  max-width: 240px;
+  margin: 0 auto;
   aspect-ratio: 3 / 4; /* Portrait illustration ratio */
 }
 
@@ -88,5 +90,10 @@
 
   .subtitle {
     font-size: var(--text-lg);
+  }
+  
+  .imageWrapper {
+    width: 100%;
+    max-width: none;
   }
 }
