@@ -10,11 +10,27 @@ export const metadata = {
   title: "Nailexpress — Press-On Perfection",
   description: "Press-on perfection — handmade artistry & factory precision. Express yourself, one nail at a time. Shop handmade and factory-made press-on nails in Nigeria.",
   keywords: "press-on nails, handmade nails, factory nails, nail art, Nigeria, custom nails",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Nailexpress",
+  },
+  formatDetection: {
+    telephone: false,
+  },
   openGraph: {
     title: "Nailexpress — Press-On Perfection",
     description: "Press-on perfection — handmade artistry & factory precision.",
     type: "website",
   },
+};
+
+export const viewport = {
+  themeColor: "#D4AF7A",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
 };
 
 export default function RootLayout({ children }) {
