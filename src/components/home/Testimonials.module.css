@@ -40,8 +40,11 @@
   background-color: var(--color-bg);
   border: 2px solid #D4AF7A;
   border-radius: var(--radius-2xl);
-  padding: var(--space-10) var(--space-8) var(--space-8);
+  padding: var(--space-6) var(--space-6) var(--space-5); /* reduce vertical padding for mobile */
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+  margin: 0 auto;
+  width: 90%;
+  max-width: 380px;
 }
 
 .card::before {
@@ -73,11 +76,11 @@
 
 .text {
   font-family: var(--font-body);
-  font-size: var(--text-base);
+  font-size: var(--text-sm);
   color: var(--color-text);
-  line-height: 1.6;
+  line-height: 1.5;
   font-style: italic;
-  margin-bottom: var(--space-6);
+  margin-bottom: var(--space-4);
   flex-grow: 1;
 }
 
@@ -124,6 +127,19 @@
   .grid {
     grid-template-columns: repeat(3, 1fr);
     gap: var(--space-6);
+  }
+  
+  .card {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: var(--space-10) var(--space-8) var(--space-8);
+  }
+  
+  .text {
+    font-size: var(--text-base);
+    line-height: 1.6;
+    margin-bottom: var(--space-6);
   }
   
   .section {
