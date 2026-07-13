@@ -232,6 +232,14 @@
     display: flex;
   }
 
+  .mobileBreak {
+    display: block;
+  }
+
+  .mobileSmallText {
+    font-size: 13px !important;
+  }
+
   .collectionLayout {
     flex-direction: column;
   }

@@ -41,8 +41,9 @@ export default function FilterSidebar({ filters, onFilterChange, productCounts =
           border: "1.5px solid var(--color-border)",
           borderRadius: "var(--radius-md)",
           fontSize: "var(--text-sm)",
-          fontWeight: "var(--weight-semibold)",
-          display: "none",
+          fontWeight: "var(--weight-regular)",
+          color: "var(--color-primary)",
+          backgroundColor: "transparent",
         }}
         id="mobile-filter-toggle"
       >

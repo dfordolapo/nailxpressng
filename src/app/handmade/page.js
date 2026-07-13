@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { PackageSearch } from "lucide-react";
 import { getProductsByCategory, filterProducts, sortProducts, getFeaturedProducts } from "@/data/products";
 import { getCategoryBySlug } from "@/data/categories";
 import HandmadeProductCard from "@/components/product/HandmadeProductCard";
@@ -92,8 +93,26 @@ export default function HandmadePage() {
             </div>
 
             {filtered.length === 0 ? (
-              <div className={filterStyles.noResults}>
-                <p>No products match your filters.</p>
+              <div className={filterStyles.noResults} style={{ 
+                display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+                padding: "80px 20px", background: "var(--color-bg-card)", borderRadius: "var(--radius-xl)", 
+                border: "1px dashed var(--color-border)", textAlign: "center", minHeight: "400px"
+              }}>
+                <PackageSearch size={48} color="var(--color-primary)" style={{ marginBottom: "20px", opacity: 0.8 }} />
+                <h3 style={{ fontSize: "1.25rem", color: "var(--color-text)", marginBottom: "8px" }}>We're fresh out of sets!</h3>
+                <p className={filterStyles.mobileSmallText} style={{ color: "var(--color-text-secondary)", fontSize: "0.95rem", maxWidth: "450px", marginBottom: "24px", lineHeight: "1.6" }}>
+                  We couldn't find any nails matching those exact filters. Try tweaking your search!
+                </p>
+                <button 
+                  onClick={() => setFilters({ nailShape: [], style: [], length: [], priceRange: null, inStockOnly: false })}
+                  style={{
+                    padding: "10px 24px", backgroundColor: "var(--color-bg)", border: "1px solid var(--color-border)",
+                    borderRadius: "var(--radius-full)", color: "var(--color-text)", fontSize: "0.85rem", fontWeight: 500,
+                    cursor: "pointer", transition: "all 0.2s"
+                  }}
+                >
+                  Clear all filters
+                </button>
               </div>
             ) : (
               <div className={viewMode === "grid" ? gridStyles.masonryGrid : gridStyles.listGrid}>
