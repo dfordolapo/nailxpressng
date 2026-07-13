@@ -204,7 +204,6 @@
 /* ── Mobile Filter Toggle ─────────────────────────────────────────── */
 .mobileFilterBtn {
   display: none;
-  margin-bottom: var(--space-4);
 }
 
 /* ── Responsive ───────────────────────────────────────────────────── */
@@ -242,6 +241,7 @@
 
   .collectionLayout {
     flex-direction: column;
+    gap: var(--space-4);
   }
 
   .sortBar {
