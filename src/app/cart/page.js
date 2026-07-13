@@ -21,9 +21,8 @@ export default function CartPage() {
         <div className="container">
           <div className={styles.emptyCart}>
             <div className={styles.emptyIcon}>🛍️</div>
-            <h1 className={styles.emptyTitle}>Your bag is empty</h1>
-            <p className={styles.emptyText}>Looks like you haven&apos;t added anything yet. Let&apos;s fix that!</p>
-            <Link href="/" className={`${btnStyles.btn} ${btnStyles.primary} ${btnStyles.lg}`}>
+            <p className={styles.emptyText} style={{ fontSize: "0.875rem" }}>You haven&apos;t added any nail sets to your cart yet. Let&apos;s fix that!</p>
+            <Link href="/" className={`${btnStyles.btn} ${btnStyles.primary} ${btnStyles.md}`}>
               Start Shopping
             </Link>
           </div>

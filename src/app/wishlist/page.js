@@ -27,10 +27,11 @@ export default function WishlistPage() {
         <div className="container" style={{ textAlign: "center", padding: "var(--space-20) 0" }}>
 
 
-          <p style={{ color: "var(--color-text-secondary)", marginBottom: "var(--space-8)" }}>
-            Save your favorite nail sets here for later!
+          <h2 style={{ fontSize: "1.125rem", color: "var(--color-primary-800)", marginBottom: "var(--space-2)", fontFamily: "var(--font-heading)" }}>Nothing catching your eye?</h2>
+          <p style={{ color: "var(--color-text-secondary)", fontSize: "0.875rem", maxWidth: "600px", margin: "0 auto var(--space-12) auto", textWrap: "balance" }}>
+            Your wishlist is looking bare. Tap the heart icon on any set to save it for later.
           </p>
-          <Link href="/" className={`${btnStyles.btn} ${btnStyles.primary} ${btnStyles.lg}`}>
+          <Link href="/" className={`${btnStyles.btn} ${btnStyles.primary} ${btnStyles.md}`}>
             Explore Products
           </Link>
         </div>

@@ -47,8 +47,9 @@ function SearchContent() {
         {query.trim() && results.length === 0 ? (
           <div className={pageStyles.noResults}>
             <div className={pageStyles.noResultsIcon}>🔍</div>
-            <p className={pageStyles.noResultsText}>
-              No results found for &ldquo;{query}&rdquo;. Try a different search term.
+            <h2 style={{ fontSize: "1.125rem", color: "var(--color-primary-800)", marginBottom: "var(--space-2)", fontFamily: "var(--font-heading)" }}>We drew a blank...</h2>
+            <p className={pageStyles.noResultsText} style={{ maxWidth: "400px", margin: "0 auto", fontSize: "0.875rem" }}>
+              We couldn&apos;t find any styles matching your search. Try adjusting your filters or browsing our bestsellers.
             </p>
           </div>
         ) : (

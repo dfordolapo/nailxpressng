@@ -38,8 +38,7 @@ export default function CartDrawer({ onClose }) {
           {items.length === 0 ? (
             <div className={styles.emptyCart}>
               <div className={styles.emptyIcon}>🛍️</div>
-              <h4 className={styles.emptyTitle}>Your bag is empty</h4>
-              <p className={styles.emptyText}>Looks like you haven&apos;t added anything yet.</p>
+              <p className={styles.emptyText} style={{ fontSize: "0.875rem" }}>You haven&apos;t added any nail sets to your cart yet. Let&apos;s fix that!</p>
               <button
                 className={`${btnStyles.btn} ${btnStyles.primary} ${btnStyles.md}`}
                 onClick={onClose}

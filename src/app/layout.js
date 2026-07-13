@@ -5,6 +5,7 @@ import { SearchProvider } from "@/context/SearchContext";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import SearchOverlay from "@/components/ui/SearchOverlay";
+import OfflineBanner from "@/components/ui/OfflineBanner";
 
 export const metadata = {
   title: "Nailexpress — Press-On Perfection",
@@ -44,6 +45,7 @@ export default function RootLayout({ children }) {
               <SearchOverlay />
               <main>{children}</main>
               <Footer />
+              <OfflineBanner />
             </SearchProvider>
           </WishlistProvider>
         </CartProvider>
