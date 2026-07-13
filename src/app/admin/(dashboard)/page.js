@@ -125,43 +125,56 @@ export default function AdminDashboard() {
             </tr>
           </thead>
           <tbody>
-            {productsList.map((product) => (
-              <tr key={product.id}>
-                <td>
-                  <div className={styles.productCell}>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={product.image} alt={product.name} className={styles.productImg} />
-                    <span className={styles.productName}>{product.name}</span>
-                  </div>
-                </td>
-                <td>{product.collection}</td>
-                <td style={{ fontWeight: 500 }}>₦{product.price.toLocaleString()}</td>
-                <td>
-                  <span className={`${styles.badge} ${product.status === "In Stock" ? styles.inStock : styles.outOfStock}`}>
-                    {product.status}
-                  </span>
-                </td>
-                <td style={{ color: "#666" }}>{product.date}</td>
-                <td style={{ textAlign: "right", position: "relative" }}>
-                  <button 
-                    onClick={() => handleMenuClick(product.id)}
-                    style={{ background: "none", border: "none", cursor: "pointer", color: "#888", padding: "4px" }}
-                  >
-                    <MoreVertical size={18} />
-                  </button>
-                  {openMenuId === product.id && (
-                    <div className={styles.kebabMenu}>
-                      <button className={styles.kebabItem} onClick={() => handleEdit(product.id)}>Edit</button>
-                      <button className={styles.kebabItem} onClick={() => handleDuplicate(product.id)}>Duplicate</button>
-                      <button className={styles.kebabItem} onClick={() => handleToggleFeature(product.id)}>
-                        {product.featured ? "Unfeature" : "Feature"}
-                      </button>
-                      <button className={`${styles.kebabItem} ${styles.kebabDelete}`} onClick={() => handleDeleteClick(product.id)}>Delete</button>
-                    </div>
-                  )}
+            {productsList.length === 0 ? (
+              <tr>
+                <td colSpan="6" style={{ textAlign: "center", padding: "60px 20px" }}>
+                  <div style={{ fontSize: "2.5rem", marginBottom: "var(--space-4)" }}>💅</div>
+                  <h3 style={{ fontSize: "1.125rem", color: "var(--color-primary-800)", marginBottom: "var(--space-2)", fontFamily: "var(--font-heading)" }}>Your shelves are bare</h3>
+                  <p style={{ color: "var(--color-text-secondary)", fontSize: "0.875rem", marginBottom: "var(--space-6)" }}>Start adding your beautiful nail sets to see them here.</p>
+                  <Link href="/admin/products/new" className={styles.btnPrimary} style={{ display: "inline-flex", margin: "0 auto" }}>
+                    Add First Product
+                  </Link>
                 </td>
               </tr>
-            ))}
+            ) : (
+              productsList.map((product) => (
+                <tr key={product.id}>
+                  <td>
+                    <div className={styles.productCell}>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={product.image} alt={product.name} className={styles.productImg} />
+                      <span className={styles.productName}>{product.name}</span>
+                    </div>
+                  </td>
+                  <td>{product.collection}</td>
+                  <td style={{ fontWeight: 500 }}>₦{product.price.toLocaleString()}</td>
+                  <td>
+                    <span className={`${styles.badge} ${product.status === "In Stock" ? styles.inStock : styles.outOfStock}`}>
+                      {product.status}
+                    </span>
+                  </td>
+                  <td style={{ color: "#666" }}>{product.date}</td>
+                  <td style={{ textAlign: "right", position: "relative" }}>
+                    <button 
+                      onClick={() => handleMenuClick(product.id)}
+                      style={{ background: "none", border: "none", cursor: "pointer", color: "#888", padding: "4px" }}
+                    >
+                      <MoreVertical size={18} />
+                    </button>
+                    {openMenuId === product.id && (
+                      <div className={styles.kebabMenu}>
+                        <button className={styles.kebabItem} onClick={() => handleEdit(product.id)}>Edit</button>
+                        <button className={styles.kebabItem} onClick={() => handleDuplicate(product.id)}>Duplicate</button>
+                        <button className={styles.kebabItem} onClick={() => handleToggleFeature(product.id)}>
+                          {product.featured ? "Unfeature" : "Feature"}
+                        </button>
+                        <button className={`${styles.kebabItem} ${styles.kebabDelete}`} onClick={() => handleDeleteClick(product.id)}>Delete</button>
+                      </div>
+                    )}
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>

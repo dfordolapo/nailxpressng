@@ -235,7 +235,18 @@ function ProductsContent() {
             ))}
             {filteredProducts.length === 0 && (
               <tr>
-                <td colSpan="6" style={{ textAlign: "center", padding: "40px" }}>No products found.</td>
+                <td colSpan="7" style={{ textAlign: "center", padding: "60px 20px" }}>
+                  <div style={{ fontSize: "2.5rem", marginBottom: "var(--space-4)" }}>🔍</div>
+                  <h3 style={{ fontSize: "1.125rem", color: "var(--color-primary-800)", marginBottom: "var(--space-2)", fontFamily: "var(--font-heading)" }}>No products matched</h3>
+                  <p style={{ color: "var(--color-text-secondary)", fontSize: "0.875rem", marginBottom: "var(--space-6)" }}>We couldn&apos;t find any products matching your search or filter.</p>
+                  <button 
+                    onClick={() => { setSearchQuery(""); setStatusFilter("All"); }} 
+                    className={styles.btnPrimary} 
+                    style={{ display: "inline-flex", margin: "0 auto" }}
+                  >
+                    Clear Filters
+                  </button>
+                </td>
               </tr>
             )}
           </tbody>
