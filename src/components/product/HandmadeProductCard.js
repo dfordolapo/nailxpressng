@@ -145,18 +145,22 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
         {/* ═══ FRONT ═══ */}
         <div className={`${styles.cardFront} ${flipped ? styles.hidden : ""}`} onClick={handleFlip}>
           <div className={styles.imageArea}>
-            <div
-              className={styles.flatLay}
-              style={{
-                background: `linear-gradient(135deg, var(--color-primary-100), var(--color-bg-warm))`,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: "3.5rem",
-              }}
-            >
-              💅
-            </div>
+            {product.image ? (
+              <img src={product.image} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            ) : (
+              <div
+                className={styles.flatLay}
+                style={{
+                  background: `linear-gradient(135deg, var(--color-primary-100), var(--color-bg-warm))`,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: "3.5rem",
+                }}
+              >
+                💅
+              </div>
+            )}
 
             <div className={styles.shine} />
 

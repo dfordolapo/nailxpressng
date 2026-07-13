@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, Trash2, Edit2, Tag, Shapes, Ruler, Sparkles } from "lucide-react";
+import { Plus, Trash2, Edit2, Tag, Shapes, Ruler } from "lucide-react";
 import styles from "@/styles/admin.module.css";
 
 const INITIAL_ATTRIBUTES = {
@@ -69,7 +69,7 @@ export default function AdminAttributes() {
             className={`${styles.settingsNavItem} ${activeTab === "styles" ? styles.active : ""}`}
             onClick={() => setActiveTab("styles")}
           >
-            <Sparkles size={16} /> Styles & Finishes
+            Styles & Finishes
           </div>
         </div>
 

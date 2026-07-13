@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft, Sparkles, UploadCloud, X, Heart } from "lucide-react";
+import { ArrowLeft, UploadCloud, X, Heart } from "lucide-react";
 import styles from "@/styles/admin.module.css";
+import HandmadeProductCard from "@/components/product/HandmadeProductCard";
 import { useState } from "react";
 
 export default function NewProduct() {
@@ -10,6 +11,7 @@ export default function NewProduct() {
   const [stockQuantity, setStockQuantity] = useState("");
   const [availability, setAvailability] = useState("In Stock");
   const [isFeatured, setIsFeatured] = useState(false);
+  const [isBestseller, setIsBestseller] = useState(false);
 
   const handleStockChange = (e) => {
     const val = e.target.value;
@@ -46,7 +48,6 @@ export default function NewProduct() {
         {/* Form Sidebar */}
         <div className={styles.formSidebar}>
           <button className={`${styles.formNavBtn} ${activeTab === "basic" ? styles.active : ""}`} onClick={() => setActiveTab("basic")}>
-            <Sparkles size={16} />
             Basic Information
           </button>
           <button className={`${styles.formNavBtn} ${activeTab === "images" ? styles.active : ""}`} onClick={() => setActiveTab("images")}>
@@ -132,22 +133,25 @@ export default function NewProduct() {
                     </div>
                   </div>
                   
-                  {/* Fake Storefront Preview */}
+                  {/* Real Component Preview */}
                   <div>
                     <div style={{ fontSize: "0.85rem", color: "#666", marginBottom: "10px" }}>Preview (As Customer Sees)</div>
-                    <div style={{ border: "1px solid #EEE", borderRadius: "16px", padding: "15px", backgroundColor: "white", boxShadow: "0 4px 15px rgba(0,0,0,0.03)" }}>
-                       <div style={{ aspectRatio: "3/4", borderRadius: "12px", backgroundColor: "var(--color-bg)", marginBottom: "15px", overflow: "hidden", position: "relative" }}>
-                          <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&q=80&w=300" alt="Preview" style={{width: "100%", height: "100%", objectFit: "cover"}} />
-                       </div>
-                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "10px" }}>
-                         <div style={{ fontWeight: 600, fontSize: "0.95rem" }}>Blush Bloom</div>
-                         <Heart size={16} color="#888" />
-                       </div>
-                       <div style={{ fontSize: "0.75rem", color: "#666", marginBottom: "15px", lineHeight: "1.4" }}>
-                         Handmade press-on nails with soft pink base and 3D floral accents...
-                       </div>
-                       <div style={{ fontWeight: 600, fontSize: "0.95rem", marginBottom: "15px" }}>₦12,500</div>
-                       <button style={{ width: "100%", backgroundColor: "var(--color-primary)", color: "white", padding: "10px", borderRadius: "8px", border: "none", fontWeight: 500 }}>Add to Cart</button>
+                    <div style={{ pointerEvents: "auto", width: "100%", maxWidth: "300px" }}>
+                      <HandmadeProductCard 
+                        product={{
+                          id: "preview",
+                          name: "Blush Bloom",
+                          price: 12500,
+                          category: "handmade",
+                          image: "https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&q=80&w=300",
+                          shortDescription: "Handmade press-on nails with soft pink base and 3D floral accents.",
+                          sizes: ["XS", "S", "M", "L"],
+                          lengths: ["Short", "Medium", "Long"],
+                          bestseller: isBestseller,
+                          newArrival: true
+                        }} 
+                        viewMode="grid" 
+                      />
                     </div>
                   </div>
                </div>
@@ -218,6 +222,17 @@ export default function NewProduct() {
                   </div>
                 </div>
                 <div className={styles.formGroup}>
+                  <label className={styles.label}>Sale Price / Discounted Rate</label>
+                  <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
+                    <span style={{ position: "absolute", left: "15px", color: "#666", fontWeight: 500 }}>₦</span>
+                    <input type="number" className={styles.input} placeholder="0.00" style={{ paddingLeft: "35px" }} />
+                  </div>
+                  <div style={{ fontSize: "0.75rem", color: "#888", marginTop: "6px" }}>Leave blank if the product is not on sale.</div>
+                </div>
+              </div>
+
+              <div className={styles.grid2}>
+                <div className={styles.formGroup}>
                   <label className={styles.label}>Inventory</label>
                   <input 
                     type="number" 
@@ -243,8 +258,8 @@ export default function NewProduct() {
                   </select>
                 </div>
                 <div className={styles.formGroup}>
-                  <label className={styles.label}>Featured Product</label>
-                  <div style={{ display: "flex", alignItems: "center", height: "46px" }}>
+                  <label className={styles.label}>Product Tags & Visibility</label>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginTop: "8px" }}>
                     <label style={{ display: "flex", alignItems: "center", gap: "10px", cursor: "pointer" }}>
                       <input 
                         type="checkbox" 
@@ -252,7 +267,16 @@ export default function NewProduct() {
                         checked={isFeatured}
                         onChange={(e) => setIsFeatured(e.target.checked)}
                       />
-                      <span style={{ fontSize: "0.95rem", color: "#333" }}>Show on homepage</span>
+                      <span style={{ fontSize: "0.95rem", color: "#333" }}>Featured (Show on homepage)</span>
+                    </label>
+                    <label style={{ display: "flex", alignItems: "center", gap: "10px", cursor: "pointer" }}>
+                      <input 
+                        type="checkbox" 
+                        style={{ width: "18px", height: "18px", accentColor: "var(--color-primary)" }} 
+                        checked={isBestseller}
+                        onChange={(e) => setIsBestseller(e.target.checked)}
+                      />
+                      <span style={{ fontSize: "0.95rem", color: "#333" }}>Bestseller (Add bestseller badge)</span>
                     </label>
                   </div>
                 </div>
@@ -269,7 +293,6 @@ export default function NewProduct() {
         {/* Tips Sidebar */}
         <div className={styles.tipsSidebar}>
           <div className={styles.tipsTitle}>
-            <Sparkles size={18} color="var(--color-accent)" />
             Tips
           </div>
           <ul className={styles.tipsList}>
@@ -280,7 +303,6 @@ export default function NewProduct() {
           </ul>
           
           <div style={{ marginTop: "40px", display: "flex", alignItems: "center", gap: "8px", fontSize: "0.85rem", color: "#555", fontWeight: 500 }}>
-             <Sparkles size={16} color="var(--color-accent)" />
              You're doing amazing Queen. 💅
           </div>
         </div>
