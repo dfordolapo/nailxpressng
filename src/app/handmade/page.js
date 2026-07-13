@@ -101,7 +101,7 @@ export default function HandmadePage() {
                 <PackageSearch size={48} color="var(--color-primary)" style={{ marginBottom: "20px", opacity: 0.8 }} />
                 <h3 style={{ fontSize: "1.25rem", color: "var(--color-text)", marginBottom: "8px" }}>We're fresh out of sets!</h3>
                 <p className={filterStyles.mobileSmallText} style={{ color: "var(--color-text-secondary)", fontSize: "0.95rem", maxWidth: "450px", marginBottom: "24px", lineHeight: "1.6" }}>
-                  We couldn't find any nails matching those exact filters. Try tweaking your search!
+                  We couldn't find any nails matching those exact filters. Try tweaking your search.
                 </p>
                 <button 
                   onClick={() => setFilters({ nailShape: [], style: [], length: [], priceRange: null, inStockOnly: false })}
