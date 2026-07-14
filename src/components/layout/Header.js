@@ -45,6 +45,7 @@ export default function Header() {
 
   return (
     <>
+      <div className={styles.headerSpacer} aria-hidden="true" />
       <header className={`${styles.header} ${scrolled ? styles.scrolled : ""}`} id="site-header">
         <div className={styles.headerInner}>
           {/* Logo */}
