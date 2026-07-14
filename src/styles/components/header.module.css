@@ -27,18 +27,23 @@
 /* ── Header ───────────────────────────────────────────────────────── */
 .header {
   position: sticky;
-  top: 0;
+  top: var(--space-4);
   z-index: var(--z-sticky);
-  background: rgba(254, 252, 250, 0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--color-border-light);
+  background: rgba(122, 64, 61, 0.85); /* Brown glassmorphism */
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-full);
   height: var(--header-height);
-  transition: box-shadow var(--transition-base);
+  max-width: var(--container-narrow);
+  margin: 0 auto var(--space-4) auto;
+  width: calc(100% - var(--space-8));
+  transition: box-shadow var(--transition-base), transform var(--transition-base);
+  box-shadow: 0 8px 32px rgba(122, 64, 61, 0.2);
 }
 
 .header.scrolled {
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 12px 40px rgba(122, 64, 61, 0.3);
 }
 
 .headerInner {
@@ -57,7 +62,7 @@
   font-family: 'Cormorant Upright', Georgia, serif !important;
   font-size: var(--text-2xl);
   font-weight: var(--weight-bold);
-  color: var(--color-text);
+  color: var(--color-text-inverse); /* White logo */
   letter-spacing: -0.02em;
   text-decoration: none;
   display: flex;
@@ -67,7 +72,7 @@
 }
 
 .logoAccent {
-  color: var(--color-primary);
+  color: var(--color-accent-light); /* Lighter accent on dark bg */
 }
 
 /* ── Desktop Nav ──────────────────────────────────────────────────── */
@@ -81,7 +86,7 @@
   position: relative;
   font-size: var(--text-sm);
   font-weight: var(--weight-medium);
-  color: var(--color-text-secondary);
+  color: rgba(255, 255, 255, 0.8);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   padding: var(--space-2) 0;
@@ -90,7 +95,7 @@
 
 .navLink:hover,
 .navLink.active {
-  color: var(--color-text);
+  color: #ffffff;
 }
 
 .navLink::after {
@@ -100,7 +105,7 @@
   left: 0;
   width: 0;
   height: 2px;
-  background: var(--color-primary);
+  background: var(--color-accent-light);
   transition: width var(--transition-base);
 }
 
@@ -125,12 +130,12 @@
   height: 40px;
   border-radius: var(--radius-full);
   transition: background-color var(--transition-fast), color var(--transition-fast);
-  color: var(--color-primary-800);
+  color: var(--color-text-inverse); /* White icons */
 }
 
 .actionBtn:hover {
-  background-color: var(--color-surface);
-  color: var(--color-text);
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
 }
 
 .actionBtn svg {
@@ -168,7 +173,7 @@
   border: none;
   background: none;
   cursor: pointer;
-  color: var(--color-primary-800);
+  color: var(--color-text-inverse); /* White menu icon */
   transition: opacity var(--transition-fast);
 }
 
@@ -181,7 +186,7 @@
   display: none;
   position: fixed;
   inset: 0;
-  top: var(--header-height);
+  top: calc(var(--header-height) + var(--space-4) + var(--space-2));
   background: var(--color-bg-overlay);
   z-index: var(--z-overlay);
   animation: fadeIn var(--transition-fast);
@@ -193,7 +198,7 @@
 
 .mobileNav {
   position: fixed;
-  top: var(--header-height);
+  top: calc(var(--header-height) + var(--space-4) + var(--space-2));
   right: 0;
   bottom: 0;
   width: min(260px, 80vw);

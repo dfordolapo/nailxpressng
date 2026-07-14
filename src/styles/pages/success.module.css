@@ -1,0 +1,228 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  padding: var(--space-8);
+  font-family: var(--font-body);
+  position: relative;
+  overflow: hidden;
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: var(--text-5xl);
+  color: var(--color-primary-800);
+  margin-bottom: var(--space-4);
+  text-align: center;
+  z-index: 10;
+}
+
+.subtitle {
+  font-size: var(--text-lg);
+  color: var(--color-text-secondary);
+  text-align: center;
+  margin-bottom: var(--space-12);
+  z-index: 10;
+}
+
+/* Printer & Receipt Layout */
+.scene {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 140px; /* Increased margin to prevent receipt from overlapping CTAs */
+}
+
+.printerContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.printerImageWrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1; /* Printer base image in back */
+  pointer-events: none;
+}
+
+.printerImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Receipt Wrapper */
+.receiptWrapper {
+  position: absolute;
+  /* Top aligns with the slot of the 3D printer so it spills downwards */
+  top: 45%; 
+  left: 50%;
+  transform: translateX(-50%);
+  width: 180px;
+  height: 300px; /* Allows room for printing down and dropping */
+  overflow: hidden; 
+  z-index: 5; /* In FRONT of the printer image */
+}
+
+/* The Animated Receipt */
+.receipt {
+  position: absolute;
+  top: 0; /* Align top instead of bottom */
+  left: 0;
+  width: 100%;
+  background: #ffffff;
+  padding: var(--space-6) var(--space-4);
+  /* The bottom is the leading edge, make it rounded. Top is where it tears. */
+  border-radius: 0 0 4px 4px; 
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform-origin: top left;
+  
+  /* Start hidden above the slot */
+  transform: translateY(-100%);
+  opacity: 0;
+  animation: printAndTear 4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  animation-delay: 0.5s;
+}
+
+/* Jagged tear edge effect on the top of the receipt */
+.receipt::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background-image: linear-gradient(135deg, transparent 50%, #ffffff 50%),
+                    linear-gradient(45deg, #ffffff 50%, transparent 50%);
+  background-size: 8px 8px;
+  background-repeat: repeat-x;
+  background-position: left top;
+  opacity: 0; /* Hidden while printing, visible after tear */
+  animation: showTear 4s forwards;
+  animation-delay: 0.5s;
+}
+
+.receiptTitle {
+  font-family: var(--font-heading);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: var(--space-4);
+  text-align: center;
+}
+
+.receiptLine {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-2);
+  border-bottom: 1px dashed var(--color-border);
+  padding-bottom: var(--space-1);
+}
+
+.receiptMessage {
+  margin-top: var(--space-4);
+  font-size: var(--text-xs);
+  font-style: italic;
+  text-align: center;
+  color: var(--color-primary-600);
+}
+
+/* Keyframes */
+@keyframes printAndTear {
+  0% { transform: translateY(-100%); opacity: 0; }
+  5% { opacity: 1; }
+  /* Finish printing downwards */
+  50% { transform: translateY(0); opacity: 1; }
+  65% { transform: translateY(0); opacity: 1; }
+  /* The Tear - slightly rotates as it rips from right to left */
+  70% { transform: translateY(0) rotate(-2deg); opacity: 1; }
+  75% { transform: translateY(10px) rotate(4deg); opacity: 1; }
+  /* Falls slightly and rests */
+  100% { transform: translateY(15px) rotate(2deg); opacity: 1; }
+}
+
+@keyframes showTear {
+  0%, 65% { opacity: 0; }
+  70%, 100% { opacity: 1; }
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  gap: var(--space-4);
+  z-index: 10;
+}
+
+.primaryBtn {
+  background: var(--color-primary); /* Brown filled */
+  color: white;
+  padding: var(--space-3) var(--space-8);
+  border-radius: var(--radius-full);
+  font-weight: var(--weight-medium); /* Reduced boldness */
+  font-size: var(--text-sm); /* Smaller text */
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+  text-align: center;
+}
+
+.primaryBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(122, 64, 61, 0.3);
+}
+
+.secondaryBtn {
+  background: transparent;
+  color: var(--color-primary);
+  border: 1.5px solid var(--color-primary); /* Outlined secondary */
+  padding: var(--space-3) var(--space-8);
+  border-radius: var(--radius-full);
+  font-weight: var(--weight-medium); /* Reduced boldness */
+  font-size: var(--text-sm); /* Smaller text */
+  transition: background var(--transition-base);
+  text-align: center;
+}
+
+.secondaryBtn:hover {
+  background: var(--color-primary-50);
+}
+
+
+
+/* Media Queries */
+@media (max-width: 768px) {
+  .actions {
+    flex-direction: column;
+    align-items: center; /* Center aligned */
+    width: 100%;
+  }
+  
+  .primaryBtn, .secondaryBtn {
+    width: auto;
+    min-width: 220px; /* Smaller in width on mobile, not 100% */
+  }
+  
+  .scene {
+    height: 300px;
+  }
+}
