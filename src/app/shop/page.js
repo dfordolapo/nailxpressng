@@ -4,7 +4,7 @@ import { useState, useMemo } from "react";
 import { PackageSearch } from "lucide-react";
 import { products, filterProducts, sortProducts, getFeaturedProducts } from "@/data/products";
 import HandmadeProductCard from "@/components/product/HandmadeProductCard";
-import FilterSidebar from "@/components/product/FilterSidebar";
+import ShapeFilterBar from "@/components/product/ShapeFilterBar";
 import CategoryShowcase from "@/components/home/CategoryShowcase";
 import { SORT_OPTIONS } from "@/lib/constants";
 import pageStyles from "@/styles/pages/collection.module.css";
@@ -13,7 +13,7 @@ import gridStyles from "@/components/product/handmade-card.module.css";
 
 export default function ShopPage() {
   const allProducts = products;
-  const [filters, setFilters] = useState({ nailShape: [], style: [], length: [], priceRange: null, inStockOnly: false });
+  const [selectedShapes, setSelectedShapes] = useState([]);
   const [sortBy, setSortBy] = useState("popular");
   const [viewMode, setViewMode] = useState("grid");
 
@@ -22,9 +22,17 @@ export default function ShopPage() {
   }, []);
 
   const filtered = useMemo(() => {
-    const f = filterProducts(allProducts, filters);
+    // We only filter by nailShape now
+    const shapeFilters = { nailShape: selectedShapes };
+    const f = filterProducts(allProducts, shapeFilters);
     return sortProducts(f, sortBy);
-  }, [allProducts, filters, sortBy]);
+  }, [allProducts, selectedShapes, sortBy]);
+
+  const toggleShape = (shapeId) => {
+    setSelectedShapes(prev => 
+      prev.includes(shapeId) ? prev.filter(id => id !== shapeId) : [...prev, shapeId]
+    );
+  };
 
   return (
     <div className={pageStyles.collectionPage} id="shop-collection">
@@ -45,14 +53,13 @@ export default function ShopPage() {
               pointerEvents: "none",
             }} />
           </div>
-          <p className={pageStyles.collectionDescription}>Browse our complete collection of handcrafted and factory-made nails.</p>
         </div>
+
+        <ShapeFilterBar selectedShapes={selectedShapes} onToggleShape={toggleShape} />
 
         <CategoryShowcase mini items={featured} />
 
         <div className={filterStyles.collectionLayout}>
-          <FilterSidebar filters={filters} onFilterChange={setFilters} />
-
           <div className={filterStyles.collectionMain}>
             <div className={filterStyles.sortBar}>
               <span className={filterStyles.resultCount}>
@@ -99,17 +106,17 @@ export default function ShopPage() {
                 <PackageSearch size={48} color="var(--color-primary)" style={{ marginBottom: "20px", opacity: 0.8 }} />
                 <h3 style={{ fontSize: "1.25rem", color: "var(--color-text)", marginBottom: "8px" }}>We're fresh out of sets!</h3>
                 <p className={filterStyles.mobileSmallText} style={{ color: "var(--color-text-secondary)", fontSize: "0.95rem", maxWidth: "450px", marginBottom: "24px", lineHeight: "1.6" }}>
-                  We couldn't find any nails matching those exact filters. Try tweaking your search.
+                  We couldn't find any nails matching those exact shapes. Try tweaking your selection.
                 </p>
                 <button 
-                  onClick={() => setFilters({ nailShape: [], style: [], length: [], priceRange: null, inStockOnly: false })}
+                  onClick={() => setSelectedShapes([])}
                   style={{
                     padding: "10px 24px", backgroundColor: "var(--color-bg)", border: "1px solid var(--color-border)",
                     borderRadius: "var(--radius-full)", color: "var(--color-text)", fontSize: "0.85rem", fontWeight: 500,
                     cursor: "pointer", transition: "all 0.2s"
                   }}
                 >
-                  Clear all filters
+                  Clear shape filters
                 </button>
               </div>
             ) : (

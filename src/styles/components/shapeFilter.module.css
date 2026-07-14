@@ -1,0 +1,81 @@
+.container {
+  margin: var(--space-4) 0 var(--space-4);
+  width: 100%;
+}
+
+.scrollArea {
+  display: flex;
+  gap: var(--space-4);
+  overflow-x: auto;
+  padding-bottom: var(--space-4);
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  justify-content: center; /* Center the shapes if they fit on screen */
+}
+
+@media (max-width: 768px) {
+  .scrollArea {
+    justify-content: flex-start; /* Allow normal scrolling on mobile */
+    padding: 0 var(--space-4) var(--space-4);
+    margin: 0 calc(-1 * var(--space-4));
+  }
+}
+
+.scrollArea::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+
+.shapeBtn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  min-width: 65px;
+  padding: var(--space-2);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  transition: all var(--transition-base);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.shapeBtn:hover {
+  border-color: var(--color-primary-300);
+  background: white;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.shapeBtn.selected {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: white;
+  box-shadow: 0 4px 12px rgba(122, 64, 61, 0.2);
+}
+
+.imageWrapper {
+  position: relative;
+  width: 36px;
+  height: 48px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  mix-blend-mode: multiply;
+}
+
+.name {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: var(--weight-medium);
+  color: inherit;
+  margin-top: 2px;
+}
+
+.shapeBtn:not(.selected) .name {
+  color: var(--color-text-secondary);
+}
+
+.shapeBtn:hover:not(.selected) .name {
+  color: var(--color-text);
+}

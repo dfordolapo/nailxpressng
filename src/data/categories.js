@@ -18,13 +18,13 @@ export const categories = [
 ];
 
 export const nailShapes = [
-  { id: "almond", name: "Almond", icon: "💅" },
-  { id: "coffin", name: "Coffin", icon: "💅" },
-  { id: "stiletto", name: "Stiletto", icon: "💅" },
-  { id: "oval", name: "Oval", icon: "💅" },
-  { id: "square", name: "Square", icon: "💅" },
-  { id: "round", name: "Round", icon: "💅" },
-  { id: "ballerina", name: "Ballerina", icon: "💅" },
+  { id: "almond", name: "Almond", image: "/images/shapes/almond.png" },
+  { id: "coffin", name: "Coffin", image: "/images/shapes/coffin.png" },
+  { id: "stiletto", name: "Stiletto", image: "/images/shapes/stiletto.png" },
+  { id: "oval", name: "Oval", image: "/images/shapes/oval.png" },
+  { id: "square", name: "Square", image: "/images/shapes/square.png" },
+  { id: "round", name: "Round", image: "/images/shapes/round.png" },
+  { id: "ballerina", name: "Ballerina", image: "/images/shapes/ballerina.png" },
 ];
 
 export const nailLengths = [
