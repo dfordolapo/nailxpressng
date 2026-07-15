@@ -24,7 +24,7 @@ export const nailShapes = [
   { id: "oval", name: "Oval", image: "/images/shapes/oval.png" },
   { id: "square", name: "Square", image: "/images/shapes/square.png" },
   { id: "round", name: "Round", image: "/images/shapes/round.png" },
-  { id: "ballerina", name: "Ballerina", image: "/images/shapes/ballerina.png" },
+
 ];
 
 export const nailLengths = [
