@@ -23,8 +23,8 @@ export default function WishlistPage() {
 
   if (items.length === 0) {
     return (
-      <div className={pageStyles.wishlistPage}>
-        <div className="container" style={{ textAlign: "center", padding: "var(--space-20) 0" }}>
+      <div className={pageStyles.wishlistPage} style={{ minHeight: "75vh", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+        <div className="container" style={{ textAlign: "center" }}>
 
 
           <h2 style={{ fontSize: "1.125rem", color: "var(--color-primary-800)", marginBottom: "var(--space-2)", fontFamily: "var(--font-heading)" }}>Nothing catching your eye?</h2>
