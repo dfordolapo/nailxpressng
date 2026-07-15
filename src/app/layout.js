@@ -34,13 +34,6 @@ export const metadata = {
   },
 };
 
-export const viewport = {
-  themeColor: "#D4AF7A",
-  width: "device-width",
-  initialScale: 1,
-  maximumScale: 1,
-};
-
 export default function RootLayout({ children }) {
   return (
     <html lang="en" data-scroll-behavior="smooth">
