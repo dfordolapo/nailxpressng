@@ -19,6 +19,7 @@ export default function CheckoutPage() {
   });
   const [shippingMethod, setShippingMethod] = useState("standard");
   const [paymentMethod, setPaymentMethod] = useState("card");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   const finalTotal = total + (shippingMethod === "express" ? 9.99 : 4.99);
 
@@ -28,6 +29,7 @@ export default function CheckoutPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
     // Simulate successful payment for now
     // Paystack integration will go here later
     if (clearCart) {
@@ -36,7 +38,7 @@ export default function CheckoutPage() {
     router.push("/checkout/success");
   };
 
-  if (items.length === 0) {
+  if (items.length === 0 && !isSubmitting) {
     return (
       <div className={pageStyles.checkoutPage}>
         <div className="container" style={{ textAlign: "center", padding: "var(--space-20) 0" }}>
@@ -225,10 +227,21 @@ export default function CheckoutPage() {
 
           <button
             type="submit"
+            disabled={isSubmitting}
             className={`${btnStyles.btn} ${btnStyles.lg}`}
-            style={{ background: "var(--color-primary)", color: "white", border: "none", borderRadius: "12px", margin: "0 auto var(--space-4) auto", display: "flex", width: "250px", justifyContent: "center" }}
+            style={{ 
+              background: isSubmitting ? "var(--color-primary-400)" : "var(--color-primary)", 
+              color: "white", 
+              border: "none", 
+              borderRadius: "12px", 
+              margin: "0 auto var(--space-4) auto", 
+              display: "flex", 
+              width: "250px", 
+              justifyContent: "center",
+              cursor: isSubmitting ? "not-allowed" : "pointer"
+            }}
           >
-            Place Order
+            {isSubmitting ? "Processing..." : "Place Order"}
           </button>
           
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", fontSize: "0.75rem", color: "var(--color-text-secondary)" }}>
