@@ -79,3 +79,39 @@
 .shapeBtn:hover:not(.selected) .name {
   color: var(--color-text);
 }
+
+.separator {
+  width: 1px;
+  background: var(--color-border);
+  height: 48px;
+  align-self: center;
+  margin: 0 var(--space-2);
+  flex-shrink: 0;
+}
+
+.lengthBtn {
+  min-width: 65px;
+}
+
+.textWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+}
+
+.lengthName {
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.shapeBtn:not(.selected) .lengthName {
+  color: var(--color-text-secondary);
+}
+
+.shapeBtn:hover:not(.selected) .lengthName {
+  color: var(--color-text);
+}

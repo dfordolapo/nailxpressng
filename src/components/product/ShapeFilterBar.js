@@ -1,10 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { nailShapes } from "@/data/categories";
+import { nailShapes, nailLengths } from "@/data/categories";
 import styles from "@/styles/components/shapeFilter.module.css";
 
-export default function ShapeFilterBar({ selectedShapes = [], onToggleShape }) {
+export default function ShapeFilterBar({ selectedShapes = [], onToggleShape, selectedLengths = [], onToggleLength }) {
   return (
     <div className={styles.container}>
       <div className={styles.scrollArea}>
@@ -23,10 +23,29 @@ export default function ShapeFilterBar({ selectedShapes = [], onToggleShape }) {
                   alt={`${shape.name} nail shape`} 
                   fill
                   sizes="40px"
-                  style={{ objectFit: 'contain', transform: shape.id === 'stiletto' ? 'scale(1.7)' : 'scale(1.4)' }}
+                  style={{ objectFit: 'contain', transform: 'scale(2.2)' }}
                 />
               </div>
               <span className={styles.name}>{shape.name}</span>
+            </button>
+          );
+        })}
+        
+        {/* Separator between shapes and lengths */}
+        {nailLengths && nailLengths.length > 0 && <div className={styles.separator}></div>}
+        
+        {nailLengths && nailLengths.map((length) => {
+          const isSelected = selectedLengths.includes(length.id);
+          return (
+            <button
+              key={`len-${length.id}`}
+              className={`${styles.shapeBtn} ${styles.lengthBtn} ${isSelected ? styles.selected : ""}`}
+              onClick={() => onToggleLength && onToggleLength(length.id)}
+              aria-pressed={isSelected}
+            >
+              <div className={styles.textWrapper}>
+                <span className={styles.lengthName}>{length.name}</span>
+              </div>
             </button>
           );
         })}

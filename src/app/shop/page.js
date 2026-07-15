@@ -14,6 +14,7 @@ import gridStyles from "@/components/product/handmade-card.module.css";
 export default function ShopPage() {
   const allProducts = products;
   const [selectedShapes, setSelectedShapes] = useState([]);
+  const [selectedLengths, setSelectedLengths] = useState([]);
   const [sortBy, setSortBy] = useState("popular");
   const [viewMode, setViewMode] = useState("grid");
 
@@ -22,15 +23,20 @@ export default function ShopPage() {
   }, []);
 
   const filtered = useMemo(() => {
-    // We only filter by nailShape now
-    const shapeFilters = { nailShape: selectedShapes };
+    const shapeFilters = { nailShape: selectedShapes, length: selectedLengths };
     const f = filterProducts(allProducts, shapeFilters);
     return sortProducts(f, sortBy);
-  }, [allProducts, selectedShapes, sortBy]);
+  }, [allProducts, selectedShapes, selectedLengths, sortBy]);
 
   const toggleShape = (shapeId) => {
     setSelectedShapes(prev => 
       prev.includes(shapeId) ? [] : [shapeId]
+    );
+  };
+
+  const toggleLength = (lengthId) => {
+    setSelectedLengths(prev => 
+      prev.includes(lengthId) ? [] : [lengthId]
     );
   };
 
@@ -55,7 +61,12 @@ export default function ShopPage() {
           </div>
         </div>
 
-        <ShapeFilterBar selectedShapes={selectedShapes} onToggleShape={toggleShape} />
+        <ShapeFilterBar 
+          selectedShapes={selectedShapes} 
+          onToggleShape={toggleShape} 
+          selectedLengths={selectedLengths} 
+          onToggleLength={toggleLength} 
+        />
 
         <CategoryShowcase mini items={featured} />
 
@@ -106,17 +117,17 @@ export default function ShopPage() {
                 <PackageSearch size={48} color="var(--color-primary)" style={{ marginBottom: "20px", opacity: 0.8 }} />
                 <h3 style={{ fontSize: "1.25rem", color: "var(--color-text)", marginBottom: "8px" }}>We're fresh out of sets!</h3>
                 <p className={filterStyles.mobileSmallText} style={{ color: "var(--color-text-secondary)", fontSize: "0.95rem", maxWidth: "450px", marginBottom: "24px", lineHeight: "1.6" }}>
-                  We couldn't find any nails matching those exact shapes. Try tweaking your selection.
+                  We couldn't find any nails matching your exact shape and length preferences. Try tweaking your selection.
                 </p>
                 <button 
-                  onClick={() => setSelectedShapes([])}
+                  onClick={() => { setSelectedShapes([]); setSelectedLengths([]); }}
                   style={{
                     padding: "10px 24px", backgroundColor: "var(--color-bg)", border: "1px solid var(--color-border)",
                     borderRadius: "var(--radius-full)", color: "var(--color-text)", fontSize: "0.85rem", fontWeight: 500,
                     cursor: "pointer", transition: "all 0.2s"
                   }}
                 >
-                  Clear shape filters
+                  Clear filters
                 </button>
               </div>
             ) : (
