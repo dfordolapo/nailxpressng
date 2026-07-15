@@ -18,15 +18,14 @@
 .imageWrapper {
   position: relative;
   width: 100%;
-  max-width: 500px;
-  aspect-ratio: 1 / 1;
-  border-radius: 100px 50px 120px 60px / 80px 100px 60px 90px;
-  overflow: hidden;
   margin: 0 auto;
 }
 
 .image {
-  object-fit: cover;
+  width: 100%;
+  height: auto !important;
+  position: relative !important;
+  object-fit: contain;
 }
 
 @media (min-width: 768px) {

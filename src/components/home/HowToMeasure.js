@@ -7,16 +7,16 @@ export default function HowToMeasure() {
     <section className={styles.section}>
       <div className="container">
         <h2 className={styles.sectionTitle}>How to find your size</h2>
-        
-        <div className={styles.imageWrapper}>
-          <Image
-            src="/images/measure-guide.png"
-            alt="Guide showing how to measure press-on nails"
-            fill
-            sizes="(max-width: 768px) 100vw, 40vw"
-            className={styles.image}
-          />
-        </div>
+      </div>
+      
+      <div className={styles.imageWrapper}>
+        <Image
+          src="/images/measure-guide.png"
+          alt="Guide showing how to measure press-on nails"
+          fill
+          sizes="100vw"
+          className={styles.image}
+        />
       </div>
     </section>
   );
