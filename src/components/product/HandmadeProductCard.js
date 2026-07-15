@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { formatPrice, getDiscountPercent } from "@/lib/utils";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
@@ -146,7 +147,7 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
         <div className={`${styles.cardFront} ${flipped ? styles.hidden : ""}`} onClick={handleFlip}>
           <div className={styles.imageArea}>
             {product.image ? (
-              <img src={product.image} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              <Image src={product.image} alt={product.name} fill sizes="(max-width: 768px) 100vw, 400px" style={{ objectFit: 'cover' }} />
             ) : (
               <div
                 className={styles.flatLay}

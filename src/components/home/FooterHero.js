@@ -19,9 +19,10 @@ export default function FooterHero() {
       <Image
         src="/images/wholesale-banner.png"
         alt="Nail Express wholesale"
-        width={1200}
-        height={600}
+        fill
+        sizes="100vw"
         className={styles.image}
+        style={{ objectFit: 'cover' }}
       />
 
       <div className={styles.footerBar}>

@@ -37,7 +37,6 @@ export default function Features() {
                   src={feature.image}
                   alt={feature.alt}
                   fill
-                  unoptimized
                   sizes="(max-width: 768px) 100vw, 30vw"
                   className={styles.image}
                 />

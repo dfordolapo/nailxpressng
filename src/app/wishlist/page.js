@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useWishlist } from "@/context/WishlistContext";
 import { useCart } from "@/context/CartContext";
 import { getProductBySlug, products } from "@/data/products";
@@ -80,7 +81,7 @@ export default function WishlistPage() {
                   overflow: "hidden"
                 }}>
                   {item.image ? (
-                    <img src={item.image} alt={item.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    <Image src={item.image} alt={item.name} width={100} height={100} style={{ objectFit: "cover" }} />
                   ) : "💅"}
                 </div>
               </Link>

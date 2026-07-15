@@ -19,9 +19,10 @@
 }
 
 .image {
+  position: absolute;
+  inset: 0;
   width: 100%;
-  flex: 1;
-  object-fit: cover;
+  height: 100%;
   display: block;
 }
 

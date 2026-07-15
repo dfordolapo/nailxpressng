@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useCart } from "@/context/CartContext";
 import { formatPrice, calculateCartTotals } from "@/lib/utils";
 import { FREE_SHIPPING_THRESHOLD } from "@/lib/constants";
@@ -85,7 +86,7 @@ export default function CartPage() {
             {items.map((item) => (
               <div key={`${item.id}-${item.selectedSize}-${item.selectedLength}`} className={styles.cartItem}>
                 <div className={styles.cartItemImage}>
-                  <img src={item.image || "/images/hero.png"} alt={item.name} />
+                  <Image src={item.image || "/images/hero.png"} alt={item.name} width={100} height={100} style={{ objectFit: "cover" }} />
                 </div>
                 <div className={styles.cartItemDetails}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
@@ -133,7 +134,7 @@ export default function CartPage() {
                 <div key={product.id} className={styles.sliderItem}>
                   <Link href={`/product/${product.slug}`} className={styles.sliderImage}>
                     {product.images?.[0] ? (
-                      <img src={product.images[0]} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 'inherit' }} />
+                      <Image src={product.images[0]} alt={product.name} width={120} height={120} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 'inherit' }} />
                     ) : "💅"}
                   </Link>
                   <div className={styles.sliderName}>{product.name}</div>
