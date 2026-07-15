@@ -30,7 +30,7 @@ export default function ShopPage() {
 
   const toggleShape = (shapeId) => {
     setSelectedShapes(prev => 
-      prev.includes(shapeId) ? prev.filter(id => id !== shapeId) : [...prev, shapeId]
+      prev.includes(shapeId) ? [] : [shapeId]
     );
   };
 
