@@ -16,15 +16,19 @@ export default function SplashAnimation() {
 
     sessionStorage.setItem("hasSeenSplash", "true");
 
-    // Hold the static frame for a tiny moment to ensure smooth handoff from the native splash
+    // Check if running as an installed PWA (standalone) or just in the normal Safari browser
+    const isStandalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone;
+    const holdTime = isStandalone ? 400 : 1200; // Fast handoff for PWA, longer showcase for browser
+
+    // Hold the static frame
     const timer1 = setTimeout(() => {
       setAnimate(true);
-    }, 400);
+    }, holdTime);
 
     // Completely remove it from the DOM after the animation finishes
     const timer2 = setTimeout(() => {
       setShow(false);
-    }, 1400);
+    }, holdTime + 1000);
 
     return () => {
       clearTimeout(timer1);
