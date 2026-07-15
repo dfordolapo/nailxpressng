@@ -185,7 +185,8 @@ a {
 }
 
 button {
-  font-family: var(--font-body);
+  font-family: var(--font-heading);
+  font-weight: var(--weight-regular);
   border: none;
   background: none;
   cursor: pointer;
