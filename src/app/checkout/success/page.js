@@ -19,10 +19,7 @@ export default function OrderSuccessPage() {
       <SuccessPrinterAnimation orderDetails={dummyOrderDetails} />
       
       <div className={styles.actions}>
-        <Link href="/profile/orders" className={styles.primaryBtn}>
-          Track My Order
-        </Link>
-        <Link href="/shop" className={styles.secondaryBtn}>
+        <Link href="/shop" className={styles.primaryBtn}>
           Continue Shopping
         </Link>
       </div>
