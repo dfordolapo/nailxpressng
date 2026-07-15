@@ -8,7 +8,10 @@ import SearchOverlay from "@/components/ui/SearchOverlay";
 import OfflineBanner from "@/components/ui/OfflineBanner";
 
 export const viewport = {
-  themeColor: "#FAF8F5",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#FAF8F5" },
+    { media: "(prefers-color-scheme: dark)", color: "#FAF8F5" },
+  ],
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
