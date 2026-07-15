@@ -8,7 +8,7 @@ import SuccessPrinterAnimation from '@/components/checkout/SuccessPrinterAnimati
 export default function OrderSuccessPage() {
   const dummyOrderDetails = {
     orderNumber: '#NX-9482',
-    date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }),
+    date: 'Jul 15, 2026',
     items: '3',
     total: '₦45,500',
     delivery: '3-5 days'
