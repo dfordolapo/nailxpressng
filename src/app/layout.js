@@ -6,6 +6,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import SearchOverlay from "@/components/ui/SearchOverlay";
 import OfflineBanner from "@/components/ui/OfflineBanner";
+import SplashScreen from "@/components/ui/SplashScreen";
 
 export const viewport = {
   themeColor: [
@@ -22,6 +23,9 @@ export const metadata = {
   description: "Press-on perfection — handmade artistry & factory precision. Express yourself, one nail at a time. Shop handmade and factory-made press-on nails in Nigeria.",
   keywords: "press-on nails, handmade nails, factory nails, nail art, Nigeria, custom nails",
   manifest: "/manifest.json",
+  icons: {
+    apple: "/icons/icon-192x192.png",
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
@@ -136,6 +140,7 @@ export default function RootLayout({ children }) {
     <html lang="en" data-scroll-behavior="smooth">
       
       <body>
+        <SplashScreen />
         <CartProvider>
           <WishlistProvider>
             <SearchProvider>
