@@ -570,6 +570,7 @@
   width: 100%;
   padding: 6px 12px;
   font-size: 9px;
+  font-family: var(--font-body);
   font-weight: var(--weight-bold);
   text-transform: uppercase;
   letter-spacing: 0.12em;
@@ -655,6 +656,7 @@
   justify-content: center;
   padding: 4px;
   font-size: 11px;
+  font-family: var(--font-body);
   font-weight: var(--weight-medium);
   text-transform: uppercase;
   letter-spacing: 0.1em;
