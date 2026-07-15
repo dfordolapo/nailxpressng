@@ -143,7 +143,7 @@ html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
   max-width: 100%;
-  overflow-x: hidden;
+  touch-action: pan-y;
 }
 
 /* Enforce thin stroke for all Lucide icons globally */
@@ -162,6 +162,7 @@ body {
   min-height: 100vh;
   max-width: 100%;
   overflow-x: hidden;
+  touch-action: pan-y;
 }
 
 h1, h2, h3, h4, h5, h6 {
