@@ -6,7 +6,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import SearchOverlay from "@/components/ui/SearchOverlay";
 import OfflineBanner from "@/components/ui/OfflineBanner";
-import SplashScreen from "@/components/ui/SplashScreen";
+import SplashAnimation from "@/components/ui/SplashAnimation";
 
 export const viewport = {
   themeColor: [
@@ -142,10 +142,10 @@ export default function RootLayout({ children }) {
         <style dangerouslySetInnerHTML={{ __html: 'html,body{background-color:#FAF8F5;margin:0}' }} />
       </head>
       <body>
-        <SplashScreen />
         <CartProvider>
           <WishlistProvider>
             <SearchProvider>
+              <SplashAnimation />
               <Header />
               <SearchOverlay />
               <main>{children}</main>
