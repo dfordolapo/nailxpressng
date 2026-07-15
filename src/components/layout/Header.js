@@ -21,6 +21,8 @@ export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  
+  const isHome = pathname === "/";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -45,7 +47,7 @@ export default function Header() {
 
   return (
     <>
-      <div className={styles.headerSpacer} aria-hidden="true" />
+      {!isHome && <div className={styles.headerSpacer} aria-hidden="true" />}
       <header className={`${styles.header} ${scrolled ? styles.scrolled : ""}`} id="site-header">
         <div className={styles.headerInner}>
           {/* Logo */}

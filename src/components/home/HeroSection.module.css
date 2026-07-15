@@ -5,7 +5,6 @@
   background-color: var(--color-bg-warm);
   z-index: 10;
   min-height: 100vh; /* full height */
-  margin-top: calc(-1 * (var(--header-height) + var(--space-4)));
 }
 
 @media (min-width: 768px) {

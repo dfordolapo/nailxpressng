@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useCart } from "@/context/CartContext";
 import { formatPrice, calculateCartTotals } from "@/lib/utils";
 import pageStyles from "@/styles/pages/collection.module.css";
@@ -9,7 +10,8 @@ import cartStyles from "@/styles/components/cart.module.css";
 import btnStyles from "@/styles/components/buttons.module.css";
 
 export default function CheckoutPage() {
-  const { items } = useCart();
+  const { items, clearCart } = useCart();
+  const router = useRouter();
   const { subtotal, shipping, total } = calculateCartTotals(items);
   const [formData, setFormData] = useState({
     firstName: "", lastName: "", email: "", phone: "",
@@ -26,8 +28,12 @@ export default function CheckoutPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Paystack integration will go here
-    alert("Paystack payment integration coming soon! Order details have been captured.");
+    // Simulate successful payment for now
+    // Paystack integration will go here later
+    if (clearCart) {
+      clearCart();
+    }
+    router.push("/checkout/success");
   };
 
   if (items.length === 0) {
