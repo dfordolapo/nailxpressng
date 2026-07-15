@@ -23,7 +23,7 @@ export default function ShapeFilterBar({ selectedShapes = [], onToggleShape }) {
                   alt={`${shape.name} nail shape`} 
                   fill
                   sizes="40px"
-                  style={{ objectFit: 'contain', transform: 'scale(1.4)' }}
+                  style={{ objectFit: 'contain', transform: shape.id === 'stiletto' ? 'scale(1.7)' : 'scale(1.4)' }}
                 />
               </div>
               <span className={styles.name}>{shape.name}</span>
