@@ -7,6 +7,13 @@ import Footer from "@/components/layout/Footer";
 import SearchOverlay from "@/components/ui/SearchOverlay";
 import OfflineBanner from "@/components/ui/OfflineBanner";
 
+export const viewport = {
+  themeColor: "#FAF8F5",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+};
+
 export const metadata = {
   title: "Nailexpress — Press-On Perfection",
   description: "Press-on perfection — handmade artistry & factory precision. Express yourself, one nail at a time. Shop handmade and factory-made press-on nails in Nigeria.",

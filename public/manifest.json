@@ -4,8 +4,8 @@
   "description": "Salon looks with zero appointments",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#D4AF7A",
+  "background_color": "#FAF8F5",
+  "theme_color": "#FAF8F5",
   "icons": [
     {
       "src": "/icons/icon-192x192.png",
