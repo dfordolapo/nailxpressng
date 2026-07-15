@@ -440,7 +440,7 @@
 /* ── Wishlist Page ────────────────────────────────────────────────── */
 .wishlistPage {
   padding: var(--space-6) 0 var(--space-12);
-  min-height: 80vh;
+  min-height: 50vh;
 }
 
 .wishlistHeader {
