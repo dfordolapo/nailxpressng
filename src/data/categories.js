@@ -23,7 +23,7 @@ export const nailShapes = [
   { id: "stiletto", name: "Stiletto", image: "/images/shapes/stiletto.png" },
   { id: "oval", name: "Oval", image: "/images/shapes/oval.png" },
   { id: "square", name: "Square", image: "/images/shapes/square.png" },
-  { id: "round", name: "Round", image: "/images/shapes/round.png" },
+
 
 ];
 
