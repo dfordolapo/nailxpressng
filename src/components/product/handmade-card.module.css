@@ -337,6 +337,7 @@
   border-top: none;
   text-transform: uppercase;
   letter-spacing: 0.12em;
+  font-family: var(--font-body);
   font-weight: var(--weight-medium);
   transition: all 0.3s ease;
 }
