@@ -4,11 +4,13 @@ import { useState } from "react";
 import { Plus, Trash2, Edit2, Tag, Shapes, Ruler } from "lucide-react";
 import styles from "@/styles/admin.module.css";
 
+import { nailShapes, nailLengths, styles as nailStyles, categories as nailCategories } from "@/data/categories";
+
 const INITIAL_ATTRIBUTES = {
-  categories: ["Floral", "Minimalist", "Bling", "Abstract", "Ombre"],
-  shapes: ["Almond", "Coffin", "Square", "Stiletto", "Oval"],
-  lengths: ["Short", "Medium", "Long", "Extra Long"],
-  styles: ["Glossy", "Matte", "Chrome", "3D Art"]
+  categories: nailCategories.map(c => c.name),
+  shapes: nailShapes.map(s => s.name),
+  lengths: nailLengths.map(l => l.name),
+  styles: nailStyles.map(s => s.name)
 };
 
 export default function AdminAttributes() {

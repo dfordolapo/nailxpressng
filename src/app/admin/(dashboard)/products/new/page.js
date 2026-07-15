@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ArrowLeft, UploadCloud, X, Heart } from "lucide-react";
 import styles from "@/styles/admin.module.css";
+import { nailShapes, nailLengths, styles as nailStyles, categories as nailCategories } from "@/data/categories";
 import HandmadeProductCard from "@/components/product/HandmadeProductCard";
 import { useState } from "react";
 
@@ -79,9 +80,8 @@ export default function NewProduct() {
                 <div className={styles.formGroup}>
                   <label className={styles.label}>Collection</label>
                   <select className={styles.select}>
-                    <option>Select collection</option>
-                    <option>Handmade</option>
-                    <option>Factory Made</option>
+                    <option>Select Collection</option>
+                    {nailCategories.map(c => <option key={c.id}>{c.name}</option>)}
                   </select>
                 </div>
                 <div className={styles.formGroup}>
@@ -172,9 +172,7 @@ export default function NewProduct() {
                   <label className={styles.label}>Nail Shape</label>
                   <select className={styles.select}>
                     <option>Select shape</option>
-                    <option>Almond</option>
-                    <option>Coffin</option>
-                    <option>Square</option>
+                    {nailShapes.map(s => <option key={s.id}>{s.name}</option>)}
                   </select>
                   <Link href="/admin/settings/attributes" style={{ fontSize: "0.8rem", color: "var(--color-primary)", marginTop: "8px", display: "inline-block", textDecoration: "underline" }}>Manage Shapes</Link>
                 </div>
@@ -183,9 +181,7 @@ export default function NewProduct() {
                   <label className={styles.label}>Length</label>
                   <select className={styles.select}>
                     <option>Select length</option>
-                    <option>Short</option>
-                    <option>Medium</option>
-                    <option>Long</option>
+                    {nailLengths.map(l => <option key={l.id}>{l.name}</option>)}
                   </select>
                   <Link href="/admin/settings/attributes" style={{ fontSize: "0.8rem", color: "var(--color-primary)", marginTop: "8px", display: "inline-block", textDecoration: "underline" }}>Manage Lengths</Link>
                 </div>
@@ -195,9 +191,7 @@ export default function NewProduct() {
                 <label className={styles.label}>Style & Finish</label>
                 <select className={styles.select}>
                   <option>Select style</option>
-                  <option>Glossy</option>
-                  <option>Matte</option>
-                  <option>3D Art</option>
+                  {nailStyles.map(s => <option key={s.id}>{s.name}</option>)}
                 </select>
                 <Link href="/admin/settings/attributes" style={{ fontSize: "0.8rem", color: "var(--color-primary)", marginTop: "8px", display: "inline-block", textDecoration: "underline" }}>Manage Styles</Link>
               </div>
