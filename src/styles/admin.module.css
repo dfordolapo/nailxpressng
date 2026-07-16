@@ -262,7 +262,7 @@
   background: #FFFFFF;
   border: 1px solid var(--color-border-light);
   border-radius: 12px;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .table {

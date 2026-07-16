@@ -4,7 +4,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { useWishlist } from "@/context/WishlistContext";
 import { useCart } from "@/context/CartContext";
-import { getProductBySlug, products } from "@/data/products";
 import { formatPrice } from "@/lib/utils";
 import { Heart, ArrowLeft, ShoppingBag } from "lucide-react";
 import pageStyles from "@/styles/pages/collection.module.css";
@@ -15,11 +14,13 @@ export default function WishlistPage() {
   const { addItem } = useCart();
 
   const handleMoveToCart = (item) => {
-    const fullProduct = products.find((p) => p.id === item.id);
-    if (fullProduct) {
-      addItem(fullProduct, 1, "M", "medium");
-      removeItem(item.id);
-    }
+    // Construct the product format CartContext expects (needs images array)
+    const cartProductFormat = {
+      ...item,
+      images: [item.image]
+    };
+    addItem(cartProductFormat, 1, "M", "medium");
+    removeItem(item.id);
   };
 
   if (items.length === 0) {

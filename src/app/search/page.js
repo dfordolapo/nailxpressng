@@ -1,86 +1,13 @@
-"use client";
+import { getProducts } from "@/lib/api";
+import SearchClient from "./SearchClient";
 
-import { useState, useMemo, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
-import { searchProducts, products } from "@/data/products";
-import ProductGrid from "@/components/product/ProductGrid";
-import pageStyles from "@/styles/pages/collection.module.css";
+export const metadata = {
+  title: "Search Results — Nailexpress",
+  description: "Search for your favorite press-on nails.",
+};
 
-function SearchIcon() {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" width="20" height="20">
-      <circle cx="11" cy="11" r="8" />
-      <path d="m21 21-4.3-4.3" />
-    </svg>
-  );
-}
-
-function SearchContent() {
-  const searchParams = useSearchParams();
-  const initialQuery = searchParams.get("q") || "";
-  const [query, setQuery] = useState(initialQuery);
-
-  const results = useMemo(() => {
-    if (!query.trim()) return products;
-    return searchProducts(query);
-  }, [query]);
-
-  return (
-    <div className={pageStyles.searchPage} id="search-page">
-      <div className="container">
-        <div className={pageStyles.searchHeader}>
-          <h1 className={pageStyles.searchTitle}>Search</h1>
-          <div className={pageStyles.searchInputWrapper}>
-            <span className={pageStyles.searchIcon}><SearchIcon /></span>
-            <input
-              type="text"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search for nails, styles, colors..."
-              className={pageStyles.searchInput}
-              autoFocus
-              id="search-page-input"
-            />
-          </div>
-        </div>
-
-        {query.trim() && results.length === 0 ? (
-          <div className={pageStyles.noResults}>
-            <div className={pageStyles.noResultsIcon}>🔍</div>
-            <h2 style={{ fontSize: "1.125rem", color: "var(--color-primary-800)", marginBottom: "var(--space-2)", fontFamily: "var(--font-heading)" }}>We drew a blank...</h2>
-            <p className={pageStyles.noResultsText} style={{ maxWidth: "400px", margin: "0 auto", fontSize: "0.875rem" }}>
-              We couldn&apos;t find any styles matching your search. Try adjusting your filters or browsing our bestsellers.
-            </p>
-          </div>
-        ) : (
-          <>
-            <p style={{
-              fontSize: "var(--text-sm)",
-              color: "var(--color-text-tertiary)",
-              marginBottom: "var(--space-6)",
-              textAlign: "center",
-            }}>
-              {query.trim()
-                ? `${results.length} result${results.length !== 1 ? "s" : ""} for "${query}"`
-                : `Showing all ${results.length} products`
-              }
-            </p>
-            <ProductGrid products={results} />
-          </>
-        )}
-      </div>
-    </div>
-  );
-}
-
-export default function SearchPage() {
-  return (
-    <Suspense fallback={
-      <div style={{ textAlign: "center", padding: "var(--space-20) 0" }}>
-        <p>Loading search...</p>
-      </div>
-    }>
-      <SearchContent />
-    </Suspense>
-  );
+export default async function SearchPage() {
+  const allProducts = await getProducts();
+  
+  return <SearchClient allProducts={allProducts} />;
 }

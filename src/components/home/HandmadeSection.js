@@ -2,7 +2,6 @@
 
 import { useState, useRef, useCallback } from "react";
 import Link from "next/link";
-import { getProductsByCategory } from "@/data/products";
 import { formatPrice, getDiscountPercent } from "@/lib/utils";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
@@ -436,9 +435,9 @@ function HandmadeCard({ product, index }) {
   );
 }
 
-export default function HandmadeSection() {
-  const products = getProductsByCategory("handmade");
-
+export default function HandmadeSection({ products = [] }) {
+  // If no products provided, try to fail gracefully or show empty state
+  // products are now passed from the server component (Home page)
   return (
     <section className={styles.section}>
       <div className={styles.header}>

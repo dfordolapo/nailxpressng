@@ -27,15 +27,46 @@ export default function CheckoutPage() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // Simulate successful payment for now
-    // Paystack integration will go here later
-    if (clearCart) {
-      clearCart();
+    
+    const shippingFee = shippingMethod === "express" ? 9.99 : 4.99;
+    
+    try {
+      const response = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          formData,
+          items,
+          shippingMethod,
+          paymentMethod,
+          subtotal,
+          shippingFee,
+          total: finalTotal
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) throw new Error(data.error || 'Failed to place order');
+
+      // If we are integrating Paystack, it would happen here before clearCart!
+      // For now, it just simulates success.
+
+      if (clearCart) {
+        clearCart();
+      }
+      router.push("/checkout/success");
+      
+    } catch (error) {
+      console.error("Checkout error:", error);
+      alert("There was an error processing your order. Please try again.");
+      setIsSubmitting(false);
     }
-    router.push("/checkout/success");
   };
 
   if (items.length === 0 && !isSubmitting) {

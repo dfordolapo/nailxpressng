@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, useCallback } from "react";
-import { searchProducts } from "@/data/products";
+import { searchProducts } from "@/lib/api";
 import { debounce } from "@/lib/utils";
 
 const SearchContext = createContext(null);
@@ -13,15 +13,21 @@ export function SearchProvider({ children }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const performSearch = useCallback(
-    debounce((q) => {
+    debounce(async (q) => {
       if (!q.trim()) {
         setResults([]);
         setIsSearching(false);
         return;
       }
-      const found = searchProducts(q);
-      setResults(found);
-      setIsSearching(false);
+      try {
+        const found = await searchProducts(q);
+        setResults(found);
+      } catch (e) {
+        console.error(e);
+        setResults([]);
+      } finally {
+        setIsSearching(false);
+      }
     }, 300),
     []
   );

@@ -142,6 +142,7 @@ export default function CategoryShowcase({ mini = false, items = null }) {
                         src={item.image}
                         alt={item.name}
                         fill
+                        priority={i < 5} // Eagerly load the first few images to improve LCP
                         sizes="(max-width: 768px) 180px, 20vw"
                         className={styles.image}
                       />

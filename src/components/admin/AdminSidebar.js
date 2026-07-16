@@ -55,6 +55,17 @@ function SidebarContent() {
           </div>
 
           <div className={styles.navGroup}>
+            <Link
+              href="/admin/orders"
+              className={`${styles.navItem} ${pathname.startsWith("/admin/orders") ? styles.active : ""}`}
+              onClick={() => setIsMobileOpen(false)}
+            >
+              <Package size={18} />
+              Orders
+            </Link>
+          </div>
+
+          <div className={styles.navGroup}>
             <div 
               className={`${styles.navItem} ${pathname.startsWith("/admin/products") ? styles.active : ""}`} 
               style={{ cursor: "pointer" }}
