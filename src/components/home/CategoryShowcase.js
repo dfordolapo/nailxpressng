@@ -21,7 +21,7 @@ export default function CategoryShowcase({ mini = false, items = null }) {
   const displayItems = items ? items.map((p, i) => ({
     id: p.id,
     name: p.name,
-    image: p.image || p.images?.[0] || MOODS[i % MOODS.length].image,
+    image: MOODS[i % MOODS.length].image,
     color: MOODS[i % MOODS.length].color,
     isProduct: true,
     slug: p.slug
