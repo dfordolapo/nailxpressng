@@ -8,18 +8,21 @@ import GiftBoxBanner from "@/components/home/GiftBoxBanner";
 import FAQSection from "@/components/home/FAQSection";
 import FooterHero from "@/components/home/FooterHero";
 import ScrollReveal from "@/components/ScrollReveal";
+import { getAllProducts } from "@/lib/api";
 
 export const metadata = {
   title: "Nailexpress — Press-On Perfection",
   description: "Press-on perfection — handmade artistry & factory precision. Shop handmade and factory-made press-on nails. Express yourself, one nail at a time.",
 };
 
-export default function Home() {
+export default async function Home() {
+  const products = await getAllProducts();
+  
   return (
     <div>
       <HeroSection />
       <ScrollReveal animation="fade-up">
-        <CategoryShowcase />
+        <CategoryShowcase items={products.length > 0 ? products.slice(0, 5) : null} />
       </ScrollReveal>
       <ScrollReveal animation="fade-up" delay={100}>
         <Features />
