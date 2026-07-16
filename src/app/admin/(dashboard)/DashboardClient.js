@@ -136,7 +136,10 @@ export default function DashboardClient({ initialProducts }) {
                 </td>
               </tr>
             ) : (
-              productsList.slice(0, 5).map((product) => (
+              [...productsList]
+                .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                .slice(0, 5)
+                .map((product, index, arr) => (
                 <tr key={product.id}>
                   <td>
                     <div className={styles.productCell}>
@@ -161,7 +164,10 @@ export default function DashboardClient({ initialProducts }) {
                       <MoreVertical size={18} />
                     </button>
                     {openMenuId === product.id && (
-                      <div className={styles.kebabMenu}>
+                      <div 
+                        className={styles.kebabMenu}
+                        style={arr.length > 2 && index >= arr.length - 2 ? { top: "auto", bottom: "30px" } : {}}
+                      >
                         <button className={styles.kebabItem} onClick={() => handleEdit(product.id)}>Edit</button>
                         <button className={styles.kebabItem} onClick={() => handleDuplicate(product.id)}>Duplicate</button>
                         <button className={styles.kebabItem} onClick={() => handleToggleFeature(product.id)}>
