@@ -35,10 +35,13 @@ export async function POST(request) {
 
     if (orderError) throw orderError;
 
+    // Helper to check if a string is a valid UUID
+    const isUUID = (str) => /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(String(str));
+
     // 2. Format Order Items
     const orderItems = items.map(item => ({
       order_id: order.id,
-      product_id: item.id,
+      product_id: isUUID(item.id) ? item.id : null, // Mock products will be null to prevent UUID cast errors
       product_name: item.name,
       quantity: item.quantity,
       price: item.price,
@@ -51,7 +54,10 @@ export async function POST(request) {
       .from('order_items')
       .insert(orderItems);
 
-    if (itemsError) throw itemsError;
+    if (itemsError) {
+      console.error('Order Items Insert Error:', itemsError);
+      throw itemsError;
+    }
 
     return NextResponse.json({ success: true, orderId: order.id });
     

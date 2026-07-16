@@ -14,8 +14,8 @@ export default function CheckoutPage() {
   const router = useRouter();
   const { subtotal, shipping, total } = calculateCartTotals(items);
   const [formData, setFormData] = useState({
-    firstName: "", lastName: "", email: "", phone: "",
-    address: "", city: "", state: "", zipCode: "",
+    firstName: "Dolapo", lastName: "Oyekanmi", email: "dolapo@example.com", phone: "08000000000",
+    address: "Surulere, Lagos State", city: "Lagos", state: "Lagos State", zipCode: "101283",
   });
   const [shippingMethod, setShippingMethod] = useState("standard");
   const [paymentMethod, setPaymentMethod] = useState("card");
