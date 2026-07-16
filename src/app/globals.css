@@ -202,7 +202,7 @@ img, video {
 input, textarea, select {
   font-family: var(--font-body);
   font-size: var(--text-base);
-  font-weight: var(--weight-regular) !important;
+  font-weight: var(--weight-light) !important;
 }
 
 ul, ol {
