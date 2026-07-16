@@ -21,8 +21,8 @@ export default function CheckoutPage() {
   const [paymentMethod, setPaymentMethod] = useState("card");
   const [isSubmitting, setIsSubmitting] = useState(false);
   
-  const shippingFeeAmount = shippingMethod === "express" ? 5000 : 2500;
-  const finalTotal = total + shippingFeeAmount;
+  const shippingFeeAmount = shippingMethod === "express" ? 5000 : (subtotal >= 20000 ? 0 : 2500);
+  const finalTotal = subtotal + shippingFeeAmount;
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -138,7 +138,7 @@ export default function CheckoutPage() {
                   <p style={{ fontSize: "0.75rem", color: "var(--color-text-tertiary)" }}>3-5 business days</p>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: "var(--space-3)" }}>
-                  <span style={{ fontWeight: 500 }}>{formatPrice(2500)}</span>
+                  <span style={{ fontWeight: 500 }}>{subtotal >= 20000 ? "Free" : formatPrice(2500)}</span>
                   <div style={{ width: 18, height: 18, borderRadius: "50%", border: `2px solid ${shippingMethod === "standard" ? "var(--color-pink)" : "var(--color-border)"}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
                     {shippingMethod === "standard" && <div style={{ width: 10, height: 10, borderRadius: "50%", background: "var(--color-pink)" }}></div>}
                   </div>
@@ -246,7 +246,7 @@ export default function CheckoutPage() {
               </div>
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "var(--space-4)", fontSize: "0.875rem" }}>
                 <span style={{ color: "var(--color-text-secondary)" }}>Shipping</span>
-                <span style={{ fontWeight: 600 }}>{formatPrice(shippingFeeAmount)}</span>
+                <span style={{ fontWeight: 600 }}>{shippingFeeAmount === 0 ? "Free" : formatPrice(shippingFeeAmount)}</span>
               </div>
               <div style={{ display: "flex", justifyContent: "space-between", fontSize: "1rem", fontWeight: 700 }}>
                 <span>Total</span>
