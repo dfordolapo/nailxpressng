@@ -48,7 +48,7 @@ export default function CollectionHub() {
       description: "instant glam. zero waiting.",
       href: "/factory",
       image: factoryCategory.image,
-      strokeColor: "#00E5FF", // Cyan
+      strokeColor: "#FFB6C1", // Light Pink
     },
     {
       title: "Custom Orders",

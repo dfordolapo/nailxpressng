@@ -52,7 +52,7 @@
   --color-success: #4a9e6e;
   --color-error: #c44d4d;
   --color-warning: #c9a96e;
-  --color-info: #4d8ec4;
+  --color-info: #a86a7d;
 
   /* Typography */
   --font-heading: 'Cormorant Upright', Georgia, 'Times New Roman', serif;
@@ -389,6 +389,11 @@ ul, ol {
 ::selection {
   background-color: var(--color-primary-200);
   color: var(--color-primary-900);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-primary-300);
+  outline-offset: 2px;
 }
 
 /* ── Responsive Typography ────────────────────────────────────────── */
