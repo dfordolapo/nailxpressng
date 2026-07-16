@@ -21,7 +21,8 @@ export default function CheckoutPage() {
   const [paymentMethod, setPaymentMethod] = useState("card");
   const [isSubmitting, setIsSubmitting] = useState(false);
   
-  const finalTotal = total + (shippingMethod === "express" ? 9.99 : 4.99);
+  const shippingFeeAmount = shippingMethod === "express" ? 5000 : 2500;
+  const finalTotal = total + shippingFeeAmount;
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -30,8 +31,6 @@ export default function CheckoutPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    const shippingFee = shippingMethod === "express" ? 9.99 : 4.99;
     
     try {
       const response = await fetch('/api/checkout', {
@@ -45,7 +44,7 @@ export default function CheckoutPage() {
           shippingMethod,
           paymentMethod,
           subtotal,
-          shippingFee,
+          shippingFee: shippingFeeAmount,
           total: finalTotal
         }),
       });
@@ -247,7 +246,7 @@ export default function CheckoutPage() {
               </div>
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "var(--space-4)", fontSize: "0.875rem" }}>
                 <span style={{ color: "var(--color-text-secondary)" }}>Shipping</span>
-                <span style={{ fontWeight: 600 }}>${shippingMethod === "express" ? "9.99" : "4.99"}</span>
+                <span style={{ fontWeight: 600 }}>{formatPrice(shippingFeeAmount)}</span>
               </div>
               <div style={{ display: "flex", justifyContent: "space-between", fontSize: "1rem", fontWeight: 700 }}>
                 <span>Total</span>
