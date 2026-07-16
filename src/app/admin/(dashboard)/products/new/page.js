@@ -5,14 +5,36 @@ import { ArrowLeft, UploadCloud, X, Heart } from "lucide-react";
 import styles from "@/styles/admin.module.css";
 import { nailShapes, nailLengths, styles as nailStyles, categories as nailCategories } from "@/data/categories";
 import HandmadeProductCard from "@/components/product/HandmadeProductCard";
-import { useState } from "react";
+import { useState, useRef } from "react";
+import { useRouter } from "next/navigation";
 
 export default function NewProduct() {
+  const router = useRouter();
+  
   const [activeTab, setActiveTab] = useState("basic");
+  
+  // Form State
+  const [name, setName] = useState("");
+  const [collection, setCollection] = useState("Handmade");
+  const [category, setCategory] = useState("Floral");
+  const [description, setDescription] = useState("");
+  
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+  
+  const [nailShape, setNailShape] = useState("Square");
+  const [nailLength, setNailLength] = useState("Medium");
+  const [nailStyle, setNailStyle] = useState("Solid");
+  
+  const [price, setPrice] = useState("");
+  const [compareAtPrice, setCompareAtPrice] = useState("");
   const [stockQuantity, setStockQuantity] = useState("");
   const [availability, setAvailability] = useState("In Stock");
   const [isFeatured, setIsFeatured] = useState(false);
   const [isBestseller, setIsBestseller] = useState(false);
+  
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const fileInputRef = useRef(null);
 
   const handleStockChange = (e) => {
     const val = e.target.value;
@@ -28,6 +50,64 @@ export default function NewProduct() {
       } else if (num > 0 && stockQuantity === 0) {
         setAvailability("In Stock");
       }
+    }
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImageFile(file);
+      const url = URL.createObjectURL(file);
+      setImagePreview(url);
+    }
+  };
+  
+  const removeImage = () => {
+    setImageFile(null);
+    setImagePreview(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!name || !price) {
+      alert("Name and Price are required.");
+      return;
+    }
+    
+    setIsSubmitting(true);
+    
+    try {
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('description', description);
+      formData.append('price', price);
+      if (compareAtPrice) formData.append('compareAtPrice', compareAtPrice);
+      formData.append('category', collection); // Map collection to category
+      formData.append('stockCount', stockQuantity || '0');
+      formData.append('featured', isBestseller); // Or isFeatured depending on preference
+      
+      if (imageFile) {
+        formData.append('image', imageFile);
+      }
+      
+      const res = await fetch('/api/admin/products', {
+        method: 'POST',
+        body: formData
+      });
+      
+      const data = await res.json();
+      
+      if (!res.ok) throw new Error(data.error || "Failed to create product");
+      
+      alert("Product created successfully!");
+      router.push('/admin/products');
+      
+    } catch (err) {
+      console.error(err);
+      alert("Error creating product: " + err.message);
+    } finally {
+      setIsSubmitting(false);
     }
   };
   
@@ -48,18 +128,18 @@ export default function NewProduct() {
       <div className={styles.formContainer}>
         {/* Form Sidebar */}
         <div className={styles.formSidebar}>
-          <button className={`${styles.formNavBtn} ${activeTab === "basic" ? styles.active : ""}`} onClick={() => setActiveTab("basic")}>
+          <button type="button" className={`${styles.formNavBtn} ${activeTab === "basic" ? styles.active : ""}`} onClick={() => setActiveTab("basic")}>
             Basic Information
           </button>
-          <button className={`${styles.formNavBtn} ${activeTab === "images" ? styles.active : ""}`} onClick={() => setActiveTab("images")}>
+          <button type="button" className={`${styles.formNavBtn} ${activeTab === "images" ? styles.active : ""}`} onClick={() => setActiveTab("images")}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
             Images
           </button>
-          <button className={`${styles.formNavBtn} ${activeTab === "details" ? styles.active : ""}`} onClick={() => setActiveTab("details")}>
+          <button type="button" className={`${styles.formNavBtn} ${activeTab === "details" ? styles.active : ""}`} onClick={() => setActiveTab("details")}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
             Details
           </button>
-          <button className={`${styles.formNavBtn} ${activeTab === "pricing" ? styles.active : ""}`} onClick={() => setActiveTab("pricing")}>
+          <button type="button" className={`${styles.formNavBtn} ${activeTab === "pricing" ? styles.active : ""}`} onClick={() => setActiveTab("pricing")}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
             Pricing & Status
           </button>
@@ -67,29 +147,28 @@ export default function NewProduct() {
 
         {/* Main Form Area */}
         <div className={styles.formMain}>
+          <form onSubmit={handleSubmit}>
           {activeTab === "basic" && (
             <div className={styles.formSection}>
               <h2 className={styles.formSectionTitle}>Basic Information</h2>
               
               <div className={styles.formGroup}>
                 <label className={styles.label}>Product Name</label>
-                <input type="text" className={styles.input} placeholder="e.g. Blush Bloom" />
+                <input type="text" className={styles.input} placeholder="e.g. Blush Bloom" value={name} onChange={e => setName(e.target.value)} required />
               </div>
 
               <div className={styles.grid2}>
                 <div className={styles.formGroup}>
                   <label className={styles.label}>Collection</label>
-                  <select className={styles.select}>
-                    <option>Select Collection</option>
-                    {nailCategories.map(c => <option key={c.id}>{c.name}</option>)}
+                  <select className={styles.select} value={collection} onChange={e => setCollection(e.target.value)}>
+                    {nailCategories.map(c => <option key={c.id} value={c.name}>{c.name}</option>)}
                   </select>
                 </div>
                 <div className={styles.formGroup}>
                   <label className={styles.label}>Category</label>
-                  <select className={styles.select}>
-                    <option>Select category</option>
-                    <option>Floral</option>
-                    <option>Minimalist</option>
+                  <select className={styles.select} value={category} onChange={e => setCategory(e.target.value)}>
+                    <option value="Floral">Floral</option>
+                    <option value="Minimalist">Minimalist</option>
                   </select>
                   <Link href="/admin/settings/attributes" style={{ fontSize: "0.8rem", color: "var(--color-primary)", marginTop: "8px", display: "inline-block", textDecoration: "underline" }}>Manage Categories</Link>
                 </div>
@@ -97,13 +176,13 @@ export default function NewProduct() {
 
               <div className={styles.formGroup}>
                 <label className={styles.label}>Description</label>
-                <textarea className={styles.textarea} placeholder="Write a one liner about this product."></textarea>
-                <div className={styles.charCount}>0/300</div>
+                <textarea className={styles.textarea} placeholder="Write a one liner about this product." value={description} onChange={e => setDescription(e.target.value)}></textarea>
+                <div className={styles.charCount}>{description.length}/300</div>
               </div>
 
               <div className={styles.formActions}>
-                <button className={styles.btnSecondary} onClick={() => window.history.back()}>Cancel</button>
-                <button className={styles.btnPrimary} onClick={() => setActiveTab("images")}>Next</button>
+                <button type="button" className={styles.btnSecondary} onClick={() => window.history.back()}>Cancel</button>
+                <button type="button" className={styles.btnPrimary} onClick={() => setActiveTab("images")}>Next</button>
               </div>
             </div>
           )}
@@ -115,21 +194,23 @@ export default function NewProduct() {
                
                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }}>
                   <div>
-                    <div style={{ border: "2px dashed var(--color-border)", borderRadius: "12px", height: "150px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", backgroundColor: "var(--color-bg)", cursor: "pointer", marginBottom: "20px" }}>
+                    <input type="file" accept="image/*" ref={fileInputRef} onChange={handleImageChange} style={{ display: 'none' }} />
+                    <div 
+                      onClick={() => fileInputRef.current?.click()}
+                      style={{ border: "2px dashed var(--color-border)", borderRadius: "12px", height: "150px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", backgroundColor: "var(--color-bg)", cursor: "pointer", marginBottom: "20px" }}
+                    >
                       <UploadCloud size={30} color="#888" style={{ marginBottom: "10px" }} />
                       <div style={{ fontSize: "0.9rem", color: "#333", fontWeight: 500 }}>Upload Image</div>
                       <div style={{ fontSize: "0.75rem", color: "#888" }}>PNG, JPG (Max 5MB)</div>
                     </div>
+                    
                     <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
-                       {/* Mock Image Previews */}
-                       <div style={{ position: "relative", aspectRatio: "1", borderRadius: "8px", overflow: "hidden", backgroundColor: "#EEE" }}>
-                         <button style={{ position: "absolute", top: "5px", right: "5px", background: "white", borderRadius: "50%", padding: "2px", border: "none", cursor: "pointer", width: "20px", height: "20px", display: "flex", alignItems: "center", justify: "center" }}><X size={12}/></button>
-                         <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&q=80&w=200" alt="Preview" style={{width: "100%", height: "100%", objectFit: "cover"}} />
-                       </div>
-                       <div style={{ position: "relative", aspectRatio: "1", borderRadius: "8px", overflow: "hidden", backgroundColor: "#EEE" }}>
-                         <button style={{ position: "absolute", top: "5px", right: "5px", background: "white", borderRadius: "50%", padding: "2px", border: "none", cursor: "pointer", width: "20px", height: "20px", display: "flex", alignItems: "center", justify: "center" }}><X size={12}/></button>
-                         <img src="https://images.unsplash.com/photo-1522337360788-8b13fee7a371?auto=format&fit=crop&q=80&w=200" alt="Preview" style={{width: "100%", height: "100%", objectFit: "cover"}} />
-                       </div>
+                       {imagePreview && (
+                         <div style={{ position: "relative", aspectRatio: "1", borderRadius: "8px", overflow: "hidden", backgroundColor: "#EEE" }}>
+                           <button type="button" onClick={removeImage} style={{ position: "absolute", top: "5px", right: "5px", background: "white", borderRadius: "50%", padding: "2px", border: "none", cursor: "pointer", width: "20px", height: "20px", display: "flex", alignItems: "center", justifyContent: "center" }}><X size={12}/></button>
+                           <img src={imagePreview} alt="Preview" style={{width: "100%", height: "100%", objectFit: "cover"}} />
+                         </div>
+                       )}
                     </div>
                   </div>
                   
@@ -140,11 +221,11 @@ export default function NewProduct() {
                       <HandmadeProductCard 
                         product={{
                           id: "preview",
-                          name: "Blush Bloom",
-                          price: 12500,
-                          category: "handmade",
-                          image: "https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&q=80&w=300",
-                          shortDescription: "Handmade press-on nails with soft pink base and 3D floral accents.",
+                          name: name || "Product Name",
+                          price: parseFloat(price || "0"),
+                          category: collection.toLowerCase().replace(' ', '-'),
+                          image: imagePreview || "https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&q=80&w=300",
+                          shortDescription: description || "Product description goes here.",
                           sizes: ["XS", "S", "M", "L"],
                           lengths: ["Short", "Medium", "Long"],
                           bestseller: isBestseller,
@@ -157,8 +238,8 @@ export default function NewProduct() {
                </div>
 
                <div className={styles.formActions}>
-                 <button className={styles.btnSecondary} onClick={() => setActiveTab("basic")}>Back</button>
-                 <button className={styles.btnPrimary} style={{ backgroundColor: "var(--color-primary)" }}>Save Changes</button>
+                 <button type="button" className={styles.btnSecondary} onClick={() => setActiveTab("basic")}>Back</button>
+                 <button type="button" className={styles.btnPrimary} onClick={() => setActiveTab("details")}>Next</button>
                </div>
             </div>
           )}
@@ -170,18 +251,16 @@ export default function NewProduct() {
               <div className={styles.grid2}>
                 <div className={styles.formGroup}>
                   <label className={styles.label}>Nail Shape</label>
-                  <select className={styles.select}>
-                    <option>Select shape</option>
-                    {nailShapes.map(s => <option key={s.id}>{s.name}</option>)}
+                  <select className={styles.select} value={nailShape} onChange={e => setNailShape(e.target.value)}>
+                    {nailShapes.map(s => <option key={s.id} value={s.name}>{s.name}</option>)}
                   </select>
                   <Link href="/admin/settings/attributes" style={{ fontSize: "0.8rem", color: "var(--color-primary)", marginTop: "8px", display: "inline-block", textDecoration: "underline" }}>Manage Shapes</Link>
                 </div>
                 
                 <div className={styles.formGroup}>
                   <label className={styles.label}>Length</label>
-                  <select className={styles.select}>
-                    <option>Select length</option>
-                    {nailLengths.map(l => <option key={l.id}>{l.name}</option>)}
+                  <select className={styles.select} value={nailLength} onChange={e => setNailLength(e.target.value)}>
+                    {nailLengths.map(l => <option key={l.id} value={l.name}>{l.name}</option>)}
                   </select>
                   <Link href="/admin/settings/attributes" style={{ fontSize: "0.8rem", color: "var(--color-primary)", marginTop: "8px", display: "inline-block", textDecoration: "underline" }}>Manage Lengths</Link>
                 </div>
@@ -189,16 +268,15 @@ export default function NewProduct() {
 
               <div className={styles.formGroup}>
                 <label className={styles.label}>Style & Finish</label>
-                <select className={styles.select}>
-                  <option>Select style</option>
-                  {nailStyles.map(s => <option key={s.id}>{s.name}</option>)}
+                <select className={styles.select} value={nailStyle} onChange={e => setNailStyle(e.target.value)}>
+                  {nailStyles.map(s => <option key={s.id} value={s.name}>{s.name}</option>)}
                 </select>
                 <Link href="/admin/settings/attributes" style={{ fontSize: "0.8rem", color: "var(--color-primary)", marginTop: "8px", display: "inline-block", textDecoration: "underline" }}>Manage Styles</Link>
               </div>
 
               <div className={styles.formActions}>
-                 <button className={styles.btnSecondary} onClick={() => setActiveTab("images")}>Back</button>
-                 <button className={styles.btnPrimary} onClick={() => setActiveTab("pricing")}>Next</button>
+                 <button type="button" className={styles.btnSecondary} onClick={() => setActiveTab("images")}>Back</button>
+                 <button type="button" className={styles.btnPrimary} onClick={() => setActiveTab("pricing")}>Next</button>
                </div>
             </div>
           )}
@@ -212,14 +290,14 @@ export default function NewProduct() {
                   <label className={styles.label}>Price</label>
                   <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
                     <span style={{ position: "absolute", left: "15px", color: "#666", fontWeight: 500 }}>₦</span>
-                    <input type="number" className={styles.input} placeholder="0.00" style={{ paddingLeft: "35px" }} />
+                    <input type="number" className={styles.input} placeholder="0.00" style={{ paddingLeft: "35px" }} value={price} onChange={e => setPrice(e.target.value)} required />
                   </div>
                 </div>
                 <div className={styles.formGroup}>
                   <label className={styles.label}>Sale Price / Discounted Rate</label>
                   <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
                     <span style={{ position: "absolute", left: "15px", color: "#666", fontWeight: 500 }}>₦</span>
-                    <input type="number" className={styles.input} placeholder="0.00" style={{ paddingLeft: "35px" }} />
+                    <input type="number" className={styles.input} placeholder="0.00" style={{ paddingLeft: "35px" }} value={compareAtPrice} onChange={e => setCompareAtPrice(e.target.value)} />
                   </div>
                   <div style={{ fontSize: "0.75rem", color: "#888", marginTop: "6px" }}>Leave blank if the product is not on sale.</div>
                 </div>
@@ -277,11 +355,14 @@ export default function NewProduct() {
               </div>
 
               <div className={styles.formActions}>
-                 <button className={styles.btnSecondary} onClick={() => setActiveTab("details")}>Back</button>
-                 <button className={styles.btnPrimary}>Save Product</button>
+                 <button type="button" className={styles.btnSecondary} onClick={() => setActiveTab("details")}>Back</button>
+                 <button type="submit" className={styles.btnPrimary} disabled={isSubmitting}>
+                   {isSubmitting ? "Saving..." : "Save Product"}
+                 </button>
                </div>
             </div>
           )}
+          </form>
         </div>
 
         {/* Tips Sidebar */}

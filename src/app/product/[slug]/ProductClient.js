@@ -79,44 +79,57 @@ export default function ProductClient({ product, relatedProducts = [] }) {
         <div className={pageStyles.productLayout}>
           {/* Gallery */}
           <div className={pageStyles.gallery}>
-            <div className={pageStyles.mainImage}>
-              <div
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  background: `linear-gradient(135deg, var(--color-primary-100), var(--color-surface), var(--color-primary-200))`,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: "6rem",
-                }}
-              >
-                💅
-              </div>
-            </div>
-            <div className={pageStyles.thumbnails}>
-              {product.images.map((_, i) => (
-                <button
-                  key={i}
-                  className={`${pageStyles.thumbnail} ${selectedImage === i ? pageStyles.active : ""}`}
-                  onClick={() => setSelectedImage(i)}
+            <div className={pageStyles.mainImage} style={{ position: "relative", width: "100%", aspectRatio: "1/1", borderRadius: "var(--radius-lg)", overflow: "hidden", backgroundColor: "var(--color-bg)" }}>
+              {product.images && product.images.length > 0 ? (
+                <img 
+                  src={product.images[selectedImage] || product.image} 
+                  alt={product.name} 
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }} 
+                />
+              ) : (
+                <div
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    background: `linear-gradient(135deg, var(--color-primary-100), var(--color-surface), var(--color-primary-200))`,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "6rem",
+                  }}
                 >
-                  <div
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      background: `linear-gradient(${135 + i * 30}deg, var(--color-primary-100), var(--color-surface))`,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      fontSize: "1.5rem",
+                  💅
+                </div>
+              )}
+            </div>
+            
+            {product.images && product.images.length > 1 && (
+              <div className={pageStyles.thumbnails} style={{ display: "flex", gap: "10px", marginTop: "15px" }}>
+                {product.images.map((imgUrl, i) => (
+                  <button
+                    key={i}
+                    className={`${pageStyles.thumbnail} ${selectedImage === i ? pageStyles.active : ""}`}
+                    onClick={() => setSelectedImage(i)}
+                    style={{ 
+                      position: "relative", 
+                      width: "80px", 
+                      height: "80px", 
+                      borderRadius: "var(--radius-sm)", 
+                      overflow: "hidden",
+                      border: selectedImage === i ? "2px solid var(--color-primary)" : "1px solid var(--color-border)",
+                      cursor: "pointer",
+                      padding: 0
                     }}
                   >
-                    💅
-                  </div>
-                </button>
-              ))}
-            </div>
+                    <img 
+                      src={imgUrl} 
+                      alt={`Thumbnail ${i + 1}`} 
+                      style={{ width: "100%", height: "100%", objectFit: "cover" }} 
+                    />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Product Info */}

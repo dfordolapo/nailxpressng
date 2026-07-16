@@ -2,7 +2,8 @@ import { getProductBySlug, getProductsByCategory } from "@/lib/api";
 import ProductClient from "./ProductClient";
 
 export async function generateMetadata({ params }) {
-  const product = await getProductBySlug(params.slug);
+  const { slug } = await params;
+  const product = await getProductBySlug(slug);
   if (!product) {
     return { title: "Product Not Found" };
   }
@@ -13,7 +14,8 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function ProductDetailPage({ params }) {
-  const product = await getProductBySlug(params.slug);
+  const { slug } = await params;
+  const product = await getProductBySlug(slug);
   
   let relatedProducts = [];
   if (product && product.category) {

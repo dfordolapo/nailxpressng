@@ -15,6 +15,7 @@ const mapProduct = (p) => ({
   lengths: p.lengths,
   sizes: p.sizes,
   images: p.images,
+  image: p.images?.[0] || null,
   newArrival: p.new_arrival,
   bestseller: p.bestseller,
   inStock: p.stock_count > 0,
