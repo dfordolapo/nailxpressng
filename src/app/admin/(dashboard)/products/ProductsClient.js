@@ -193,7 +193,7 @@ function ProductsContent({ initialProducts }) {
             </tr>
           </thead>
           <tbody>
-            {filteredProducts.map((product) => (
+            {filteredProducts.map((product, index) => (
               <tr key={product.id}>
                 <td>
                   <div className={styles.productCell}>
@@ -225,7 +225,10 @@ function ProductsContent({ initialProducts }) {
                     <MoreVertical size={18} />
                   </button>
                   {openMenuId === product.id && (
-                    <div className={styles.kebabMenu}>
+                    <div 
+                      className={styles.kebabMenu}
+                      style={filteredProducts.length > 2 && index >= filteredProducts.length - 2 ? { top: "auto", bottom: "30px" } : {}}
+                    >
                       <button className={styles.kebabItem} onClick={() => handleEdit(product.id)}>Edit</button>
                       <button className={styles.kebabItem} onClick={() => handleDuplicate(product.id)}>Duplicate</button>
                       <button className={styles.kebabItem} onClick={() => handleToggleFeature(product.id)}>
