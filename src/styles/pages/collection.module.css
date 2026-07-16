@@ -618,9 +618,54 @@
 
   .stepIndicator {
     flex-wrap: wrap;
+    gap: var(--space-1);
+    margin-bottom: var(--space-6);
   }
 
   .stepLabel {
     display: none;
   }
+  
+  .stepNumber {
+    width: 28px;
+    height: 28px;
+    font-size: var(--text-xs);
+  }
+  
+  .stepLine {
+    width: 20px;
+  }
+
+  .reviewBox {
+    padding: var(--space-4) !important;
+  }
+
+  .reviewBoxRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-1);
+  }
+
+  .reviewBoxRow span {
+    text-align: left !important;
+    max-width: 100% !important;
+  }
+}
+
+/* ── Custom Order Helper Classes ── */
+.reviewBox {
+  max-width: 500px;
+  margin: 0 auto;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+}
+
+.reviewBoxRow {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--color-border-light);
+  font-size: var(--text-sm);
 }

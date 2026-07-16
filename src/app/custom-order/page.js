@@ -271,16 +271,7 @@ export default function CustomOrderPage() {
           {/* Step 5: Review */}
           {currentStep === 5 && (
             <div>
-              <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "var(--text-xl)", fontStyle: "italic", marginBottom: "var(--space-6)", textAlign: "center" }}>
-                Review Your Custom Order
-              </h2>
-              <div style={{
-                maxWidth: 500, margin: "0 auto",
-                background: "var(--color-bg-card)",
-                border: "1px solid var(--color-border-light)",
-                borderRadius: "var(--radius-xl)",
-                padding: "var(--space-8)",
-              }}>
+              <div className={pageStyles.reviewBox}>
                 {[
                   { label: "Nail Shape", value: order.shape },
                   { label: "Length", value: order.length },
@@ -291,12 +282,7 @@ export default function CustomOrderPage() {
                   { label: "Email", value: order.email },
                   { label: "WhatsApp", value: order.phone || "Not provided" },
                 ].map((row) => (
-                  <div key={row.label} style={{
-                    display: "flex", justifyContent: "space-between",
-                    padding: "var(--space-3) 0",
-                    borderBottom: "1px solid var(--color-border-light)",
-                    fontSize: "var(--text-sm)",
-                  }}>
+                  <div key={row.label} className={pageStyles.reviewBoxRow}>
                     <span style={{ color: "var(--color-text-secondary)" }}>{row.label}</span>
                     <span style={{ fontWeight: 500, textTransform: "capitalize", textAlign: "right", maxWidth: "60%" }}>{row.value}</span>
                   </div>
