@@ -24,7 +24,7 @@ export const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "Handmade", href: "/handmade" },
   { label: "Factory Made", href: "/factory" },
-  { label: "Custom Order", href: SOCIAL_LINKS.whatsapp },
+  { label: "Custom Order", href: "/custom-order" },
   { label: "Admin", href: "/admin/login" },
 ];
 
