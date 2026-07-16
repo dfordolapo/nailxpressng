@@ -641,14 +641,18 @@
   }
 
   .reviewBoxRow {
-    flex-direction: column;
+    flex-direction: row;
     align-items: flex-start;
-    gap: var(--space-1);
+    font-size: var(--text-xs);
   }
 
   .reviewBoxRow span {
     text-align: left !important;
-    max-width: 100% !important;
+  }
+  
+  .reviewBoxRow span:last-child {
+    text-align: right !important;
+    max-width: 55% !important;
   }
 }
 
