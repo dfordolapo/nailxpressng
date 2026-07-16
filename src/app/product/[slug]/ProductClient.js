@@ -149,17 +149,6 @@ export default function ProductClient({ product, relatedProducts = [] }) {
 
             <h1 className={pageStyles.productName}>{product.name}</h1>
 
-            {/* Rating */}
-            <div className={pageStyles.productRating}>
-              <div className={pageStyles.ratingStars}>
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <StarIcon key={i} />
-                ))}
-              </div>
-              <span className={pageStyles.ratingText}>
-                {product.rating} ({product.reviewCount} reviews)
-              </span>
-            </div>
 
             {/* Price */}
             <div className={pageStyles.productPriceRow}>

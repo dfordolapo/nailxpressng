@@ -195,14 +195,6 @@ function HandmadeCard({ product, index }) {
                 <span className={styles.comparePrice}>{formatPrice(product.compareAtPrice)}</span>
               )}
             </div>
-            <div className={styles.rating}>
-              <div className={styles.stars}>
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <StarIcon key={i} />
-                ))}
-              </div>
-              <span>({product.reviewCount})</span>
-            </div>
           </div>
 
           {/* Flip Hint */}

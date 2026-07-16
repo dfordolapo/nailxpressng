@@ -108,15 +108,6 @@ export default function ProductCard({ product }) {
         <span className={styles.category}>{product.category}</span>
         <h3 className={styles.name}>{product.name}</h3>
 
-        {/* Rating */}
-        <div className={styles.rating}>
-          <div className={styles.stars}>
-            {Array.from({ length: 5 }).map((_, i) => (
-              <StarIcon key={i} />
-            ))}
-          </div>
-          <span>({product.reviewCount})</span>
-        </div>
 
         {/* Price */}
         <div className={styles.priceRow}>
