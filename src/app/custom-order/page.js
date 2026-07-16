@@ -15,14 +15,14 @@ const STEPS = [
 ];
 
 const DESIGN_OPTIONS = [
-  { id: "solid", name: "Solid Color", emoji: "🎨", description: "One beautiful color, perfectly applied" },
-  { id: "french", name: "French Tips", emoji: "🤍", description: "Classic or colored French tip style" },
-  { id: "ombre", name: "Ombré / Gradient", emoji: "🌅", description: "Smooth color transition" },
-  { id: "glitter", name: "Glitter / Shimmer", emoji: "💖", description: "Add sparkle and shine" },
-  { id: "art", name: "Nail Art", emoji: "🖌️", description: "Custom hand-painted designs" },
-  { id: "marble", name: "Marble Effect", emoji: "🪨", description: "Elegant marble swirl patterns" },
-  { id: "chrome", name: "Chrome / Mirror", emoji: "🪞", description: "High-shine metallic finish" },
-  { id: "custom", name: "Upload Reference", emoji: "📷", description: "Send us your inspiration photo" },
+  { id: "solid", name: "Solid Color", description: "One beautiful color, perfectly applied" },
+  { id: "french", name: "French Tips", description: "Classic or colored French tip style" },
+  { id: "ombre", name: "Ombré / Gradient", description: "Smooth color transition" },
+  { id: "glitter", name: "Glitter / Shimmer", description: "Add sparkle and shine" },
+  { id: "art", name: "Nail Art", description: "Custom hand-painted designs" },
+  { id: "marble", name: "Marble Effect", description: "Elegant marble swirl patterns" },
+  { id: "chrome", name: "Chrome / Mirror", description: "High-shine metallic finish" },
+  { id: "custom", name: "Upload Reference", description: "Send us your inspiration photo" },
 ];
 
 export default function CustomOrderPage() {
@@ -183,8 +183,7 @@ export default function CustomOrderPage() {
                     onClick={() => updateOrder("design", design.id)}
                     style={{ textAlign: "left", padding: "var(--space-5)" }}
                   >
-                    <div style={{ fontSize: "1.5rem", marginBottom: "var(--space-2)" }}>{design.emoji}</div>
-                    <div className={pageStyles.shapeName}>{design.name}</div>
+                    <div className={pageStyles.shapeName} style={{ marginBottom: "var(--space-2)" }}>{design.name}</div>
                     <div style={{ fontSize: "var(--text-xs)", color: "var(--color-text-tertiary)", marginTop: "var(--space-1)" }}>
                       {design.description}
                     </div>
