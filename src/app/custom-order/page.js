@@ -288,15 +288,7 @@ export default function CustomOrderPage() {
                   </div>
                 ))}
 
-                <div style={{
-                  marginTop: "var(--space-6)",
-                  padding: "var(--space-4)",
-                  background: "var(--color-primary-50)",
-                  borderRadius: "var(--radius-md)",
-                  fontSize: "var(--text-sm)",
-                  color: "var(--color-primary-700)",
-                  textAlign: "center",
-                }}>
+                <div className={pageStyles.reviewPricingBox}>
                   💰 Pricing will be sent to you after review. Custom nails start from ₦12,000.
                 </div>
               </div>
