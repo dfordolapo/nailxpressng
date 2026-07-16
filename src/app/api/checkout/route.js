@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { sendOrderConfirmationEmail, sendAdminNewOrderAlert } from '@/lib/email';
 
 // Initialize a Supabase client with the SERVICE ROLE KEY
 // This bypasses RLS and allows us to insert orders securely from the server
@@ -57,6 +58,17 @@ export async function POST(request) {
     if (itemsError) {
       console.error('Order Items Insert Error:', itemsError);
       throw itemsError;
+    }
+
+    // 4. Send Confirmation Emails (Non-blocking)
+    if (process.env.RESEND_API_KEY) {
+      // Send to customer
+      sendOrderConfirmationEmail(order, items).catch(e => console.error("Customer email failed:", e));
+      
+      // Send to admin
+      if (process.env.ADMIN_EMAIL) {
+        sendAdminNewOrderAlert(order, process.env.ADMIN_EMAIL).catch(e => console.error("Admin email failed:", e));
+      }
     }
 
     return NextResponse.json({ success: true, orderId: order.id });

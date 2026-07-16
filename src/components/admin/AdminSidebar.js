@@ -57,11 +57,22 @@ function SidebarContent() {
           <div className={styles.navGroup}>
             <Link
               href="/admin/orders"
-              className={`${styles.navItem} ${pathname.startsWith("/admin/orders") ? styles.active : ""}`}
+              className={`${styles.navItem} ${pathname === "/admin/orders" ? styles.active : ""}`}
               onClick={() => setIsMobileOpen(false)}
             >
               <Package size={18} />
               Orders
+            </Link>
+          </div>
+
+          <div className={styles.navGroup}>
+            <Link
+              href="/admin/custom-orders"
+              className={`${styles.navItem} ${pathname.startsWith("/admin/custom-orders") ? styles.active : ""}`}
+              onClick={() => setIsMobileOpen(false)}
+            >
+              <Package size={18} />
+              Custom Orders
             </Link>
           </div>
 

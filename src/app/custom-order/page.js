@@ -53,20 +53,46 @@ export default function CustomOrderPage() {
     }
   };
 
-  const handleSubmit = () => {
-    const message = [
-      "Hi! I'd like to place a custom order:",
-      `Shape: ${order.shape}`,
-      `Length: ${order.length}`,
-      `Design: ${order.design}`,
-      order.color && `Color: ${order.color}`,
-      order.notes && `Notes: ${order.notes}`,
-      `Name: ${order.name}`,
-      `Email: ${order.email}`,
-      order.phone && `WhatsApp: ${order.phone}`,
-    ].filter(Boolean).join("\n");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-    window.open(`${SOCIAL_LINKS.whatsapp}?text=${encodeURIComponent(message)}`, "_blank");
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
+    
+    try {
+      // 1. Save to database
+      const res = await fetch('/api/custom-orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(order)
+      });
+      
+      if (!res.ok) {
+        console.error("Failed to save custom order to database");
+      }
+
+      // 2. Format WhatsApp message
+      const message = [
+        "Hi! I'd like to place a custom order:",
+        `Shape: ${order.shape}`,
+        `Length: ${order.length}`,
+        `Design: ${order.design}`,
+        order.color && `Color: ${order.color}`,
+        order.notes && `Notes: ${order.notes}`,
+        `Name: ${order.name}`,
+        `Email: ${order.email}`,
+        order.phone && `WhatsApp: ${order.phone}`,
+      ].filter(Boolean).join("\n");
+
+      // 3. Open WhatsApp
+      window.open(`${SOCIAL_LINKS.whatsapp}?text=${encodeURIComponent(message)}`, "_blank");
+      
+      // Optional: Reset form or show success state here
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -316,9 +342,10 @@ export default function CustomOrderPage() {
             <button
               className={`${btnStyles.btn} ${btnStyles.primary} ${btnStyles.lg}`}
               onClick={handleSubmit}
+              disabled={isSubmitting}
               id="submit-custom-order-btn"
             >
-              Submit Custom Order ✨
+              {isSubmitting ? "Processing..." : "Submit Custom Order ✨"}
             </button>
           )}
         </div>

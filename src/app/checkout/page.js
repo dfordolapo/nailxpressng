@@ -14,8 +14,8 @@ export default function CheckoutPage() {
   const router = useRouter();
   const { subtotal, shipping, total } = calculateCartTotals(items);
   const [formData, setFormData] = useState({
-    firstName: "Dolapo", lastName: "Oyekanmi", email: "dolapo@example.com", phone: "08000000000",
-    address: "Surulere, Lagos State", city: "Lagos", state: "Lagos State", zipCode: "101283",
+    firstName: "", lastName: "", email: "", phone: "",
+    address: "", city: "", state: "", zipCode: "",
   });
   const [shippingMethod, setShippingMethod] = useState("standard");
   const [paymentMethod, setPaymentMethod] = useState("card");
@@ -108,12 +108,48 @@ export default function CheckoutPage() {
               <h3 style={{ fontSize: "1rem", fontWeight: 600 }}>Shipping Address</h3>
             </div>
             
-            <div style={{ background: "white", border: "1px solid var(--color-border-light)", borderRadius: "var(--radius-lg)", padding: "var(--space-4)", display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-              <div>
-                <p style={{ fontWeight: 500, marginBottom: "4px" }}>Dolapo Oyekanmi</p>
-                <p style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)" }}>Surulere, Lagos State<br/>Nigeria, 101283</p>
+            <div style={{ background: "white", border: "1px solid var(--color-border-light)", borderRadius: "var(--radius-lg)", padding: "var(--space-4)" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-4)", marginBottom: "var(--space-4)" }}>
+                <div>
+                  <label htmlFor="firstName" style={{ display: "block", fontSize: "0.875rem", marginBottom: "4px", color: "var(--color-text-secondary)" }}>First Name</label>
+                  <input required type="text" id="firstName" name="firstName" value={formData.firstName} onChange={handleChange} style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "1px solid var(--color-border)", outline: "none" }} />
+                </div>
+                <div>
+                  <label htmlFor="lastName" style={{ display: "block", fontSize: "0.875rem", marginBottom: "4px", color: "var(--color-text-secondary)" }}>Last Name</label>
+                  <input required type="text" id="lastName" name="lastName" value={formData.lastName} onChange={handleChange} style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "1px solid var(--color-border)", outline: "none" }} />
+                </div>
               </div>
-              <button type="button" style={{ color: "var(--color-pink)", fontSize: "0.75rem", fontWeight: 500 }}>Change</button>
+              
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-4)", marginBottom: "var(--space-4)" }}>
+                <div>
+                  <label htmlFor="email" style={{ display: "block", fontSize: "0.875rem", marginBottom: "4px", color: "var(--color-text-secondary)" }}>Email Address</label>
+                  <input required type="email" id="email" name="email" value={formData.email} onChange={handleChange} style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "1px solid var(--color-border)", outline: "none" }} />
+                </div>
+                <div>
+                  <label htmlFor="phone" style={{ display: "block", fontSize: "0.875rem", marginBottom: "4px", color: "var(--color-text-secondary)" }}>Phone Number</label>
+                  <input required type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange} style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "1px solid var(--color-border)", outline: "none" }} />
+                </div>
+              </div>
+
+              <div style={{ marginBottom: "var(--space-4)" }}>
+                <label htmlFor="address" style={{ display: "block", fontSize: "0.875rem", marginBottom: "4px", color: "var(--color-text-secondary)" }}>Street Address</label>
+                <input required type="text" id="address" name="address" value={formData.address} onChange={handleChange} style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "1px solid var(--color-border)", outline: "none" }} />
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "var(--space-4)" }}>
+                <div>
+                  <label htmlFor="city" style={{ display: "block", fontSize: "0.875rem", marginBottom: "4px", color: "var(--color-text-secondary)" }}>City</label>
+                  <input required type="text" id="city" name="city" value={formData.city} onChange={handleChange} style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "1px solid var(--color-border)", outline: "none" }} />
+                </div>
+                <div>
+                  <label htmlFor="state" style={{ display: "block", fontSize: "0.875rem", marginBottom: "4px", color: "var(--color-text-secondary)" }}>State</label>
+                  <input required type="text" id="state" name="state" value={formData.state} onChange={handleChange} style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "1px solid var(--color-border)", outline: "none" }} />
+                </div>
+                <div>
+                  <label htmlFor="zipCode" style={{ display: "block", fontSize: "0.875rem", marginBottom: "4px", color: "var(--color-text-secondary)" }}>Zip Code</label>
+                  <input required type="text" id="zipCode" name="zipCode" value={formData.zipCode} onChange={handleChange} style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "1px solid var(--color-border)", outline: "none" }} />
+                </div>
+              </div>
             </div>
           </div>
           
