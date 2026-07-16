@@ -100,7 +100,7 @@ export default function CustomOrderPage() {
       <div className="container container--narrow">
         <div style={{ textAlign: "center", marginBottom: "var(--space-8)" }}>
           <h1 className={pageStyles.collectionTitle}>Custom Order</h1>
-          <p style={{ color: "var(--color-text-secondary)", fontSize: "var(--text-base)", marginTop: "var(--space-3)" }}>
+          <p className={pageStyles.customOrderSubtitle}>
             Design your dream nail set —<br className={pageStyles.mobileBreak} /> we&apos;ll bring it to life
           </p>
         </div>

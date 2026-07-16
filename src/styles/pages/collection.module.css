@@ -644,7 +644,7 @@
   .reviewBoxRow {
     flex-direction: row;
     align-items: flex-start;
-    font-size: 0.65rem;
+    font-size: 10px;
     padding: var(--space-2) 0 !important;
   }
 
@@ -658,13 +658,17 @@
   }
 
   .reviewPricingBox {
-    font-size: 0.65rem !important;
+    font-size: 10px !important;
     padding: var(--space-3) !important;
     margin-top: var(--space-4) !important;
   }
 
   .mobileBreak {
     display: block !important;
+  }
+
+  .customOrderSubtitle {
+    font-size: 12px;
   }
 }
 
@@ -698,4 +702,10 @@
 
 .mobileBreak {
   display: none;
+}
+
+.customOrderSubtitle {
+  color: var(--color-text-secondary);
+  font-size: var(--text-base);
+  margin-top: var(--space-3);
 }
