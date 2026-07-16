@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { supabase } from "@/lib/supabase";
 import { formatPrice } from "@/lib/utils";
 import styles from "@/styles/admin.module.css";
 import { MoreVertical, CheckCircle, MessageCircle } from "lucide-react";
@@ -13,7 +13,6 @@ export default function CustomOrdersClient() {
   const [openMenuId, setOpenMenuId] = useState(null);
   const [isUpdating, setIsUpdating] = useState(false);
   const [viewOrder, setViewOrder] = useState(null);
-  const supabase = createClientComponentClient();
 
   useEffect(() => {
     fetchOrders();
