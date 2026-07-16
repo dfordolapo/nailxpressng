@@ -36,4 +36,4 @@ export const SORT_OPTIONS = [
   { value: "rating", label: "Highest Rated" },
 ];
 
-export const ANNOUNCEMENT_TEXT = "✨ Free shipping on orders over ₦20,000 ✨";
+export const ANNOUNCEMENT_TEXT = "Free shipping on orders over ₦20,000";

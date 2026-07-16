@@ -18,7 +18,7 @@ const DESIGN_OPTIONS = [
   { id: "solid", name: "Solid Color", emoji: "🎨", description: "One beautiful color, perfectly applied" },
   { id: "french", name: "French Tips", emoji: "🤍", description: "Classic or colored French tip style" },
   { id: "ombre", name: "Ombré / Gradient", emoji: "🌅", description: "Smooth color transition" },
-  { id: "glitter", name: "Glitter / Shimmer", emoji: "✨", description: "Add sparkle and shine" },
+  { id: "glitter", name: "Glitter / Shimmer", emoji: "💖", description: "Add sparkle and shine" },
   { id: "art", name: "Nail Art", emoji: "🖌️", description: "Custom hand-painted designs" },
   { id: "marble", name: "Marble Effect", emoji: "🪨", description: "Elegant marble swirl patterns" },
   { id: "chrome", name: "Chrome / Mirror", emoji: "🪞", description: "High-shine metallic finish" },
@@ -101,7 +101,7 @@ export default function CustomOrderPage() {
         <div style={{ textAlign: "center", marginBottom: "var(--space-8)" }}>
           <h1 className={pageStyles.collectionTitle}>Custom Order</h1>
           <p style={{ color: "var(--color-text-secondary)", fontSize: "var(--text-base)", marginTop: "var(--space-3)" }}>
-            Design your dream nail set — we&apos;ll bring it to life ✨
+            Design your dream nail set —<br className={pageStyles.mobileBreak} /> we&apos;ll bring it to life
           </p>
         </div>
 
@@ -323,7 +323,7 @@ export default function CustomOrderPage() {
               disabled={isSubmitting}
               id="submit-custom-order-btn"
             >
-              {isSubmitting ? "Processing..." : "Submit Custom Order ✨"}
+              {isSubmitting ? "Processing..." : "Submit Custom Order"}
             </button>
           )}
         </div>

@@ -105,7 +105,7 @@ export default function CustomOrdersClient() {
             {orders.length === 0 ? (
               <tr>
                 <td colSpan="6" style={{ textAlign: "center", padding: "60px 20px" }}>
-                  <div style={{ fontSize: "2.5rem", marginBottom: "var(--space-4)" }}>✨</div>
+                  <div style={{ fontSize: "2.5rem", marginBottom: "var(--space-4)" }}>💅</div>
                   <h3 style={{ fontSize: "1.125rem", color: "var(--color-primary-800)", marginBottom: "var(--space-2)", fontFamily: "var(--font-heading)" }}>No custom orders yet</h3>
                   <p style={{ color: "var(--color-text-secondary)", fontSize: "0.875rem", marginBottom: "var(--space-6)" }}>When customers request custom designs, they will appear here.</p>
                 </td>

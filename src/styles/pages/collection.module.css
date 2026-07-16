@@ -662,6 +662,10 @@
     padding: var(--space-3) !important;
     margin-top: var(--space-4) !important;
   }
+
+  .mobileBreak {
+    display: block !important;
+  }
 }
 
 /* ── Custom Order Helper Classes ── */
@@ -690,4 +694,8 @@
   font-size: var(--text-sm);
   color: var(--color-primary-700);
   text-align: center;
+}
+
+.mobileBreak {
+  display: none;
 }

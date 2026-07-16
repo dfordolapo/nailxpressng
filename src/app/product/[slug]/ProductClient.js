@@ -276,7 +276,7 @@ export default function ProductClient({ product, relatedProducts = [] }) {
                 textUnderlineOffset: "3px",
               }}
             >
-              ✨ Want this design customized? Start a custom order
+              Want this design customized? Start a custom order
             </Link>
 
             {/* Product Details */}
