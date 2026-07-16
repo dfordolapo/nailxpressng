@@ -205,6 +205,10 @@ input, textarea, select {
   font-weight: var(--weight-light) !important;
 }
 
+input::placeholder, textarea::placeholder {
+  font-weight: var(--weight-light) !important;
+}
+
 ul, ol {
   list-style: none;
 }
