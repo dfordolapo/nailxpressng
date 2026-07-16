@@ -100,7 +100,7 @@ export default function CustomOrderPage() {
       <div className="container container--narrow">
         <div style={{ textAlign: "center", marginBottom: "var(--space-8)" }}>
           <h1 className={pageStyles.collectionTitle}>Custom Order</h1>
-          <p style={{ color: "var(--color-text-secondary)", fontSize: "var(--text-lg)", marginTop: "var(--space-3)" }}>
+          <p style={{ color: "var(--color-text-secondary)", fontSize: "var(--text-base)", marginTop: "var(--space-3)" }}>
             Design your dream nail set — we&apos;ll bring it to life ✨
           </p>
         </div>
@@ -127,7 +127,7 @@ export default function CustomOrderPage() {
           {/* Step 1: Shape */}
           {currentStep === 1 && (
             <div>
-              <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "var(--text-2xl)", fontStyle: "italic", marginBottom: "var(--space-6)", textAlign: "center" }}>
+              <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "var(--text-xl)", fontStyle: "italic", marginBottom: "var(--space-6)", textAlign: "center" }}>
                 Pick Your Nail Shape
               </h2>
               <div className={pageStyles.shapeGrid}>
@@ -148,7 +148,7 @@ export default function CustomOrderPage() {
           {/* Step 2: Length */}
           {currentStep === 2 && (
             <div>
-              <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "var(--text-2xl)", fontStyle: "italic", marginBottom: "var(--space-6)", textAlign: "center" }}>
+              <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "var(--text-xl)", fontStyle: "italic", marginBottom: "var(--space-6)", textAlign: "center" }}>
                 Choose Your Length
               </h2>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "var(--space-4)" }}>
@@ -172,7 +172,7 @@ export default function CustomOrderPage() {
           {/* Step 3: Design */}
           {currentStep === 3 && (
             <div>
-              <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "var(--text-2xl)", fontStyle: "italic", marginBottom: "var(--space-6)", textAlign: "center" }}>
+              <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "var(--text-xl)", fontStyle: "italic", marginBottom: "var(--space-6)", textAlign: "center" }}>
                 Select a Design Style
               </h2>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: "var(--space-4)" }}>
@@ -197,7 +197,7 @@ export default function CustomOrderPage() {
           {/* Step 4: Details */}
           {currentStep === 4 && (
             <div>
-              <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "var(--text-2xl)", fontStyle: "italic", marginBottom: "var(--space-6)", textAlign: "center" }}>
+              <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "var(--text-xl)", fontStyle: "italic", marginBottom: "var(--space-6)", textAlign: "center" }}>
                 Tell Us More
               </h2>
               <div style={{ maxWidth: 500, margin: "0 auto" }}>
@@ -271,7 +271,7 @@ export default function CustomOrderPage() {
           {/* Step 5: Review */}
           {currentStep === 5 && (
             <div>
-              <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "var(--text-2xl)", fontStyle: "italic", marginBottom: "var(--space-6)", textAlign: "center" }}>
+              <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "var(--text-xl)", fontStyle: "italic", marginBottom: "var(--space-6)", textAlign: "center" }}>
                 Review Your Custom Order
               </h2>
               <div style={{
