@@ -22,7 +22,7 @@ const DESIGN_OPTIONS = [
   { id: "art", name: "Nail Art", description: "Custom hand-painted designs" },
   { id: "marble", name: "Marble Effect", description: "Elegant marble swirl patterns" },
   { id: "chrome", name: "Chrome / Mirror", description: "High-shine metallic finish" },
-  { id: "custom", name: "Upload Reference", description: "Send us your inspiration photo" },
+  { id: "custom", name: "Upload Reference", emoji: "📷", description: "Send us your inspiration photo" },
 ];
 
 export default function CustomOrderPage() {
@@ -183,7 +183,8 @@ export default function CustomOrderPage() {
                     onClick={() => updateOrder("design", design.id)}
                     style={{ textAlign: "left", padding: "var(--space-5)" }}
                   >
-                    <div className={pageStyles.shapeName} style={{ marginBottom: "var(--space-2)" }}>{design.name}</div>
+                    {design.emoji && <div style={{ fontSize: "1.5rem", marginBottom: "var(--space-2)" }}>{design.emoji}</div>}
+                    <div className={pageStyles.shapeName} style={design.emoji ? {} : { marginBottom: "var(--space-2)" }}>{design.name}</div>
                     <div style={{ fontSize: "var(--text-xs)", color: "var(--color-text-tertiary)", marginTop: "var(--space-1)" }}>
                       {design.description}
                     </div>
