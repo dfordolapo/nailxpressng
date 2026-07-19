@@ -116,9 +116,9 @@ export default function WishlistPage() {
                     justifyContent: "center",
                     flexWrap: "nowrap",
                     gap: "var(--space-2)",
-                    background: "var(--color-pink-50)",
-                    border: "1px solid var(--color-pink-light)",
-                    color: "var(--color-pink)",
+                    background: "var(--color-primary-50)",
+                    border: "1px solid var(--color-primary-100)",
+                    color: "var(--color-primary)",
                     padding: "4px 12px",
                     borderRadius: "4px",
                     fontSize: "0.75rem",
@@ -127,7 +127,7 @@ export default function WishlistPage() {
                   }}
                 >
                   <ShoppingBag size={14} strokeWidth={1.5} style={{ flexShrink: 0 }} /> 
-                  <span style={{ position: "relative", top: "1px" }}>Move to bag</span>
+                  <span style={{ position: "relative", top: "1px" }}>Move to cart</span>
                 </button>
               </div>
             </div>

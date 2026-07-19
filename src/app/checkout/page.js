@@ -76,7 +76,7 @@ export default function CheckoutPage() {
             Nothing to checkout
           </h1>
           <p style={{ color: "var(--color-text-secondary)", marginBottom: "var(--space-8)" }}>
-            Your bag is empty. Add some nails first!
+            Your cart is empty. Add some nails first!
           </p>
           <Link href="/" className={`${btnStyles.btn} ${btnStyles.primary} ${btnStyles.lg}`}>
             Shop Now
@@ -104,7 +104,7 @@ export default function CheckoutPage() {
           {/* Step 1: Shipping Address */}
           <div style={{ marginBottom: "var(--space-6)" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "var(--space-2)", marginBottom: "var(--space-3)" }}>
-              <div style={{ width: 24, height: 24, borderRadius: "50%", background: "var(--color-pink)", color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.875rem", fontWeight: "bold" }}>1</div>
+              <div style={{ width: 24, height: 24, borderRadius: "50%", background: "var(--color-primary)", color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.875rem", fontWeight: "bold" }}>1</div>
               <h3 style={{ fontSize: "1rem", fontWeight: 600 }}>Shipping Address</h3>
             </div>
             
@@ -156,7 +156,7 @@ export default function CheckoutPage() {
           {/* Step 2: Shipping Method */}
           <div style={{ marginBottom: "var(--space-6)" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "var(--space-2)", marginBottom: "var(--space-3)" }}>
-              <div style={{ width: 24, height: 24, borderRadius: "50%", background: "var(--color-pink)", color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.875rem", fontWeight: "bold" }}>2</div>
+              <div style={{ width: 24, height: 24, borderRadius: "50%", background: "var(--color-primary)", color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.875rem", fontWeight: "bold" }}>2</div>
               <h3 style={{ fontSize: "1rem", fontWeight: 600 }}>Shipping Method</h3>
             </div>
             
@@ -164,8 +164,8 @@ export default function CheckoutPage() {
               <div 
                 onClick={() => setShippingMethod("standard")}
                 style={{ 
-                  background: shippingMethod === "standard" ? "var(--color-pink-50)" : "white", 
-                  border: `1px solid ${shippingMethod === "standard" ? "var(--color-pink)" : "var(--color-border-light)"}`, 
+                  background: shippingMethod === "standard" ? "var(--color-primary-50)" : "white", 
+                  border: `1px solid ${shippingMethod === "standard" ? "var(--color-primary)" : "var(--color-border-light)"}`, 
                   borderRadius: "var(--radius-lg)", padding: "var(--space-4)", display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer" 
                 }}
               >
@@ -175,8 +175,8 @@ export default function CheckoutPage() {
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: "var(--space-3)" }}>
                   <span style={{ fontWeight: 500 }}>{formatPrice(2500)}</span>
-                  <div style={{ width: 18, height: 18, borderRadius: "50%", border: `2px solid ${shippingMethod === "standard" ? "var(--color-pink)" : "var(--color-border)"}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    {shippingMethod === "standard" && <div style={{ width: 10, height: 10, borderRadius: "50%", background: "var(--color-pink)" }}></div>}
+                  <div style={{ width: 18, height: 18, borderRadius: "50%", border: `2px solid ${shippingMethod === "standard" ? "var(--color-primary)" : "var(--color-border)"}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    {shippingMethod === "standard" && <div style={{ width: 10, height: 10, borderRadius: "50%", background: "var(--color-primary)" }}></div>}
                   </div>
                 </div>
               </div>
@@ -184,8 +184,8 @@ export default function CheckoutPage() {
               <div 
                 onClick={() => setShippingMethod("express")}
                 style={{ 
-                  background: shippingMethod === "express" ? "var(--color-pink-50)" : "white", 
-                  border: `1px solid ${shippingMethod === "express" ? "var(--color-pink)" : "var(--color-border-light)"}`, 
+                  background: shippingMethod === "express" ? "var(--color-primary-50)" : "white", 
+                  border: `1px solid ${shippingMethod === "express" ? "var(--color-primary)" : "var(--color-border-light)"}`, 
                   borderRadius: "var(--radius-lg)", padding: "var(--space-4)", display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer" 
                 }}
               >
@@ -195,8 +195,8 @@ export default function CheckoutPage() {
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: "var(--space-3)" }}>
                   <span style={{ fontWeight: 500 }}>{formatPrice(5000)}</span>
-                  <div style={{ width: 18, height: 18, borderRadius: "50%", border: `2px solid ${shippingMethod === "express" ? "var(--color-pink)" : "var(--color-border)"}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    {shippingMethod === "express" && <div style={{ width: 10, height: 10, borderRadius: "50%", background: "var(--color-pink)" }}></div>}
+                  <div style={{ width: 18, height: 18, borderRadius: "50%", border: `2px solid ${shippingMethod === "express" ? "var(--color-primary)" : "var(--color-border)"}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    {shippingMethod === "express" && <div style={{ width: 10, height: 10, borderRadius: "50%", background: "var(--color-primary)" }}></div>}
                   </div>
                 </div>
               </div>
@@ -206,7 +206,7 @@ export default function CheckoutPage() {
           {/* Step 3: Payment Method */}
           <div style={{ marginBottom: "var(--space-6)" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "var(--space-2)", marginBottom: "var(--space-3)" }}>
-              <div style={{ width: 24, height: 24, borderRadius: "50%", background: "var(--color-pink)", color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.875rem", fontWeight: "bold" }}>3</div>
+              <div style={{ width: 24, height: 24, borderRadius: "50%", background: "var(--color-primary)", color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.875rem", fontWeight: "bold" }}>3</div>
               <h3 style={{ fontSize: "1rem", fontWeight: 600 }}>Payment Method</h3>
             </div>
             
@@ -214,14 +214,14 @@ export default function CheckoutPage() {
               <div 
                 onClick={() => setPaymentMethod("card")}
                 style={{ 
-                  background: paymentMethod === "card" ? "var(--color-pink-50)" : "white", 
-                  border: `1px solid ${paymentMethod === "card" ? "var(--color-pink)" : "var(--color-border-light)"}`, 
+                  background: paymentMethod === "card" ? "var(--color-primary-50)" : "white", 
+                  border: `1px solid ${paymentMethod === "card" ? "var(--color-primary)" : "var(--color-border-light)"}`, 
                   borderRadius: "var(--radius-lg)", padding: "var(--space-4)", display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer" 
                 }}
               >
                 <div style={{ display: "flex", alignItems: "center", gap: "var(--space-3)" }}>
-                  <div style={{ width: 18, height: 18, borderRadius: "50%", border: `2px solid ${paymentMethod === "card" ? "var(--color-pink)" : "var(--color-border)"}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    {paymentMethod === "card" && <div style={{ width: 10, height: 10, borderRadius: "50%", background: "var(--color-pink)" }}></div>}
+                  <div style={{ width: 18, height: 18, borderRadius: "50%", border: `2px solid ${paymentMethod === "card" ? "var(--color-primary)" : "var(--color-border)"}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    {paymentMethod === "card" && <div style={{ width: 10, height: 10, borderRadius: "50%", background: "var(--color-primary)" }}></div>}
                   </div>
                   <span style={{ fontWeight: 500 }}>Card</span>
                 </div>
@@ -233,14 +233,14 @@ export default function CheckoutPage() {
               <div 
                 onClick={() => setPaymentMethod("paystack")}
                 style={{ 
-                  background: paymentMethod === "paystack" ? "var(--color-pink-50)" : "white", 
-                  border: `1px solid ${paymentMethod === "paystack" ? "var(--color-pink)" : "var(--color-border-light)"}`, 
+                  background: paymentMethod === "paystack" ? "var(--color-primary-50)" : "white", 
+                  border: `1px solid ${paymentMethod === "paystack" ? "var(--color-primary)" : "var(--color-border-light)"}`, 
                   borderRadius: "var(--radius-lg)", padding: "var(--space-4)", display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer" 
                 }}
               >
                 <div style={{ display: "flex", alignItems: "center", gap: "var(--space-3)" }}>
-                  <div style={{ width: 18, height: 18, borderRadius: "50%", border: `2px solid ${paymentMethod === "paystack" ? "var(--color-pink)" : "var(--color-border)"}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    {paymentMethod === "paystack" && <div style={{ width: 10, height: 10, borderRadius: "50%", background: "var(--color-pink)" }}></div>}
+                  <div style={{ width: 18, height: 18, borderRadius: "50%", border: `2px solid ${paymentMethod === "paystack" ? "var(--color-primary)" : "var(--color-border)"}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    {paymentMethod === "paystack" && <div style={{ width: 10, height: 10, borderRadius: "50%", background: "var(--color-primary)" }}></div>}
                   </div>
                   <span style={{ fontWeight: 500 }}>Paystack</span>
                 </div>
@@ -249,14 +249,14 @@ export default function CheckoutPage() {
               <div 
                 onClick={() => setPaymentMethod("bank")}
                 style={{ 
-                  background: paymentMethod === "bank" ? "var(--color-pink-50)" : "white", 
-                  border: `1px solid ${paymentMethod === "bank" ? "var(--color-pink)" : "var(--color-border-light)"}`, 
+                  background: paymentMethod === "bank" ? "var(--color-primary-50)" : "white", 
+                  border: `1px solid ${paymentMethod === "bank" ? "var(--color-primary)" : "var(--color-border-light)"}`, 
                   borderRadius: "var(--radius-lg)", padding: "var(--space-4)", display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer" 
                 }}
               >
                 <div style={{ display: "flex", alignItems: "center", gap: "var(--space-3)" }}>
-                  <div style={{ width: 18, height: 18, borderRadius: "50%", border: `2px solid ${paymentMethod === "bank" ? "var(--color-pink)" : "var(--color-border)"}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    {paymentMethod === "bank" && <div style={{ width: 10, height: 10, borderRadius: "50%", background: "var(--color-pink)" }}></div>}
+                  <div style={{ width: 18, height: 18, borderRadius: "50%", border: `2px solid ${paymentMethod === "bank" ? "var(--color-primary)" : "var(--color-border)"}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    {paymentMethod === "bank" && <div style={{ width: 10, height: 10, borderRadius: "50%", background: "var(--color-primary)" }}></div>}
                   </div>
                   <span style={{ fontWeight: 500 }}>Bank Transfer</span>
                 </div>
@@ -268,7 +268,7 @@ export default function CheckoutPage() {
           {/* Step 4: Order Summary */}
           <div style={{ marginBottom: "var(--space-8)" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "var(--space-2)", marginBottom: "var(--space-3)" }}>
-              <div style={{ width: 24, height: 24, borderRadius: "50%", background: "var(--color-pink)", color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.875rem", fontWeight: "bold" }}>4</div>
+              <div style={{ width: 24, height: 24, borderRadius: "50%", background: "var(--color-primary)", color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.875rem", fontWeight: "bold" }}>4</div>
               <h3 style={{ fontSize: "1rem", fontWeight: 600 }}>Order Summary</h3>
             </div>
             

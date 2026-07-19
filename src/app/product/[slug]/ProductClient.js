@@ -239,7 +239,7 @@ export default function ProductClient({ product, relatedProducts = [] }) {
                 onClick={handleAddToCart}
                 id="add-to-cart-btn"
               >
-                {added ? "✓ Added to Bag!" : `Add to Bag — ${formatPrice(product.price * quantity)}`}
+                {added ? "✓ Added to Cart!" : `Add to Cart — ${formatPrice(product.price * quantity)}`}
               </button>
               <button
                 className={`${pageStyles.wishlistBtn} ${wishlisted ? pageStyles.active : ""}`}

@@ -38,11 +38,26 @@ export async function POST(request) {
 
     // Helper to check if a string is a valid UUID
     const isUUID = (str) => /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(String(str));
+    
+    // Get valid product IDs to prevent foreign key constraint errors
+    const itemIds = items.map(item => item.id).filter(isUUID);
+    let validProductIds = new Set();
+    
+    if (itemIds.length > 0) {
+      const { data: validProducts } = await supabaseAdmin
+        .from('products')
+        .select('id')
+        .in('id', itemIds);
+        
+      if (validProducts) {
+        validProductIds = new Set(validProducts.map(p => p.id));
+      }
+    }
 
     // 2. Format Order Items
     const orderItems = items.map(item => ({
       order_id: order.id,
-      product_id: isUUID(item.id) ? item.id : null, // Mock products will be null to prevent UUID cast errors
+      product_id: validProductIds.has(item.id) ? item.id : null, // Mock products will be null to prevent FK errors
       product_name: item.name,
       quantity: item.quantity,
       price: item.price,

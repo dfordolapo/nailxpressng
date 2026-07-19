@@ -241,6 +241,10 @@
     display: none;
   }
 
+  .desktopOnly {
+    display: none !important;
+  }
+
   .menuBtn {
     display: flex;
   }

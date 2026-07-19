@@ -25,7 +25,7 @@ export default function CartDrawer({ onClose }) {
       <div className={styles.drawer} id="cart-drawer">
         {/* Header */}
         <div className={styles.drawerHeader}>
-          <h3 className={styles.drawerTitle}>Your Bag ({itemCount})</h3>
+          <h3 className={styles.drawerTitle}>Your Cart ({itemCount})</h3>
           <button className={styles.drawerClose} onClick={onClose} aria-label="Close cart">
             <CloseIcon />
           </button>
