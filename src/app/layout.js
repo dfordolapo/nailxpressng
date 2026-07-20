@@ -7,6 +7,7 @@ import Footer from "@/components/layout/Footer";
 import SearchOverlay from "@/components/ui/SearchOverlay";
 import OfflineBanner from "@/components/ui/OfflineBanner";
 import SplashAnimation from "@/components/ui/SplashAnimation";
+import PullToRefresh from "@/components/ui/PullToRefresh";
 
 export const viewport = {
   themeColor: [
@@ -148,7 +149,9 @@ export default function RootLayout({ children }) {
               <SplashAnimation />
               <Header />
               <SearchOverlay />
-              <main>{children}</main>
+              <PullToRefresh>
+                <main>{children}</main>
+              </PullToRefresh>
               <Footer />
               <OfflineBanner />
             </SearchProvider>
