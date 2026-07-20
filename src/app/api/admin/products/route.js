@@ -18,6 +18,7 @@ export async function POST(request) {
     const stockCount = parseInt(formData.get('stockCount') || '0', 10);
     const featured = formData.get('featured') === 'true';
     const imageFile = formData.get('image');
+    const tags = formData.get('tags');
     
     // 1. Get Category ID
     let categoryId = null;
@@ -68,7 +69,7 @@ export async function POST(request) {
       compare_at_price: compareAtPrice,
       category_id: categoryId,
       nail_shape: 'Square', // Defaults since form doesn't have these yet
-      style: 'Solid',
+      style: tags || 'Solid',
       images: imageUrls,
       bestseller: featured,
       stock_count: stockCount,

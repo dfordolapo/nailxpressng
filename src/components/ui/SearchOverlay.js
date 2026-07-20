@@ -1,8 +1,10 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useSearch } from "@/context/SearchContext";
 import { formatPrice } from "@/lib/utils";
+import { SOCIAL_LINKS } from "@/lib/constants";
 import styles from "@/styles/pages/collection.module.css";
 
 function SearchIconSVG() {
@@ -25,6 +27,31 @@ function CloseIcon() {
 
 export default function SearchOverlay() {
   const { query, results, isSearching, isOpen, updateQuery, closeSearch } = useSearch();
+
+  const [placeholderIndex, setPlaceholderIndex] = useState(0);
+  const placeholders = [
+    "Search for nails, styles, colors...",
+    "try 'almond shape'...",
+    "try 'bridal set'...",
+    "search for 'ombré'..."
+  ];
+
+  useEffect(() => {
+    if (!isOpen || query) return;
+    const interval = setInterval(() => {
+      setPlaceholderIndex((prev) => (prev + 1) % placeholders.length);
+    }, 2500);
+    return () => clearInterval(interval);
+  }, [isOpen, query]);
+
+  const trendingSearches = ["Bridal", "Coffin Shape", "Ombré"];
+  
+  const categories = [
+    { name: "Handmade", color: "linear-gradient(135deg, var(--color-primary-100), var(--color-bg-warm))", query: "handmade" },
+    { name: "Factory", color: "linear-gradient(135deg, #FDEAE6, var(--color-bg-warm))", query: "factory" },
+    { name: "Bridal", color: "linear-gradient(135deg, #F4F0EE, var(--color-bg-warm))", query: "bridal" },
+    { name: "Art", color: "linear-gradient(135deg, #E8EAE6, var(--color-bg-warm))", query: "art" },
+  ];
 
   if (!isOpen) return null;
 
@@ -82,10 +109,11 @@ export default function SearchOverlay() {
             type="text"
             value={query}
             onChange={(e) => updateQuery(e.target.value)}
-            placeholder="Search for nails, styles, colors..."
+            placeholder={placeholders[placeholderIndex]}
             className={styles.searchInput}
             autoFocus
             id="search-input"
+            style={{ transition: "all 0.3s ease" }}
           />
         </div>
       </div>
@@ -99,14 +127,113 @@ export default function SearchOverlay() {
         width: "100%",
         padding: "var(--space-8) var(--space-6)",
       }}>
-        {isSearching && (
+        {!query && !isSearching && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-8)' }}>
+            {/* Trending Searches */}
+            <div>
+              <p style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--color-text-secondary)', marginBottom: 'var(--space-3)', fontWeight: 600 }}>Trending Searches</p>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-2)' }}>
+                {trendingSearches.map(term => (
+                  <button
+                    key={term}
+                    onClick={() => updateQuery(term)}
+                    style={{
+                      background: 'white',
+                      border: '1px solid var(--color-border)',
+                      padding: '6px 16px',
+                      borderRadius: 'var(--radius-full)',
+                      fontSize: '0.875rem',
+                      color: 'var(--color-text)',
+                      transition: 'all var(--transition-fast)',
+                      cursor: 'pointer',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.borderColor = 'var(--color-primary)';
+                      e.currentTarget.style.color = 'var(--color-primary)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.borderColor = 'var(--color-border)';
+                      e.currentTarget.style.color = 'var(--color-text)';
+                    }}
+                  >
+                    {term}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Category Quick Picks */}
+            <div>
+              <p style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--color-text-secondary)', marginBottom: 'var(--space-3)', fontWeight: 600 }}>Quick Browse</p>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 'var(--space-3)' }}>
+                {categories.map(cat => (
+                  <button
+                    key={cat.name}
+                    onClick={() => updateQuery(cat.query)}
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      gap: 'var(--space-2)',
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <div style={{
+                      width: '100%',
+                      aspectRatio: '1/1',
+                      background: cat.color,
+                      borderRadius: 'var(--radius-md)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '2rem',
+                      transition: 'transform var(--transition-fast)',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}
+                    onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
+                    >
+                      💅
+                    </div>
+                    <span style={{ fontSize: '0.75rem', fontWeight: 500, color: 'var(--color-text-secondary)' }}>{cat.name}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {isSearching && query && (
           <p style={{ textAlign: "center", color: "var(--color-text-tertiary)" }}>Searching...</p>
         )}
 
         {!isSearching && query && results.length === 0 && (
-          <div className={styles.noResults}>
-            <div className={styles.noResultsIcon}>🔍</div>
-            <p className={styles.noResultsText}>No results found for &ldquo;{query}&rdquo;</p>
+          <div className={styles.noResults} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'var(--space-4)', padding: 'var(--space-8) 0' }}>
+            <div className={styles.noResultsIcon} style={{ fontSize: '3rem', marginBottom: '0' }}>🔍</div>
+            <p className={styles.noResultsText} style={{ marginBottom: 'var(--space-2)' }}>No results found for &ldquo;{query}&rdquo;</p>
+            <Link 
+              href={`${SOCIAL_LINKS.whatsapp}?text=${encodeURIComponent(`Hi, I'm looking for a custom order similar to: '${query}'. Can you help?`)}`}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 'var(--space-2)',
+                background: 'var(--color-primary)',
+                color: 'white',
+                padding: '12px 24px',
+                borderRadius: 'var(--radius-full)',
+                textDecoration: 'none',
+                fontWeight: 500,
+                fontSize: '0.875rem',
+                transition: 'transform var(--transition-fast)',
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.02)'}
+              onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+              onClick={closeSearch}
+            >
+              Can't find it? Request a custom order →
+            </Link>
           </div>
         )}
 

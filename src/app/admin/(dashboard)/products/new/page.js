@@ -16,7 +16,8 @@ export default function NewProduct() {
   // Form State
   const [name, setName] = useState("");
   const [collection, setCollection] = useState("Handmade");
-  const [category, setCategory] = useState("Floral");
+  const [tags, setTags] = useState([]);
+  const [tagInput, setTagInput] = useState("");
   const [description, setDescription] = useState("");
   
   const [imageFile, setImageFile] = useState(null);
@@ -35,6 +36,21 @@ export default function NewProduct() {
   
   const [isSubmitting, setIsSubmitting] = useState(false);
   const fileInputRef = useRef(null);
+
+  const handleAddTag = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const newTag = tagInput.trim();
+      if (newTag && !tags.includes(newTag)) {
+        setTags([...tags, newTag]);
+      }
+      setTagInput("");
+    }
+  };
+
+  const removeTag = (tagToRemove) => {
+    setTags(tags.filter(t => t !== tagToRemove));
+  };
 
   const handleStockChange = (e) => {
     const val = e.target.value;
@@ -86,6 +102,7 @@ export default function NewProduct() {
       formData.append('category', collection); // Map collection to category
       formData.append('stockCount', stockQuantity || '0');
       formData.append('featured', isBestseller); // Or isFeatured depending on preference
+      formData.append('tags', tags.join(','));
       
       if (imageFile) {
         formData.append('image', imageFile);
@@ -165,12 +182,31 @@ export default function NewProduct() {
                   </select>
                 </div>
                 <div className={styles.formGroup}>
-                  <label className={styles.label}>Category</label>
-                  <select className={styles.select} value={category} onChange={e => setCategory(e.target.value)}>
-                    <option value="Floral">Floral</option>
-                    <option value="Minimalist">Minimalist</option>
-                  </select>
-                  <Link href="/admin/settings/attributes" style={{ fontSize: "0.8rem", color: "var(--color-primary)", marginTop: "8px", display: "inline-block", textDecoration: "underline" }}>Manage Categories</Link>
+                  <label className={styles.label}>Category / Tags</label>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', padding: '8px', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)', background: 'white' }}>
+                    {tags.map(tag => (
+                      <span key={tag} style={{ background: 'var(--color-primary-100)', color: 'var(--color-primary-800)', padding: '2px 8px', borderRadius: '4px', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        {tag}
+                        <button type="button" onClick={() => removeTag(tag)} style={{ border: 'none', background: 'none', cursor: 'pointer', color: 'var(--color-primary-800)', padding: 0 }}>&times;</button>
+                      </span>
+                    ))}
+                    <input 
+                      type="text" 
+                      value={tagInput}
+                      onChange={e => setTagInput(e.target.value)}
+                      onKeyDown={handleAddTag}
+                      placeholder={tags.length === 0 ? "Type & press Enter..." : ""}
+                      style={{ border: 'none', outline: 'none', flex: 1, minWidth: '150px', fontSize: '0.9rem', background: 'transparent' }}
+                    />
+                  </div>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '8px' }}>
+                    <span style={{ fontSize: '0.75rem', color: '#666', marginRight: '4px' }}>Suggested:</span>
+                    {nailStyles.filter(s => !tags.includes(s.name)).slice(0, 8).map(s => (
+                      <button key={s.id} type="button" onClick={() => setTags([...tags, s.name])} style={{ background: '#f4f4f4', border: '1px solid #ddd', borderRadius: '4px', padding: '2px 8px', fontSize: '0.75rem', cursor: 'pointer' }}>
+                        + {s.name}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
 
