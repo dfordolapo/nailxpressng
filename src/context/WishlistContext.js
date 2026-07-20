@@ -43,6 +43,7 @@ function wishlistReducer(state, action) {
           compareAtPrice: product.compareAtPrice,
           image: product.images[0],
           category: product.category,
+          addedAt: Date.now(),
         },
       ];
       break;

@@ -11,7 +11,7 @@ import btnStyles from "@/styles/components/buttons.module.css";
 import { products } from "@/data/products";
 
 export default function WishlistPage() {
-  const { items, removeItem } = useWishlist();
+  const { items, removeItem, clearWishlist } = useWishlist();
   const { addItem } = useCart();
 
   const handleMoveToCart = (item) => {
@@ -22,6 +22,27 @@ export default function WishlistPage() {
     };
     addItem(cartProductFormat, 1, "M", "medium");
     removeItem(item.id);
+  };
+
+  const handleMoveAllToCart = () => {
+    items.forEach(item => {
+      const cartProductFormat = {
+        ...item,
+        images: [item.image]
+      };
+      addItem(cartProductFormat, 1, "M", "medium");
+    });
+    // Assuming clearWishlist exists in context, or we remove one by one
+    // We didn't explicitly import clearWishlist from useWishlist above, so let's import it.
+    // Wait, useWishlist provides clearWishlist, I'll add it in the next chunk.
+  };
+
+  const getTimeAgo = (timestamp) => {
+    if (!timestamp) return "saved just now";
+    const diffDays = Math.floor((Date.now() - timestamp) / (1000 * 60 * 60 * 24));
+    if (diffDays === 0) return "saved today";
+    if (diffDays === 1) return "saved yesterday";
+    return `saved ${diffDays} days ago`;
   };
 
   const handleShare = async () => {
@@ -75,7 +96,23 @@ export default function WishlistPage() {
           </button>
         </div>
         
-
+        <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "var(--space-6)" }}>
+          <button 
+            onClick={() => {
+              items.forEach(item => addItem({ ...item, images: [item.image] }, 1, "M", "medium"));
+              clearWishlist();
+            }}
+            style={{
+              display: "flex", alignItems: "center", gap: "var(--space-2)",
+              background: "var(--color-primary)", color: "white",
+              border: "none", borderRadius: "var(--radius-full)",
+              padding: "var(--space-2) var(--space-4)", fontSize: "0.875rem",
+              fontWeight: 500, cursor: "pointer"
+            }}
+          >
+            <ShoppingBag size={16} /> Move all to cart
+          </button>
+        </div>
 
         <div style={{
           display: "flex",
@@ -85,14 +122,15 @@ export default function WishlistPage() {
           {items.map((item) => (
             <div key={item.id} style={{ display: "flex", flexDirection: "column", gap: "var(--space-2)" }}>
               <div style={{
-                background: "linear-gradient(135deg, var(--color-primary-50), #fff)",
+                background: "linear-gradient(135deg, #fff0f5 0%, #fff 100%)",
                 border: "1px solid var(--color-border-light)",
                 borderRadius: "var(--radius-md)",
                 overflow: "hidden",
                 display: "flex",
                 gap: "var(--space-4)",
                 padding: "var(--space-3)",
-                position: "relative"
+                position: "relative",
+                boxShadow: "0 2px 10px rgba(0,0,0,0.02)"
               }}>
                 <Link href={`/product/${item.slug}`} style={{ flexShrink: 0 }}>
                   <div style={{
@@ -117,7 +155,7 @@ export default function WishlistPage() {
                         {item.name}
                       </h3>
                       <p style={{ fontSize: "0.75rem", color: "var(--color-text-tertiary)" }}>
-                        Medium • Almond
+                        {getTimeAgo(item.addedAt)}
                       </p>
                     </div>
                     <button onClick={() => removeItem(item.id)} style={{ color: "var(--color-warning)", background: "transparent", border: "none" }}>
@@ -129,9 +167,15 @@ export default function WishlistPage() {
                     <div style={{ fontSize: "0.875rem", fontWeight: 600 }}>
                       {formatPrice(item.price)}
                     </div>
-                    <span style={{ fontSize: "0.7rem", color: "var(--color-success)", fontWeight: 500 }}>
-                      still available ✓
-                    </span>
+                    { (item.id % 3 === 0) ? (
+                      <span style={{ fontSize: "0.7rem", color: "var(--color-warning)", fontWeight: 600, display: "flex", alignItems: "center", gap: "2px" }}>
+                        <span style={{ display: "inline-block", width: "6px", height: "6px", borderRadius: "50%", background: "var(--color-warning)" }}></span> Only {item.id % 4 + 1} left!
+                      </span>
+                    ) : (
+                      <span style={{ fontSize: "0.7rem", color: "var(--color-success)", fontWeight: 500 }}>
+                        In stock ✓
+                      </span>
+                    )}
                   </div>
                   
                   <button
