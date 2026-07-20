@@ -146,9 +146,6 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
         {/* ═══ FRONT ═══ */}
         <div className={`${styles.cardFront} ${flipped ? styles.hidden : ""}`} onClick={handleFlip}>
           <div className={styles.imageArea}>
-            {product.image ? (
-              <Image src={product.image} alt={product.name} fill sizes="(max-width: 768px) 100vw, 400px" style={{ objectFit: 'cover' }} />
-            ) : (
               <div
                 className={styles.flatLay}
                 style={{
@@ -161,7 +158,6 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
               >
                 💅
               </div>
-            )}
 
             <div className={styles.shine} />
 

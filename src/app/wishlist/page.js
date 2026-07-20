@@ -103,11 +103,10 @@ export default function WishlistPage() {
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    overflow: "hidden"
+                    overflow: "hidden",
+                    fontSize: "2rem"
                   }}>
-                    {item.image ? (
-                      <Image src={item.image} alt={item.name} width={100} height={100} style={{ objectFit: "cover" }} />
-                    ) : "💅"}
+                    💅
                   </div>
                 </Link>
                 
@@ -188,13 +187,15 @@ export default function WishlistPage() {
                           width: "100px", 
                           height: "100px", 
                           borderRadius: "var(--radius-sm)", 
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
                           overflow: "hidden", 
                           background: "var(--color-bg-warm)", 
-                          marginBottom: "4px" 
+                          marginBottom: "4px",
+                          fontSize: "1.5rem"
                         }}>
-                          {suggested.images && suggested.images[0] && (
-                            <Image src={suggested.images[0]} alt={suggested.name} width={100} height={100} style={{ objectFit: "cover", width: "100%", height: "100%" }} />
-                          )}
+                          💅
                         </div>
                         <p style={{ fontSize: "0.75rem", fontWeight: 500, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{suggested.name}</p>
                         <p style={{ fontSize: "0.75rem", color: "var(--color-text-tertiary)" }}>{formatPrice(suggested.price)}</p>

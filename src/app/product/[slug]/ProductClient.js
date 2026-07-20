@@ -80,13 +80,6 @@ export default function ProductClient({ product, relatedProducts = [] }) {
           {/* Gallery */}
           <div className={pageStyles.gallery}>
             <div className={pageStyles.mainImage} style={{ position: "relative", width: "100%", aspectRatio: "1/1", borderRadius: "var(--radius-lg)", overflow: "hidden", backgroundColor: "var(--color-bg)" }}>
-              {product.images && product.images.length > 0 ? (
-                <img 
-                  src={product.images[selectedImage] || product.image} 
-                  alt={product.name} 
-                  style={{ width: "100%", height: "100%", objectFit: "cover" }} 
-                />
-              ) : (
                 <div
                   style={{
                     width: "100%",
@@ -100,7 +93,6 @@ export default function ProductClient({ product, relatedProducts = [] }) {
                 >
                   💅
                 </div>
-              )}
             </div>
             
             {product.images && product.images.length > 1 && (
