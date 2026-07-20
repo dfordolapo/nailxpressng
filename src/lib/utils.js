@@ -11,7 +11,7 @@ export function formatPrice(amount) {
  * Calculate shipping cost based on subtotal
  */
 export function calculateShipping(subtotal) {
-  if (subtotal >= FREE_SHIPPING_THRESHOLD) return 0;
+  // Free shipping removed based on user request
   return FLAT_SHIPPING_RATE;
 }
 

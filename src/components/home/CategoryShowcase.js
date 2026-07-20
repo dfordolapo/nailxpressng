@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { ShoppingCart } from 'lucide-react';
 import styles from './CategoryShowcase.module.css';
@@ -137,15 +136,16 @@ export default function CategoryShowcase({ mini = false, items = null }) {
               <div className={styles.cardInner}>
                 <div className={styles.cardFront}>
                   <div className={styles.imageContainer}>
-                    <div className={styles.imageInner}>
-                      <Image
-                        src={item.image}
-                        alt={item.name}
-                        fill
-                        priority={i < 5} // Eagerly load the first few images to improve LCP
-                        sizes="(max-width: 768px) 180px, 20vw"
-                        className={styles.image}
-                      />
+                    <div className={styles.imageInner} style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: "3rem",
+                      background: "var(--color-bg-warm)",
+                      width: "100%",
+                      height: "100%"
+                    }}>
+                      💅
                     </div>
                   </div>
                   <div className={styles.label} style={{ backgroundColor: item.color }}>

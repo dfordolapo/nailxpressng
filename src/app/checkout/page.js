@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/context/CartContext";
@@ -17,11 +17,40 @@ export default function CheckoutPage() {
     firstName: "", lastName: "", email: "", phone: "",
     address: "", city: "", state: "", zipCode: "",
   });
-  const [shippingMethod, setShippingMethod] = useState("standard");
+  const [shippingMethod, setShippingMethod] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("paystack");
   const [isSubmitting, setIsSubmitting] = useState(false);
   
-  const shippingFeeAmount = shippingMethod === "express" ? 5000 : 2500;
+  const [shippingLocations, setShippingLocations] = useState([]);
+  const [isLoadingRates, setIsLoadingRates] = useState(true);
+
+  useEffect(() => {
+    async function fetchRates() {
+      try {
+        const res = await fetch("/api/settings");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.delivery_locations && data.delivery_locations.length > 0) {
+            setShippingLocations(data.delivery_locations);
+            setShippingMethod(data.delivery_locations[0].id); // Auto-select first location
+          } else {
+            // Fallback
+            const fallback = [{ id: "standard", name: "Standard Delivery", fee: data.shipping_standard || 2500 }];
+            setShippingLocations(fallback);
+            setShippingMethod("standard");
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch shipping locations", error);
+      } finally {
+        setIsLoadingRates(false);
+      }
+    }
+    fetchRates();
+  }, []);
+
+  const selectedLocation = shippingLocations.find(loc => loc.id === shippingMethod);
+  const shippingFeeAmount = selectedLocation ? selectedLocation.fee : 0;
   const finalTotal = subtotal + shippingFeeAmount;
 
   const handleChange = (e) => {
@@ -157,49 +186,33 @@ export default function CheckoutPage() {
           <div style={{ marginBottom: "var(--space-6)" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "var(--space-2)", marginBottom: "var(--space-3)" }}>
               <div style={{ width: 24, height: 24, borderRadius: "50%", background: "var(--color-primary)", color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.875rem", fontWeight: "bold" }}>2</div>
-              <h3 style={{ fontSize: "1rem", fontWeight: 600 }}>Shipping Method</h3>
+              <h3 style={{ fontSize: "1rem", fontWeight: 600 }}>Delivery Location</h3>
             </div>
             
             <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-3)" }}>
-              <div 
-                onClick={() => setShippingMethod("standard")}
-                style={{ 
-                  background: shippingMethod === "standard" ? "var(--color-primary-50)" : "white", 
-                  border: `1px solid ${shippingMethod === "standard" ? "var(--color-primary)" : "var(--color-border-light)"}`, 
-                  borderRadius: "var(--radius-lg)", padding: "var(--space-4)", display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer" 
-                }}
-              >
-                <div>
-                  <p style={{ fontWeight: 500, marginBottom: "2px" }}>Standard Shipping</p>
-                  <p style={{ fontSize: "0.75rem", color: "var(--color-text-tertiary)" }}>3-5 business days</p>
-                </div>
-                <div style={{ display: "flex", alignItems: "center", gap: "var(--space-3)" }}>
-                  <span style={{ fontWeight: 500 }}>{formatPrice(2500)}</span>
-                  <div style={{ width: 18, height: 18, borderRadius: "50%", border: `2px solid ${shippingMethod === "standard" ? "var(--color-primary)" : "var(--color-border)"}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    {shippingMethod === "standard" && <div style={{ width: 10, height: 10, borderRadius: "50%", background: "var(--color-primary)" }}></div>}
+              {isLoadingRates ? (
+                <div style={{ padding: "var(--space-4)", textAlign: "center", color: "var(--color-text-secondary)" }}>Loading delivery locations...</div>
+              ) : shippingLocations.map((loc) => (
+                <div 
+                  key={loc.id}
+                  onClick={() => setShippingMethod(loc.id)}
+                  style={{ 
+                    background: shippingMethod === loc.id ? "var(--color-primary-50)" : "white", 
+                    border: `1px solid ${shippingMethod === loc.id ? "var(--color-primary)" : "var(--color-border-light)"}`, 
+                    borderRadius: "var(--radius-lg)", padding: "var(--space-4)", display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer" 
+                  }}
+                >
+                  <div style={{ display: "flex", alignItems: "center", gap: "var(--space-3)" }}>
+                    <div style={{ width: 18, height: 18, borderRadius: "50%", border: `2px solid ${shippingMethod === loc.id ? "var(--color-primary)" : "var(--color-border)"}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      {shippingMethod === loc.id && <div style={{ width: 10, height: 10, borderRadius: "50%", background: "var(--color-primary)" }}></div>}
+                    </div>
+                    <div>
+                      <div style={{ fontWeight: 500 }}>{loc.name}</div>
+                    </div>
                   </div>
+                  <span style={{ fontWeight: 600 }}>{formatPrice(loc.fee)}</span>
                 </div>
-              </div>
-              
-              <div 
-                onClick={() => setShippingMethod("express")}
-                style={{ 
-                  background: shippingMethod === "express" ? "var(--color-primary-50)" : "white", 
-                  border: `1px solid ${shippingMethod === "express" ? "var(--color-primary)" : "var(--color-border-light)"}`, 
-                  borderRadius: "var(--radius-lg)", padding: "var(--space-4)", display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer" 
-                }}
-              >
-                <div>
-                  <p style={{ fontWeight: 500, marginBottom: "2px" }}>Express Shipping</p>
-                  <p style={{ fontSize: "0.75rem", color: "var(--color-text-tertiary)" }}>1-2 business days</p>
-                </div>
-                <div style={{ display: "flex", alignItems: "center", gap: "var(--space-3)" }}>
-                  <span style={{ fontWeight: 500 }}>{formatPrice(5000)}</span>
-                  <div style={{ width: 18, height: 18, borderRadius: "50%", border: `2px solid ${shippingMethod === "express" ? "var(--color-primary)" : "var(--color-border)"}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    {shippingMethod === "express" && <div style={{ width: 10, height: 10, borderRadius: "50%", background: "var(--color-primary)" }}></div>}
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
           

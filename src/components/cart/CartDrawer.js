@@ -1,4 +1,5 @@
 "use client";
+import { useState, useEffect } from "react";
 
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
@@ -17,7 +18,26 @@ function CloseIcon() {
 
 export default function CartDrawer({ onClose }) {
   const { items, removeItem, updateQuantity } = useCart();
-  const { subtotal, shipping, total, itemCount } = calculateCartTotals(items);
+  const [standardShipping, setStandardShipping] = useState(2500);
+  const { subtotal, itemCount } = calculateCartTotals(items);
+  const dynamicTotal = subtotal + standardShipping;
+
+  useEffect(() => {
+    async function fetchRates() {
+      try {
+        const res = await fetch("/api/settings");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.delivery_locations && data.delivery_locations.length > 0) {
+            setStandardShipping(data.delivery_locations[0].fee);
+          } else if (data.shipping_standard) {
+            setStandardShipping(data.shipping_standard);
+          }
+        }
+      } catch (e) {}
+    }
+    fetchRates();
+  }, []);
 
   return (
     <>
@@ -107,14 +127,14 @@ export default function CartDrawer({ onClose }) {
               <span>{formatPrice(subtotal)}</span>
             </div>
             <div className={styles.summaryRow}>
-              <span>Shipping</span>
-              <span className={shipping === 0 ? styles.freeShipping : ""}>
-                {shipping === 0 ? "FREE" : formatPrice(shipping)}
+              <span>Shipping (Est.)</span>
+              <span>
+                {formatPrice(standardShipping)}
               </span>
             </div>
             <div className={styles.summaryTotal}>
               <span>Total</span>
-              <span>{formatPrice(total)}</span>
+              <span>{formatPrice(dynamicTotal)}</span>
             </div>
             <Link
               href="/checkout"
@@ -122,7 +142,7 @@ export default function CartDrawer({ onClose }) {
               onClick={onClose}
               id="checkout-btn"
             >
-              Checkout — {formatPrice(total)}
+              Checkout — {formatPrice(dynamicTotal)}
             </Link>
             <Link href="/cart" className={styles.continueShopping} onClick={onClose}>
               View full cart

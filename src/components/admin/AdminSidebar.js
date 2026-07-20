@@ -150,6 +150,14 @@ function SidebarContent() {
                 >
                   Store Attributes
                 </Link>
+                <Link 
+                  href="/admin/settings" 
+                  className={styles.navSubItem}
+                  style={{ color: pathname === "/admin/settings" ? "var(--color-primary)" : "", fontWeight: pathname === "/admin/settings" ? 600 : 400 }}
+                  onClick={() => setIsMobileOpen(false)}
+                >
+                  Shipping Rates
+                </Link>
               </div>
             )}
           </div>

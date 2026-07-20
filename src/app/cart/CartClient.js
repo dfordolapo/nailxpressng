@@ -1,18 +1,37 @@
 "use client";
+import { useState, useEffect } from "react";
 
 import Link from "next/link";
 import Image from "next/image";
 import { useCart } from "@/context/CartContext";
 import { formatPrice, calculateCartTotals } from "@/lib/utils";
-import { FREE_SHIPPING_THRESHOLD } from "@/lib/constants";
 import { Trash2, ArrowLeft, ShoppingBag } from "lucide-react";
 import styles from "@/styles/components/cart.module.css";
 import btnStyles from "@/styles/components/buttons.module.css";
 
 export default function CartClient({ bestsellers = [] }) {
-  const { items, removeItem, updateQuantity } = useCart();
-  const { subtotal, shipping, total, itemCount } = calculateCartTotals(items);
-  const amountToFreeShipping = FREE_SHIPPING_THRESHOLD - subtotal;
+  const { items, removeItem, updateQuantity, addItem } = useCart();
+  const [standardShipping, setStandardShipping] = useState(2500);
+  const { subtotal, total, itemCount } = calculateCartTotals(items);
+  // Re-calculate total with dynamic standard shipping
+  const dynamicTotal = subtotal + standardShipping;
+
+  useEffect(() => {
+    async function fetchRates() {
+      try {
+        const res = await fetch("/api/settings");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.delivery_locations && data.delivery_locations.length > 0) {
+            setStandardShipping(data.delivery_locations[0].fee);
+          } else if (data.shipping_standard) {
+            setStandardShipping(data.shipping_standard);
+          }
+        }
+      } catch (e) {}
+    }
+    fetchRates();
+  }, []);
 
   if (items.length === 0) {
     return (
@@ -43,40 +62,7 @@ export default function CartClient({ bestsellers = [] }) {
           <div style={{ width: 24 }}></div>
         </div>
 
-        {/* Free Shipping Progress */}
-        {amountToFreeShipping > 0 && (
-          <div style={{
-            background: "var(--color-bg-card)",
-            borderRadius: "var(--radius-lg)",
-            padding: "var(--space-3) var(--space-4)",
-            marginBottom: "var(--space-6)",
-            fontSize: "0.75rem",
-            color: "var(--color-text)",
-            textAlign: "center",
-            boxShadow: "var(--shadow-sm)",
-            border: "1px solid var(--color-border-light)"
-          }}>
-            <div style={{ marginBottom: "var(--space-2)" }}>
-              🛍️ You&apos;re {formatPrice(amountToFreeShipping)} away from <strong>FREE shipping!</strong>
-            </div>
-            <div style={{
-              height: 6,
-              background: "var(--color-bg-warm)",
-              borderRadius: "var(--radius-full)",
-              overflow: "hidden",
-              margin: "0 auto",
-              width: "80%"
-            }}>
-              <div style={{
-                height: "100%",
-                width: `${Math.min((subtotal / FREE_SHIPPING_THRESHOLD) * 100, 100)}%`,
-                background: "var(--color-btn-gradient)",
-                borderRadius: "var(--radius-full)",
-                transition: "width var(--transition-base)",
-              }} />
-            </div>
-          </div>
-        )}
+
 
         <div className={styles.cartGrid}>
           {/* Cart Items */}
@@ -84,7 +70,19 @@ export default function CartClient({ bestsellers = [] }) {
             {items.map((item) => (
               <div key={`${item.id}-${item.selectedSize}-${item.selectedLength}`} className={styles.cartItem}>
                 <div className={styles.cartItemImage}>
-                  <Image src={item.image || "/images/hero.png"} alt={item.name} width={100} height={100} style={{ objectFit: "cover" }} />
+                  <div
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      background: "linear-gradient(135deg, var(--color-primary-100), var(--color-surface))",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: "1.5rem",
+                    }}
+                  >
+                    💅
+                  </div>
                 </div>
                 <div className={styles.cartItemDetails}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
@@ -130,15 +128,32 @@ export default function CartClient({ bestsellers = [] }) {
             <div className={styles.sliderContainer}>
               {bestsellers.map(product => (
                 <div key={product.id} className={styles.sliderItem}>
-                  <Link href={`/product/${product.slug}`} className={styles.sliderImage}>
-                    {product.images?.[0] ? (
-                      <Image src={product.images[0]} alt={product.name} width={120} height={120} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 'inherit' }} />
-                    ) : "💅"}
+                  <Link href={`/product/${product.slug}`} className={styles.sliderImage} style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: "2rem",
+                      background: "var(--color-bg-warm)",
+                      textDecoration: "none"
+                    }}>
+                    💅
                   </Link>
                   <div className={styles.sliderName}>{product.name}</div>
                   <div className={styles.sliderPriceRow}>
                     <span className={styles.sliderPrice}>{formatPrice(product.price)}</span>
-                    <button className={styles.addBtn}>+</button>
+                    <button 
+                      className={styles.addBtn}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        const cartProductFormat = {
+                          ...product,
+                          images: product.images || []
+                        };
+                        addItem(cartProductFormat, 1, "M", "medium");
+                      }}
+                    >
+                      +
+                    </button>
                   </div>
                 </div>
               ))}
@@ -152,14 +167,14 @@ export default function CartClient({ bestsellers = [] }) {
               <span style={{ fontWeight: 600, color: "var(--color-text)" }}>{formatPrice(subtotal)}</span>
             </div>
             <div className={styles.summaryRow}>
-              <span>Shipping</span>
-              <span className={shipping === 0 ? styles.freeShipping : ""} style={{ fontWeight: 600, color: "var(--color-text)" }}>
-                {shipping === 0 ? "FREE" : formatPrice(shipping)}
+              <span>Shipping (Est.)</span>
+              <span style={{ fontWeight: 600, color: "var(--color-text)" }}>
+                {formatPrice(standardShipping)}
               </span>
             </div>
             <div className={styles.summaryTotal}>
               <span>Total</span>
-              <span>{formatPrice(total)}</span>
+              <span>{formatPrice(dynamicTotal)}</span>
             </div>
             <Link
               href="/checkout"
