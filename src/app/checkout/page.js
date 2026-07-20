@@ -18,7 +18,7 @@ export default function CheckoutPage() {
     address: "", city: "", state: "", zipCode: "",
   });
   const [shippingMethod, setShippingMethod] = useState("standard");
-  const [paymentMethod, setPaymentMethod] = useState("card");
+  const [paymentMethod, setPaymentMethod] = useState("paystack");
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   const shippingFeeAmount = shippingMethod === "express" ? 5000 : 2500;
@@ -59,7 +59,7 @@ export default function CheckoutPage() {
       if (clearCart) {
         clearCart();
       }
-      router.push("/checkout/success");
+      router.push(`/checkout/success?orderId=${data.orderId}`);
       
     } catch (error) {
       console.error("Checkout error:", error);
@@ -212,25 +212,6 @@ export default function CheckoutPage() {
             
             <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-3)" }}>
               <div 
-                onClick={() => setPaymentMethod("card")}
-                style={{ 
-                  background: paymentMethod === "card" ? "var(--color-primary-50)" : "white", 
-                  border: `1px solid ${paymentMethod === "card" ? "var(--color-primary)" : "var(--color-border-light)"}`, 
-                  borderRadius: "var(--radius-lg)", padding: "var(--space-4)", display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer" 
-                }}
-              >
-                <div style={{ display: "flex", alignItems: "center", gap: "var(--space-3)" }}>
-                  <div style={{ width: 18, height: 18, borderRadius: "50%", border: `2px solid ${paymentMethod === "card" ? "var(--color-primary)" : "var(--color-border)"}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    {paymentMethod === "card" && <div style={{ width: 10, height: 10, borderRadius: "50%", background: "var(--color-primary)" }}></div>}
-                  </div>
-                  <span style={{ fontWeight: 500 }}>Card</span>
-                </div>
-                <div style={{ display: "flex", gap: "4px", fontSize: "1.25rem" }}>
-                  💳
-                </div>
-              </div>
-              
-              <div 
                 onClick={() => setPaymentMethod("paystack")}
                 style={{ 
                   background: paymentMethod === "paystack" ? "var(--color-primary-50)" : "white", 
@@ -244,23 +225,6 @@ export default function CheckoutPage() {
                   </div>
                   <span style={{ fontWeight: 500 }}>Paystack</span>
                 </div>
-              </div>
-              
-              <div 
-                onClick={() => setPaymentMethod("bank")}
-                style={{ 
-                  background: paymentMethod === "bank" ? "var(--color-primary-50)" : "white", 
-                  border: `1px solid ${paymentMethod === "bank" ? "var(--color-primary)" : "var(--color-border-light)"}`, 
-                  borderRadius: "var(--radius-lg)", padding: "var(--space-4)", display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer" 
-                }}
-              >
-                <div style={{ display: "flex", alignItems: "center", gap: "var(--space-3)" }}>
-                  <div style={{ width: 18, height: 18, borderRadius: "50%", border: `2px solid ${paymentMethod === "bank" ? "var(--color-primary)" : "var(--color-border)"}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    {paymentMethod === "bank" && <div style={{ width: 10, height: 10, borderRadius: "50%", background: "var(--color-primary)" }}></div>}
-                  </div>
-                  <span style={{ fontWeight: 500 }}>Bank Transfer</span>
-                </div>
-                <span>🏦</span>
               </div>
             </div>
           </div>
