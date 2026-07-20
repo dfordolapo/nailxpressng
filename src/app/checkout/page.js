@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/context/CartContext";
 import { formatPrice, calculateCartTotals } from "@/lib/utils";
+import nigeriaData from "@/lib/nigeria.json";
 import pageStyles from "@/styles/pages/collection.module.css";
 import cartStyles from "@/styles/components/cart.module.css";
 import btnStyles from "@/styles/components/buttons.module.css";
@@ -14,8 +15,8 @@ export default function CheckoutPage() {
   const router = useRouter();
   const { subtotal, shipping, total } = calculateCartTotals(items);
   const [formData, setFormData] = useState({
-    firstName: "", lastName: "", email: "", phone: "",
-    address: "", city: "", state: "", zipCode: "",
+    fullName: "", email: "", phone: "",
+    address: "", city: "", state: "",
   });
   const [shippingMethod, setShippingMethod] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("paystack");
@@ -54,28 +55,42 @@ export default function CheckoutPage() {
   const finalTotal = subtotal + shippingFeeAmount;
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    if (name === "state") {
+      setFormData({ ...formData, state: value, city: "" }); // Reset city when state changes
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
+
+  const selectedStateData = nigeriaData.find(s => s.state === formData.state);
+  const availableLgas = selectedStateData ? selectedStateData.lgas : [];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     
     try {
+      const nameParts = formData.fullName.trim().split(" ");
+      const firstName = nameParts[0] || "";
+      const lastName = nameParts.slice(1).join(" ") || "";
+
+      const orderPayload = {
+        formData: { ...formData, firstName, lastName },
+        items,
+        shippingMethod,
+        paymentMethod,
+        subtotal,
+        shippingFee: shippingFeeAmount,
+        total: finalTotal
+      };
+      
       const response = await fetch('/api/checkout', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          formData,
-          items,
-          shippingMethod,
-          paymentMethod,
-          subtotal,
-          shippingFee: shippingFeeAmount,
-          total: finalTotal
-        }),
+        body: JSON.stringify(orderPayload),
       });
 
       const data = await response.json();
@@ -138,15 +153,9 @@ export default function CheckoutPage() {
             </div>
             
             <div style={{ background: "white", border: "1px solid var(--color-border-light)", borderRadius: "var(--radius-lg)", padding: "var(--space-4)" }}>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-4)", marginBottom: "var(--space-4)" }}>
-                <div>
-                  <label htmlFor="firstName" style={{ display: "block", fontSize: "0.875rem", marginBottom: "4px", color: "var(--color-text-secondary)" }}>First Name</label>
-                  <input required type="text" id="firstName" name="firstName" value={formData.firstName} onChange={handleChange} style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "1px solid var(--color-border)", outline: "none" }} />
-                </div>
-                <div>
-                  <label htmlFor="lastName" style={{ display: "block", fontSize: "0.875rem", marginBottom: "4px", color: "var(--color-text-secondary)" }}>Last Name</label>
-                  <input required type="text" id="lastName" name="lastName" value={formData.lastName} onChange={handleChange} style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "1px solid var(--color-border)", outline: "none" }} />
-                </div>
+              <div style={{ marginBottom: "var(--space-4)" }}>
+                <label htmlFor="fullName" style={{ display: "block", fontSize: "0.875rem", marginBottom: "4px", color: "var(--color-text-secondary)" }}>Full Name</label>
+                <input required type="text" id="fullName" name="fullName" value={formData.fullName} onChange={handleChange} style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "1px solid var(--color-border)", outline: "none" }} />
               </div>
               
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-4)", marginBottom: "var(--space-4)" }}>
@@ -165,18 +174,24 @@ export default function CheckoutPage() {
                 <input required type="text" id="address" name="address" value={formData.address} onChange={handleChange} style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "1px solid var(--color-border)", outline: "none" }} />
               </div>
 
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "var(--space-4)" }}>
-                <div>
-                  <label htmlFor="city" style={{ display: "block", fontSize: "0.875rem", marginBottom: "4px", color: "var(--color-text-secondary)" }}>City</label>
-                  <input required type="text" id="city" name="city" value={formData.city} onChange={handleChange} style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "1px solid var(--color-border)", outline: "none" }} />
-                </div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-4)" }}>
                 <div>
                   <label htmlFor="state" style={{ display: "block", fontSize: "0.875rem", marginBottom: "4px", color: "var(--color-text-secondary)" }}>State</label>
-                  <input required type="text" id="state" name="state" value={formData.state} onChange={handleChange} style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "1px solid var(--color-border)", outline: "none" }} />
+                  <select required id="state" name="state" value={formData.state} onChange={handleChange} style={{ width: "100%", padding: "10px 32px 10px 10px", borderRadius: "8px", border: "1px solid var(--color-border)", outline: "none", fontSize: "0.875rem", appearance: "none", background: "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"%23666\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"6 9 12 15 18 9\"></polyline></svg>') no-repeat right 12px center / 16px 16px white" }}>
+                    <option value="">Select State</option>
+                    {nigeriaData.map(s => (
+                      <option key={s.state} value={s.state}>{s.state}</option>
+                    ))}
+                  </select>
                 </div>
                 <div>
-                  <label htmlFor="zipCode" style={{ display: "block", fontSize: "0.875rem", marginBottom: "4px", color: "var(--color-text-secondary)" }}>Zip Code</label>
-                  <input required type="text" id="zipCode" name="zipCode" value={formData.zipCode} onChange={handleChange} style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "1px solid var(--color-border)", outline: "none" }} />
+                  <label htmlFor="city" style={{ display: "block", fontSize: "0.875rem", marginBottom: "4px", color: "var(--color-text-secondary)" }}>City / LGA</label>
+                  <select required id="city" name="city" value={formData.city} onChange={handleChange} disabled={!formData.state} style={{ width: "100%", padding: "10px 32px 10px 10px", borderRadius: "8px", border: "1px solid var(--color-border)", outline: "none", fontSize: "0.875rem", appearance: "none", background: `url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"%23666\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"6 9 12 15 18 9\"></polyline></svg>') no-repeat right 12px center / 16px 16px ${formData.state ? "white" : "var(--color-background-alt)"}` }}>
+                    <option value="">Select City / LGA</option>
+                    {availableLgas.map(lga => (
+                      <option key={lga} value={lga}>{lga}</option>
+                    ))}
+                  </select>
                 </div>
               </div>
             </div>
@@ -206,9 +221,7 @@ export default function CheckoutPage() {
                     <div style={{ width: 18, height: 18, borderRadius: "50%", border: `2px solid ${shippingMethod === loc.id ? "var(--color-primary)" : "var(--color-border)"}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
                       {shippingMethod === loc.id && <div style={{ width: 10, height: 10, borderRadius: "50%", background: "var(--color-primary)" }}></div>}
                     </div>
-                    <div>
-                      <div style={{ fontWeight: 500 }}>{loc.name}</div>
-                    </div>
+                    <span style={{ fontWeight: 500 }}>{loc.name}</span>
                   </div>
                   <span style={{ fontWeight: 600 }}>{formatPrice(loc.fee)}</span>
                 </div>
