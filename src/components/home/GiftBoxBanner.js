@@ -14,7 +14,7 @@ export default function GiftBoxBanner() {
           height={1080}
           sizes="100vw"
           className={styles.image}
-          style={{ width: '100%', height: 'auto', objectFit: 'contain', maxWidth: '1440px' }}
+          style={{ width: '100%', height: 'auto', objectFit: 'cover' }}
         />
       </div>
     </section>
