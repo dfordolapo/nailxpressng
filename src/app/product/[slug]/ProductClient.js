@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
@@ -35,6 +35,21 @@ export default function ProductClient({ product, relatedProducts = [] }) {
   const [selectedLength, setSelectedLength] = useState(product?.lengths?.[0] || "medium");
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
+  
+  const [showSticky, setShowSticky] = useState(false);
+  const addToCartRef = useRef(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (addToCartRef.current) {
+        const rect = addToCartRef.current.getBoundingClientRect();
+        // Trigger when the Add to Cart section hits the top of the screen (or header)
+        setShowSticky(rect.top < 80);
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   if (!product) {
     return (
@@ -79,11 +94,10 @@ export default function ProductClient({ product, relatedProducts = [] }) {
         <div className={pageStyles.productLayout}>
           {/* Gallery */}
           <div className={pageStyles.gallery}>
-            <div className={pageStyles.mainImage} style={{ position: "relative", width: "100%", aspectRatio: "1/1", borderRadius: "var(--radius-lg)", overflow: "hidden", backgroundColor: "var(--color-bg)" }}>
+            <div className={pageStyles.galleryZoomContainer}>
                 <div
+                  className={pageStyles.galleryZoomInner}
                   style={{
-                    width: "100%",
-                    height: "100%",
                     background: `linear-gradient(135deg, var(--color-primary-100), var(--color-surface), var(--color-primary-200))`,
                     display: "flex",
                     alignItems: "center",
@@ -113,11 +127,19 @@ export default function ProductClient({ product, relatedProducts = [] }) {
                       padding: 0
                     }}
                   >
-                    <img 
-                      src={imgUrl} 
-                      alt={`Thumbnail ${i + 1}`} 
-                      style={{ width: "100%", height: "100%", objectFit: "cover" }} 
-                    />
+                    <div
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        background: `linear-gradient(135deg, var(--color-primary-100), var(--color-surface))`,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontSize: "2rem",
+                      }}
+                    >
+                      💅
+                    </div>
                   </button>
                 ))}
               </div>
@@ -224,7 +246,7 @@ export default function ProductClient({ product, relatedProducts = [] }) {
             </div>
 
             {/* Add to Cart */}
-            <div className={pageStyles.addToCartSection}>
+            <div className={pageStyles.addToCartSection} ref={addToCartRef}>
               <button
                 className={`${btnStyles.btn} ${btnStyles.primary} ${btnStyles.lg}`}
                 style={{ flex: 1 }}
@@ -280,7 +302,6 @@ export default function ProductClient({ product, relatedProducts = [] }) {
           </div>
         </div>
 
-        {/* Related Products */}
         {relatedProducts.length > 0 && (
           <section className={pageStyles.relatedSection}>
             <div className="section__header">
@@ -289,6 +310,22 @@ export default function ProductClient({ product, relatedProducts = [] }) {
             <ProductGrid products={relatedProducts} />
           </section>
         )}
+      </div>
+
+      {/* Sticky Action Bar */}
+      <div className={`${pageStyles.stickyActionBar} ${showSticky ? pageStyles.stickyVisible : ""}`}>
+        <div className="container" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+           <div>
+             <p style={{ fontWeight: 600, fontSize: "var(--text-sm)", margin: 0, color: "var(--color-text)" }}>{product.name}</p>
+             <p style={{ color: "var(--color-text-secondary)", fontSize: "var(--text-xs)", margin: 0 }}>{formatPrice(product.price * quantity)}</p>
+           </div>
+           <button
+             className={`${btnStyles.btn} ${btnStyles.primary} ${btnStyles.sm}`}
+             onClick={handleAddToCart}
+           >
+             {added ? "✓ Added" : "Add to Cart"}
+           </button>
+        </div>
       </div>
     </div>
   );

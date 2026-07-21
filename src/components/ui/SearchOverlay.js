@@ -102,18 +102,30 @@ export default function SearchOverlay() {
       </div>
 
       {/* Search Input */}
-      <div style={{ maxWidth: 360, margin: "0 auto", width: "100%", padding: "0 var(--space-6)" }}>
-        <div className={styles.searchInputWrapper}>
-          <span className={styles.searchIcon}><SearchIconSVG /></span>
+      <div style={{ maxWidth: 900, margin: "0 auto", width: "100%", padding: "var(--space-12) var(--space-6) var(--space-6)" }}>
+        <div style={{ position: "relative", width: "100%" }}>
           <input
             type="text"
             value={query}
             onChange={(e) => updateQuery(e.target.value)}
             placeholder={placeholders[placeholderIndex]}
-            className={styles.searchInput}
             autoFocus
             id="search-input"
-            style={{ transition: "all 0.3s ease" }}
+            style={{ 
+              width: "100%",
+              background: "transparent",
+              border: "none",
+              borderBottom: "2px solid var(--color-border)",
+              fontSize: "clamp(1.5rem, 4vw, 2.5rem)",
+              fontFamily: "var(--font-heading)",
+              color: "var(--color-text)",
+              padding: "var(--space-2) 0 var(--space-4)",
+              outline: "none",
+              transition: "border-color var(--transition-base)",
+              lineHeight: 1.2
+            }}
+            onFocus={(e) => e.target.style.borderColor = "var(--color-primary)"}
+            onBlur={(e) => e.target.style.borderColor = "var(--color-border)"}
           />
         </div>
       </div>
