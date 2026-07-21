@@ -6,7 +6,7 @@ export default function GiftBoxBanner() {
   return (
     <section className={styles.section}>
       <h2 className={styles.title}>What's inside your Nail Express box?</h2>
-      <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+      <div className={styles.imageWrapper}>
         <Image
           src="/images/gift-box-banner-v2.png"
           alt="What's inside your Nail Express box"

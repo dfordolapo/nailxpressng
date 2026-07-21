@@ -14,6 +14,16 @@
   line-height: 1.2;
 }
 
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  /* This creates a smooth fade at the top and bottom edges */
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+}
+
 .image {
   width: 100%;
   height: auto;
