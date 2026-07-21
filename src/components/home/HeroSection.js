@@ -1,9 +1,23 @@
-import React from 'react';
+"use client";
+
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from './HeroSection.module.css';
 
 export default function HeroSection() {
+  const [offsetY, setOffsetY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setOffsetY(window.scrollY);
+    };
+    
+    // Only run on client
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <section className={styles.hero}>
       <div className={styles.content}>
@@ -25,14 +39,16 @@ export default function HeroSection() {
         </div>
       </div>
       <div className={styles.imageWrapper}>
-        <Image
-          src="/images/hero.png"
-          alt="Hands holding glasses showing elegant press-on nails"
-          fill
-          priority
-          sizes="(max-width: 768px) 100vw, 50vw"
-          className={styles.image}
-        />
+        <div style={{ transform: `translateY(${offsetY * 0.4}px)`, width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }}>
+          <Image
+            src="/images/hero.png"
+            alt="Hands holding glasses showing elegant press-on nails"
+            fill
+            priority
+            sizes="(max-width: 768px) 100vw, 50vw"
+            className={styles.image}
+          />
+        </div>
       </div>
       
       {/* Custom Divider */}
