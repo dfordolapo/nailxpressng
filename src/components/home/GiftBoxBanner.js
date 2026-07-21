@@ -8,7 +8,7 @@ export default function GiftBoxBanner() {
       <h2 className={styles.title}>What's inside your Nail Express box?</h2>
       <div style={{ position: 'relative', width: '100%', aspectRatio: '2 / 1' }}>
         <Image
-          src="/images/gift-box-banner.png"
+          src="/images/gift-box-banner-v2.png"
           alt="What's inside your Nail Express box"
           fill
           sizes="(max-width: 768px) 100vw, 80vw"
