@@ -30,3 +30,12 @@ DROP POLICY IF EXISTS "Settings are viewable by everyone" ON store_settings;
 CREATE POLICY "Settings are viewable by everyone" 
   ON store_settings FOR SELECT 
   USING (true);
+
+-- Setup Storage for Custom Order References
+INSERT INTO storage.buckets (id, name, public) VALUES ('custom-orders', 'custom-orders', true) ON CONFLICT DO NOTHING;
+
+DROP POLICY IF EXISTS "Public Access" ON storage.objects;
+DROP POLICY IF EXISTS "Anyone can upload" ON storage.objects;
+
+CREATE POLICY "Public Access" ON storage.objects FOR SELECT USING ( bucket_id = 'custom-orders' );
+CREATE POLICY "Anyone can upload" ON storage.objects FOR INSERT WITH CHECK ( bucket_id = 'custom-orders' );

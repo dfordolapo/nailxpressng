@@ -7,7 +7,10 @@
   display: flex;
   gap: var(--space-4);
   overflow-x: auto;
+  padding-top: 4px;
   padding-bottom: var(--space-4);
+  padding-left: 4px;
+  padding-right: 4px;
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
   justify-content: center; /* Center the shapes if they fit on screen */
