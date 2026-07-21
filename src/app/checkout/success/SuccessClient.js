@@ -62,24 +62,24 @@ export default function SuccessClient({ orderDetails }) {
           {/* Progress Bar Background */}
           <div style={{ position: 'absolute', top: '16px', left: '10%', right: '10%', height: '2px', background: '#f0f0f0', zIndex: 1 }}></div>
           {/* Active Progress */}
-          <div style={{ position: 'absolute', top: '16px', left: '10%', width: '0%', height: '2px', background: 'var(--color-primary)', zIndex: 2 }}></div>
+          <div style={{ position: 'absolute', top: '16px', left: '10%', width: '33%', height: '2px', background: 'var(--color-primary)', zIndex: 2 }}></div>
           
           {/* Steps */}
           {['Ordered', 'Processing', 'Shipped', 'Delivered'].map((step, index) => (
             <div key={step} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', zIndex: 3, position: 'relative', width: '25%' }}>
               <div style={{ 
                 width: '32px', height: '32px', borderRadius: '50%', 
-                background: index === 0 ? 'var(--color-primary)' : 'white', 
-                border: index === 0 ? 'none' : '2px solid #e0e0e0',
+                background: index <= 1 ? 'var(--color-primary)' : 'white', 
+                border: index <= 1 ? 'none' : '2px solid #e0e0e0',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                color: index === 0 ? 'white' : '#aaa',
+                color: index <= 1 ? 'white' : '#aaa',
                 marginBottom: '6px',
                 fontSize: '0.8rem',
-                boxShadow: index === 0 ? '0 0 0 3px var(--color-primary-100)' : 'none'
+                boxShadow: index <= 1 ? '0 0 0 3px var(--color-primary-100)' : 'none'
               }}>
-                {index === 0 ? '✓' : (index + 1)}
+                {index <= 1 ? '✓' : (index + 1)}
               </div>
-              <span style={{ fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: index === 0 ? 600 : 500, color: index === 0 ? 'var(--color-text)' : '#999' }}>{step}</span>
+              <span style={{ fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: index <= 1 ? 600 : 500, color: index <= 1 ? 'var(--color-text)' : '#999' }}>{step}</span>
             </div>
           ))}
         </div>

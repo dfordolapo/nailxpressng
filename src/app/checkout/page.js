@@ -85,25 +85,51 @@ export default function CheckoutPage() {
         total: finalTotal
       };
       
-      const response = await fetch('/api/checkout', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(orderPayload),
-      });
+      const processOrderToBackend = async (reference = null) => {
+        if (reference) orderPayload.transactionReference = reference;
+        
+        const response = await fetch('/api/checkout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(orderPayload),
+        });
 
-      const data = await response.json();
+        const data = await response.json();
 
-      if (!response.ok) throw new Error(data.error || 'Failed to place order');
+        if (!response.ok) throw new Error(data.error || 'Failed to place order');
 
-      // If we are integrating Paystack, it would happen here before clearCart!
-      // For now, it just simulates success.
+        if (clearCart) clearCart();
+        router.push(`/checkout/success?orderId=${data.orderId}`);
+      };
 
-      if (clearCart) {
-        clearCart();
+      if (paymentMethod === "paystack") {
+        const PaystackPop = (await import('@paystack/inline-js')).default;
+        const paystack = new PaystackPop();
+        
+        paystack.newTransaction({
+          key: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY || "pk_test_dummy",
+          email: formData.email,
+          amount: finalTotal * 100, // Paystack expects kobo
+          currency: 'NGN',
+          firstname: firstName,
+          lastname: lastName,
+          phone: formData.phone,
+          onSuccess: async (transaction) => {
+            try {
+              await processOrderToBackend(transaction.reference);
+            } catch (err) {
+              console.error("Order save error after payment:", err);
+              alert("Payment was successful, but there was an error saving your order. Please contact support with your email.");
+              setIsSubmitting(false);
+            }
+          },
+          onCancel: () => {
+            setIsSubmitting(false);
+          }
+        });
+      } else {
+        await processOrderToBackend();
       }
-      router.push(`/checkout/success?orderId=${data.orderId}`);
       
     } catch (error) {
       console.error("Checkout error:", error);
