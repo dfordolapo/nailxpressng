@@ -48,7 +48,7 @@ export default function Header() {
   return (
     <>
       {!isHome && <div className={styles.headerSpacer} aria-hidden="true" />}
-      <header className={`${styles.header} ${scrolled ? styles.scrolled : ""}`} id="site-header">
+      <header className={`${styles.header} ${scrolled ? styles.scrolled : ""} ${mobileOpen ? styles.headerHidden : ""}`} id="site-header">
         <div className={styles.headerInner}>
           {/* Logo */}
           <Link href="/" className={styles.logo} id="site-logo">
@@ -115,29 +115,57 @@ export default function Header() {
         </div>
       </header>
 
-      {/* Mobile Navigation Overlay */}
+      {/* Mobile Navigation Standalone Drawer */}
       {mobileOpen && (
         <>
           <div className={`${styles.mobileOverlay} ${styles.open}`} onClick={() => setMobileOpen(false)} />
-          <nav className={styles.mobileNav} id="mobile-nav">
-            {NAV_LINKS.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={styles.mobileNavLink}
-                onClick={() => setMobileOpen(false)}
-              >
-                {link.label}
+          <aside className={styles.mobileNav} id="mobile-nav">
+            <div className={styles.mobileNavHeader}>
+              <Link href="/" className={styles.logo} onClick={() => setMobileOpen(false)}>
+                Nail<span className={styles.logoAccent}>express</span>
               </Link>
-            ))}
-            <Link
-              href="/wishlist"
-              className={styles.mobileNavLink}
-              onClick={() => setMobileOpen(false)}
-            >
-              Wishlist {wishlistCount > 0 && `(${wishlistCount})`}
-            </Link>
-          </nav>
+              <button
+                className={styles.mobileCloseBtn}
+                onClick={() => setMobileOpen(false)}
+                aria-label="Close menu"
+              >
+                <X size={22} strokeWidth={1.5} />
+              </button>
+            </div>
+
+            <div className={styles.mobileNavBody}>
+              {NAV_LINKS.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`${styles.mobileNavLink} ${pathname === link.href ? styles.active : ""}`}
+                  onClick={() => setMobileOpen(false)}
+                >
+                  {link.label}
+                </Link>
+              ))}
+              <Link
+                href="/wishlist"
+                className={`${styles.mobileNavLink} ${pathname === "/wishlist" ? styles.active : ""}`}
+                onClick={() => setMobileOpen(false)}
+                style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}
+              >
+                <span>Wishlist</span>
+                {wishlistCount > 0 && <span className={styles.badgeInline}>{wishlistCount}</span>}
+              </Link>
+
+              <button
+                className={styles.mobileSearchBtn}
+                onClick={() => {
+                  setMobileOpen(false);
+                  openSearch();
+                }}
+              >
+                <Search size={18} strokeWidth={1.5} />
+                <span>Search Products</span>
+              </button>
+            </div>
+          </aside>
         </>
       )}
 

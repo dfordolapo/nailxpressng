@@ -11,7 +11,7 @@ import btnStyles from "@/styles/components/buttons.module.css";
 import { products } from "@/data/products";
 
 export default function WishlistPage() {
-  const { items, removeItem, clearWishlist } = useWishlist();
+  const { items, removeItem, clearWishlist, toggleItem, isInWishlist } = useWishlist();
   const { addItem } = useCart();
 
   const handleMoveToCart = (item) => {
@@ -225,26 +225,67 @@ export default function WishlistPage() {
                   {products
                     .filter(p => p.category === item.category && p.id !== item.id)
                     .slice(0, 4)
-                    .map(suggested => (
-                      <Link key={suggested.id} href={`/product/${suggested.slug}`} style={{ flexShrink: 0, width: "100px" }}>
-                        <div style={{ 
-                          width: "100px", 
-                          height: "100px", 
-                          borderRadius: "var(--radius-sm)", 
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          overflow: "hidden", 
-                          background: "var(--color-bg-warm)", 
-                          marginBottom: "4px",
-                          fontSize: "1.5rem"
-                        }}>
-                          💅
-                        </div>
-                        <p style={{ fontSize: "0.75rem", fontWeight: 500, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{suggested.name}</p>
-                        <p style={{ fontSize: "0.75rem", color: "var(--color-text-tertiary)" }}>{formatPrice(suggested.price)}</p>
-                      </Link>
-                    ))}
+                    .map(suggested => {
+                      const isSuggestedWishlisted = isInWishlist(suggested.id);
+                      return (
+                        <Link 
+                          key={suggested.id} 
+                          href={`/product/${suggested.slug}`} 
+                          style={{ flexShrink: 0, width: "100px", textDecoration: "none", color: "inherit" }}
+                        >
+                          <div style={{ 
+                            width: "100px", 
+                            height: "100px", 
+                            borderRadius: "var(--radius-sm)", 
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            overflow: "hidden", 
+                            background: "var(--color-bg-warm)", 
+                            marginBottom: "4px",
+                            fontSize: "1.5rem",
+                            position: "relative"
+                          }}>
+                            💅
+                            <button
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                toggleItem(suggested);
+                              }}
+                              aria-label={isSuggestedWishlisted ? "Remove from wishlist" : "Add to wishlist"}
+                              style={{
+                                position: "absolute",
+                                top: "6px",
+                                right: "6px",
+                                width: "26px",
+                                height: "26px",
+                                borderRadius: "50%",
+                                background: "rgba(255, 255, 255, 0.9)",
+                                backdropFilter: "blur(4px)",
+                                border: "1px solid rgba(0, 0, 0, 0.05)",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                cursor: "pointer",
+                                boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
+                                color: isSuggestedWishlisted ? "var(--color-warning)" : "var(--color-text-tertiary)",
+                                zIndex: 2,
+                                transition: "all 0.2s ease"
+                              }}
+                            >
+                              <Heart
+                                size={14}
+                                fill={isSuggestedWishlisted ? "var(--color-warning)" : "none"}
+                                stroke={isSuggestedWishlisted ? "var(--color-warning)" : "currentColor"}
+                              />
+                            </button>
+                          </div>
+                          <p style={{ fontSize: "0.75rem", fontWeight: 500, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{suggested.name}</p>
+                          <p style={{ fontSize: "0.75rem", color: "var(--color-text-tertiary)" }}>{formatPrice(suggested.price)}</p>
+                        </Link>
+                      );
+                    })}
                 </div>
               </div>
             </div>
