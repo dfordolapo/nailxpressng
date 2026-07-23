@@ -10,15 +10,46 @@ export default function VideoSection({
 
   useEffect(() => {
     const video = videoRef.current;
-    if (video) {
-      video.muted = true;
-      const playPromise = video.play();
-      if (playPromise !== undefined) {
-        playPromise.catch((err) => {
-          console.log("Autoplay handled:", err);
-        });
+    if (!video) return;
+
+    video.muted = true;
+    video.defaultMuted = true;
+
+    const attemptPlay = () => {
+      if (video.paused) {
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+          playPromise.catch((err) => {
+            console.log("PWA autoplay fallback:", err);
+          });
+        }
       }
-    }
+    };
+
+    attemptPlay();
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        attemptPlay();
+      }
+    };
+
+    const handleTouch = () => {
+      attemptPlay();
+      window.removeEventListener("touchstart", handleTouch);
+    };
+
+    video.addEventListener("loadeddata", attemptPlay);
+    video.addEventListener("canplay", attemptPlay);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    window.addEventListener("touchstart", handleTouch, { passive: true });
+
+    return () => {
+      video.removeEventListener("loadeddata", attemptPlay);
+      video.removeEventListener("canplay", attemptPlay);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      window.removeEventListener("touchstart", handleTouch);
+    };
   }, []);
 
   return (
@@ -34,6 +65,8 @@ export default function VideoSection({
           loop
           muted
           playsInline
+          webkit-playsinline="true"
+          preload="auto"
           disablePictureInPicture
           disableRemotePlayback
           poster="/images/measure-guide.png"
