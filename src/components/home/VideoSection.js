@@ -24,7 +24,11 @@ export default function VideoSection({
   return (
     <section className={styles.section} id="video-section">
       <div className="container">
-        <div className={styles.videoContainer}>
+        <div className={styles.videoCard}>
+          {/* Organic gold stroke frame with SVG torn-paper filter */}
+          <div className={styles.strokeFrame} aria-hidden="true" />
+
+          {/* Clean video container (unaffected by filter) */}
           <div className={styles.videoInner}>
             <video
               ref={videoRef}
@@ -44,6 +48,14 @@ export default function VideoSection({
           </div>
         </div>
       </div>
+
+      {/* SVG Filter for organic torn paper edge effect matching CategoryShowcase */}
+      <svg width="0" height="0" style={{ position: 'absolute', pointerEvents: 'none' }}>
+        <filter id="torn-paper-video">
+          <feTurbulence type="fractalNoise" baseFrequency="0.075" numOctaves="2" result="noise" />
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+      </svg>
     </section>
   );
 }
