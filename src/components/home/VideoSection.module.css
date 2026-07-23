@@ -1,26 +1,31 @@
 .section {
-  padding: var(--space-8) 0;
+  padding: var(--space-6) 0;
   background: transparent;
 }
 
-.videoWrapper {
+.videoContainer {
+  position: relative;
+  width: fit-content;
+  max-width: 420px;
+  margin: 0 auto;
+  border: 4px solid #D4AF7A;
+  padding: 6px;
+  background-color: var(--color-bg-card);
+  filter: url(#torn-paper-video);
+  line-height: 0;
+}
+
+.videoInner {
   position: relative;
   width: 100%;
-  max-width: 650px;
-  margin: 0 auto;
-  background: #000;
-  border-radius: var(--radius-2xl);
+  height: 100%;
   overflow: hidden;
-  box-shadow: 0 12px 35px rgba(122, 64, 61, 0.15);
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .video {
   width: 100%;
   height: auto;
-  max-height: 80vh;
-  object-fit: contain;
+  max-height: 50vh;
   display: block;
+  object-fit: contain;
 }
