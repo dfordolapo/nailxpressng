@@ -213,28 +213,29 @@
 
 .mobileNav {
   position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: min(300px, 85vw);
+  top: 12px;
+  right: 12px;
+  bottom: 12px;
+  width: min(280px, calc(100vw - 24px));
+  max-height: calc(100dvh - 24px);
   background: var(--color-bg-card, #ffffff);
   z-index: calc(var(--z-overlay) + 1);
   padding: 0;
-  border-top-left-radius: 24px;
-  border-bottom-left-radius: 24px;
+  border-radius: 20px;
   animation: slideInRight var(--transition-base) ease-out;
   overflow-y: auto;
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
-  box-shadow: -8px 0 30px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+  border: none;
 }
 
 .mobileNavHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--space-4) var(--space-6);
+  padding: 10px 16px;
   background: rgba(122, 64, 61, 0.95);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -246,8 +247,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   border-radius: var(--radius-full);
   background: rgba(255, 255, 255, 0.15);
   color: var(--color-text-inverse);
@@ -261,10 +262,10 @@
 }
 
 .mobileNavBody {
-  padding: var(--space-4) var(--space-6);
+  padding: 12px 16px;
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: 2px;
   flex: 1;
 }
 
@@ -272,11 +273,11 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: var(--text-lg);
+  font-size: 0.95rem;
   font-family: var(--font-heading), serif !important;
   font-weight: var(--weight-medium);
   color: var(--color-text);
-  padding: var(--space-3) 0;
+  padding: 8px 0;
   border-bottom: 1px solid var(--color-border-light);
   transition: color var(--transition-fast);
   text-decoration: none;
@@ -299,15 +300,15 @@
 .mobileSearchBtn {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
+  gap: 10px;
   width: 100%;
-  padding: 12px 16px;
-  margin-top: var(--space-4);
+  padding: 8px 14px;
+  margin-top: 10px;
   border-radius: var(--radius-full);
   border: 1px solid rgba(0, 0, 0, 0.08);
   background: #f4f4f6;
   color: var(--color-text-secondary);
-  font-size: var(--text-sm);
+  font-size: 0.8125rem;
   font-weight: var(--weight-medium);
   cursor: pointer;
   transition: all var(--transition-fast);
