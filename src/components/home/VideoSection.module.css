@@ -38,3 +38,23 @@
   display: block;
   object-fit: contain;
 }
+
+/* Web / Desktop — Larger showcase size while mobile stays unchanged */
+@media (min-width: 768px) {
+  .section {
+    padding: var(--space-10) 0;
+  }
+
+  .videoCard {
+    max-width: 720px;
+    padding: 8px;
+  }
+
+  .strokeFrame {
+    border-width: 5px;
+  }
+
+  .video {
+    max-height: 70vh;
+  }
+}
