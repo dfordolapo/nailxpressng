@@ -36,8 +36,8 @@ export default function VideoSection({
             poster="/images/measure-guide.png"
           >
             <source src={videoSrc} type="video/mp4" />
-            <source src="/videos/salon-tutorial.mp4" type="video/mp4" />
             <source src="https://assets.mixkit.co/videos/preview/mixkit-woman-applying-nail-polish-40899-large.mp4" type="video/mp4" />
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-woman-painting-her-nails-40897-large.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         </div>
