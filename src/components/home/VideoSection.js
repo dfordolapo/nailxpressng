@@ -34,7 +34,8 @@ export default function VideoSection({
           loop
           muted
           playsInline
-          controls
+          disablePictureInPicture
+          disableRemotePlayback
           poster="/images/measure-guide.png"
         >
           <source src={videoSrc} type="video/mp4" />
