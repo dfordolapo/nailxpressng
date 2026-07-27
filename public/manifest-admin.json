@@ -2,7 +2,7 @@
   "name": "Nailexpress Admin",
   "short_name": "Nailexpress Admin",
   "description": "Seller administration panel for Nailexpress",
-  "start_url": "/admin",
+  "start_url": "/admin/login",
   "display": "standalone",
   "background_color": "#FAF8F5",
   "theme_color": "#FAF8F5",
