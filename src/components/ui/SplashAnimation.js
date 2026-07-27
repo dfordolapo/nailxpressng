@@ -2,23 +2,28 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
+import { usePathname } from "next/navigation";
+
 export default function SplashAnimation() {
   const [show, setShow] = useState(true);
   const [animateOut, setAnimateOut] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
-    // Only show once per session so it doesn't annoy users while navigating
-    const hasSeenSplash = sessionStorage.getItem("hasSeenSplash");
-    if (hasSeenSplash) {
-      setShow(false);
-      return;
+    const isStandalone = typeof window !== "undefined" && (window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone);
+    const isAdmin = pathname?.startsWith("/admin");
+
+    // Only skip repeat splash for normal browser storefront browsing
+    if (!isStandalone && !isAdmin) {
+      const hasSeenSplash = sessionStorage.getItem("hasSeenSplash");
+      if (hasSeenSplash) {
+        setShow(false);
+        return;
+      }
+      sessionStorage.setItem("hasSeenSplash", "true");
     }
 
-    sessionStorage.setItem("hasSeenSplash", "true");
-
-    // Check if running as an installed PWA (standalone) or in normal browser
-    const isStandalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone;
-    const holdTime = isStandalone ? 2800 : 4000;
+    const holdTime = isStandalone ? 2200 : (isAdmin ? 2400 : 3500);
 
     const timer1 = setTimeout(() => {
       setAnimateOut(true);
@@ -32,7 +37,7 @@ export default function SplashAnimation() {
       clearTimeout(timer1);
       clearTimeout(timer2);
     };
-  }, []);
+  }, [pathname]);
 
   if (!show) return null;
 
