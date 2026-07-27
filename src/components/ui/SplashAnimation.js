@@ -7,16 +7,31 @@ export default function SplashAnimation() {
   const [animateOut, setAnimateOut] = useState(false);
 
   useEffect(() => {
-    // Only run once per session on initial application/PWA mount
-    const hasSeenSplash = sessionStorage.getItem("hasSeenSplash");
-    if (hasSeenSplash) {
-      return;
+    try {
+      if (typeof window !== "undefined" && window.sessionStorage) {
+        const hasSeenSplash = sessionStorage.getItem("hasSeenSplash");
+        if (hasSeenSplash) {
+          return;
+        }
+        sessionStorage.setItem("hasSeenSplash", "true");
+      }
+    } catch (e) {
+      // Prevent Safari private browsing / storage restrictions from throwing runtime errors
     }
 
-    sessionStorage.setItem("hasSeenSplash", "true");
     setShow(true);
 
-    const isStandalone = typeof window !== "undefined" && (window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone);
+    let isStandalone = false;
+    try {
+      if (typeof window !== "undefined") {
+        isStandalone =
+          (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) ||
+          (window.navigator && Boolean(window.navigator.standalone));
+      }
+    } catch (e) {
+      // Ignore WebKit matchMedia errors
+    }
+
     const holdTime = isStandalone ? 1600 : 2000;
 
     const timer1 = setTimeout(() => {

@@ -144,9 +144,6 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" data-scroll-behavior="smooth">
-      <head>
-        <style dangerouslySetInnerHTML={{ __html: 'html,body{background-color:#FAF8F5;margin:0}' }} />
-      </head>
       <body>
         <CartProvider>
           <WishlistProvider>

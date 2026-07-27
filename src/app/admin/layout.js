@@ -8,5 +8,5 @@ export const metadata = {
 };
 
 export default function AdminRootLayout({ children }) {
-  return children;
+  return <>{children}</>;
 }
