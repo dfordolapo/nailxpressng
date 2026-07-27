@@ -2,7 +2,7 @@ import AdminSidebar from "@/components/admin/AdminSidebar";
 import styles from "@/styles/admin.module.css";
 
 export const metadata = {
-  title: "Admin Dashboard | Nail Express",
+  title: "Admin Dashboard | Nailexpress Admin",
   description: "Seller administration panel",
 };
 
