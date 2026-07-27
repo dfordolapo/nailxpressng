@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 
 export default function SplashAnimation() {
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(true);
   const [animateOut, setAnimateOut] = useState(false);
 
   useEffect(() => {
@@ -11,15 +11,14 @@ export default function SplashAnimation() {
       if (typeof window !== "undefined" && window.sessionStorage) {
         const hasSeenSplash = sessionStorage.getItem("hasSeenSplash");
         if (hasSeenSplash) {
+          setShow(false);
           return;
         }
         sessionStorage.setItem("hasSeenSplash", "true");
       }
     } catch (e) {
-      // Prevent Safari private browsing / storage restrictions from throwing runtime errors
+      // Prevent Safari private browsing / storage restrictions from throwing errors
     }
-
-    setShow(true);
 
     let isStandalone = false;
     try {
@@ -32,7 +31,7 @@ export default function SplashAnimation() {
       // Ignore WebKit matchMedia errors
     }
 
-    const holdTime = isStandalone ? 1600 : 2000;
+    const holdTime = isStandalone ? 400 : 1200; // Fast 400ms handoff for PWA, 1.2s for browser
 
     const timer1 = setTimeout(() => {
       setAnimateOut(true);
