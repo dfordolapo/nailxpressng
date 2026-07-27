@@ -25,7 +25,12 @@ export const metadata = {
   keywords: "press-on nails, handmade nails, factory nails, nail art, Nigeria, custom nails",
   manifest: "/manifest.json",
   icons: {
-    apple: "/icons/icon-192x192.png",
+    icon: [
+      { url: "/icons/icon-192x192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/icon-512x512.png", sizes: "512x512", type: "image/png" },
+    ],
+    shortcut: "/icons/icon-192x192.png",
+    apple: "/splash/apple-icon-180.png",
   },
   appleWebApp: {
     capable: true,
