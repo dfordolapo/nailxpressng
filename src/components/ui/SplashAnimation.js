@@ -2,28 +2,22 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
-import { usePathname } from "next/navigation";
-
 export default function SplashAnimation() {
-  const [show, setShow] = useState(true);
+  const [show, setShow] = useState(false);
   const [animateOut, setAnimateOut] = useState(false);
-  const pathname = usePathname();
 
   useEffect(() => {
-    const isStandalone = typeof window !== "undefined" && (window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone);
-    const isAdmin = pathname?.startsWith("/admin");
-
-    // Only skip repeat splash for normal browser storefront browsing
-    if (!isStandalone && !isAdmin) {
-      const hasSeenSplash = sessionStorage.getItem("hasSeenSplash");
-      if (hasSeenSplash) {
-        setShow(false);
-        return;
-      }
-      sessionStorage.setItem("hasSeenSplash", "true");
+    // Only run once per session on initial application/PWA mount
+    const hasSeenSplash = sessionStorage.getItem("hasSeenSplash");
+    if (hasSeenSplash) {
+      return;
     }
 
-    const holdTime = isStandalone ? 2200 : (isAdmin ? 2400 : 3500);
+    sessionStorage.setItem("hasSeenSplash", "true");
+    setShow(true);
+
+    const isStandalone = typeof window !== "undefined" && (window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone);
+    const holdTime = isStandalone ? 1600 : 2000;
 
     const timer1 = setTimeout(() => {
       setAnimateOut(true);
@@ -31,13 +25,13 @@ export default function SplashAnimation() {
 
     const timer2 = setTimeout(() => {
       setShow(false);
-    }, holdTime + 1200);
+    }, holdTime + 800);
 
     return () => {
       clearTimeout(timer1);
       clearTimeout(timer2);
     };
-  }, [pathname]);
+  }, []);
 
   if (!show) return null;
 
@@ -57,7 +51,7 @@ export default function SplashAnimation() {
         overflow: "hidden",
         opacity: animateOut ? 0 : 1,
         pointerEvents: animateOut ? "none" : "all",
-        transition: "opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), transform 1.2s cubic-bezier(0.4, 0, 0.2, 1)",
+        transition: "opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)",
         transform: animateOut ? "scale(1.08)" : "scale(1)",
       }}
     >
