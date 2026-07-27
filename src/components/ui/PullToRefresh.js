@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { useRouter } from 'next/navigation';
 import { RefreshCw } from 'lucide-react';
 
 export default function PullToRefresh({ children }) {
@@ -10,50 +9,58 @@ export default function PullToRefresh({ children }) {
   const startY = useRef(0);
   const currentY = useRef(0);
   const isPulling = useRef(false);
-  
-  const MAX_PULL = 120;
-  const THRESHOLD = 80;
 
-  const router = useRouter();
+  const MAX_PULL = 110;
+  const THRESHOLD = 75;
 
   useEffect(() => {
-    // Add touch event listeners manually so we can make them non-passive if needed
-    // However, for this simple implementation, passive is fine. 
-    // We rely on CSS overscroll-behavior-y: none on body to prevent native refresh.
-    
     const handleTouchStart = (e) => {
-      if (window.scrollY === 0 && !isRefreshing) {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop || 0;
+      // ONLY start pull if user is at the absolute top of the page
+      if (scrollTop <= 2 && !isRefreshing) {
         startY.current = e.touches[0].clientY;
         isPulling.current = true;
+      } else {
+        isPulling.current = false;
       }
     };
 
     const handleTouchMove = (e) => {
-      if (!isPulling.current || isRefreshing) return;
-      
+      const scrollTop = window.scrollY || document.documentElement.scrollTop || 0;
+
+      // If user scrolled down or was not pulling from top, ignore
+      if (!isPulling.current || isRefreshing || scrollTop > 5) {
+        if (pullDistance > 0) setPullDistance(0);
+        isPulling.current = false;
+        return;
+      }
+
       currentY.current = e.touches[0].clientY;
       const distance = currentY.current - startY.current;
-      
-      // Only trigger if pulling down
+
+      // Only pull down when distance > 0 from top of page
       if (distance > 0) {
-        // Add resistance factor
-        const resistedDistance = distance * 0.5; 
+        if (e.cancelable) {
+          e.preventDefault(); // Prevent native rubberband scroll conflict
+        }
+        const resistedDistance = distance * 0.45;
         setPullDistance(Math.min(resistedDistance, MAX_PULL));
+      } else {
+        isPulling.current = false;
+        setPullDistance(0);
       }
     };
 
     const handleTouchEnd = () => {
-      if (!isPulling.current || isRefreshing) return;
+      if (!isPulling.current && pullDistance === 0) return;
       isPulling.current = false;
-      
-      if (pullDistance >= THRESHOLD) {
+
+      if (pullDistance >= THRESHOLD && !isRefreshing) {
         setIsRefreshing(true);
-        // Provide a small delay so the animation can play out
         setTimeout(() => {
           window.location.reload();
-        }, 500);
+        }, 400);
       } else {
-        // Snap back
         setPullDistance(0);
       }
     };
@@ -69,15 +76,13 @@ export default function PullToRefresh({ children }) {
     };
   }, [pullDistance, isRefreshing]);
 
-  // Calculate dynamic properties based on pull distance
   const progress = Math.min(pullDistance / THRESHOLD, 1);
-  const rotation = progress * 360; // Spin up to 360 degrees
-  const scale = 0.5 + (progress * 0.5); // Scale from 0.5 to 1.0
+  const scale = 0.6 + progress * 0.4;
 
   return (
     <div style={{ position: 'relative', width: '100%' }}>
-      {/* The Visual Indicator Layer */}
-      <div 
+      {/* Pull Indicator Layer */}
+      <div
         style={{
           position: 'fixed',
           top: 0,
@@ -88,60 +93,61 @@ export default function PullToRefresh({ children }) {
           justifyContent: 'center',
           alignItems: 'center',
           pointerEvents: 'none',
-          zIndex: 1000,
+          zIndex: 9999,
           opacity: pullDistance > 0 ? 1 : 0,
-          transition: isPulling.current ? 'none' : 'all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)'
+          transition: isPulling.current ? 'none' : 'all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)',
         }}
       >
-        <div 
+        <div
           style={{
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            transform: `translateY(${pullDistance - 60}px)`,
+            transform: `translateY(${pullDistance - 55}px)`,
             transition: isPulling.current ? 'none' : 'transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)',
           }}
         >
-          <div 
+          <div
             style={{
-              width: '40px',
-              height: '40px',
-              backgroundColor: 'white',
+              width: '42px',
+              height: '42px',
+              backgroundColor: '#ffffff',
               borderRadius: '50%',
-              boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
+              boxShadow: '0 4px 16px rgba(122, 64, 61, 0.2)',
               transform: `scale(${scale}) rotate(${isRefreshing ? 720 : progress * 180}deg)`,
               transition: isRefreshing ? 'all 1s ease-in-out' : 'none',
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              color: 'var(--color-primary)'
+              color: 'var(--color-primary, #7a403d)',
             }}
           >
-            <RefreshCw size={20} strokeWidth={2} />
+            <RefreshCw size={22} strokeWidth={2.2} />
           </div>
-          <div style={{
-            fontSize: '0.75rem',
-            fontWeight: 600,
-            marginTop: '8px',
-            color: 'var(--color-primary)',
-            opacity: progress,
-            transition: 'opacity 0.2s',
-            textTransform: 'uppercase',
-            letterSpacing: '1px'
-          }}>
+          <div
+            style={{
+              fontSize: '0.72rem',
+              fontWeight: 700,
+              marginTop: '6px',
+              color: 'var(--color-primary, #7a403d)',
+              opacity: progress,
+              transition: 'opacity 0.2s',
+              textTransform: 'uppercase',
+              letterSpacing: '1px',
+            }}
+          >
             {isRefreshing ? 'Refreshing...' : pullDistance >= THRESHOLD ? 'Release to Refresh' : 'Pull to Refresh'}
           </div>
         </div>
       </div>
 
-      {/* The Main Content Layer */}
-      <div 
+      {/* Main Content Container Layer */}
+      <div
         style={{
-          transform: `translateY(${pullDistance}px)`,
+          transform: pullDistance > 0 ? `translateY(${pullDistance}px)` : 'none',
           transition: isPulling.current ? 'none' : 'transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)',
           width: '100%',
           minHeight: '100vh',
-          backgroundColor: 'var(--color-background)'
         }}
       >
         {children}
