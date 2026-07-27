@@ -46,7 +46,7 @@ export default function SplashAnimation() {
         left: 0,
         width: "100%",
         height: "100vh",
-        backgroundColor: "#FAF8F5",
+        background: "radial-gradient(circle at 50% 45%, #FEF3F4 0%, #FADCDD 55%, #F4C4C7 85%, #EAAFB3 100%)",
         zIndex: 99999,
         display: "flex",
         alignItems: "center",
@@ -58,18 +58,22 @@ export default function SplashAnimation() {
     >
       <div
         style={{
-          transform: animate ? "scale(1.3)" : "scale(1)",
+          transform: animate ? "scale(1.15)" : "scale(1)",
           opacity: animate ? 0 : 1,
           transition: "transform 1s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease-in-out",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          padding: "0 24px",
         }}
       >
         <Image
-          src="/icons/icon-512x512.png"
+          src="/images/splash-logo.png"
           alt="Nailexpress Logo"
-          width={180}
-          height={180}
+          width={300}
+          height={192}
           priority
-          style={{ objectFit: "contain" }}
+          style={{ objectFit: "contain", maxWidth: "85vw", height: "auto", filter: "drop-shadow(0 12px 28px rgba(212, 136, 142, 0.35))" }}
         />
       </div>
     </div>

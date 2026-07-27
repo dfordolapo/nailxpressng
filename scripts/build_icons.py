@@ -1,0 +1,36 @@
+from PIL import Image
+
+logo = Image.open("public/images/splash-logo.png")
+
+def make_icon(sz):
+    canvas = Image.new("RGBA", (sz, sz), (0, 0, 0, 0))
+    for y in range(sz):
+        for x in range(sz):
+            ratio = (x + y) / (2.0 * sz)
+            r = int(254 - ratio * 16)
+            g = int(235 - ratio * 32)
+            b = int(237 - ratio * 30)
+            canvas.putpixel((x, y), (r, g, b, 255))
+            
+    lw = int(sz * 0.82)
+    lh = int(lw * logo.height / logo.width)
+    if lh > sz * 0.82:
+        lh = int(sz * 0.82)
+        lw = int(lh * logo.width / logo.height)
+        
+    resized = logo.resize((lw, lh), Image.Resampling.LANCZOS)
+    pos_x = (sz - lw) // 2
+    pos_y = (sz - lh) // 2
+    canvas.paste(resized, (pos_x, pos_y), resized)
+    return canvas
+
+icon512 = make_icon(512)
+icon512.save("public/icons/icon-512x512.png", "PNG")
+
+icon192 = make_icon(192)
+icon192.save("public/icons/icon-192x192.png", "PNG")
+
+icon180 = make_icon(180)
+icon180.save("public/splash/apple-icon-180.png", "PNG")
+
+print("Successfully generated icon-512x512.png, icon-192x192.png, and apple-icon-180.png!")
