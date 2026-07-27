@@ -3,15 +3,9 @@ from PIL import Image
 logo = Image.open("public/images/splash-logo.png")
 
 def make_icon(sz):
-    canvas = Image.new("RGBA", (sz, sz), (0, 0, 0, 0))
-    for y in range(sz):
-        for x in range(sz):
-            ratio = (x + y) / (2.0 * sz)
-            r = int(254 - ratio * 16)
-            g = int(235 - ratio * 32)
-            b = int(237 - ratio * 30)
-            canvas.putpixel((x, y), (r, g, b, 255))
-            
+    # Base blush pink from landing page hero: #F5E3E5 (245, 227, 229)
+    canvas = Image.new("RGBA", (sz, sz), (245, 227, 229, 255))
+    
     lw = int(sz * 0.82)
     lh = int(lw * logo.height / logo.width)
     if lh > sz * 0.82:
@@ -33,4 +27,4 @@ icon192.save("public/icons/icon-192x192.png", "PNG")
 icon180 = make_icon(180)
 icon180.save("public/splash/apple-icon-180.png", "PNG")
 
-print("Successfully generated icon-512x512.png, icon-192x192.png, and apple-icon-180.png!")
+print("Generated PWA icons with exact landing page hero blush pink (#F5E3E5)!")
