@@ -48,7 +48,7 @@ export default function Header() {
   return (
     <>
       {!isHome && <div className={styles.headerSpacer} aria-hidden="true" />}
-      <header className={`${styles.header} ${scrolled ? styles.scrolled : ""}`} id="site-header">
+      <header className={`${styles.header} ${scrolled ? styles.scrolled : ""} ${mobileOpen ? styles.headerHidden : ""}`} id="site-header">
         <div className={styles.headerInner}>
           {/* Logo */}
           <Link href="/" className={styles.logo} id="site-logo">
@@ -150,9 +150,36 @@ export default function Header() {
                 onClick={() => setMobileOpen(false)}
                 style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}
               >
-                <span>Wishlist</span>
+                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                  <Heart size={18} strokeWidth={1.5} />
+                  <span>Wishlist</span>
+                </div>
                 {wishlistCount > 0 && <span className={styles.badgeInline}>{wishlistCount}</span>}
               </Link>
+
+              <button
+                className={styles.mobileNavLink}
+                onClick={() => {
+                  setMobileOpen(false);
+                  setCartOpen(true);
+                }}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  width: "100%",
+                  background: "none",
+                  border: "none",
+                  borderBottom: "1px solid var(--color-border-light)",
+                  cursor: "pointer"
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                  <ShoppingBag size={18} strokeWidth={1.5} />
+                  <span>Cart</span>
+                </div>
+                {itemCount > 0 && <span className={styles.badgeInline}>{itemCount}</span>}
+              </button>
 
               <button
                 className={styles.mobileSearchBtn}
