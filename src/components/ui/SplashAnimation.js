@@ -31,7 +31,7 @@ export default function SplashAnimation() {
       // Ignore WebKit matchMedia errors
     }
 
-    const holdTime = isStandalone ? 400 : 1200; // Fast 400ms handoff for PWA, 1.2s for browser
+    const holdTime = isStandalone ? 2400 : 3200; // Hold long enough to showcase full 3D metallic logo effect
 
     const timer1 = setTimeout(() => {
       setAnimateOut(true);
@@ -39,7 +39,7 @@ export default function SplashAnimation() {
 
     const timer2 = setTimeout(() => {
       setShow(false);
-    }, holdTime + 800);
+    }, holdTime + 1000);
 
     return () => {
       clearTimeout(timer1);
