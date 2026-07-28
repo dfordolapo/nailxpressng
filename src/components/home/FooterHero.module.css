@@ -99,13 +99,18 @@
   border-radius: 50% 50% 45% 55% / 40px 40px 40px 40px;
 }
 
-.footerLogo {
-  font-family: var(--font-heading);
-  font-size: var(--text-2xl);
-  font-weight: var(--weight-medium);
-  font-style: italic;
-  letter-spacing: 0.05em;
-  color: var(--color-bg-warm);
+.footerLogoLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.footerLogoImg {
+  height: 38px;
+  width: auto;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
 }
 
 .footerLinks {

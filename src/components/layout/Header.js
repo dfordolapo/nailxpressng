@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Search, Heart, ShoppingBag, Menu, X } from "lucide-react";
+import Image from "next/image";
 import { NAV_LINKS } from "@/lib/constants";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
@@ -52,7 +53,14 @@ export default function Header() {
         <div className={styles.headerInner}>
           {/* Logo */}
           <Link href="/" className={styles.logo} id="site-logo">
-            Nail<span className={styles.logoAccent}>express</span>
+            <Image
+              src="/images/splash-logo.png"
+              alt="Nailexpress Logo"
+              width={150}
+              height={45}
+              className={styles.logoImg}
+              priority
+            />
           </Link>
 
           {/* Desktop Navigation */}
@@ -122,7 +130,14 @@ export default function Header() {
           <aside className={styles.mobileNav} id="mobile-nav">
             <div className={styles.mobileNavHeader}>
               <Link href="/" className={styles.logo} onClick={() => setMobileOpen(false)}>
-                Nail<span className={styles.logoAccent}>express</span>
+                <Image
+                  src="/images/splash-logo.png"
+                  alt="Nailexpress Logo"
+                  width={140}
+                  height={40}
+                  className={styles.logoImg}
+                  priority
+                />
               </Link>
               <button
                 className={styles.mobileCloseBtn}

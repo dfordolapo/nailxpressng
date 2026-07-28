@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import styles from "@/styles/components/footer.module.css";
 import { SOCIAL_LINKS } from "@/lib/constants";
@@ -39,9 +40,15 @@ export default function Footer() {
     <footer className={styles.footer} id="site-footer">
       <div className={styles.container}>
         <div className={styles.topRow}>
-          <div className={styles.logo}>
-            nailexpress
-          </div>
+          <Link href="/" className={styles.logoLink}>
+            <Image
+              src="/images/splash-logo.png"
+              alt="Nailexpress Logo"
+              width={140}
+              height={42}
+              className={styles.footerLogoImg}
+            />
+          </Link>
           
           <div className={styles.links}>
             <Link href="/terms" className={styles.link}>terms & conditions</Link>

@@ -26,7 +26,15 @@ export default function FooterHero() {
       />
 
       <div className={styles.footerBar}>
-        <div className={styles.footerLogo}>nailexpress</div>
+        <Link href="/" className={styles.footerLogoLink}>
+          <Image
+            src="/images/splash-logo.png"
+            alt="Nailexpress Logo"
+            width={140}
+            height={42}
+            className={styles.footerLogoImg}
+          />
+        </Link>
         <div className={styles.footerLinks}>
           <Link href="/terms" className={styles.footerLink}>terms & conditions</Link>
         </div>
