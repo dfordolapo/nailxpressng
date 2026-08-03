@@ -120,8 +120,16 @@ export default function CheckoutPage() {
   };
 
   const handleSelectPreset = (preset) => {
+    if (selectedPresetId === preset.id) {
+      // Toggle if clicking the currently active preset
+      setIsAddressFormOpen(!isAddressFormOpen);
+      return;
+    }
+
+    setSelectedPresetId(preset.id);
+    setIsAddressFormOpen(true);
+
     if (preset.id === "new") {
-      setSelectedPresetId("new");
       setFormData({
         presetLabel: "My Custom Address",
         fullName: "",
@@ -134,15 +142,9 @@ export default function CheckoutPage() {
       setSavePresetTag("custom");
       setShowCustomInput(true);
       setCustomTagInput("My Custom Address");
-      setIsAddressFormOpen(true);
     } else {
-      if (selectedPresetId === preset.id) {
-        // Toggle if clicking the currently active preset
-        setIsAddressFormOpen(!isAddressFormOpen);
-      } else {
-        selectAddress(preset.id);
-        setIsAddressFormOpen(true);
-      }
+      selectAddress(preset.id);
+      setShowCustomInput(false);
     }
   };
 
