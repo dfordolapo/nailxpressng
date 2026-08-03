@@ -44,15 +44,16 @@ export default function CheckoutPage() {
     deleteAddress,
   } = useSavedAddresses();
 
-  const [selectedPresetId, setSelectedPresetId] = useState("home");
+  const [selectedPresetId, setSelectedPresetId] = useState(null);
+  const [isAddressFormOpen, setIsAddressFormOpen] = useState(false);
   const [savePresetTag, setSavePresetTag] = useState("home");
   const [customTagInput, setCustomTagInput] = useState("");
   const [showCustomInput, setShowCustomInput] = useState(false);
   const [saveSuccessMsg, setSaveSuccessMsg] = useState("");
 
-  // Sync saved address details into formData when active address changes or on initial load
+  // Sync saved address details into formData when active address changes
   useEffect(() => {
-    if (isLoaded && activeAddress) {
+    if (isLoaded && activeAddress && selectedPresetId) {
       setFormData({
         presetLabel: activeAddress.label || activeAddress.presetLabel || "Home",
         fullName: activeAddress.fullName || "",
@@ -62,10 +63,9 @@ export default function CheckoutPage() {
         state: activeAddress.state || "",
         city: activeAddress.city || "",
       });
-      setSelectedPresetId(activeAddress.id);
       setSavePresetTag(activeAddress.tag || activeAddress.id);
     }
-  }, [isLoaded, activeAddressId]);
+  }, [isLoaded, activeAddressId, selectedPresetId]);
 
   useEffect(() => {
     async function fetchRates() {
@@ -134,8 +134,15 @@ export default function CheckoutPage() {
       setSavePresetTag("custom");
       setShowCustomInput(true);
       setCustomTagInput("My Custom Address");
+      setIsAddressFormOpen(true);
     } else {
-      selectAddress(preset.id);
+      if (selectedPresetId === preset.id) {
+        // Toggle if clicking the currently active preset
+        setIsAddressFormOpen(!isAddressFormOpen);
+      } else {
+        selectAddress(preset.id);
+        setIsAddressFormOpen(true);
+      }
     }
   };
 
@@ -143,7 +150,7 @@ export default function CheckoutPage() {
     const customLabel = formData.presetLabel.trim() || customTagInput.trim() || "Saved Address";
     const targetTag = selectedPresetId === "new"
       ? `custom_${Date.now()}`
-      : selectedPresetId;
+      : (selectedPresetId || "home");
 
     saveAddress(formData, targetTag, customLabel);
     setSaveSuccessMsg(`Saved as "${customLabel}"!`);
@@ -388,158 +395,199 @@ export default function CheckoutPage() {
               </div>
             </div>
 
-            <div style={{ background: "white", border: "1px solid var(--color-border-light)", borderRadius: "var(--radius-lg)", padding: "var(--space-4)" }}>
-              {/* Name-able Preset Label */}
-              <div style={{ marginBottom: "var(--space-4)" }}>
-                <label htmlFor="presetLabel" style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.8125rem", marginBottom: "4px", color: "var(--color-primary-800)", fontWeight: 600 }}>
-                  <Bookmark size={13} strokeWidth={1.5} /> Address Name / Label
-                </label>
-                <input
-                  type="text"
-                  id="presetLabel"
-                  name="presetLabel"
-                  value={formData.presetLabel || ""}
-                  onChange={(e) => {
-                    handleChange(e);
-                    if (showCustomInput) setCustomTagInput(e.target.value);
-                  }}
-                  placeholder="e.g. Home, Mum's Place, Lekki Studio, Office"
-                  style={{
-                    width: "100%",
-                    padding: "9px 12px",
-                    borderRadius: "8px",
-                    border: "1px solid var(--color-primary-200)",
-                    background: "var(--color-primary-50)",
-                    outline: "none",
-                    fontSize: "0.875rem",
-                    fontWeight: 500,
-                    color: "var(--color-text)"
-                  }}
-                />
-              </div>
-
-              <div style={{ marginBottom: "var(--space-4)" }}>
-                <label htmlFor="fullName" style={{ display: "block", fontSize: "0.875rem", marginBottom: "4px", color: "var(--color-text-secondary)" }}>Full Name</label>
-                <input required type="text" id="fullName" name="fullName" value={formData.fullName} onChange={handleChange} placeholder="e.g. Jane Doe" style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "1px solid var(--color-border)", outline: "none" }} />
-              </div>
-              
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-4)", marginBottom: "var(--space-4)" }}>
-                <div>
-                  <label htmlFor="email" style={{ display: "block", fontSize: "0.875rem", marginBottom: "4px", color: "var(--color-text-secondary)" }}>Email Address</label>
-                  <input required type="email" id="email" name="email" value={formData.email} onChange={handleChange} placeholder="jane@example.com" style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "1px solid var(--color-border)", outline: "none" }} />
+            {!isAddressFormOpen ? (
+              <div 
+                onClick={() => {
+                  const active = addresses.find(a => a.id === (selectedPresetId || "home")) || addresses[0] || { id: "new" };
+                  handleSelectPreset(active);
+                }}
+                style={{
+                  background: "white",
+                  border: "1.5px dashed var(--color-primary-200)",
+                  borderRadius: "var(--radius-lg)",
+                  padding: "var(--space-5) var(--space-4)",
+                  textAlign: "center",
+                  cursor: "pointer",
+                  transition: "all 0.2s ease"
+                }}
+              >
+                <div style={{ display: "flex", justifyContent: "center", marginBottom: "var(--space-2)", color: "var(--color-primary)" }}>
+                  <Bookmark size={22} strokeWidth={1.5} />
                 </div>
-                <div>
-                  <label htmlFor="phone" style={{ display: "block", fontSize: "0.875rem", marginBottom: "4px", color: "var(--color-text-secondary)" }}>Phone Number</label>
-                  <input required type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange} placeholder="08012345678" style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "1px solid var(--color-border)", outline: "none" }} />
-                </div>
+                <h4 style={{ fontSize: "0.875rem", fontWeight: 600, color: "var(--color-text)", marginBottom: "4px" }}>
+                  Click any address card above to enter or edit delivery details
+                </h4>
+                <p style={{ fontSize: "0.75rem", color: "var(--color-text-tertiary)" }}>
+                  Select Home, Office, Gift, or New to reveal address input fields.
+                </p>
               </div>
-
-              <div style={{ marginBottom: "var(--space-4)" }}>
-                <label htmlFor="address" style={{ display: "block", fontSize: "0.875rem", marginBottom: "4px", color: "var(--color-text-secondary)" }}>Street Address</label>
-                <input required type="text" id="address" name="address" value={formData.address} onChange={handleChange} placeholder="123 Fashion Street, Apt 4B" style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "1px solid var(--color-border)", outline: "none" }} />
-              </div>
-
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-4)" }}>
-                <div>
-                  <label htmlFor="state" style={{ display: "block", fontSize: "0.875rem", marginBottom: "4px", color: "var(--color-text-secondary)" }}>State</label>
-                  <select required id="state" name="state" value={formData.state} onChange={handleChange} style={{ width: "100%", padding: "10px 32px 10px 10px", borderRadius: "8px", border: "1px solid var(--color-border)", outline: "none", fontSize: "0.875rem", appearance: "none", background: "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"%23666\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"6 9 12 15 18 9\"></polyline></svg>') no-repeat right 12px center / 16px 16px white" }}>
-                    <option value="">Select State</option>
-                    {nigeriaData.map(s => (
-                      <option key={s.state} value={s.state}>{s.state}</option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label htmlFor="city" style={{ display: "block", fontSize: "0.875rem", marginBottom: "4px", color: "var(--color-text-secondary)" }}>City / LGA</label>
-                  <select required id="city" name="city" value={formData.city} onChange={handleChange} disabled={!formData.state} style={{ width: "100%", padding: "10px 32px 10px 10px", borderRadius: "8px", border: "1px solid var(--color-border)", outline: "none", fontSize: "0.875rem", appearance: "none", background: `url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"%23666\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"6 9 12 15 18 9\"></polyline></svg>') no-repeat right 12px center / 16px 16px ${formData.state ? "white" : "var(--color-background-alt)"}` }}>
-                    <option value="">Select City / LGA</option>
-                    {availableLgas.map(lga => (
-                      <option key={lga} value={lga}>{lga}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              {/* Quick Save / Update Action Bar */}
-              <div className={addrStyles.saveActionBar}>
-                <div className={addrStyles.saveTagSelector}>
-                  <span className={addrStyles.tagLabel}>Save as preset:</span>
-                  <button
-                    type="button"
-                    className={`${addrStyles.tagBtn} ${savePresetTag === "home" && !showCustomInput ? addrStyles.selected : ""}`}
-                    onClick={() => { setSavePresetTag("home"); setShowCustomInput(false); }}
+            ) : (
+              <div style={{ background: "white", border: "1px solid var(--color-border-light)", borderRadius: "var(--radius-lg)", padding: "var(--space-4)" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "var(--space-4)", paddingBottom: "var(--space-2)", borderBottom: "1px solid var(--color-border-light)" }}>
+                  <span style={{ fontSize: "0.8125rem", fontWeight: 600, color: "var(--color-primary-800)" }}>
+                    Editing: <span style={{ color: "var(--color-primary)" }}>{formData.presetLabel || "Address Details"}</span>
+                  </span>
+                  <button 
+                    type="button" 
+                    onClick={() => setIsAddressFormOpen(false)}
+                    style={{ background: "none", border: "none", color: "var(--color-text-tertiary)", fontSize: "0.75rem", cursor: "pointer", fontWeight: 500 }}
                   >
-                    <Home size={12} strokeWidth={1.25} /> Home
+                    Collapse inputs ▲
                   </button>
-                  <button
-                    type="button"
-                    className={`${addrStyles.tagBtn} ${savePresetTag === "office" && !showCustomInput ? addrStyles.selected : ""}`}
-                    onClick={() => { setSavePresetTag("office"); setShowCustomInput(false); }}
-                  >
-                    <Building2 size={12} strokeWidth={1.25} /> Office
-                  </button>
-                  <button
-                    type="button"
-                    className={`${addrStyles.tagBtn} ${savePresetTag === "gift" && !showCustomInput ? addrStyles.selected : ""}`}
-                    onClick={() => { setSavePresetTag("gift"); setShowCustomInput(false); }}
-                  >
-                    <Gift size={12} strokeWidth={1.25} /> Gift
-                  </button>
-                  <button
-                    type="button"
-                    className={`${addrStyles.tagBtn} ${showCustomInput ? addrStyles.selected : ""}`}
-                    onClick={() => setShowCustomInput(!showCustomInput)}
-                  >
-                    <Plus size={12} strokeWidth={1.25} /> Custom Tag
-                  </button>
-
-                  {showCustomInput && (
-                    <input
-                      type="text"
-                      placeholder="e.g. Mom's House"
-                      value={customTagInput}
-                      onChange={(e) => setCustomTagInput(e.target.value)}
-                      style={{
-                        padding: "4px 8px",
-                        borderRadius: "6px",
-                        border: "1px solid var(--color-primary)",
-                        fontSize: "0.75rem",
-                        outline: "none",
-                        width: "120px"
-                      }}
-                    />
-                  )}
                 </div>
 
-                <div style={{ display: "flex", alignItems: "center", gap: "var(--space-2)" }}>
-                  {saveSuccessMsg ? (
-                    <span className={addrStyles.savedFeedback}>
-                      <Check size={14} strokeWidth={1.5} /> {saveSuccessMsg}
-                    </span>
-                  ) : (
-                    <button type="button" onClick={handleManualSavePreset} className={addrStyles.saveBtn}>
-                      <Sparkles size={14} strokeWidth={1.25} /> Save Details
-                    </button>
-                  )}
+                {/* Name-able Preset Label */}
+                <div style={{ marginBottom: "var(--space-4)" }}>
+                  <label htmlFor="presetLabel" style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.8125rem", marginBottom: "4px", color: "var(--color-primary-800)", fontWeight: 600 }}>
+                    <Bookmark size={13} strokeWidth={1.5} /> Address Name / Label
+                  </label>
+                  <input
+                    type="text"
+                    id="presetLabel"
+                    name="presetLabel"
+                    value={formData.presetLabel || ""}
+                    onChange={(e) => {
+                      handleChange(e);
+                      if (showCustomInput) setCustomTagInput(e.target.value);
+                    }}
+                    placeholder="e.g. Home, Mum's Place, Lekki Studio, Office"
+                    style={{
+                      width: "100%",
+                      padding: "9px 12px",
+                      borderRadius: "8px",
+                      border: "1px solid var(--color-primary-200)",
+                      background: "var(--color-primary-50)",
+                      outline: "none",
+                      fontSize: "0.875rem",
+                      fontWeight: 500,
+                      color: "var(--color-text)"
+                    }}
+                  />
+                </div>
 
-                  {selectedPresetId && selectedPresetId !== "new" && (
+                <div style={{ marginBottom: "var(--space-4)" }}>
+                  <label htmlFor="fullName" style={{ display: "block", fontSize: "0.875rem", marginBottom: "4px", color: "var(--color-text-secondary)" }}>Full Name</label>
+                  <input required type="text" id="fullName" name="fullName" value={formData.fullName} onChange={handleChange} placeholder="e.g. Jane Doe" style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "1px solid var(--color-border)", outline: "none" }} />
+                </div>
+                
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-4)", marginBottom: "var(--space-4)" }}>
+                  <div>
+                    <label htmlFor="email" style={{ display: "block", fontSize: "0.875rem", marginBottom: "4px", color: "var(--color-text-secondary)" }}>Email Address</label>
+                    <input required type="email" id="email" name="email" value={formData.email} onChange={handleChange} placeholder="jane@example.com" style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "1px solid var(--color-border)", outline: "none" }} />
+                  </div>
+                  <div>
+                    <label htmlFor="phone" style={{ display: "block", fontSize: "0.875rem", marginBottom: "4px", color: "var(--color-text-secondary)" }}>Phone Number</label>
+                    <input required type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange} placeholder="08012345678" style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "1px solid var(--color-border)", outline: "none" }} />
+                  </div>
+                </div>
+
+                <div style={{ marginBottom: "var(--space-4)" }}>
+                  <label htmlFor="address" style={{ display: "block", fontSize: "0.875rem", marginBottom: "4px", color: "var(--color-text-secondary)" }}>Street Address</label>
+                  <input required type="text" id="address" name="address" value={formData.address} onChange={handleChange} placeholder="123 Fashion Street, Apt 4B" style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "1px solid var(--color-border)", outline: "none" }} />
+                </div>
+
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-4)" }}>
+                  <div>
+                    <label htmlFor="state" style={{ display: "block", fontSize: "0.875rem", marginBottom: "4px", color: "var(--color-text-secondary)" }}>State</label>
+                    <select required id="state" name="state" value={formData.state} onChange={handleChange} style={{ width: "100%", padding: "10px 32px 10px 10px", borderRadius: "8px", border: "1px solid var(--color-border)", outline: "none", fontSize: "0.875rem", appearance: "none", background: "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"%23666\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"6 9 12 15 18 9\"></polyline></svg>') no-repeat right 12px center / 16px 16px white" }}>
+                      <option value="">Select State</option>
+                      {nigeriaData.map(s => (
+                        <option key={s.state} value={s.state}>{s.state}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label htmlFor="city" style={{ display: "block", fontSize: "0.875rem", marginBottom: "4px", color: "var(--color-text-secondary)" }}>City / LGA</label>
+                    <select required id="city" name="city" value={formData.city} onChange={handleChange} disabled={!formData.state} style={{ width: "100%", padding: "10px 32px 10px 10px", borderRadius: "8px", border: "1px solid var(--color-border)", outline: "none", fontSize: "0.875rem", appearance: "none", background: `url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"%23666\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"6 9 12 15 18 9\"></polyline></svg>') no-repeat right 12px center / 16px 16px ${formData.state ? "white" : "var(--color-background-alt)"}` }}>
+                      <option value="">Select City / LGA</option>
+                      {availableLgas.map(lga => (
+                        <option key={lga} value={lga}>{lga}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                {/* Quick Save / Update Action Bar */}
+                <div className={addrStyles.saveActionBar}>
+                  <div className={addrStyles.saveTagSelector}>
+                    <span className={addrStyles.tagLabel}>Save as preset:</span>
                     <button
                       type="button"
-                      onClick={() => {
-                        if (confirm(`Clear saved details for ${activeAddress?.label || 'this preset'}?`)) {
-                          deleteAddress(selectedPresetId);
-                          setFormData({ fullName: "", email: "", phone: "", address: "", state: "", city: "" });
-                        }
-                      }}
-                      className={addrStyles.deleteBtn}
-                      title="Clear this saved address"
+                      className={`${addrStyles.tagBtn} ${savePresetTag === "home" && !showCustomInput ? addrStyles.selected : ""}`}
+                      onClick={() => { setSavePresetTag("home"); setShowCustomInput(false); }}
                     >
-                      <Trash2 size={13} strokeWidth={1.25} /> Clear
+                      <Home size={12} strokeWidth={1.25} /> Home
                     </button>
-                  )}
+                    <button
+                      type="button"
+                      className={`${addrStyles.tagBtn} ${savePresetTag === "office" && !showCustomInput ? addrStyles.selected : ""}`}
+                      onClick={() => { setSavePresetTag("office"); setShowCustomInput(false); }}
+                    >
+                      <Building2 size={12} strokeWidth={1.25} /> Office
+                    </button>
+                    <button
+                      type="button"
+                      className={`${addrStyles.tagBtn} ${savePresetTag === "gift" && !showCustomInput ? addrStyles.selected : ""}`}
+                      onClick={() => { setSavePresetTag("gift"); setShowCustomInput(false); }}
+                    >
+                      <Gift size={12} strokeWidth={1.25} /> Gift
+                    </button>
+                    <button
+                      type="button"
+                      className={`${addrStyles.tagBtn} ${showCustomInput ? addrStyles.selected : ""}`}
+                      onClick={() => setShowCustomInput(!showCustomInput)}
+                    >
+                      <Plus size={12} strokeWidth={1.25} /> Custom Tag
+                    </button>
+
+                    {showCustomInput && (
+                      <input
+                        type="text"
+                        placeholder="e.g. Mom's House"
+                        value={customTagInput}
+                        onChange={(e) => setCustomTagInput(e.target.value)}
+                        style={{
+                          padding: "4px 8px",
+                          borderRadius: "6px",
+                          border: "1px solid var(--color-primary)",
+                          fontSize: "0.75rem",
+                          outline: "none",
+                          width: "120px"
+                        }}
+                      />
+                    )}
+                  </div>
+
+                  <div style={{ display: "flex", alignItems: "center", gap: "var(--space-2)" }}>
+                    {saveSuccessMsg ? (
+                      <span className={addrStyles.savedFeedback}>
+                        <Check size={14} strokeWidth={1.5} /> {saveSuccessMsg}
+                      </span>
+                    ) : (
+                      <button type="button" onClick={handleManualSavePreset} className={addrStyles.saveBtn}>
+                        <Sparkles size={14} strokeWidth={1.25} /> Save Details
+                      </button>
+                    )}
+
+                    {selectedPresetId && selectedPresetId !== "new" && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (confirm(`Clear saved details for ${activeAddress?.label || 'this preset'}?`)) {
+                            deleteAddress(selectedPresetId);
+                            setFormData({ presetLabel: "Home", fullName: "", email: "", phone: "", address: "", state: "", city: "" });
+                          }
+                        }}
+                        className={addrStyles.deleteBtn}
+                        title="Clear this saved address"
+                      >
+                        <Trash2 size={13} strokeWidth={1.25} /> Clear
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
           </div>
 
           
