@@ -32,6 +32,15 @@ function WhatsappIcon() {
   );
 }
 
+function TelegramIcon() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" width="20" height="20">
+      <line x1="22" y1="2" x2="11" y2="13" />
+      <polygon points="22 2 15 22 11 13 2 9 22 2" />
+    </svg>
+  );
+}
+
 export default function Footer() {
   const pathname = usePathname();
   if (pathname === "/" || pathname === "/terms" || pathname?.startsWith("/admin")) return null;
@@ -64,6 +73,9 @@ export default function Footer() {
           </a>
           <a href={SOCIAL_LINKS?.whatsapp || "#"} target="_blank" rel="noopener noreferrer" className={styles.socialLink} aria-label="WhatsApp">
             <WhatsappIcon />
+          </a>
+          <a href={SOCIAL_LINKS?.telegram || "#"} target="_blank" rel="noopener noreferrer" className={styles.socialLink} aria-label="Telegram">
+            <TelegramIcon />
           </a>
         </div>
       </div>
