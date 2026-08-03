@@ -408,7 +408,7 @@ export default function CheckoutPage() {
                     onClick={() => setIsAddressFormOpen(false)}
                     style={{ background: "none", border: "none", color: "var(--color-text-tertiary)", fontSize: "0.75rem", cursor: "pointer", fontWeight: 500 }}
                   >
-                    Collapse inputs ▲
+                    Collapse ▲
                   </button>
                 </div>
 
