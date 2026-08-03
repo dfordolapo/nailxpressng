@@ -395,34 +395,8 @@ export default function CheckoutPage() {
               </div>
             </div>
 
-            {!isAddressFormOpen ? (
-              <div 
-                onClick={() => {
-                  const active = addresses.find(a => a.id === (selectedPresetId || "home")) || addresses[0] || { id: "new" };
-                  handleSelectPreset(active);
-                }}
-                style={{
-                  background: "white",
-                  border: "1.5px dashed var(--color-primary-200)",
-                  borderRadius: "var(--radius-lg)",
-                  padding: "var(--space-5) var(--space-4)",
-                  textAlign: "center",
-                  cursor: "pointer",
-                  transition: "all 0.2s ease"
-                }}
-              >
-                <div style={{ display: "flex", justifyContent: "center", marginBottom: "var(--space-2)", color: "var(--color-primary)" }}>
-                  <Bookmark size={22} strokeWidth={1.5} />
-                </div>
-                <h4 style={{ fontSize: "0.875rem", fontWeight: 600, color: "var(--color-text)", marginBottom: "4px" }}>
-                  Click any address card above to enter or edit delivery details
-                </h4>
-                <p style={{ fontSize: "0.75rem", color: "var(--color-text-tertiary)" }}>
-                  Select Home, Office, Gift, or New to reveal address input fields.
-                </p>
-              </div>
-            ) : (
-              <div style={{ background: "white", border: "1px solid var(--color-border-light)", borderRadius: "var(--radius-lg)", padding: "var(--space-4)" }}>
+            {isAddressFormOpen && (
+              <div style={{ background: "white", border: "1px solid var(--color-border-light)", borderRadius: "var(--radius-lg)", padding: "var(--space-4)", marginTop: "var(--space-3)" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "var(--space-4)", paddingBottom: "var(--space-2)", borderBottom: "1px solid var(--color-border-light)" }}>
                   <span style={{ fontSize: "0.8125rem", fontWeight: 600, color: "var(--color-primary-800)" }}>
                     Editing: <span style={{ color: "var(--color-primary)" }}>{formData.presetLabel || "Address Details"}</span>
