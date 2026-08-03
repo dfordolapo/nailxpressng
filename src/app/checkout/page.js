@@ -18,8 +18,13 @@ export default function CheckoutPage() {
   const router = useRouter();
   const { subtotal, shipping, total } = calculateCartTotals(items);
   const [formData, setFormData] = useState({
-    fullName: "", email: "", phone: "",
-    address: "", city: "", state: "",
+    presetLabel: "Home",
+    fullName: "",
+    email: "",
+    phone: "",
+    address: "",
+    state: "",
+    city: "",
   });
   const [shippingMethod, setShippingMethod] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("paystack");
@@ -49,6 +54,7 @@ export default function CheckoutPage() {
   useEffect(() => {
     if (isLoaded && activeAddress) {
       setFormData({
+        presetLabel: activeAddress.label || activeAddress.presetLabel || "Home",
         fullName: activeAddress.fullName || "",
         email: activeAddress.email || "",
         phone: activeAddress.phone || "",
@@ -117,6 +123,7 @@ export default function CheckoutPage() {
     if (preset.id === "new") {
       setSelectedPresetId("new");
       setFormData({
+        presetLabel: "My Custom Address",
         fullName: "",
         email: "",
         phone: "",
@@ -124,21 +131,22 @@ export default function CheckoutPage() {
         state: "",
         city: "",
       });
-      setSavePresetTag("home");
-      setShowCustomInput(false);
+      setSavePresetTag("custom");
+      setShowCustomInput(true);
+      setCustomTagInput("My Custom Address");
     } else {
       selectAddress(preset.id);
     }
   };
 
   const handleManualSavePreset = () => {
-    const targetTag = showCustomInput && customTagInput
-      ? `custom_${customTagInput.toLowerCase().replace(/\s+/g, "_")}`
-      : savePresetTag;
-    const customLabel = showCustomInput && customTagInput ? customTagInput : undefined;
+    const customLabel = formData.presetLabel.trim() || customTagInput.trim() || "Saved Address";
+    const targetTag = selectedPresetId === "new"
+      ? `custom_${Date.now()}`
+      : selectedPresetId;
 
     saveAddress(formData, targetTag, customLabel);
-    setSaveSuccessMsg(`Saved details!`);
+    setSaveSuccessMsg(`Saved as "${customLabel}"!`);
     setTimeout(() => setSaveSuccessMsg(""), 3000);
   };
 
@@ -381,6 +389,35 @@ export default function CheckoutPage() {
             </div>
 
             <div style={{ background: "white", border: "1px solid var(--color-border-light)", borderRadius: "var(--radius-lg)", padding: "var(--space-4)" }}>
+              {/* Name-able Preset Label */}
+              <div style={{ marginBottom: "var(--space-4)" }}>
+                <label htmlFor="presetLabel" style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.8125rem", marginBottom: "4px", color: "var(--color-primary-800)", fontWeight: 600 }}>
+                  <Bookmark size={13} strokeWidth={1.5} /> Address Name / Label
+                </label>
+                <input
+                  type="text"
+                  id="presetLabel"
+                  name="presetLabel"
+                  value={formData.presetLabel || ""}
+                  onChange={(e) => {
+                    handleChange(e);
+                    if (showCustomInput) setCustomTagInput(e.target.value);
+                  }}
+                  placeholder="e.g. Home, Mum's Place, Lekki Studio, Office"
+                  style={{
+                    width: "100%",
+                    padding: "9px 12px",
+                    borderRadius: "8px",
+                    border: "1px solid var(--color-primary-200)",
+                    background: "var(--color-primary-50)",
+                    outline: "none",
+                    fontSize: "0.875rem",
+                    fontWeight: 500,
+                    color: "var(--color-text)"
+                  }}
+                />
+              </div>
+
               <div style={{ marginBottom: "var(--space-4)" }}>
                 <label htmlFor="fullName" style={{ display: "block", fontSize: "0.875rem", marginBottom: "4px", color: "var(--color-text-secondary)" }}>Full Name</label>
                 <input required type="text" id="fullName" name="fullName" value={formData.fullName} onChange={handleChange} placeholder="e.g. Jane Doe" style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "1px solid var(--color-border)", outline: "none" }} />

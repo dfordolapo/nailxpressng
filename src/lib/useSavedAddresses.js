@@ -9,6 +9,7 @@ export const INITIAL_PRESETS = [
   {
     id: "home",
     label: "Home",
+    presetLabel: "Home",
     tag: "home",
     fullName: "",
     email: "",
@@ -20,6 +21,7 @@ export const INITIAL_PRESETS = [
   {
     id: "office",
     label: "Office",
+    presetLabel: "Office",
     tag: "office",
     fullName: "",
     email: "",
@@ -31,6 +33,7 @@ export const INITIAL_PRESETS = [
   {
     id: "gift",
     label: "Gift / Recipient",
+    presetLabel: "Gift / Recipient",
     tag: "gift",
     fullName: "",
     email: "",
@@ -89,8 +92,10 @@ export function useSavedAddresses() {
     } catch (e) {}
   }, []);
 
-  // Save or update an address preset
+  // Save or update an address preset with custom name/label support
   const saveAddress = useCallback((formData, targetId = "home", customLabel = "") => {
+    const finalLabel = customLabel || formData.presetLabel || (targetId === "home" ? "Home" : targetId === "office" ? "Office" : targetId === "gift" ? "Gift" : "Saved Details");
+
     setAddresses((prev) => {
       let updated;
       const existingIndex = prev.findIndex((item) => item.id === targetId);
@@ -102,7 +107,8 @@ export function useSavedAddresses() {
             ? {
                 ...item,
                 ...formData,
-                label: customLabel || item.label || "Saved Address",
+                label: finalLabel,
+                presetLabel: finalLabel,
               }
             : item
         );
@@ -110,7 +116,8 @@ export function useSavedAddresses() {
         // Create new preset
         const newAddress = {
           id: targetId || `custom_${Date.now()}`,
-          label: customLabel || "Custom Address",
+          label: finalLabel,
+          presetLabel: finalLabel,
           tag: targetId.startsWith("custom") ? "custom" : targetId,
           ...formData,
         };
