@@ -99,6 +99,45 @@ function cartReducer(state, action) {
       break;
     }
 
+    case "UPDATE_ITEM_OPTIONS": {
+      const { id, oldSize, oldLength, newSize, newLength } = action.payload;
+      if (oldSize === newSize && oldLength === newLength) return state;
+
+      const targetIndex = state.findIndex(
+        (item) =>
+          item.id === id &&
+          item.selectedSize === oldSize &&
+          item.selectedLength === oldLength
+      );
+      if (targetIndex === -1) return state;
+
+      const targetItem = state[targetIndex];
+
+      const existingNewIndex = state.findIndex(
+        (item) =>
+          item.id === id &&
+          item.selectedSize === newSize &&
+          item.selectedLength === newLength
+      );
+
+      if (existingNewIndex > -1 && existingNewIndex !== targetIndex) {
+        newState = state
+          .map((item, i) =>
+            i === existingNewIndex
+              ? { ...item, quantity: item.quantity + targetItem.quantity }
+              : item
+          )
+          .filter((_, i) => i !== targetIndex);
+      } else {
+        newState = state.map((item, i) =>
+          i === targetIndex
+            ? { ...item, selectedSize: newSize, selectedLength: newLength }
+            : item
+        );
+      }
+      break;
+    }
+
     case "CLEAR_CART":
       newState = [];
       break;
@@ -130,6 +169,13 @@ export function CartProvider({ children }) {
     dispatch({ type: "UPDATE_QUANTITY", payload: { id, selectedSize, selectedLength, quantity } });
   };
 
+  const updateItemOptions = (id, oldSize, oldLength, newSize, newLength) => {
+    dispatch({
+      type: "UPDATE_ITEM_OPTIONS",
+      payload: { id, oldSize, oldLength, newSize, newLength },
+    });
+  };
+
   const clearCart = () => {
     dispatch({ type: "CLEAR_CART" });
   };
@@ -144,6 +190,7 @@ export function CartProvider({ children }) {
         addItem,
         removeItem,
         updateQuantity,
+        updateItemOptions,
         clearCart,
         itemCount,
         subtotal,

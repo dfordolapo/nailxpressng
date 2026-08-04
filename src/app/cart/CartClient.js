@@ -5,13 +5,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { useCart } from "@/context/CartContext";
 import { formatPrice, calculateCartTotals } from "@/lib/utils";
-import { Trash2, ArrowLeft, ShoppingBag } from "lucide-react";
+import { Trash2, ArrowLeft, ShoppingBag, Check } from "lucide-react";
 import styles from "@/styles/components/cart.module.css";
 import btnStyles from "@/styles/components/buttons.module.css";
 
 export default function CartClient({ bestsellers = [] }) {
-  const { items, removeItem, updateQuantity, addItem } = useCart();
+  const { items, removeItem, updateQuantity, updateItemOptions, addItem } = useCart();
   const [standardShipping, setStandardShipping] = useState(2500);
+  const [addedMap, setAddedMap] = useState({});
   const { subtotal, total, itemCount } = calculateCartTotals(items);
   // Re-calculate total with dynamic standard shipping
   const dynamicTotal = subtotal + standardShipping;
@@ -90,9 +91,61 @@ export default function CartClient({ bestsellers = [] }) {
                       <Link href={`/product/${item.slug}`} className={styles.cartItemName}>
                         {item.name}
                       </Link>
-                      <p className={styles.cartItemMeta}>
-                        {item.selectedSize ? `${item.selectedSize === 'M' ? 'Medium' : item.selectedSize} • ` : ""}{item.selectedLength.charAt(0).toUpperCase() + item.selectedLength.slice(1)}
-                      </p>
+                      <div className={styles.cartItemMetaSelectors}>
+                        {item.selectedSize && (
+                          <div className={styles.metaSelectWrapper}>
+                            <label className={styles.metaLabel}>Size:</label>
+                            <select
+                              className={styles.metaSelect}
+                              value={item.selectedSize}
+                              onChange={(e) =>
+                                updateItemOptions(
+                                  item.id,
+                                  item.selectedSize,
+                                  item.selectedLength,
+                                  e.target.value,
+                                  item.selectedLength
+                                )
+                              }
+                            >
+                              {["XS", "S", "M", "L"]
+                                .concat(
+                                  item.selectedSize && !["XS", "S", "M", "L"].includes(item.selectedSize)
+                                    ? [item.selectedSize]
+                                    : []
+                                )
+                                .map((s) => (
+                                  <option key={s} value={s}>
+                                    {s}
+                                  </option>
+                                ))}
+                            </select>
+                          </div>
+                        )}
+
+                        <div className={styles.metaSelectWrapper}>
+                          <label className={styles.metaLabel}>Length:</label>
+                          <select
+                            className={styles.metaSelect}
+                            value={item.selectedLength ? item.selectedLength.toLowerCase() : "medium"}
+                            onChange={(e) =>
+                              updateItemOptions(
+                                item.id,
+                                item.selectedSize,
+                                item.selectedLength,
+                                item.selectedSize,
+                                e.target.value
+                              )
+                            }
+                          >
+                            {["short", "medium", "long", "extra long"].map((l) => (
+                              <option key={l} value={l}>
+                                {l.charAt(0).toUpperCase() + l.slice(1)}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
                       <div className={styles.cartItemPrice} style={{ marginTop: "4px" }}>{formatPrice(item.price)}</div>
                     </div>
                   </div>
@@ -123,42 +176,71 @@ export default function CartClient({ bestsellers = [] }) {
           </div>
 
           {/* You may also like Section */}
-          <div className={styles.recommendationsSection}>
-            <h3 className={styles.recommendationsTitle}>You may also like</h3>
-            <div className={styles.sliderContainer}>
-              {bestsellers.map(product => (
-                <div key={product.id} className={styles.sliderItem}>
-                  <Link href={`/product/${product.slug}`} className={styles.sliderImage} style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      fontSize: "2rem",
-                      background: "var(--color-bg-warm)",
-                      textDecoration: "none"
-                    }}>
-                    💅
-                  </Link>
-                  <div className={styles.sliderName}>{product.name}</div>
-                  <div className={styles.sliderPriceRow}>
-                    <span className={styles.sliderPrice}>{formatPrice(product.price)}</span>
-                    <button 
-                      className={styles.addBtn}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        const cartProductFormat = {
-                          ...product,
-                          images: product.images || []
-                        };
-                        addItem(cartProductFormat, 1, "M", "medium");
-                      }}
-                    >
-                      +
-                    </button>
-                  </div>
-                </div>
-              ))}
+          {bestsellers && bestsellers.length > 0 && (
+            <div className={styles.recommendationsSection}>
+              <h3 className={styles.recommendationsTitle}>You may also like</h3>
+              <div className={styles.sliderContainer}>
+                {bestsellers.map((product) => {
+                  const isAdded = !!addedMap[product.id];
+                  const imgUrl = product.image || (product.images && product.images[0]);
+
+                  return (
+                    <div key={product.id} className={styles.sliderItem}>
+                      <Link href={`/product/${product.slug}`} className={styles.sliderImage}>
+                        {imgUrl ? (
+                          <Image
+                            src={imgUrl}
+                            alt={product.name}
+                            fill
+                            sizes="140px"
+                            style={{ objectFit: "cover", borderRadius: "inherit" }}
+                          />
+                        ) : (
+                          "💅"
+                        )}
+                      </Link>
+                      <div className={styles.sliderName}>{product.name}</div>
+                      <div className={styles.sliderPriceRow}>
+                        <span className={styles.sliderPrice}>{formatPrice(product.price)}</span>
+                        <button
+                          type="button"
+                          className={`${styles.addBtn} ${isAdded ? styles.addBtnAdded : ""}`}
+                          aria-label={`Add ${product.name} to cart`}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+
+                            const cartProductFormat = {
+                              ...product,
+                              images: product.images && product.images.length > 0
+                                ? product.images
+                                : (imgUrl ? [imgUrl] : [])
+                            };
+
+                            const defaultSize = product.sizes && product.sizes.length > 0
+                              ? (product.sizes.includes("M") ? "M" : product.sizes[0])
+                              : "M";
+                            const defaultLength = product.lengths && product.lengths.length > 0
+                              ? (product.lengths.includes("Medium") ? "Medium" : (product.lengths.includes("medium") ? "medium" : product.lengths[0]))
+                              : "medium";
+
+                            addItem(cartProductFormat, 1, defaultSize, defaultLength);
+
+                            setAddedMap((prev) => ({ ...prev, [product.id]: true }));
+                            setTimeout(() => {
+                              setAddedMap((prev) => ({ ...prev, [product.id]: false }));
+                            }, 1800);
+                          }}
+                        >
+                          {isAdded ? <Check size={14} strokeWidth={2.5} /> : "+"}
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Summary */}
           <div className={styles.summaryCard} style={{ background: "transparent", border: "none", padding: 0 }}>
