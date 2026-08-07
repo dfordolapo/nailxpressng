@@ -145,7 +145,7 @@ export default function EmailPreviewsPage() {
 
         <div align="center">
           <a href="/admin/orders" 
-             style="display: inline-block; padding: 12px 24px; background-color: #7a403d; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: 700; font-size: 13px; letter-spacing: 1px; text-transform: uppercase;">
+             style="display: inline-block; padding: 13px 26px; background-color: #7a403d; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 13px; letter-spacing: 1px; text-transform: uppercase;">
             View Order in Admin Dashboard
           </a>
         </div>
@@ -206,7 +206,7 @@ export default function EmailPreviewsPage() {
 
         <div align="center">
           <a href="/admin/custom-orders" 
-             style="display: inline-block; padding: 12px 24px; background-color: #7a403d; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: 700; font-size: 13px; letter-spacing: 1px; text-transform: uppercase;">
+             style="display: inline-block; padding: 13px 26px; background-color: #7a403d; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 13px; letter-spacing: 1px; text-transform: uppercase;">
             View Custom Orders Dashboard
           </a>
         </div>
