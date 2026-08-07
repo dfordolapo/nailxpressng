@@ -77,13 +77,14 @@ export async function POST(request) {
 
     // 4. Send Confirmation Emails (Non-blocking)
     if (process.env.RESEND_API_KEY) {
-      // Send to customer
-      sendOrderConfirmationEmail(order, items).catch(e => console.error("Customer email failed:", e));
-      
-      // Send to admin
-      if (process.env.ADMIN_EMAIL) {
-        sendAdminNewOrderAlert(order, items, process.env.ADMIN_EMAIL).catch(e => console.error("Admin email failed:", e));
+      // Send to customer (buyer)
+      if (order.customer_email) {
+        sendOrderConfirmationEmail(order, items).catch(e => console.error("Customer email failed:", e));
       }
+      
+      // Send to admin (nailxpressng@gmail.com)
+      const adminEmail = process.env.ADMIN_EMAIL || 'nailxpressng@gmail.com';
+      sendAdminNewOrderAlert(order, items, adminEmail).catch(e => console.error("Admin email failed:", e));
     }
 
     return NextResponse.json({ success: true, orderId: order.id });
