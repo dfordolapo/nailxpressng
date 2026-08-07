@@ -286,12 +286,12 @@ export default function EmailPreviewsPage() {
                 <td align="center" width="33%" style="padding: 0 6px;">
                   <div style="background: #ffffff; padding: 14px 8px; border-radius: 10px; border: 1px solid #f0e6e5;">
                     <div style="margin-bottom: 8px;">
-                      <!-- Outlined Finger Pressing Down Icon -->
+                      <!-- Outlined Multi-Fingers Pressing Down Icon -->
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7a403d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="6" y="16" width="12" height="5" rx="2"/>
-                        <path d="M12 3v9"/>
-                        <path d="m9 9 3 3 3-3"/>
-                        <path d="M8 14h8"/>
+                        <path d="M8 18h8a2 2 0 0 1 2 2v1H6v-1a2 2 0 0 1 2-2z"/>
+                        <path d="M10 2.5v10a1.5 1.5 0 0 0 3 0V4"/>
+                        <path d="M13 4v8.5a1.5 1.5 0 0 0 3 0V6"/>
+                        <path d="M7 11l5 4 5-4"/>
                       </svg>
                     </div>
                     <div style="font-size: 12px; font-weight: 700; color: #7a403d;">3. Glue & Press</div>
