@@ -7,16 +7,12 @@ import styles from "@/styles/admin.module.css";
 import { MoreVertical, CheckCircle, MessageCircle } from "lucide-react";
 import { SOCIAL_LINKS } from "@/lib/constants";
 
-export default function CustomOrdersClient() {
-  const [orders, setOrders] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+export default function CustomOrdersClient({ initialOrders = [] }) {
+  const [orders, setOrders] = useState(initialOrders);
+  const [isLoading, setIsLoading] = useState(false);
   const [openMenuId, setOpenMenuId] = useState(null);
   const [isUpdating, setIsUpdating] = useState(false);
   const [viewOrder, setViewOrder] = useState(null);
-
-  useEffect(() => {
-    fetchOrders();
-  }, []);
 
   const fetchOrders = async () => {
     try {
@@ -29,8 +25,6 @@ export default function CustomOrdersClient() {
       setOrders(data || []);
     } catch (err) {
       console.error("Error fetching custom orders:", err);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -42,12 +36,13 @@ export default function CustomOrdersClient() {
     setIsUpdating(true);
     setOpenMenuId(null);
     try {
-      const { error } = await supabase
-        .from('custom_orders')
-        .update({ status: 'completed' })
-        .eq('id', id);
+      const res = await fetch(`/api/admin/custom-orders/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'completed' })
+      });
 
-      if (error) throw error;
+      if (!res.ok) throw new Error("Failed to update status");
       
       setOrders(orders.map(order => 
         order.id === id ? { ...order, status: 'completed' } : order
