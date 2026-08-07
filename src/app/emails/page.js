@@ -104,8 +104,8 @@ export default function EmailPreviewsPage() {
               <td align="right" style="color: #2d2d2d; font-weight: 600; font-size: 14px;">₦3,000</td>
             </tr>
             <tr>
-              <td style="color: #7a403d; font-weight: 700; font-size: 16px; padding-top: 6px;">Total Paid:</td>
-              <td align="right" style="color: #7a403d; font-weight: 800; font-size: 18px; padding-top: 6px;">₦19,500</td>
+              <td style="color: #7a403d; font-weight: 600; font-size: 15px; padding-top: 6px;">Total Paid:</td>
+              <td align="right" style="color: #7a403d; font-weight: 600; font-size: 16px; padding-top: 6px;">₦19,500</td>
             </tr>
           </table>
         </div>
@@ -139,7 +139,7 @@ export default function EmailPreviewsPage() {
           </tr>
         </table>
 
-        <div style="background: #7a403d; color: #ffffff; padding: 14px 18px; border-radius: 8px; text-align: center; font-size: 16px; font-weight: 700; margin-bottom: 24px;">
+        <div style="background: #fcf6f6; color: #7a403d; border: 1px solid #f5e6e5; padding: 12px 16px; border-radius: 8px; text-align: center; font-size: 15px; font-weight: 600; margin-bottom: 24px;">
           Total Order Amount: ₦19,500
         </div>
 

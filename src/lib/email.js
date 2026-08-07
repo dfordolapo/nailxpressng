@@ -102,8 +102,8 @@ export async function sendOrderConfirmationEmail(order, items) {
             <td align="right" style="color: #2d2d2d; font-weight: 600;">₦${(order.shipping_fee || 0).toLocaleString()}</td>
           </tr>
           <tr>
-            <td style="color: #7a403d; font-weight: 700; font-size: 18px; padding-top: 8px;">Total Paid:</td>
-            <td align="right" style="color: #7a403d; font-weight: 800; font-size: 20px; padding-top: 8px;">₦${(order.total_amount || 0).toLocaleString()}</td>
+            <td style="color: #7a403d; font-weight: 600; font-size: 15px; padding-top: 8px;">Total Paid:</td>
+            <td align="right" style="color: #7a403d; font-weight: 600; font-size: 16px; padding-top: 8px;">₦${(order.total_amount || 0).toLocaleString()}</td>
           </tr>
         </table>
       </div>
@@ -155,7 +155,7 @@ export async function sendAdminNewOrderAlert(order, items = [], adminEmail) {
         ${itemsHtml}
       </table>
 
-      <div style="background: #7a403d; color: #ffffff; padding: 16px 20px; border-radius: 10px; text-align: center; font-size: 18px; font-weight: 700; margin-bottom: 28px;">
+      <div style="background: #fcf6f6; color: #7a403d; border: 1px solid #f5e6e5; padding: 12px 16px; border-radius: 8px; text-align: center; font-size: 15px; font-weight: 600; margin-bottom: 24px;">
         Total Order Amount: ₦${(order.total_amount || 0).toLocaleString()}
       </div>
 
