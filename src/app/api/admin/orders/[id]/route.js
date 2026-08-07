@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { sendOrderShippedEmail, sendOrderDeliveredEmail } from '@/lib/email';
 
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -24,9 +25,20 @@ export async function PATCH(request, { params }) {
 
     if (error) throw error;
 
+    const updatedOrder = data && data[0] ? data[0] : null;
+
+    if (updatedOrder && updatedOrder.customer_email) {
+      if (status === 'shipped') {
+        sendOrderShippedEmail(updatedOrder).catch(e => console.error("Shipped email error:", e));
+      } else if (status === 'delivered') {
+        sendOrderDeliveredEmail(updatedOrder).catch(e => console.error("Delivered email error:", e));
+      }
+    }
+
     return NextResponse.json({ success: true, data });
   } catch (error) {
     console.error('Update Order API Error:', error);
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
 }
+

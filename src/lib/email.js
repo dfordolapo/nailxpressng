@@ -161,3 +161,80 @@ export async function sendAdminCustomOrderAlert(customOrder, adminEmail) {
   }
 }
 
+export async function sendOrderShippedEmail(order) {
+  try {
+    const orderNum = order.id ? order.id.split('-')[0] : '';
+    const { data, error } = await resend.emails.send({
+      from: `Nailxpress <${fromEmail}>`,
+      to: [order.customer_email],
+      replyTo: process.env.ADMIN_EMAIL || 'nailxpressng@gmail.com',
+      subject: `Your Nailxpress Order #${orderNum} Has Shipped! 🚚✨`,
+      html: `
+        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
+          <h2 style="color: #d1758f;">Great news, ${order.customer_first_name || 'Gorgeous'}! 🎉</h2>
+          <p>Your press-on nail set is on its way! We've packaged your items with care and dispatched your order for delivery.</p>
+          
+          <div style="background: #fdf5f7; border-radius: 8px; padding: 16px; margin: 20px 0;">
+            <h3 style="margin-top: 0; color: #d1758f;">Order Details</h3>
+            <p style="margin: 4px 0;"><strong>Order Number:</strong> #${orderNum}</p>
+            <p style="margin: 4px 0;"><strong>Delivery Address:</strong><br/>
+              ${order.shipping_address || ''}<br/>
+              ${order.shipping_city || ''}, ${order.shipping_state || ''}
+            </p>
+          </div>
+
+          <p style="margin-top: 24px; font-size: 0.95em; color: #555;">
+            Your package will arrive shortly. If you need any assistance, reply directly to this email or contact us on WhatsApp!
+          </p>
+          
+          <p style="margin-top: 32px; text-align: center; color: #999; font-size: 0.85em;">
+            Thank you for shopping with Nailxpress! 💖
+          </p>
+        </div>
+      `,
+    });
+    return { success: !error, error };
+  } catch (error) {
+    console.error("Order Shipped Email Error:", error);
+    return { success: false, error };
+  }
+}
+
+export async function sendOrderDeliveredEmail(order) {
+  try {
+    const orderNum = order.id ? order.id.split('-')[0] : '';
+    const { data, error } = await resend.emails.send({
+      from: `Nailxpress <${fromEmail}>`,
+      to: [order.customer_email],
+      replyTo: process.env.ADMIN_EMAIL || 'nailxpressng@gmail.com',
+      subject: `Your Order #${orderNum} Has Been Delivered! 💅✨`,
+      html: `
+        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
+          <h2 style="color: #d1758f;">Your nails have arrived, ${order.customer_first_name || 'Gorgeous'}! 💅✨</h2>
+          <p>Your order <strong>#${orderNum}</strong> has been successfully delivered. We hope you absolutely love your new press-on set!</p>
+          
+          <div style="background: #fdf5f7; border-left: 4px solid #d1758f; padding: 16px; margin: 20px 0; border-radius: 4px;">
+            <h4 style="margin: 0 0 8px 0; color: #d1758f;">✨ Quick Prep Tip:</h4>
+            <p style="margin: 0; font-size: 0.9em; color: #555;">
+              Clean and prep your natural nails with an alcohol pad before applying your adhesive tabs or nail glue for the longest lasting wear!
+            </p>
+          </div>
+
+          <p style="font-size: 0.95em; color: #555; text-align: center; margin-top: 24px;">
+            Tag us on Instagram <strong>@nailxpress.ng</strong> wearing your set — we'd love to feature you!
+          </p>
+
+          <p style="margin-top: 32px; text-align: center; color: #999; font-size: 0.85em;">
+            If you have any feedback or questions, reply directly to this email. Thank you for choosing Nailxpress! 💕
+          </p>
+        </div>
+      `,
+    });
+    return { success: !error, error };
+  } catch (error) {
+    console.error("Order Delivered Email Error:", error);
+    return { success: false, error };
+  }
+}
+
+
