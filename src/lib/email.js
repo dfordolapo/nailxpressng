@@ -2,8 +2,8 @@ import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY || 're_dummy_key_for_build');
 
-// Use this for development unless a custom domain is verified
-const fromEmail = 'onboarding@resend.dev';
+// Default sender address (Change to 'orders@nailexpress.ng' once custom domain is verified on Resend)
+const fromEmail = process.env.SENDER_EMAIL || 'onboarding@resend.dev';
 
 export async function sendOrderConfirmationEmail(order, items) {
   try {
