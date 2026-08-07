@@ -30,14 +30,12 @@ export async function POST(request) {
     if (error) throw error;
 
     // Send emails (Non-blocking)
-    if (process.env.RESEND_API_KEY) {
-      if (order.email) {
-        sendCustomOrderConfirmationEmail(order).catch(e => console.error("Custom Order buyer email failed:", e));
-      }
-      
-      const adminEmail = process.env.ADMIN_EMAIL || 'nailxpressng@gmail.com';
-      sendAdminCustomOrderAlert(order, adminEmail).catch(e => console.error("Custom Order admin alert failed:", e));
+    if (order.email) {
+      sendCustomOrderConfirmationEmail(order).catch(e => console.error("Custom Order buyer email failed:", e));
     }
+    
+    const adminEmail = process.env.ADMIN_EMAIL || 'nailxpressng@gmail.com';
+    sendAdminCustomOrderAlert(order, adminEmail).catch(e => console.error("Custom Order admin alert failed:", e));
 
     return NextResponse.json({ success: true });
     
