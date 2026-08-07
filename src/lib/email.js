@@ -189,6 +189,14 @@ export async function sendCustomOrderConfirmationEmail(customOrder) {
         <p style="margin: 6px 0;"><strong>Design Description:</strong> ${customOrder.design}</p>
         ${customOrder.color ? `<p style="margin: 6px 0;"><strong>Color Preference:</strong> ${customOrder.color}</p>` : ''}
         ${customOrder.notes ? `<p style="margin: 6px 0;"><strong>Special Notes:</strong> ${customOrder.notes}</p>` : ''}
+        ${(customOrder.image || customOrder.reference_image || customOrder.image_url) ? `
+          <div style="margin-top: 12px; padding-top: 12px; border-top: 1px dashed #eac5c1;">
+            <p style="margin: 0 0 6px 0; color: #7a403d; font-weight: 600;">Reference Image Uploaded:</p>
+            <a href="${customOrder.image || customOrder.reference_image || customOrder.image_url}" target="_blank" style="color: #7a403d; font-size: 13px; word-break: break-all;">
+              View Uploaded Reference Image ↗
+            </a>
+          </div>
+        ` : ''}
       </div>
       
       <p style="color: #666; font-size: 14px;">We'll reach out via WhatsApp or email to finalize your custom set design and price quote.</p>
@@ -213,6 +221,7 @@ export async function sendCustomOrderConfirmationEmail(customOrder) {
 export async function sendAdminCustomOrderAlert(customOrder, adminEmail) {
   try {
     const adminTarget = adminEmail || adminDefaultEmail;
+    const refImage = customOrder.image || customOrder.reference_image || customOrder.image_url;
 
     const bodyHtml = `
       <div style="background-color: #fcf6f6; border-radius: 12px; padding: 20px; border: 1px solid #f5e6e5; margin-bottom: 24px;">
@@ -224,6 +233,16 @@ export async function sendAdminCustomOrderAlert(customOrder, adminEmail) {
         <p style="margin: 4px 0;"><strong>Design:</strong> ${customOrder.design}</p>
         <p style="margin: 4px 0;"><strong>Color Preference:</strong> ${customOrder.color || 'N/A'}</p>
         <p style="margin: 4px 0;"><strong>Notes:</strong> ${customOrder.notes || 'None'}</p>
+        ${refImage ? `
+          <div style="margin-top: 14px; padding-top: 10px; border-top: 1px dashed #eac5c1;">
+            <p style="margin: 0 0 6px 0; color: #7a403d; font-weight: 700;">Uploaded Reference Photo:</p>
+            <a href="${refImage}" target="_blank" style="display: inline-block;">
+              <img src="${refImage}" alt="Reference Image" style="max-width: 200px; max-height: 200px; border-radius: 8px; border: 1px solid #eae1e0;" />
+            </a>
+            <br/>
+            <a href="${refImage}" target="_blank" style="color: #7a403d; font-size: 12px; text-decoration: underline; margin-top: 4px; display: inline-block;">Open Full Resolution Image ↗</a>
+          </div>
+        ` : ''}
       </div>
 
       <div align="center">
