@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { sendCustomOrderConfirmationEmail, sendAdminCustomOrderAlert } from '@/lib/email';
 
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -27,6 +28,16 @@ export async function POST(request) {
       ]);
 
     if (error) throw error;
+
+    // Send emails (Non-blocking)
+    if (process.env.RESEND_API_KEY) {
+      if (order.email) {
+        sendCustomOrderConfirmationEmail(order).catch(e => console.error("Custom Order buyer email failed:", e));
+      }
+      if (process.env.ADMIN_EMAIL) {
+        sendAdminCustomOrderAlert(order, process.env.ADMIN_EMAIL).catch(e => console.error("Custom Order admin alert failed:", e));
+      }
+    }
 
     return NextResponse.json({ success: true });
     

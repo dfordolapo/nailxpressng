@@ -200,12 +200,15 @@ export default function CheckoutPage() {
         router.push(`/checkout/success?orderId=${data.orderId}`);
       };
 
-      if (paymentMethod === "paystack") {
+      const paystackKey = process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY;
+      const isPaystackKeyValid = paystackKey && paystackKey !== "pk_test_dummy" && paystackKey.trim() !== "";
+
+      if (paymentMethod === "paystack" && isPaystackKeyValid) {
         const PaystackPop = (await import('@paystack/inline-js')).default;
         const paystack = new PaystackPop();
         
         paystack.newTransaction({
-          key: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY || "pk_test_dummy",
+          key: paystackKey,
           email: formData.email,
           amount: finalTotal * 100, // Paystack expects kobo
           currency: 'NGN',
@@ -226,7 +229,8 @@ export default function CheckoutPage() {
           }
         });
       } else {
-        await processOrderToBackend();
+        // Direct order processing for testing mode or non-Paystack methods
+        await processOrderToBackend(paymentMethod === "paystack" ? "test_mode_bypass" : null);
       }
       
     } catch (error) {

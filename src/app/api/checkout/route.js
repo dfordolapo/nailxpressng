@@ -82,7 +82,7 @@ export async function POST(request) {
       
       // Send to admin
       if (process.env.ADMIN_EMAIL) {
-        sendAdminNewOrderAlert(order, process.env.ADMIN_EMAIL).catch(e => console.error("Admin email failed:", e));
+        sendAdminNewOrderAlert(order, items, process.env.ADMIN_EMAIL).catch(e => console.error("Admin email failed:", e));
       }
     }
 
