@@ -102,7 +102,7 @@ export default function SettingsClient() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
             {locations.map((loc, index) => (
               <div key={loc.id} style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                <div style={{ flex: 1 }}>
+                <div style={{ flex: 1.5 }}>
                   <label style={{ display: index === 0 ? 'block' : 'none', fontSize: '0.75rem', fontWeight: 500, marginBottom: '4px' }}>Location Name</label>
                   <input 
                     type="text" 
@@ -113,7 +113,17 @@ export default function SettingsClient() {
                     required
                   />
                 </div>
-                <div style={{ width: '150px' }}>
+                <div style={{ flex: 1.2 }}>
+                  <label style={{ display: index === 0 ? 'block' : 'none', fontSize: '0.75rem', fontWeight: 500, marginBottom: '4px' }}>Est. Delivery Time</label>
+                  <input 
+                    type="text" 
+                    value={loc.estimated_time || ''}
+                    onChange={(e) => handleLocationChange(loc.id, 'estimated_time', e.target.value)}
+                    style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)' }}
+                    placeholder="e.g. 3-5 Hours"
+                  />
+                </div>
+                <div style={{ width: '110px' }}>
                   <label style={{ display: index === 0 ? 'block' : 'none', fontSize: '0.75rem', fontWeight: 500, marginBottom: '4px' }}>Fee (₦)</label>
                   <input 
                     type="number" 

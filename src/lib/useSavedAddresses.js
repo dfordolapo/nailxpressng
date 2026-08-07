@@ -109,6 +109,7 @@ export function useSavedAddresses() {
                 ...formData,
                 label: finalLabel,
                 presetLabel: finalLabel,
+                tag: formData.tag || item.tag || targetId,
               }
             : item
         );
@@ -118,7 +119,7 @@ export function useSavedAddresses() {
           id: targetId || `custom_${Date.now()}`,
           label: finalLabel,
           presetLabel: finalLabel,
-          tag: targetId.startsWith("custom") ? "custom" : targetId,
+          tag: formData.tag || (targetId.startsWith("custom") ? "custom" : targetId),
           ...formData,
         };
         updated = [...prev, newAddress];

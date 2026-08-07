@@ -11,8 +11,7 @@ const supabaseAdmin = createClient(
 
 export async function POST(request) {
   try {
-    const body = await request.json();
-    const { formData, items, shippingMethod, paymentMethod, subtotal, shippingFee, total } = body;
+    const { formData, items, shippingMethod, shippingMethodName, deliveryTime, paymentMethod, subtotal, shippingFee, total } = body;
 
     // 1. Insert the main Order
     const { data: order, error: orderError } = await supabaseAdmin
@@ -28,6 +27,8 @@ export async function POST(request) {
           shipping_state: formData.state,
           total_amount: total,
           shipping_fee: shippingFee,
+          shipping_method: shippingMethodName || shippingMethod,
+          delivery_time: deliveryTime || '3-5 days',
           status: 'pending' // Default status
         }
       ])

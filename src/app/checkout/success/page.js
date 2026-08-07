@@ -27,7 +27,7 @@ export default async function OrderSuccessPage({ searchParams }) {
         date: new Date(order.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
         items: order.order_items ? order.order_items.reduce((acc, item) => acc + item.quantity, 0).toString() : '1',
         total: `₦${order.total_amount.toLocaleString()}`,
-        delivery: '3-5 days'
+        delivery: order.delivery_time || '3-5 days'
       };
     }
   }

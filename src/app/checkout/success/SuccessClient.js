@@ -84,7 +84,7 @@ export default function SuccessClient({ orderDetails }) {
           ))}
         </div>
         <p style={{ textAlign: 'center', fontSize: '0.8rem', color: 'var(--color-text-secondary)', marginTop: '1rem' }}>
-          Estimated Delivery: <strong>{new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</strong>
+          Estimated Delivery: <strong>{orderDetails.delivery}</strong>
         </p>
       </div>
 

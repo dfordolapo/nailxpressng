@@ -11,7 +11,7 @@ import pageStyles from "@/styles/pages/collection.module.css";
 import cartStyles from "@/styles/components/cart.module.css";
 import btnStyles from "@/styles/components/buttons.module.css";
 import addrStyles from "@/styles/components/checkoutAddresses.module.css";
-import { Home, Building2, Gift, Bookmark, Plus, Check, Trash2, MapPin, Sparkles } from "lucide-react";
+import { Home, Building2, Gift, Bookmark, Plus, Check, Trash2, MapPin, Sparkles, Edit2 } from "lucide-react";
 
 export default function CheckoutPage() {
   const { items, clearCart } = useCart();
@@ -44,7 +44,7 @@ export default function CheckoutPage() {
     deleteAddress,
   } = useSavedAddresses();
 
-  const [selectedPresetId, setSelectedPresetId] = useState(null);
+  const [selectedPresetId, setSelectedPresetId] = useState("home");
   const [isAddressFormOpen, setIsAddressFormOpen] = useState(false);
   const [savePresetTag, setSavePresetTag] = useState("home");
   const [customTagInput, setCustomTagInput] = useState("");
@@ -109,29 +109,23 @@ export default function CheckoutPage() {
   const renderPresetIcon = (tag) => {
     switch (tag) {
       case "home":
-        return <Home size={16} strokeWidth={1.25} />;
+        return <Home size={15} strokeWidth={1.5} style={{ color: "var(--color-primary)", marginRight: '4px' }} />;
       case "office":
-        return <Building2 size={16} strokeWidth={1.25} />;
+        return <Building2 size={15} strokeWidth={1.5} style={{ color: "var(--color-primary)", marginRight: '4px' }} />;
       case "gift":
-        return <Gift size={16} strokeWidth={1.25} />;
+        return <Gift size={15} strokeWidth={1.5} style={{ color: "var(--color-primary)", marginRight: '4px' }} />;
       default:
-        return <Bookmark size={16} strokeWidth={1.25} />;
+        if (tag && tag.toLowerCase().includes("gift")) return <Gift size={15} strokeWidth={1.5} style={{ color: "var(--color-primary)", marginRight: '4px' }} />;
+        return <Bookmark size={15} strokeWidth={1.5} style={{ color: "var(--color-primary)", marginRight: '4px' }} />;
     }
   };
 
   const handleSelectPreset = (preset) => {
-    if (selectedPresetId === preset.id) {
-      // Toggle if clicking the currently active preset
-      setIsAddressFormOpen(!isAddressFormOpen);
-      return;
-    }
-
     setSelectedPresetId(preset.id);
-    setIsAddressFormOpen(true);
-
+    
     if (preset.id === "new") {
       setFormData({
-        presetLabel: "My Custom Address",
+        presetLabel: "Gift / Recipient",
         fullName: "",
         email: "",
         phone: "",
@@ -139,12 +133,14 @@ export default function CheckoutPage() {
         state: "",
         city: "",
       });
-      setSavePresetTag("custom");
+      setSavePresetTag("gift");
       setShowCustomInput(true);
-      setCustomTagInput("My Custom Address");
+      setCustomTagInput("Gift / Recipient");
+      setIsAddressFormOpen(true); // Open immediately for new
     } else {
       selectAddress(preset.id);
       setShowCustomInput(false);
+      setIsAddressFormOpen(false); // Do not expand immediately for existing preset cards
     }
   };
 
@@ -154,9 +150,32 @@ export default function CheckoutPage() {
       ? `custom_${Date.now()}`
       : (selectedPresetId || "home");
 
-    saveAddress(formData, targetTag, customLabel);
-    setSaveSuccessMsg(`Saved as "${customLabel}"!`);
-    setTimeout(() => setSaveSuccessMsg(""), 3000);
+    saveAddress({ ...formData, tag: savePresetTag }, targetTag, customLabel);
+    setSaveSuccessMsg("✓ Saved for future orders");
+    setTimeout(() => {
+      setSaveSuccessMsg("");
+      setIsAddressFormOpen(false); // Auto-collapse the form back into the card
+    }, 1500);
+  };
+
+  const getDeliveryDetails = (locName) => {
+    const nameLower = locName.toLowerCase();
+    if (nameLower.includes("island")) {
+      return {
+        est: "3 - 5 Hours (Same-day dispatch)",
+        desc: "Perfect for urgent beauty needs. Delivered via our dedicated Island riders."
+      };
+    } else if (nameLower.includes("mainland")) {
+      return {
+        est: "24 - 48 Hours",
+        desc: "Delivered safely via our mainland dispatch network."
+      };
+    } else {
+      return {
+        est: "3 - 5 Business Days",
+        desc: "Tracked nationwide courier service direct to your doorstep."
+      };
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -166,17 +185,23 @@ export default function CheckoutPage() {
     try {
       // Auto-update saved preset with these latest details on checkout
       if (selectedPresetId !== "new") {
-        saveAddress(formData, selectedPresetId);
+        saveAddress({ ...formData, tag: savePresetTag }, selectedPresetId);
       }
 
       const nameParts = formData.fullName.trim().split(" ");
       const firstName = nameParts[0] || "";
       const lastName = nameParts.slice(1).join(" ") || "";
 
+      const selectedLoc = shippingLocations.find(loc => loc.id === shippingMethod);
+      const deliveryTimeVal = selectedLoc ? (selectedLoc.estimated_time || getDeliveryDetails(selectedLoc.name).est) : "3-5 days";
+      const shippingMethodNameVal = selectedLoc ? selectedLoc.name : "";
+
       const orderPayload = {
         formData: { ...formData, firstName, lastName },
         items,
         shippingMethod,
+        shippingMethodName: shippingMethodNameVal,
+        deliveryTime: deliveryTimeVal,
         paymentMethod,
         subtotal,
         shippingFee: shippingFeeAmount,
@@ -240,6 +265,11 @@ export default function CheckoutPage() {
     }
   };
 
+  const isAddressComplete = Boolean(
+    formData.fullName && formData.email && formData.phone && formData.address && formData.state && formData.city
+  );
+  const isDeliveryComplete = isAddressComplete && Boolean(shippingMethod);
+
   if (items.length === 0 && !isSubmitting) {
     return (
       <div className={pageStyles.checkoutPage}>
@@ -258,8 +288,10 @@ export default function CheckoutPage() {
     );
   }
 
+  const isGift = activeAddress?.tag === "gift" || activeAddress?.id === "gift" || savePresetTag === "gift";
+
   return (
-    <div className={pageStyles.checkoutPage} id="checkout-page">
+    <div className={pageStyles.checkoutPage} id="checkout-page" style={{ paddingBottom: "120px" }}>
       <div className="container" style={{ maxWidth: "600px" }}>
         
         {/* Sticky Header + Step Progress Bar Container */}
@@ -290,11 +322,6 @@ export default function CheckoutPage() {
 
           {/* Dynamic Step Progress Bar */}
           {(() => {
-            const isAddressComplete = Boolean(
-              formData.fullName && formData.email && formData.phone && formData.address && formData.state && formData.city
-            );
-            const isDeliveryComplete = isAddressComplete && Boolean(shippingMethod);
-
             const scrollToStep = (stepId) => {
               const el = document.getElementById(stepId);
               if (el) {
@@ -364,13 +391,16 @@ export default function CheckoutPage() {
                 {addresses.map((preset) => {
                   const isActive = selectedPresetId === preset.id;
                   const hasLocation = preset.city && preset.state;
-                  const locationPreview = hasLocation ? `${preset.city}, ${preset.state}` : "Not set";
+                  const locationPreview = hasLocation 
+                    ? `${preset.city}, ${preset.state}` 
+                    : (preset.id === "gift" ? "Send to someone else" : "Not set");
 
                   return (
                     <div
                       key={preset.id}
                       className={`${addrStyles.presetCard} ${isActive ? addrStyles.active : ""}`}
                       onClick={() => handleSelectPreset(preset)}
+                      style={{ paddingRight: isActive ? "50px" : "12px", position: "relative" }}
                     >
                       {isActive && <div className={addrStyles.activeDot} />}
                       <div className={addrStyles.presetBadge}>
@@ -380,6 +410,34 @@ export default function CheckoutPage() {
                         <span>{preset.label}</span>
                       </div>
                       <span className={addrStyles.presetSubtext}>{locationPreview}</span>
+
+                      {isActive && preset.id !== "new" && (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setIsAddressFormOpen(!isAddressFormOpen);
+                          }}
+                          style={{
+                            position: "absolute",
+                            right: "8px",
+                            bottom: "8px",
+                            background: "var(--color-primary-100)",
+                            color: "var(--color-primary)",
+                            border: "none",
+                            borderRadius: "4px",
+                            padding: "4px 8px",
+                            fontSize: "10px",
+                            fontWeight: "bold",
+                            cursor: "pointer",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "2px"
+                          }}
+                        >
+                          <Edit2 size={10} /> {isAddressFormOpen ? "Close" : "Edit"}
+                        </button>
+                      )}
                     </div>
                   );
                 })}
@@ -394,7 +452,7 @@ export default function CheckoutPage() {
                     <span className={addrStyles.presetIcon} style={{ color: "var(--color-text-secondary)" }}>
                       <Plus size={16} strokeWidth={1.25} />
                     </span>
-                    <span>New</span>
+                    <span>New Address</span>
                   </div>
                   <span className={addrStyles.presetSubtext}>Type new details</span>
                 </div>
@@ -404,8 +462,12 @@ export default function CheckoutPage() {
             {isAddressFormOpen && (
               <div style={{ background: "white", border: "1px solid var(--color-border-light)", borderRadius: "var(--radius-lg)", padding: "var(--space-4)", marginTop: "var(--space-3)" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "var(--space-4)", paddingBottom: "var(--space-2)", borderBottom: "1px solid var(--color-border-light)" }}>
-                  <span style={{ fontSize: "0.8125rem", fontWeight: 600, color: "var(--color-primary-800)" }}>
-                    Editing: <span style={{ color: "var(--color-primary)" }}>{formData.presetLabel || "Address Details"}</span>
+                  <span style={{ fontSize: "0.8125rem", fontWeight: 600, color: "var(--color-primary-800)", display: "inline-flex", alignItems: "center", gap: "6px" }}>
+                    {isGift ? (
+                      <>
+                        <Gift size={14} strokeWidth={1.5} /> Who are you sending this to?
+                      </>
+                    ) : `Editing: ${formData.presetLabel || "Address Details"}`}
                   </span>
                   <button 
                     type="button" 
@@ -430,7 +492,7 @@ export default function CheckoutPage() {
                       handleChange(e);
                       if (showCustomInput) setCustomTagInput(e.target.value);
                     }}
-                    placeholder="e.g. Home, Mum's Place, Lekki Studio, Office"
+                    placeholder="e.g. Home, Ada's Birthday, Corporate Client"
                     style={{
                       width: "100%",
                       padding: "9px 12px",
@@ -446,7 +508,7 @@ export default function CheckoutPage() {
                 </div>
 
                 <div style={{ marginBottom: "var(--space-4)" }}>
-                  <label htmlFor="fullName" style={{ display: "block", fontSize: "0.875rem", marginBottom: "4px", color: "var(--color-text-secondary)" }}>Full Name</label>
+                  <label htmlFor="fullName" style={{ display: "block", fontSize: "0.875rem", marginBottom: "4px", color: "var(--color-text-secondary)" }}>{isGift ? "Recipient's Name" : "Full Name"}</label>
                   <input required type="text" id="fullName" name="fullName" value={formData.fullName} onChange={handleChange} placeholder="e.g. Jane Doe" style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "1px solid var(--color-border)", outline: "none" }} />
                 </div>
                 
@@ -490,52 +552,31 @@ export default function CheckoutPage() {
                 {/* Quick Save / Update Action Bar */}
                 <div className={addrStyles.saveActionBar}>
                   <div className={addrStyles.saveTagSelector}>
-                    <span className={addrStyles.tagLabel}>Save as preset:</span>
+                    <span className={addrStyles.tagLabel}>Save preset as:</span>
                     <button
                       type="button"
                       className={`${addrStyles.tagBtn} ${savePresetTag === "home" && !showCustomInput ? addrStyles.selected : ""}`}
                       onClick={() => { setSavePresetTag("home"); setShowCustomInput(false); }}
+                      style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}
                     >
-                      <Home size={12} strokeWidth={1.25} /> Home
+                      <Home size={13} strokeWidth={1.5} /> Home
                     </button>
                     <button
                       type="button"
                       className={`${addrStyles.tagBtn} ${savePresetTag === "office" && !showCustomInput ? addrStyles.selected : ""}`}
                       onClick={() => { setSavePresetTag("office"); setShowCustomInput(false); }}
+                      style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}
                     >
-                      <Building2 size={12} strokeWidth={1.25} /> Office
+                      <Building2 size={13} strokeWidth={1.5} /> Office
                     </button>
                     <button
                       type="button"
                       className={`${addrStyles.tagBtn} ${savePresetTag === "gift" && !showCustomInput ? addrStyles.selected : ""}`}
                       onClick={() => { setSavePresetTag("gift"); setShowCustomInput(false); }}
+                      style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}
                     >
-                      <Gift size={12} strokeWidth={1.25} /> Gift
+                      <Gift size={13} strokeWidth={1.5} /> Gift / Recipient
                     </button>
-                    <button
-                      type="button"
-                      className={`${addrStyles.tagBtn} ${showCustomInput ? addrStyles.selected : ""}`}
-                      onClick={() => setShowCustomInput(!showCustomInput)}
-                    >
-                      <Plus size={12} strokeWidth={1.25} /> Custom Tag
-                    </button>
-
-                    {showCustomInput && (
-                      <input
-                        type="text"
-                        placeholder="e.g. Mom's House"
-                        value={customTagInput}
-                        onChange={(e) => setCustomTagInput(e.target.value)}
-                        style={{
-                          padding: "4px 8px",
-                          borderRadius: "6px",
-                          border: "1px solid var(--color-primary)",
-                          fontSize: "0.75rem",
-                          outline: "none",
-                          width: "120px"
-                        }}
-                      />
-                    )}
                   </div>
 
                   <div style={{ display: "flex", alignItems: "center", gap: "var(--space-2)" }}>
@@ -578,25 +619,45 @@ export default function CheckoutPage() {
             <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-3)" }}>
               {isLoadingRates ? (
                 <div style={{ padding: "var(--space-4)", textAlign: "center", color: "var(--color-text-secondary)" }}>Loading delivery locations...</div>
-              ) : shippingLocations.map((loc) => (
-                <div 
-                  key={loc.id}
-                  onClick={() => setShippingMethod(loc.id)}
-                  style={{ 
-                    background: shippingMethod === loc.id ? "var(--color-primary-50)" : "white", 
-                    border: `1px solid ${shippingMethod === loc.id ? "var(--color-primary)" : "var(--color-border-light)"}`, 
-                    borderRadius: "var(--radius-lg)", padding: "var(--space-4)", display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer" 
-                  }}
-                >
-                  <div style={{ display: "flex", alignItems: "center", gap: "var(--space-3)" }}>
-                    <div style={{ width: 18, height: 18, borderRadius: "50%", border: `2px solid ${shippingMethod === loc.id ? "var(--color-primary)" : "var(--color-border)"}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                      {shippingMethod === loc.id && <div style={{ width: 10, height: 10, borderRadius: "50%", background: "var(--color-primary)" }}></div>}
+              ) : shippingLocations.map((loc) => {
+                const details = getDeliveryDetails(loc.name);
+                return (
+                  <div 
+                    key={loc.id}
+                    onClick={() => setShippingMethod(loc.id)}
+                    style={{ 
+                      background: shippingMethod === loc.id ? "var(--color-primary-50)" : "white", 
+                      border: `1px solid ${shippingMethod === loc.id ? "var(--color-primary)" : "var(--color-border-light)"}`, 
+                      borderRadius: "var(--radius-xl)", 
+                      padding: "var(--space-4)", 
+                      display: "flex", 
+                      flexDirection: "column", 
+                      gap: "var(--space-2)", 
+                      cursor: "pointer",
+                      transition: "all 0.2s ease",
+                      boxShadow: shippingMethod === loc.id ? "var(--shadow-sm)" : "none",
+                    }}
+                  >
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "var(--space-3)" }}>
+                        <div style={{ width: 18, height: 18, borderRadius: "50%", border: `2px solid ${shippingMethod === loc.id ? "var(--color-primary)" : "var(--color-border)"}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                          {shippingMethod === loc.id && <div style={{ width: 10, height: 10, borderRadius: "50%", background: "var(--color-primary)" }}></div>}
+                        </div>
+                        <span style={{ fontWeight: 600, color: "var(--color-text)", fontSize: "0.95rem" }}>{loc.name}</span>
+                      </div>
+                      <span style={{ fontWeight: 700, color: "var(--color-primary)", fontSize: "0.95rem" }}>{formatPrice(loc.fee)}</span>
                     </div>
-                    <span style={{ fontWeight: 500 }}>{loc.name}</span>
+                    <div style={{ paddingLeft: "30px" }}>
+                      <div style={{ fontSize: "0.8rem", fontWeight: 600, color: "var(--color-success)", display: "flex", alignItems: "center", gap: "4px" }}>
+                        🕒 Est. Delivery: {details.est}
+                      </div>
+                      <div style={{ fontSize: "0.75rem", color: "var(--color-text-secondary)", marginTop: "2px" }}>
+                        {details.desc}
+                      </div>
+                    </div>
                   </div>
-                  <span style={{ fontWeight: 600 }}>{formatPrice(loc.fee)}</span>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
           
@@ -619,35 +680,72 @@ export default function CheckoutPage() {
               </div>
             </div>
           </div>
-
-          <div>
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className={`${btnStyles.btn} ${btnStyles.lg}`}
-              style={{ 
-                background: isSubmitting ? "var(--color-primary-400)" : "var(--color-primary)", 
-                color: "white", 
-                border: "none", 
-                borderRadius: "12px", 
-                margin: "0 auto var(--space-4) auto", 
-                display: "flex", 
-                width: "100%", 
-                maxWidth: "280px",
-                justifyContent: "center",
-                cursor: isSubmitting ? "not-allowed" : "pointer"
-              }}
-            >
-              {isSubmitting ? "Processing..." : "Place Order"}
-            </button>
-            
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", fontSize: "0.75rem", color: "var(--color-text-secondary)" }}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-success)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 12 11 14 15 10"></polyline></svg>
-              SSL Secured Checkout
-            </div>
-          </div>
         </form>
+      </div>
+
+      {/* Sticky Bottom Sheet / Bar */}
+      <div style={{
+        position: "fixed",
+        bottom: 0,
+        left: 0,
+        right: 0,
+        background: "rgba(255, 255, 255, 0.95)",
+        backdropFilter: "blur(16px)",
+        WebkitBackdropFilter: "blur(16px)",
+        borderTop: "1px solid var(--color-border-light)",
+        padding: "var(--space-3) var(--space-4)",
+        zIndex: 100,
+        boxShadow: "0 -8px 24px rgba(0, 0, 0, 0.08)",
+      }}>
+        <div style={{ maxWidth: "600px", margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div>
+            <span style={{ fontSize: "0.75rem", color: "var(--color-text-secondary)", display: "block" }}>
+              Total Summary
+            </span>
+            <span style={{ fontSize: "1.15rem", fontWeight: 700, color: "var(--color-primary)" }}>
+              {formatPrice(finalTotal)}
+            </span>
+          </div>
+          
+          <button
+            type="button"
+            onClick={() => {
+              if (!isAddressComplete) {
+                const el = document.getElementById("checkout-step-1");
+                if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+                setIsAddressFormOpen(true);
+                return;
+              }
+              if (!shippingMethod) {
+                const el = document.getElementById("checkout-step-2");
+                if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+                return;
+              }
+              // Submit the form
+              const formEl = document.querySelector("form");
+              if (formEl) {
+                formEl.requestSubmit();
+              }
+            }}
+            disabled={isSubmitting}
+            className={`${btnStyles.btn}`}
+            style={{
+              padding: "10px 24px",
+              borderRadius: "12px",
+              fontSize: "0.9rem",
+              fontWeight: 600,
+              background: "var(--color-primary)",
+              color: "white",
+              border: "none",
+              cursor: "pointer",
+              boxShadow: "0 4px 12px rgba(122, 64, 61, 0.2)",
+            }}
+          >
+            {isSubmitting ? "Processing..." : (!isAddressComplete ? "Add Address" : (!shippingMethod ? "Choose Delivery" : "Place Order"))}
+          </button>
+        </div>
       </div>
     </div>
   );
 }
+

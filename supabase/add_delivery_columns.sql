@@ -1,0 +1,3 @@
+ALTER TABLE orders 
+ADD COLUMN IF NOT EXISTS shipping_method TEXT,
+ADD COLUMN IF NOT EXISTS delivery_time TEXT;
