@@ -286,17 +286,15 @@ export default function EmailPreviewsPage() {
                 <td align="center" width="33%" style="padding: 0 6px;">
                   <div style="background: #ffffff; padding: 14px 8px; border-radius: 10px; border: 1px solid #f0e6e5;">
                     <div style="margin-bottom: 8px;">
-                      <!-- Realistic Manicured Lady Fingers with Press-On Nails SVG -->
-                      <svg width="28" height="28" viewBox="0 0 32 32" fill="none" stroke="#7a403d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M7 28V14a3 3 0 0 1 6 0v14"/>
-                        <path d="M13 28V10a3 3 0 0 1 6 0v18"/>
-                        <path d="M19 28V13a3 3 0 0 1 6 0v15"/>
-                        <path d="M7 14c0-4 3-7 3-7s3 3 3 7"/>
-                        <path d="M13 10c0-4 3-7 3-7s3 3 3 7"/>
-                        <path d="M19 13c0-4 3-7 3-7s3 3 3 7"/>
-                        <path d="M8.5 17.5a2 2 0 0 0 3 0"/>
-                        <path d="M14.5 13.5a2 2 0 0 0 3 0"/>
-                        <path d="M20.5 16.5a2 2 0 0 0 3 0"/>
+                      <!-- Spread Webbed Manicured Lady Fingers with Press-On Nails SVG -->
+                      <svg width="30" height="30" viewBox="0 0 32 32" fill="none" stroke="#7a403d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 28c3-4 6-6 12-6s9 2 12 6"/>
+                        <path d="M7 23L4 12a2.2 2.2 0 0 1 4.2-1.4l2.8 11.4"/>
+                        <path d="M4 12c-1.5-3 0-5.5 0-5.5s2.5 1 4 4"/>
+                        <path d="M13 22V9a2.2 2.2 0 0 1 4.4 0v13"/>
+                        <path d="M13 9c0-3.5 2.2-5.5 2.2-5.5s2.2 2 2.2 5.5"/>
+                        <path d="M19.5 22l3-10.5a2.2 2.2 0 0 1 4.2 1.2l-2.7 10.3"/>
+                        <path d="M22.5 11.5c1.5-3 0-5.5 0-5.5s-2.5 1-4 4"/>
                       </svg>
                     </div>
                     <div style="font-size: 12px; font-weight: 700; color: #7a403d;">3. Glue & Press</div>
