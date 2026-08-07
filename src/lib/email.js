@@ -198,7 +198,7 @@ export async function sendCustomOrderConfirmationEmail(customOrder) {
       from: `Nailexpress <${fromEmail}>`,
       to: [customOrder.email],
       replyTo: adminDefaultEmail,
-      subject: `Custom Nail Set Request`,
+      subject: `Custom Nail Set Request Received`,
       html: wrapEmailTemplate(`Custom Nail Request`, bodyHtml),
     });
 
