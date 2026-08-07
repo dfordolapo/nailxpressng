@@ -271,12 +271,14 @@ export default function EmailPreviewsPage() {
                 <td align="center" width="33%" style="padding: 0 6px;">
                   <div style="background: #ffffff; padding: 14px 8px; border-radius: 10px; border: 1px solid #f0e6e5;">
                     <div style="margin-bottom: 8px;">
-                      <!-- Outlined Finger Sizing & Fitting Icon -->
+                      <!-- Re-Engineered Finger Sizing Guide Icon -->
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7a403d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 21V11a3 3 0 0 0-6 0v10"/>
-                        <path d="M9 4.5A2.5 2.5 0 0 1 11.5 2h0A2.5 2.5 0 0 1 14 4.5V10H9V4.5z"/>
-                        <path d="M4 7l-2 2 2 2"/>
-                        <path d="M19 7l2 2-2 2"/>
+                        <path d="M9 22V9a3 3 0 0 1 6 0v13"/>
+                        <path d="M9 9c0-3 3-5 3-5s3 2 3 5"/>
+                        <path d="M4 11l-2 2 2 2"/>
+                        <path d="M20 11l2 2-2 2"/>
+                        <line x1="2" y1="13" x2="6" y2="13"/>
+                        <line x1="18" y1="13" x2="22" y2="13"/>
                       </svg>
                     </div>
                     <div style="font-size: 12px; font-weight: 700; color: #7a403d;">2. Match Sizes</div>
@@ -286,26 +288,11 @@ export default function EmailPreviewsPage() {
                 <td align="center" width="33%" style="padding: 0 6px;">
                   <div style="background: #ffffff; padding: 14px 8px; border-radius: 10px; border: 1px solid #f0e6e5;">
                     <div style="margin-bottom: 8px;">
-                      <!-- Realistic Female 5-Finger Hand Line Art SVG -->
-                      <svg width="34" height="34" viewBox="0 0 32 32" fill="none" stroke="#7a403d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                        <!-- Palm & Wrist Contour -->
-                        <path d="M6 30v-7c0-2.5 2-4.5 4.5-4.5"/>
-                        <path d="M26 30v-9c0-4.5-3.5-8-8-8"/>
-                        <!-- 1. Thumb -->
-                        <path d="M4 22c0-3 1.8-5.5 4.5-5.5s4 1.5 4 4"/>
-                        <path d="M4 17c0-3 2.2-5 2.2-5s2.3 2 2.3 5"/>
-                        <!-- 2. Index Finger -->
-                        <path d="M10.5 18.5V11a2.2 2.2 0 0 1 4.4 0v7.5"/>
-                        <path d="M10.5 11c0-3.2 2.2-5 2.2-5s2.2 1.8 2.2 5"/>
-                        <!-- 3. Middle Finger -->
-                        <path d="M15.5 18.5V8a2.2 2.2 0 0 1 4.4 0v10.5"/>
-                        <path d="M15.5 8c0-3.2 2.2-5 2.2-5s2.2 1.8 2.2 5"/>
-                        <!-- 4. Ring Finger -->
-                        <path d="M20.5 18.5V10.5a2.2 2.2 0 0 1 4.4 0v8"/>
-                        <path d="M20.5 10.5c0-3.2 2.2-5 2.2-5s2.2 1.8 2.2 5"/>
-                        <!-- 5. Pinky Finger -->
-                        <path d="M25.5 18.5V14a2 2 0 0 1 4 0v4.5"/>
-                        <path d="M25.5 14c0-2.8 2-4.2 2-4.2s2 1.4 2 4.2"/>
+                      <!-- Re-Engineered Hand Pressing Gesture Icon -->
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7a403d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 11V6a2 2 0 0 0-2-2 2 2 0 0 0-2 2v5"/>
+                        <path d="M14 10V4a2 2 0 0 0-2-2 2 2 0 0 0-2 2v6"/>
+                        <path d="M10 9.5V6a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7c0 4.42 3.58 8 8 8h1a7 7 0 0 0 7-7v-3.5a2.5 2.5 0 0 0-5 0V11"/>
                       </svg>
                     </div>
                     <div style="font-size: 12px; font-weight: 700; color: #7a403d;">3. Glue & Press</div>
