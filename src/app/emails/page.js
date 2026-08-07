@@ -286,16 +286,17 @@ export default function EmailPreviewsPage() {
                 <td align="center" width="33%" style="padding: 0 6px;">
                   <div style="background: #ffffff; padding: 14px 8px; border-radius: 10px; border: 1px solid #f0e6e5;">
                     <div style="margin-bottom: 8px;">
-                      <!-- Custom Girly Manicured Lady Hand Icon -->
-                      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#7a403d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M7 21v-10a2 2 0 0 1 4 0v10"/>
-                        <path d="M11 21V7a2 2 0 0 1 4 0v14"/>
-                        <path d="M15 21v-11a2 2 0 0 1 4 0v11"/>
-                        <path d="M9 9c0-2.5 1-4.5 1-4.5s1 2 1 4.5"/>
-                        <path d="M13 5c0-2.5 1-4.5 1-4.5s1 2 1 4.5"/>
-                        <path d="M17 8c0-2.5 1-4.5 1-4.5s1 2 1 4.5"/>
-                        <circle cx="9" cy="14" r="1"/>
-                        <path d="M3 5l1-2 1 2 2 1-2 1-1 2-1-2-2-1z"/>
+                      <!-- Realistic Manicured Lady Fingers with Press-On Nails SVG -->
+                      <svg width="28" height="28" viewBox="0 0 32 32" fill="none" stroke="#7a403d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M7 28V14a3 3 0 0 1 6 0v14"/>
+                        <path d="M13 28V10a3 3 0 0 1 6 0v18"/>
+                        <path d="M19 28V13a3 3 0 0 1 6 0v15"/>
+                        <path d="M7 14c0-4 3-7 3-7s3 3 3 7"/>
+                        <path d="M13 10c0-4 3-7 3-7s3 3 3 7"/>
+                        <path d="M19 13c0-4 3-7 3-7s3 3 3 7"/>
+                        <path d="M8.5 17.5a2 2 0 0 0 3 0"/>
+                        <path d="M14.5 13.5a2 2 0 0 0 3 0"/>
+                        <path d="M20.5 16.5a2 2 0 0 0 3 0"/>
                       </svg>
                     </div>
                     <div style="font-size: 12px; font-weight: 700; color: #7a403d;">3. Glue & Press</div>
