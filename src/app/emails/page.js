@@ -271,10 +271,10 @@ export default function EmailPreviewsPage() {
                 <td align="center" width="33%" style="padding: 0 6px;">
                   <div style="background: #ffffff; padding: 14px 8px; border-radius: 10px; border: 1px solid #f0e6e5;">
                     <div style="margin-bottom: 8px;">
-                      <!-- Custom Press-On Nail Tip Icon -->
+                      <!-- Outlined Sizing Ruler Icon -->
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7a403d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M8 20V9a4 4 0 0 1 8 0v11a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1z"/>
-                        <path d="M10 5a2 2 0 0 1 4 0"/>
+                        <rect x="2" y="6" width="20" height="12" rx="3"/>
+                        <path d="M6 6v5M10 6v7M14 6v5M18 6v7"/>
                       </svg>
                     </div>
                     <div style="font-size: 12px; font-weight: 700; color: #7a403d;">2. Match Sizes</div>
@@ -284,10 +284,9 @@ export default function EmailPreviewsPage() {
                 <td align="center" width="33%" style="padding: 0 6px;">
                   <div style="background: #ffffff; padding: 14px 8px; border-radius: 10px; border: 1px solid #f0e6e5;">
                     <div style="margin-bottom: 8px;">
-                      <!-- Custom Sparkle & Press Icon -->
+                      <!-- Outlined Glue Drop Icon -->
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7a403d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
-                        <circle cx="12" cy="12" r="3"/>
+                        <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
                       </svg>
                     </div>
                     <div style="font-size: 12px; font-weight: 700; color: #7a403d;">3. Glue & Press</div>
