@@ -88,9 +88,9 @@ export default function EmailPreviewsPage() {
             <td style="padding: 10px 0; vertical-align: top;">
               <div style="font-weight: 700; color: #2d2d2d; font-size: 14px;">1x French Tip Glam Set</div>
               <div style="font-size: 12px; color: #7a403d; margin-top: 4px; font-weight: 500;">
-                Size: <span style="background: #f7e8e8; padding: 2px 6px; border-radius: 4px; color: #7a403d;">M</span>
+                Size: <span style="background: #f7e8e8; padding: 2px 6px; border-radius: 4px; color: #7a403d; white-space: nowrap;">M</span>
                 &nbsp;•&nbsp;
-                Length: <span style="background: #f7e8e8; padding: 2px 6px; border-radius: 4px; color: #7a403d;">Long Almond</span>
+                Length: <span style="background: #f7e8e8; padding: 2px 6px; border-radius: 4px; color: #7a403d; white-space: nowrap;">Long Almond</span>
               </div>
             </td>
             <td align="right" style="padding: 10px 0; vertical-align: top; font-weight: 700; color: #7a403d; font-size: 14px;">₦16,500</td>

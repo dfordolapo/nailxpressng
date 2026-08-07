@@ -63,9 +63,9 @@ export async function sendOrderConfirmationEmail(order, items) {
         <td style="padding: 12px 0; vertical-align: top;">
           <div style="font-weight: 700; color: #2d2d2d; font-size: 15px;">${item.quantity}x ${item.name || item.product_name}</div>
           <div style="font-size: 12px; color: #7a403d; margin-top: 4px; font-weight: 500;">
-            Size: <span style="background: #f7e8e8; padding: 2px 8px; border-radius: 4px; color: #7a403d;">${item.selectedSize || item.selected_size}</span>
+            Size: <span style="background: #f7e8e8; padding: 2px 6px; border-radius: 4px; color: #7a403d; white-space: nowrap;">${item.selectedSize || item.selected_size}</span>
             &nbsp;•&nbsp;
-            Length: <span style="background: #f7e8e8; padding: 2px 8px; border-radius: 4px; color: #7a403d;">${item.selectedLength || item.selected_length}</span>
+            Length: <span style="background: #f7e8e8; padding: 2px 6px; border-radius: 4px; color: #7a403d; white-space: nowrap;">${item.selectedLength || item.selected_length}</span>
           </div>
         </td>
         <td align="right" style="padding: 12px 0; vertical-align: top; font-weight: 700; color: #7a403d; font-size: 15px;">
