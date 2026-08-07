@@ -286,11 +286,14 @@ export default function EmailPreviewsPage() {
                 <td align="center" width="33%" style="padding: 0 6px;">
                   <div style="background: #ffffff; padding: 14px 8px; border-radius: 10px; border: 1px solid #f0e6e5;">
                     <div style="margin-bottom: 8px;">
-                      <!-- Standard Outlined Hand Icon -->
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7a403d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M18 11V6a2 2 0 0 0-2-2 2 2 0 0 0-2 2v5"/>
-                        <path d="M14 10V4a2 2 0 0 0-2-2 2 2 0 0 0-2 2v6"/>
-                        <path d="M10 9.5V6a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7c0 4.42 3.58 8 8 8h1a7 7 0 0 0 7-7v-3.5a2.5 2.5 0 0 0-5 0V11"/>
+                      <!-- Custom Manicured Lady Fingers Line Art Icon -->
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7a403d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M7 21v-8a2 2 0 0 1 4 0v8"/>
+                        <path d="M11 21V8a2 2 0 0 1 4 0v13"/>
+                        <path d="M15 21v-9a2 2 0 0 1 4 0v9"/>
+                        <path d="M7 11c0-2.5 2-4.5 2-4.5s2 2 2 4.5"/>
+                        <path d="M11 6c0-2.5 2-4.5 2-4.5s2 2 2 4.5"/>
+                        <path d="M15 10c0-2.5 2-4.5 2-4.5s2 2 2 4.5"/>
                       </svg>
                     </div>
                     <div style="font-size: 12px; font-weight: 700; color: #7a403d;">3. Glue & Press</div>
