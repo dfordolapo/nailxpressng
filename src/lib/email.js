@@ -16,13 +16,19 @@ function wrapEmailTemplate(contentTitle, contentHtml) {
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>${contentTitle}</title>
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&display=swap" rel="stylesheet">
+      <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&display=swap');
+      </style>
     </head>
     <body style="margin: 0; padding: 0; background-color: #f7f3f2; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
       <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; margin: 30px auto; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.06); border: 1px solid #eae1e0;">
         <!-- BRAND HEADER -->
         <tr>
           <td align="center" style="background-color: #7a403d; padding: 36px 20px; text-align: center;">
-            <h1 style="color: #ffffff; margin: 0; font-family: Georgia, 'Times New Roman', serif; font-size: 28px; letter-spacing: 3px; text-transform: uppercase; font-weight: 600;">NAILEXPRESS</h1>
+            <h1 style="color: #ffffff; margin: 0; font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-size: 30px; letter-spacing: 4px; text-transform: uppercase; font-weight: 600;">NAILEXPRESS</h1>
             <p style="color: #eac5c1; margin: 6px 0 0 0; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; font-weight: 500;">Luxury Press-On Nails</p>
           </td>
         </tr>
@@ -69,7 +75,7 @@ export async function sendOrderConfirmationEmail(order, items) {
     `).join('');
 
     const bodyHtml = `
-      <h2 style="color: #7a403d; font-family: Georgia, serif; font-size: 22px; margin-top: 0; margin-bottom: 8px;">Thanks for your order, ${order.customer_first_name}!</h2>
+      <h2 style="color: #7a403d; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 24px; margin-top: 0; margin-bottom: 8px;">Thanks for your order, ${order.customer_first_name}!</h2>
       <p style="color: #555; margin-top: 0; margin-bottom: 24px;">We've received your order and are crafting it with care.</p>
       
       <!-- ORDER INFO BOX -->
@@ -136,7 +142,7 @@ export async function sendAdminNewOrderAlert(order, items = [], adminEmail) {
 
     const bodyHtml = `
       <div style="background-color: #fcf6f6; border-radius: 12px; padding: 20px; border: 1px solid #f5e6e5; margin-bottom: 24px;">
-        <h2 style="color: #7a403d; font-family: Georgia, serif; font-size: 20px; margin: 0 0 12px 0;">New Order Notification</h2>
+        <h2 style="color: #7a403d; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 22px; margin: 0 0 12px 0;">New Order Notification</h2>
         <p style="margin: 4px 0;"><strong>Order Number:</strong> #${orderNum}</p>
         <p style="margin: 4px 0;"><strong>Customer Name:</strong> ${order.customer_first_name} ${order.customer_last_name}</p>
         <p style="margin: 4px 0;"><strong>Email:</strong> ${order.customer_email}</p>
@@ -179,7 +185,7 @@ export async function sendAdminNewOrderAlert(order, items = [], adminEmail) {
 export async function sendCustomOrderConfirmationEmail(customOrder) {
   try {
     const bodyHtml = `
-      <h2 style="color: #7a403d; font-family: Georgia, serif; font-size: 22px; margin-top: 0;">Hi ${customOrder.name},</h2>
+      <h2 style="color: #7a403d; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 24px; margin-top: 0;">Hi ${customOrder.name},</h2>
       <p style="color: #555;">We received your request for a custom press-on nail set! Our team is reviewing your design specifications and will contact you shortly.</p>
       
       <div style="background-color: #fcf6f6; border-radius: 12px; padding: 20px; border: 1px solid #f5e6e5; margin: 24px 0;">
@@ -225,7 +231,7 @@ export async function sendAdminCustomOrderAlert(customOrder, adminEmail) {
 
     const bodyHtml = `
       <div style="background-color: #fcf6f6; border-radius: 12px; padding: 20px; border: 1px solid #f5e6e5; margin-bottom: 24px;">
-        <h2 style="color: #7a403d; font-family: Georgia, serif; font-size: 20px; margin-top: 0;">New Custom Set Request</h2>
+        <h2 style="color: #7a403d; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 22px; margin-top: 0;">New Custom Set Request</h2>
         <p style="margin: 4px 0;"><strong>Customer:</strong> ${customOrder.name} (${customOrder.email})</p>
         <p style="margin: 4px 0;"><strong>Phone:</strong> ${customOrder.phone || 'N/A'}</p>
         <p style="margin: 4px 0;"><strong>Shape:</strong> ${customOrder.shape}</p>
@@ -273,7 +279,7 @@ export async function sendOrderShippedEmail(order) {
     const orderNum = order.id ? order.id.split('-')[0] : '';
 
     const bodyHtml = `
-      <h2 style="color: #7a403d; font-family: Georgia, serif; font-size: 22px; margin-top: 0;">Your Order Has Shipped!</h2>
+      <h2 style="color: #7a403d; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 24px; margin-top: 0;">Your Order Has Shipped!</h2>
       <p style="color: #555;">Hi ${order.customer_first_name || 'there'}, guess what? Your fresh set just left our studio and is headed straight to you! We've packed everything with care, so get those nails ready to slay.</p>
       
       <div style="background-color: #fcf6f6; border-radius: 12px; padding: 20px; border: 1px solid #f5e6e5; margin: 24px 0;">
@@ -309,7 +315,7 @@ export async function sendOrderDeliveredEmail(order) {
     const orderNum = order.id ? order.id.split('-')[0] : '';
 
     const bodyHtml = `
-      <h2 style="color: #7a403d; font-family: Georgia, serif; font-size: 22px; margin-top: 0;">Your Order Has Been Delivered</h2>
+      <h2 style="color: #7a403d; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 24px; margin-top: 0;">Your Order Has Been Delivered</h2>
       <p style="color: #555;">Hi ${order.customer_first_name || 'there'}, your order <strong>#${orderNum}</strong> has been successfully delivered. We hope you love your new press-on set!</p>
       
       <div style="background-color: #fcf6f6; border-left: 4px solid #7a403d; padding: 18px; margin: 24px 0; border-radius: 8px;">

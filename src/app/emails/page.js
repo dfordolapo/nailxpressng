@@ -17,9 +17,11 @@ export default function EmailPreviewsPage() {
       <!DOCTYPE html>
       <html>
       <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&display=swap" rel="stylesheet">
         <style>
+          @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&display=swap');
           @media only screen and (max-width: 520px) {
             .email-card { margin: 10px auto !important; border-radius: 12px !important; }
             .content-body { padding: 22px 16px !important; font-size: 14px !important; }
@@ -36,8 +38,8 @@ export default function EmailPreviewsPage() {
           <!-- BRAND HEADER -->
           <tr>
             <td align="center" class="header-pad" style="background-color: #7a403d; padding: 36px 20px; text-align: center;">
-              <h1 style="color: #ffffff; margin: 0; font-family: Georgia, serif; font-size: 26px; letter-spacing: 3px; text-transform: uppercase; font-weight: 600;">NAILEXPRESS</h1>
-              <p style="color: #eac5c1; margin: 6px 0 0 0; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; font-weight: 500;">Luxury Press-On Nails</p>
+              <h1 style="color: #ffffff; margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 30px; letter-spacing: 4px; text-transform: uppercase; font-weight: 600;">NAILEXPRESS</h1>
+              <p style="color: #eac5c1; margin: 6px 0 0 0; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; font-weight: 500;">Luxury Press-On Nails</p>
             </td>
           </tr>
 
@@ -63,7 +65,7 @@ export default function EmailPreviewsPage() {
 
     if (type === "buyer_order") {
       return wrap(`
-        <h2 style="color: #7a403d; font-family: Georgia, serif; font-size: 22px; margin-top: 0; margin-bottom: 8px;">Thanks for your order, Dolapo!</h2>
+        <h2 style="color: #7a403d; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 24px; margin-top: 0; margin-bottom: 8px;">Thanks for your order, Dolapo!</h2>
         <p style="color: #555; margin-top: 0; margin-bottom: 20px;">We've received your order and are crafting it with care.</p>
         
         <div style="background-color: #fcf6f6; border-radius: 12px; padding: 16px 20px; border: 1px solid #f5e6e5; margin-bottom: 20px;">
@@ -113,7 +115,7 @@ export default function EmailPreviewsPage() {
     if (type === "admin_order") {
       return wrap(`
         <div style="background-color: #fcf6f6; border-radius: 12px; padding: 18px; border: 1px solid #f5e6e5; margin-bottom: 20px;">
-          <h2 style="color: #7a403d; font-family: Georgia, serif; font-size: 19px; margin: 0 0 10px 0;">New Order Notification</h2>
+          <h2 style="color: #7a403d; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 22px; margin: 0 0 10px 0;">New Order Notification</h2>
           <p style="margin: 4px 0; font-size: 14px;"><strong>Order Number:</strong> #596e0942</p>
           <p style="margin: 4px 0; font-size: 14px;"><strong>Customer:</strong> Dolapo Oyekanmi</p>
           <p style="margin: 4px 0; font-size: 14px;"><strong>Email:</strong> dfordolapo@gmail.com</p>
@@ -152,7 +154,7 @@ export default function EmailPreviewsPage() {
 
     if (type === "buyer_custom") {
       return wrap(`
-        <h2 style="color: #7a403d; font-family: Georgia, serif; font-size: 21px; margin-top: 0;">Hi Dolapo,</h2>
+        <h2 style="color: #7a403d; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 24px; margin-top: 0;">Hi Dolapo,</h2>
         <p style="color: #555; font-size: 14px;">We received your request for a custom press-on nail set! Our team is reviewing your design specifications and will contact you shortly.</p>
         
         <div style="background-color: #fcf6f6; border-radius: 12px; padding: 18px; border: 1px solid #f5e6e5; margin: 20px 0;">
@@ -183,7 +185,7 @@ export default function EmailPreviewsPage() {
     if (type === "admin_custom") {
       return wrap(`
         <div style="background-color: #fcf6f6; border-radius: 12px; padding: 18px; border: 1px solid #f5e6e5; margin-bottom: 20px;">
-          <h2 style="color: #7a403d; font-family: Georgia, serif; font-size: 19px; margin-top: 0;">New Custom Set Request</h2>
+          <h2 style="color: #7a403d; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 22px; margin-top: 0;">New Custom Set Request</h2>
           <p style="margin: 4px 0; font-size: 14px;"><strong>Customer:</strong> Dolapo (dfordolapo@gmail.com)</p>
           <p style="margin: 4px 0; font-size: 14px;"><strong>Phone:</strong> 08187902241</p>
           <p style="margin: 4px 0; font-size: 14px;"><strong>Shape:</strong> Oval</p>
@@ -213,7 +215,7 @@ export default function EmailPreviewsPage() {
 
     if (type === "buyer_shipped") {
       return wrap(`
-        <h2 style="color: #7a403d; font-family: Georgia, serif; font-size: 21px; margin-top: 0;">Your Order Has Shipped!</h2>
+        <h2 style="color: #7a403d; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 24px; margin-top: 0;">Your Order Has Shipped!</h2>
         <p style="color: #555; font-size: 14px;">Hi Dolapo, guess what? Your fresh set just left our studio and is headed straight to you! We've packed everything with care, so get those nails ready to slay.</p>
 
         ${isRich ? `
@@ -266,7 +268,7 @@ export default function EmailPreviewsPage() {
 
     if (type === "buyer_delivered") {
       return wrap(`
-        <h2 style="color: #7a403d; font-family: Georgia, serif; font-size: 21px; margin-top: 0;">Your Order Has Been Delivered</h2>
+        <h2 style="color: #7a403d; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 24px; margin-top: 0;">Your Order Has Been Delivered</h2>
         <p style="color: #555; font-size: 14px;">Hi Dolapo, your order <strong>#596e0942</strong> has been successfully delivered. We hope you love your new press-on set!</p>
 
         ${isRich ? `
