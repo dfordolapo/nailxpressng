@@ -43,7 +43,7 @@ function wrapEmailTemplate(contentTitle, contentHtml) {
         <!-- FOOTER -->
         <tr>
           <td style="background-color: #fcf6f6; padding: 28px 20px; text-align: center; border-top: 1px solid #f0e6e5;">
-            <p style="margin: 0 0 6px 0; font-size: 14px; color: #7a403d; font-weight: 700;">Follow Us @nailexpress.ng</p>
+            <p style="margin: 0 0 6px 0; font-size: 14px; color: #7a403d; font-weight: 600;">Follow Us @nailexpress.ng</p>
             <p style="margin: 0 0 14px 0; font-size: 12px; color: #777;">Have questions? Reply directly to this email or chat with us on WhatsApp.</p>
             <p style="margin: 0; font-size: 11px; color: #aaa; letter-spacing: 0.5px;">© ${currentYear} Nailexpress. All rights reserved.</p>
           </td>
@@ -80,9 +80,9 @@ export async function sendOrderConfirmationEmail(order, items) {
       
       <!-- ORDER INFO BOX -->
       <div style="background-color: #fcf6f6; border-radius: 12px; padding: 20px; border: 1px solid #f5e6e5; margin-bottom: 24px;">
-        <div style="display: inline-block; background-color: #7a403d; color: #ffffff; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; letter-spacing: 1px; margin-bottom: 12px;">ORDER #${orderNum}</div>
-        <p style="margin: 0 0 6px 0; font-size: 13px; color: #666; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Shipping Address</p>
-        <p style="margin: 0; font-weight: 600; color: #2d2d2d;">
+        <div style="display: inline-block; background-color: #7a403d; color: #ffffff; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; letter-spacing: 1px; margin-bottom: 12px;">ORDER #${orderNum}</div>
+        <p style="margin: 0 0 6px 0; font-size: 12px; color: #666; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Shipping Address</p>
+        <p style="margin: 0; font-weight: 500; color: #2d2d2d;">
           ${order.shipping_address}<br/>
           ${order.shipping_city}, ${order.shipping_state}
         </p>
@@ -241,7 +241,7 @@ export async function sendAdminCustomOrderAlert(customOrder, adminEmail) {
         <p style="margin: 4px 0;"><strong>Notes:</strong> ${customOrder.notes || 'None'}</p>
         ${refImage ? `
           <div style="margin-top: 14px; padding-top: 10px; border-top: 1px dashed #eac5c1;">
-            <p style="margin: 0 0 6px 0; color: #7a403d; font-weight: 700;">Uploaded Reference Photo:</p>
+            <p style="margin: 0 0 6px 0; color: #7a403d; font-weight: 600;">Uploaded Reference Photo:</p>
             <a href="${refImage}" target="_blank" style="display: inline-block;">
               <img src="${refImage}" alt="Reference Image" style="max-width: 200px; max-height: 200px; border-radius: 8px; border: 1px solid #eae1e0;" />
             </a>
@@ -283,7 +283,7 @@ export async function sendOrderShippedEmail(order) {
       <p style="color: #555;">Hi ${order.customer_first_name || 'there'}, guess what? Your fresh set just left our studio and is headed straight to you! We've packed everything with care, so get those nails ready to slay.</p>
       
       <div style="background-color: #fcf6f6; border-radius: 12px; padding: 20px; border: 1px solid #f5e6e5; margin: 24px 0;">
-        <div style="display: inline-block; background-color: #7a403d; color: #ffffff; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; letter-spacing: 1px; margin-bottom: 12px;">ORDER #${orderNum}</div>
+        <div style="display: inline-block; background-color: #7a403d; color: #ffffff; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; letter-spacing: 1px; margin-bottom: 12px;">ORDER #${orderNum}</div>
         <p style="margin: 0 0 6px 0; font-size: 13px; color: #666; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Delivery Address</p>
         <p style="margin: 0; font-weight: 600; color: #2d2d2d;">
           ${order.shipping_address || ''}<br/>
@@ -326,7 +326,7 @@ export async function sendOrderDeliveredEmail(order) {
       </div>
 
       <div style="text-align: center; margin: 28px 0; padding: 20px; background-color: #f7e8e8; border-radius: 12px;">
-        <p style="margin: 0 0 6px 0; font-weight: 700; color: #7a403d; font-size: 16px;">Show Off Your Set</p>
+        <p style="margin: 0 0 6px 0; font-weight: 600; color: #7a403d; font-size: 16px;">Show Off Your Set</p>
         <p style="margin: 0; font-size: 13px; color: #555;">Tag us on Instagram <strong>@nailexpress.ng</strong> wearing your set — we'd love to feature you!</p>
       </div>
     `;

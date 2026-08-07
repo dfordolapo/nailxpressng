@@ -53,7 +53,7 @@ export default function EmailPreviewsPage() {
           <!-- FOOTER -->
           <tr>
             <td style="background-color: #fcf6f6; padding: 24px 16px; text-align: center; border-top: 1px solid #f0e6e5;">
-              <p style="margin: 0 0 6px 0; font-size: 14px; color: #7a403d; font-weight: 700;">Follow Us @nailexpress.ng</p>
+              <p style="margin: 0 0 6px 0; font-size: 14px; color: #7a403d; font-weight: 600;">Follow Us @nailexpress.ng</p>
               <p style="margin: 0 0 12px 0; font-size: 12px; color: #777;">Have questions? Reply directly to this email or chat with us on WhatsApp.</p>
               <p style="margin: 0; font-size: 11px; color: #aaa; letter-spacing: 0.5px;">© 2026 Nailexpress. All rights reserved.</p>
             </td>
@@ -69,9 +69,9 @@ export default function EmailPreviewsPage() {
         <p style="color: #555; margin-top: 0; margin-bottom: 20px;">We've received your order and are crafting it with care.</p>
         
         <div style="background-color: #fcf6f6; border-radius: 12px; padding: 16px 20px; border: 1px solid #f5e6e5; margin-bottom: 20px;">
-          <div style="display: inline-block; background-color: #7a403d; color: #ffffff; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; letter-spacing: 1px; margin-bottom: 10px;">ORDER #596e0942</div>
+          <div style="display: inline-block; background-color: #7a403d; color: #ffffff; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; letter-spacing: 1px; margin-bottom: 10px;">ORDER #596e0942</div>
           <p style="margin: 0 0 4px 0; font-size: 12px; color: #666; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Shipping Address</p>
-          <p style="margin: 0; font-weight: 600; color: #2d2d2d; font-size: 14px;">
+          <p style="margin: 0; font-weight: 500; color: #2d2d2d; font-size: 14px;">
             16, Yinka Ogunfile Street, Ikorodu<br/>
             Ikorodu, Lagos
           </p>
@@ -254,7 +254,7 @@ export default function EmailPreviewsPage() {
         ` : ''}
 
         <div style="background-color: #fcf6f6; border-radius: 12px; padding: 16px 20px; border: 1px solid #f5e6e5; margin: 20px 0;">
-          <div style="display: inline-block; background-color: #7a403d; color: #ffffff; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; letter-spacing: 1px; margin-bottom: 10px;">ORDER #596e0942</div>
+          <div style="display: inline-block; background-color: #7a403d; color: #ffffff; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; letter-spacing: 1px; margin-bottom: 10px;">ORDER #596e0942</div>
           <p style="margin: 0 0 4px 0; font-size: 12px; color: #666; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Delivery Address</p>
           <p style="margin: 0; font-weight: 600; color: #2d2d2d; font-size: 14px;">
             16, Yinka Ogunfile Street, Ikorodu<br/>
@@ -335,7 +335,7 @@ export default function EmailPreviewsPage() {
         `}
 
         <div style="text-align: center; margin: 22px 0; padding: 16px; background-color: #f7e8e8; border-radius: 12px;">
-          <p style="margin: 0 0 4px 0; font-weight: 700; color: #7a403d; font-size: 15px;">Show Off Your Set</p>
+          <p style="margin: 0 0 4px 0; font-weight: 600; color: #7a403d; font-size: 15px;">Show Off Your Set</p>
           <p style="margin: 0; font-size: 13px; color: #555;">Tag us on Instagram <strong>@nailexpress.ng</strong> wearing your set — we'd love to feature you!</p>
         </div>
       `);
