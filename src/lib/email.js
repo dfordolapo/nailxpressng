@@ -60,15 +60,15 @@ export async function sendOrderConfirmationEmail(order, items) {
     const orderNum = order.id ? order.id.split('-')[0] : '';
     const itemsHtml = items.map(item => `
       <tr style="border-bottom: 1px solid #f2e9e8;">
-        <td style="padding: 12px 0; vertical-align: top;">
-          <div style="font-weight: 700; color: #2d2d2d; font-size: 15px;">${item.quantity}x ${item.name || item.product_name}</div>
-          <div style="font-size: 12px; color: #7a403d; margin-top: 4px; font-weight: 500; white-space: nowrap;">
-            Size: <span style="background: #f7e8e8; padding: 2px 6px; border-radius: 4px; color: #7a403d;">${item.selectedSize || item.selected_size}</span>
+        <td style="padding: 10px 0; vertical-align: top;">
+          <div style="font-weight: 700; color: #2d2d2d; font-size: 14px;">${item.quantity}x ${item.name || item.product_name}</div>
+          <div style="font-size: 11px; color: #7a403d; margin-top: 3px; font-weight: 500; white-space: nowrap;">
+            Size: <span style="background: #f7e8e8; padding: 1px 5px; border-radius: 4px; color: #7a403d;">${item.selectedSize || item.selected_size}</span>
             &nbsp;•&nbsp;
-            Length: <span style="background: #f7e8e8; padding: 2px 6px; border-radius: 4px; color: #7a403d;">${item.selectedLength || item.selected_length}</span>
+            Length: <span style="background: #f7e8e8; padding: 1px 5px; border-radius: 4px; color: #7a403d;">${item.selectedLength || item.selected_length}</span>
           </div>
         </td>
-        <td align="right" style="padding: 12px 0; vertical-align: top; font-weight: 700; color: #7a403d; font-size: 15px;">
+        <td align="right" style="padding: 10px 0; vertical-align: top; font-weight: 700; color: #7a403d; font-size: 14px; white-space: nowrap;">
           ₦${(item.price * item.quantity).toLocaleString()}
         </td>
       </tr>

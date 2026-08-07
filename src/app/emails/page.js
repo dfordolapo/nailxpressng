@@ -85,15 +85,15 @@ export default function EmailPreviewsPage() {
                 <img src="${sampleProductImg}" width="54" height="54" style="border-radius: 8px; object-fit: cover; border: 1px solid #eae1e0;" alt="Product" />
               </td>
             ` : ''}
-            <td style="padding: 10px 0; vertical-align: top;">
-              <div style="font-weight: 700; color: #2d2d2d; font-size: 14px;">1x French Tip Glam Set</div>
-              <div style="font-size: 12px; color: #7a403d; margin-top: 4px; font-weight: 500; white-space: nowrap;">
-                Size: <span style="background: #f7e8e8; padding: 2px 6px; border-radius: 4px; color: #7a403d;">M</span>
+            <td style="padding: 8px 0; vertical-align: top;">
+              <div style="font-weight: 700; color: #2d2d2d; font-size: 13px;">1x French Tip Glam Set</div>
+              <div style="font-size: 11px; color: #7a403d; margin-top: 2px; font-weight: 500; white-space: nowrap;">
+                Size: <span style="background: #f7e8e8; padding: 1px 5px; border-radius: 4px; color: #7a403d;">M</span>
                 &nbsp;•&nbsp;
-                Length: <span style="background: #f7e8e8; padding: 2px 6px; border-radius: 4px; color: #7a403d;">Long Almond</span>
+                Length: <span style="background: #f7e8e8; padding: 1px 5px; border-radius: 4px; color: #7a403d;">Long Almond</span>
               </div>
             </td>
-            <td align="right" style="padding: 10px 0; vertical-align: top; font-weight: 700; color: #7a403d; font-size: 14px;">₦16,500</td>
+            <td align="right" style="padding: 8px 0; vertical-align: top; font-weight: 700; color: #7a403d; font-size: 13px; white-space: nowrap;">₦16,500</td>
           </tr>
         </table>
 
