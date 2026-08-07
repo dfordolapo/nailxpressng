@@ -2,158 +2,245 @@ import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY || 're_AXGp4Ti4_DwL6PCzXkdsaT7G2DzXwWwKy');
 
-// Default sender address (Change to 'orders@nailexpress.ng' once custom domain is verified on Resend)
+// Default sender address
 const fromEmail = process.env.SENDER_EMAIL || 'onboarding@resend.dev';
+const adminDefaultEmail = process.env.ADMIN_EMAIL || 'nailxpressng@gmail.com';
 
+// Common Email Layout Wrapper
+function wrapEmailTemplate(contentTitle, contentHtml) {
+  const currentYear = new Date().getFullYear();
+  return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>${contentTitle}</title>
+    </head>
+    <body style="margin: 0; padding: 0; background-color: #f7f3f2; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+      <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; margin: 30px auto; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.06); border: 1px solid #eae1e0;">
+        <!-- BRAND HEADER -->
+        <tr>
+          <td align="center" style="background-color: #7a403d; padding: 36px 20px; text-align: center;">
+            <h1 style="color: #ffffff; margin: 0; font-family: Georgia, 'Times New Roman', serif; font-size: 28px; letter-spacing: 3px; text-transform: uppercase; font-weight: 600;">NAILEXPRESS</h1>
+            <p style="color: #eac5c1; margin: 6px 0 0 0; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; font-weight: 500;">Luxury Press-On Nails</p>
+          </td>
+        </tr>
+
+        <!-- CONTENT BODY -->
+        <tr>
+          <td style="padding: 36px 28px; color: #2d2d2d; font-size: 15px; line-height: 1.6;">
+            ${contentHtml}
+          </td>
+        </tr>
+
+        <!-- FOOTER -->
+        <tr>
+          <td style="background-color: #fcf6f6; padding: 28px 20px; text-align: center; border-top: 1px solid #f0e6e5;">
+            <p style="margin: 0 0 6px 0; font-size: 14px; color: #7a403d; font-weight: 700;">Follow Us @nailexpress.ng</p>
+            <p style="margin: 0 0 14px 0; font-size: 12px; color: #777;">Have questions? Reply directly to this email or chat with us on WhatsApp.</p>
+            <p style="margin: 0; font-size: 11px; color: #aaa; letter-spacing: 0.5px;">© ${currentYear} Nailexpress. All rights reserved.</p>
+          </td>
+        </tr>
+      </table>
+    </body>
+    </html>
+  `;
+}
+
+// 1. Buyer Order Confirmation Email
 export async function sendOrderConfirmationEmail(order, items) {
   try {
+    const orderNum = order.id ? order.id.split('-')[0] : '';
+    const itemsHtml = items.map(item => `
+      <tr style="border-bottom: 1px solid #f2e9e8;">
+        <td style="padding: 12px 0; vertical-align: top;">
+          <div style="font-weight: 700; color: #2d2d2d; font-size: 15px;">${item.quantity}x ${item.name || item.product_name}</div>
+          <div style="font-size: 12px; color: #7a403d; margin-top: 4px; font-weight: 500;">
+            Size: <span style="background: #f7e8e8; padding: 2px 8px; border-radius: 4px; color: #7a403d;">${item.selectedSize || item.selected_size}</span>
+            &nbsp;•&nbsp;
+            Length: <span style="background: #f7e8e8; padding: 2px 8px; border-radius: 4px; color: #7a403d;">${item.selectedLength || item.selected_length}</span>
+          </div>
+        </td>
+        <td align="right" style="padding: 12px 0; vertical-align: top; font-weight: 700; color: #7a403d; font-size: 15px;">
+          ₦${(item.price * item.quantity).toLocaleString()}
+        </td>
+      </tr>
+    `).join('');
+
+    const bodyHtml = `
+      <h2 style="color: #7a403d; font-family: Georgia, serif; font-size: 22px; margin-top: 0; margin-bottom: 8px;">Thanks for your order, ${order.customer_first_name}! ✨</h2>
+      <p style="color: #555; margin-top: 0; margin-bottom: 24px;">We've received your order and are crafting it with love and care.</p>
+      
+      <!-- ORDER INFO BOX -->
+      <div style="background-color: #fcf6f6; border-radius: 12px; padding: 20px; border: 1px solid #f5e6e5; margin-bottom: 24px;">
+        <div style="display: inline-block; background-color: #7a403d; color: #ffffff; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; letter-spacing: 1px; margin-bottom: 12px;">ORDER #${orderNum}</div>
+        <p style="margin: 0 0 6px 0; font-size: 13px; color: #666; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Shipping Address</p>
+        <p style="margin: 0; font-weight: 600; color: #2d2d2d;">
+          ${order.shipping_address}<br/>
+          ${order.shipping_city}, ${order.shipping_state}
+        </p>
+      </div>
+
+      <!-- ITEMS TABLE -->
+      <h3 style="color: #7a403d; font-size: 16px; margin-bottom: 12px; border-bottom: 2px solid #f2e9e8; padding-bottom: 8px;">Items Ordered</h3>
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 24px;">
+        ${itemsHtml}
+      </table>
+
+      <!-- SUMMARY BOX -->
+      <div style="border-top: 2px solid #7a403d; padding-top: 16px; margin-top: 16px;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td style="color: #666; padding: 4px 0;">Shipping Fee:</td>
+            <td align="right" style="color: #2d2d2d; font-weight: 600;">₦${(order.shipping_fee || 0).toLocaleString()}</td>
+          </tr>
+          <tr>
+            <td style="color: #7a403d; font-weight: 700; font-size: 18px; padding-top: 8px;">Total Paid:</td>
+            <td align="right" style="color: #7a403d; font-weight: 800; font-size: 20px; padding-top: 8px;">₦${(order.total_amount || 0).toLocaleString()}</td>
+          </tr>
+        </table>
+      </div>
+    `;
+
     const { data, error } = await resend.emails.send({
       from: `Nailexpress <${fromEmail}>`,
       to: [order.customer_email],
-      replyTo: process.env.ADMIN_EMAIL || 'nailxpressng@gmail.com',
-      subject: `Order Confirmation - #${order.id.split('-')[0]}`,
-      html: `
-        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
-          <h1 style="color: #d1758f;">Thanks for your order, ${order.customer_first_name}!</h1>
-          <p>We've received your order and are getting it ready to ship.</p>
-          
-          <h3 style="border-bottom: 1px solid #eee; padding-bottom: 8px;">Order Details</h3>
-          <p><strong>Order Number:</strong> #${order.id.split('-')[0]}</p>
-          <p><strong>Shipping Address:</strong><br/>
-            ${order.shipping_address}<br/>
-            ${order.shipping_city}, ${order.shipping_state}
-          </p>
-          
-          <h3 style="border-bottom: 1px solid #eee; padding-bottom: 8px; margin-top: 24px;">Items</h3>
-          <ul style="list-style: none; padding: 0;">
-            ${items.map(item => `
-              <li style="margin-bottom: 8px;">
-                ${item.quantity}x <strong>${item.name || item.product_name}</strong> - ₦${(item.price * item.quantity).toLocaleString()}
-                <div style="font-size: 12px; color: #666;">Size: ${item.selectedSize || item.selected_size} | Length: ${item.selectedLength || item.selected_length}</div>
-              </li>
-            `).join('')}
-          </ul>
-          
-          <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee;">
-            <p style="margin: 4px 0;"><strong>Shipping:</strong> ₦${order.shipping_fee.toLocaleString()}</p>
-            <p style="margin: 4px 0; font-size: 1.1em;"><strong>Total Paid:</strong> ₦${order.total_amount.toLocaleString()}</p>
-          </div>
-          
-          <p style="margin-top: 32px; font-size: 0.9em; color: #666; text-align: center;">
-            If you have any questions about your order, reply to this email or contact us on WhatsApp.
-          </p>
-        </div>
-      `,
-    });
-
-    if (error) {
-      console.error("Resend Error:", error);
-      return { success: false, error };
-    }
-
-    return { success: true, data };
-  } catch (error) {
-    console.error("Email Error:", error);
-    return { success: false, error };
-  }
-}
-
-export async function sendAdminNewOrderAlert(order, items = [], adminEmail) {
-  try {
-    const { data, error } = await resend.emails.send({
-      from: `Nailexpress System <${fromEmail}>`,
-      to: [adminEmail],
-      subject: `New Order #${order.id.split('-')[0]} Received - ₦${order.total_amount.toLocaleString()}`,
-      html: `
-        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
-          <h2 style="color: #d1758f;">You have a new order! 🎉</h2>
-          <p><strong>Customer:</strong> ${order.customer_first_name} ${order.customer_last_name} (${order.customer_email})</p>
-          <p><strong>Phone:</strong> ${order.customer_phone || 'N/A'}</p>
-          <p><strong>Delivery Address:</strong> ${order.shipping_address}, ${order.shipping_city}, ${order.shipping_state}</p>
-          
-          <h3 style="border-bottom: 1px solid #eee; padding-bottom: 8px; margin-top: 20px;">Ordered Items</h3>
-          <ul style="list-style: none; padding: 0;">
-            ${items.map(item => `
-              <li style="margin-bottom: 8px;">
-                ${item.quantity}x <strong>${item.name || item.product_name}</strong> - ₦${(item.price * item.quantity).toLocaleString()}
-                <div style="font-size: 12px; color: #666;">Size: ${item.selectedSize || item.selected_size} | Length: ${item.selectedLength || item.selected_length}</div>
-              </li>
-            `).join('')}
-          </ul>
-          
-          <p style="font-size: 1.1em; font-weight: bold; margin-top: 16px;">Total Amount: ₦${order.total_amount.toLocaleString()}</p>
-          
-          <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/admin/orders" 
-             style="display: inline-block; padding: 12px 24px; background: #d1758f; color: white; text-decoration: none; border-radius: 6px; margin-top: 16px; font-weight: bold;">
-            View Order in Dashboard
-          </a>
-        </div>
-      `,
+      replyTo: adminDefaultEmail,
+      subject: `Order Confirmation - #${orderNum}`,
+      html: wrapEmailTemplate(`Order Confirmation - #${orderNum}`, bodyHtml),
     });
 
     return { success: !error, error };
   } catch (error) {
-    console.error("Admin Email Error:", error);
+    console.error("Order Confirmation Email Error:", error);
     return { success: false, error };
   }
 }
 
+// 2. Admin New Order Alert Email
+export async function sendAdminNewOrderAlert(order, items = [], adminEmail) {
+  try {
+    const orderNum = order.id ? order.id.split('-')[0] : '';
+    const adminTarget = adminEmail || adminDefaultEmail;
+    
+    const itemsHtml = items.map(item => `
+      <tr style="border-bottom: 1px solid #f2e9e8;">
+        <td style="padding: 10px 0;">
+          <strong>${item.quantity}x ${item.name || item.product_name}</strong>
+          <div style="font-size: 12px; color: #7a403d;">Size: ${item.selectedSize || item.selected_size} | Length: ${item.selectedLength || item.selected_length}</div>
+        </td>
+        <td align="right" style="font-weight: 700; color: #7a403d;">₦${(item.price * item.quantity).toLocaleString()}</td>
+      </tr>
+    `).join('');
+
+    const bodyHtml = `
+      <div style="background-color: #fcf6f6; border-radius: 12px; padding: 20px; border: 1px solid #f5e6e5; margin-bottom: 24px;">
+        <h2 style="color: #7a403d; font-family: Georgia, serif; font-size: 20px; margin: 0 0 12px 0;">🎉 You Have a New Order!</h2>
+        <p style="margin: 4px 0;"><strong>Order Number:</strong> #${orderNum}</p>
+        <p style="margin: 4px 0;"><strong>Customer Name:</strong> ${order.customer_first_name} ${order.customer_last_name}</p>
+        <p style="margin: 4px 0;"><strong>Email:</strong> ${order.customer_email}</p>
+        <p style="margin: 4px 0;"><strong>Phone:</strong> ${order.customer_phone || 'N/A'}</p>
+        <p style="margin: 4px 0;"><strong>Delivery Address:</strong> ${order.shipping_address}, ${order.shipping_city}, ${order.shipping_state}</p>
+      </div>
+
+      <h3 style="color: #7a403d; font-size: 16px; margin-bottom: 12px; border-bottom: 2px solid #f2e9e8; padding-bottom: 8px;">Order Details</h3>
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 20px;">
+        ${itemsHtml}
+      </table>
+
+      <div style="background: #7a403d; color: #ffffff; padding: 16px 20px; border-radius: 10px; text-align: center; font-size: 18px; font-weight: 700; margin-bottom: 28px;">
+        Total Order Amount: ₦${(order.total_amount || 0).toLocaleString()}
+      </div>
+
+      <div align="center">
+        <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'https://nailxpressng.vercel.app'}/admin/orders" 
+           style="display: inline-block; padding: 14px 28px; background-color: #7a403d; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: 700; font-size: 14px; letter-spacing: 1px; text-transform: uppercase;">
+          View Order in Admin Dashboard
+        </a>
+      </div>
+    `;
+
+    const { data, error } = await resend.emails.send({
+      from: `Nailexpress System <${fromEmail}>`,
+      to: [adminTarget],
+      subject: `New Order #${orderNum} Received - ₦${(order.total_amount || 0).toLocaleString()}`,
+      html: wrapEmailTemplate(`New Order Alert - #${orderNum}`, bodyHtml),
+    });
+
+    return { success: !error, error };
+  } catch (error) {
+    console.error("Admin Order Alert Error:", error);
+    return { success: false, error };
+  }
+}
+
+// 3. Buyer Custom Set Confirmation
 export async function sendCustomOrderConfirmationEmail(customOrder) {
   try {
+    const bodyHtml = `
+      <h2 style="color: #7a403d; font-family: Georgia, serif; font-size: 22px; margin-top: 0;">Hi ${customOrder.name}, 💅</h2>
+      <p style="color: #555;">We received your request for a custom press-on nail set! Our team is reviewing your design specifications and will contact you shortly.</p>
+      
+      <div style="background-color: #fcf6f6; border-radius: 12px; padding: 20px; border: 1px solid #f5e6e5; margin: 24px 0;">
+        <h3 style="color: #7a403d; margin-top: 0; font-size: 16px; border-bottom: 1px solid #eac5c1; padding-bottom: 8px;">Request Details</h3>
+        <p style="margin: 6px 0;"><strong>Shape:</strong> ${customOrder.shape}</p>
+        <p style="margin: 6px 0;"><strong>Length:</strong> ${customOrder.length}</p>
+        <p style="margin: 6px 0;"><strong>Design Description:</strong> ${customOrder.design}</p>
+        ${customOrder.color ? `<p style="margin: 6px 0;"><strong>Color Preference:</strong> ${customOrder.color}</p>` : ''}
+        ${customOrder.notes ? `<p style="margin: 6px 0;"><strong>Special Notes:</strong> ${customOrder.notes}</p>` : ''}
+      </div>
+      
+      <p style="color: #666; font-size: 14px;">We'll reach out via WhatsApp or email to finalize your custom set design and price quote!</p>
+    `;
+
     const { data, error } = await resend.emails.send({
       from: `Nailexpress <${fromEmail}>`,
       to: [customOrder.email],
-      replyTo: process.env.ADMIN_EMAIL || 'nailxpressng@gmail.com',
+      replyTo: adminDefaultEmail,
       subject: `Custom Nail Set Request Received! 💅`,
-      html: `
-        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
-          <h2 style="color: #d1758f;">Hi ${customOrder.name},</h2>
-          <p>We received your request for a custom press-on nail set! Our team is reviewing your specifications and will contact you shortly.</p>
-          
-          <h3 style="border-bottom: 1px solid #eee; padding-bottom: 8px;">Request Summary</h3>
-          <p><strong>Shape:</strong> ${customOrder.shape}</p>
-          <p><strong>Length:</strong> ${customOrder.length}</p>
-          <p><strong>Design:</strong> ${customOrder.design}</p>
-          ${customOrder.color ? `<p><strong>Color Preference:</strong> ${customOrder.color}</p>` : ''}
-          ${customOrder.notes ? `<p><strong>Notes:</strong> ${customOrder.notes}</p>` : ''}
-          
-          <p style="margin-top: 24px; font-size: 0.9em; color: #666;">
-            We'll reach out via email or WhatsApp to finalize your design and quote!
-          </p>
-        </div>
-      `,
+      html: wrapEmailTemplate(`Custom Nail Request`, bodyHtml),
     });
+
     return { success: !error, error };
   } catch (error) {
-    console.error("Custom Order Buyer Email Error:", error);
+    console.error("Custom Order Confirmation Email Error:", error);
     return { success: false, error };
   }
 }
 
+// 4. Admin Custom Order Alert
 export async function sendAdminCustomOrderAlert(customOrder, adminEmail) {
   try {
+    const adminTarget = adminEmail || adminDefaultEmail;
+
+    const bodyHtml = `
+      <div style="background-color: #fcf6f6; border-radius: 12px; padding: 20px; border: 1px solid #f5e6e5; margin-bottom: 24px;">
+        <h2 style="color: #7a403d; font-family: Georgia, serif; font-size: 20px; margin-top: 0;">✨ New Custom Set Request!</h2>
+        <p style="margin: 4px 0;"><strong>Customer:</strong> ${customOrder.name} (${customOrder.email})</p>
+        <p style="margin: 4px 0;"><strong>Phone:</strong> ${customOrder.phone || 'N/A'}</p>
+        <p style="margin: 4px 0;"><strong>Shape:</strong> ${customOrder.shape}</p>
+        <p style="margin: 4px 0;"><strong>Length:</strong> ${customOrder.length}</p>
+        <p style="margin: 4px 0;"><strong>Design:</strong> ${customOrder.design}</p>
+        <p style="margin: 4px 0;"><strong>Color Preference:</strong> ${customOrder.color || 'N/A'}</p>
+        <p style="margin: 4px 0;"><strong>Notes:</strong> ${customOrder.notes || 'None'}</p>
+      </div>
+
+      <div align="center">
+        <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'https://nailxpressng.vercel.app'}/admin/custom-orders" 
+           style="display: inline-block; padding: 14px 28px; background-color: #7a403d; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: 700; font-size: 14px; letter-spacing: 1px; text-transform: uppercase;">
+          View Custom Orders Dashboard
+        </a>
+      </div>
+    `;
+
     const { data, error } = await resend.emails.send({
       from: `Nailexpress System <${fromEmail}>`,
-      to: [adminEmail],
+      to: [adminTarget],
       subject: `New Custom Nail Request from ${customOrder.name}`,
-      html: `
-        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2>New Custom Set Request! 💅</h2>
-          <p><strong>Customer:</strong> ${customOrder.name} (${customOrder.email})</p>
-          <p><strong>Phone:</strong> ${customOrder.phone || 'N/A'}</p>
-          <p><strong>Shape:</strong> ${customOrder.shape}</p>
-          <p><strong>Length:</strong> ${customOrder.length}</p>
-          <p><strong>Design:</strong> ${customOrder.design}</p>
-          <p><strong>Color:</strong> ${customOrder.color || 'N/A'}</p>
-          <p><strong>Notes:</strong> ${customOrder.notes || 'None'}</p>
-          
-          <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/admin/orders" 
-             style="display: inline-block; padding: 10px 20px; background: #d1758f; color: white; text-decoration: none; border-radius: 6px; margin-top: 16px;">
-            Check Admin Dashboard
-          </a>
-        </div>
-      `,
+      html: wrapEmailTemplate(`New Custom Nail Request`, bodyHtml),
     });
+
     return { success: !error, error };
   } catch (error) {
     console.error("Admin Custom Order Alert Error:", error);
@@ -161,38 +248,35 @@ export async function sendAdminCustomOrderAlert(customOrder, adminEmail) {
   }
 }
 
+// 5. Buyer Order Shipped Email
 export async function sendOrderShippedEmail(order) {
   try {
     const orderNum = order.id ? order.id.split('-')[0] : '';
+
+    const bodyHtml = `
+      <h2 style="color: #7a403d; font-family: Georgia, serif; font-size: 22px; margin-top: 0;">Great news, ${order.customer_first_name || 'Gorgeous'}! 🚚✨</h2>
+      <p style="color: #555;">Your press-on nail set is on its way! We've packaged your items with care and dispatched your order for delivery.</p>
+      
+      <div style="background-color: #fcf6f6; border-radius: 12px; padding: 20px; border: 1px solid #f5e6e5; margin: 24px 0;">
+        <div style="display: inline-block; background-color: #7a403d; color: #ffffff; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; letter-spacing: 1px; margin-bottom: 12px;">ORDER #${orderNum}</div>
+        <p style="margin: 0 0 6px 0; font-size: 13px; color: #666; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Delivery Address</p>
+        <p style="margin: 0; font-weight: 600; color: #2d2d2d;">
+          ${order.shipping_address || ''}<br/>
+          ${order.shipping_city || ''}, ${order.shipping_state || ''}
+        </p>
+      </div>
+
+      <p style="color: #666; font-size: 14px;">Your package will arrive shortly. If you need any assistance, reply directly to this email or chat with us on WhatsApp!</p>
+    `;
+
     const { data, error } = await resend.emails.send({
       from: `Nailexpress <${fromEmail}>`,
       to: [order.customer_email],
-      replyTo: process.env.ADMIN_EMAIL || 'nailxpressng@gmail.com',
+      replyTo: adminDefaultEmail,
       subject: `Your Nailexpress Order #${orderNum} Has Shipped! 🚚✨`,
-      html: `
-        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
-          <h2 style="color: #d1758f;">Great news, ${order.customer_first_name || 'Gorgeous'}! 🎉</h2>
-          <p>Your press-on nail set is on its way! We've packaged your items with care and dispatched your order for delivery.</p>
-          
-          <div style="background: #fdf5f7; border-radius: 8px; padding: 16px; margin: 20px 0;">
-            <h3 style="margin-top: 0; color: #d1758f;">Order Details</h3>
-            <p style="margin: 4px 0;"><strong>Order Number:</strong> #${orderNum}</p>
-            <p style="margin: 4px 0;"><strong>Delivery Address:</strong><br/>
-              ${order.shipping_address || ''}<br/>
-              ${order.shipping_city || ''}, ${order.shipping_state || ''}
-            </p>
-          </div>
-
-          <p style="margin-top: 24px; font-size: 0.95em; color: #555;">
-            Your package will arrive shortly. If you need any assistance, reply directly to this email or contact us on WhatsApp!
-          </p>
-          
-          <p style="margin-top: 32px; text-align: center; color: #999; font-size: 0.85em;">
-            Thank you for shopping with Nailexpress! 💖
-          </p>
-        </div>
-      `,
+      html: wrapEmailTemplate(`Order Shipped - #${orderNum}`, bodyHtml),
     });
+
     return { success: !error, error };
   } catch (error) {
     console.error("Order Shipped Email Error:", error);
@@ -200,41 +284,39 @@ export async function sendOrderShippedEmail(order) {
   }
 }
 
+// 6. Buyer Order Delivered Email
 export async function sendOrderDeliveredEmail(order) {
   try {
     const orderNum = order.id ? order.id.split('-')[0] : '';
+
+    const bodyHtml = `
+      <h2 style="color: #7a403d; font-family: Georgia, serif; font-size: 22px; margin-top: 0;">Your nails have arrived, ${order.customer_first_name || 'Gorgeous'}! 💅✨</h2>
+      <p style="color: #555;">Your order <strong>#${orderNum}</strong> has been successfully delivered. We hope you absolutely love your new press-on set!</p>
+      
+      <div style="background-color: #fcf6f6; border-left: 4px solid #7a403d; padding: 18px; margin: 24px 0; border-radius: 8px;">
+        <h4 style="margin: 0 0 6px 0; color: #7a403d; font-size: 15px;">✨ Quick Prep Tip:</h4>
+        <p style="margin: 0; font-size: 13px; color: #555; line-height: 1.5;">
+          Clean and prep your natural nails with an alcohol pad before applying your adhesive tabs or nail glue for the longest lasting wear!
+        </p>
+      </div>
+
+      <div style="text-align: center; margin: 28px 0; padding: 20px; background-color: #f7e8e8; border-radius: 12px;">
+        <p style="margin: 0 0 6px 0; font-weight: 700; color: #7a403d; font-size: 16px;">Show Off Your Set! 📸</p>
+        <p style="margin: 0; font-size: 13px; color: #555;">Tag us on Instagram <strong>@nailexpress.ng</strong> — we'd love to feature you!</p>
+      </div>
+    `;
+
     const { data, error } = await resend.emails.send({
       from: `Nailexpress <${fromEmail}>`,
       to: [order.customer_email],
-      replyTo: process.env.ADMIN_EMAIL || 'nailxpressng@gmail.com',
+      replyTo: adminDefaultEmail,
       subject: `Your Order #${orderNum} Has Been Delivered! 💅✨`,
-      html: `
-        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
-          <h2 style="color: #d1758f;">Your nails have arrived, ${order.customer_first_name || 'Gorgeous'}! 💅✨</h2>
-          <p>Your order <strong>#${orderNum}</strong> has been successfully delivered. We hope you absolutely love your new press-on set!</p>
-          
-          <div style="background: #fdf5f7; border-left: 4px solid #d1758f; padding: 16px; margin: 20px 0; border-radius: 4px;">
-            <h4 style="margin: 0 0 8px 0; color: #d1758f;">✨ Quick Prep Tip:</h4>
-            <p style="margin: 0; font-size: 0.9em; color: #555;">
-              Clean and prep your natural nails with an alcohol pad before applying your adhesive tabs or nail glue for the longest lasting wear!
-            </p>
-          </div>
-
-          <p style="font-size: 0.95em; color: #555; text-align: center; margin-top: 24px;">
-            Tag us on Instagram <strong>@nailexpress.ng</strong> wearing your set — we'd love to feature you!
-          </p>
-
-          <p style="margin-top: 32px; text-align: center; color: #999; font-size: 0.85em;">
-            If you have any feedback or questions, reply directly to this email. Thank you for choosing Nailexpress! 💕
-          </p>
-        </div>
-      `,
+      html: wrapEmailTemplate(`Order Delivered - #${orderNum}`, bodyHtml),
     });
+
     return { success: !error, error };
   } catch (error) {
     console.error("Order Delivered Email Error:", error);
     return { success: false, error };
   }
 }
-
-
