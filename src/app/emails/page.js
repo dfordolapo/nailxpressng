@@ -286,23 +286,26 @@ export default function EmailPreviewsPage() {
                 <td align="center" width="33%" style="padding: 0 6px;">
                   <div style="background: #ffffff; padding: 14px 8px; border-radius: 10px; border: 1px solid #f0e6e5;">
                     <div style="margin-bottom: 8px;">
-                      <!-- Outlined 5-Finger Manicured Hand SVG -->
-                      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="#7a403d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                      <!-- Realistic Female 5-Finger Hand Line Art SVG -->
+                      <svg width="34" height="34" viewBox="0 0 32 32" fill="none" stroke="#7a403d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <!-- Palm & Wrist Contour -->
+                        <path d="M6 30v-7c0-2.5 2-4.5 4.5-4.5"/>
+                        <path d="M26 30v-9c0-4.5-3.5-8-8-8"/>
                         <!-- 1. Thumb -->
-                        <path d="M2 28V17a2.5 2.5 0 0 1 5 0v11"/>
-                        <path d="M2 17c0-3.5 2.5-5.5 2.5-5.5s2.5 2 2.5 5.5"/>
+                        <path d="M4 22c0-3 1.8-5.5 4.5-5.5s4 1.5 4 4"/>
+                        <path d="M4 17c0-3 2.2-5 2.2-5s2.3 2 2.3 5"/>
                         <!-- 2. Index Finger -->
-                        <path d="M7.5 28V12a2.5 2.5 0 0 1 5 0v16"/>
-                        <path d="M7.5 12c0-3.5 2.5-5.5 2.5-5.5s2.5 2 2.5 5.5"/>
+                        <path d="M10.5 18.5V11a2.2 2.2 0 0 1 4.4 0v7.5"/>
+                        <path d="M10.5 11c0-3.2 2.2-5 2.2-5s2.2 1.8 2.2 5"/>
                         <!-- 3. Middle Finger -->
-                        <path d="M13 28V8a2.5 2.5 0 0 1 5 0v20"/>
-                        <path d="M13 8c0-3.5 2.5-5.5 2.5-5.5s2.5 2 2.5 5.5"/>
+                        <path d="M15.5 18.5V8a2.2 2.2 0 0 1 4.4 0v10.5"/>
+                        <path d="M15.5 8c0-3.2 2.2-5 2.2-5s2.2 1.8 2.2 5"/>
                         <!-- 4. Ring Finger -->
-                        <path d="M18.5 28V11a2.5 2.5 0 0 1 5 0v17"/>
-                        <path d="M18.5 11c0-3.5 2.5-5.5 2.5-5.5s2.5 2 2.5 5.5"/>
+                        <path d="M20.5 18.5V10.5a2.2 2.2 0 0 1 4.4 0v8"/>
+                        <path d="M20.5 10.5c0-3.2 2.2-5 2.2-5s2.2 1.8 2.2 5"/>
                         <!-- 5. Pinky Finger -->
-                        <path d="M24 28V15a2 2 0 0 1 4 0v13"/>
-                        <path d="M24 15c0-3 2-4.5 2-4.5s2 1.5 2 4.5"/>
+                        <path d="M25.5 18.5V14a2 2 0 0 1 4 0v4.5"/>
+                        <path d="M25.5 14c0-2.8 2-4.2 2-4.2s2 1.4 2 4.2"/>
                       </svg>
                     </div>
                     <div style="font-size: 12px; font-weight: 700; color: #7a403d;">3. Glue & Press</div>
