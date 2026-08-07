@@ -257,11 +257,11 @@ export default function EmailPreviewsPage() {
                 <td align="center" width="33%" style="padding: 0 6px;">
                   <div style="background: #ffffff; padding: 14px 8px; border-radius: 10px; border: 1px solid #f0e6e5;">
                     <div style="margin-bottom: 8px;">
-                      <!-- Custom Polish Bottle / Prep Icon -->
+                      <!-- Outlined Alcohol Pad / Wipe Icon -->
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7a403d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M10 2h4v4h-4z"/>
-                        <path d="M7 9a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v10a3 3 0 0 1-3 3H10a3 3 0 0 1-3-3V9z"/>
-                        <path d="M10 13h4"/>
+                        <rect x="4" y="4" width="16" height="16" rx="4"/>
+                        <path d="M9 12h6"/>
+                        <path d="M12 9v6"/>
                       </svg>
                     </div>
                     <div style="font-size: 12px; font-weight: 700; color: #7a403d;">1. Clean & Prep</div>
@@ -271,10 +271,10 @@ export default function EmailPreviewsPage() {
                 <td align="center" width="33%" style="padding: 0 6px;">
                   <div style="background: #ffffff; padding: 14px 8px; border-radius: 10px; border: 1px solid #f0e6e5;">
                     <div style="margin-bottom: 8px;">
-                      <!-- Outlined Sizing Ruler Icon -->
+                      <!-- Outlined Press-On Nail Tip Icon -->
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7a403d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="2" y="6" width="20" height="12" rx="3"/>
-                        <path d="M6 6v5M10 6v7M14 6v5M18 6v7"/>
+                        <path d="M9 3h6a3 3 0 0 1 3 3v9a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5V6a3 3 0 0 1 3-3z"/>
+                        <path d="M12 7v4"/>
                       </svg>
                     </div>
                     <div style="font-size: 12px; font-weight: 700; color: #7a403d;">2. Match Sizes</div>
@@ -284,9 +284,10 @@ export default function EmailPreviewsPage() {
                 <td align="center" width="33%" style="padding: 0 6px;">
                   <div style="background: #ffffff; padding: 14px 8px; border-radius: 10px; border: 1px solid #f0e6e5;">
                     <div style="margin-bottom: 8px;">
-                      <!-- Outlined Glue Drop Icon -->
+                      <!-- Outlined Hand Pressing / Sparkle Icon -->
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7a403d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+                        <path d="M12 9v4"/>
                       </svg>
                     </div>
                     <div style="font-size: 12px; font-weight: 700; color: #7a403d;">3. Glue & Press</div>
