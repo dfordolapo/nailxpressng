@@ -257,11 +257,11 @@ export default function EmailPreviewsPage() {
                 <td align="center" width="33%" style="padding: 0 6px;">
                   <div style="background: #ffffff; padding: 14px 8px; border-radius: 10px; border: 1px solid #f0e6e5;">
                     <div style="margin-bottom: 8px;">
-                      <!-- Outlined Alcohol Pad / Wipe Icon -->
+                      <!-- Polish Bottle / Prep Icon -->
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7a403d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="4" y="4" width="16" height="16" rx="4"/>
-                        <path d="M9 12h6"/>
-                        <path d="M12 9v6"/>
+                        <path d="M10 2h4v4h-4z"/>
+                        <path d="M7 9a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v10a3 3 0 0 1-3 3H10a3 3 0 0 1-3-3V9z"/>
+                        <path d="M10 13h4"/>
                       </svg>
                     </div>
                     <div style="font-size: 12px; font-weight: 700; color: #7a403d;">1. Clean & Prep</div>
