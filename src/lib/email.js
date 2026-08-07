@@ -69,8 +69,8 @@ export async function sendOrderConfirmationEmail(order, items) {
     `).join('');
 
     const bodyHtml = `
-      <h2 style="color: #7a403d; font-family: Georgia, serif; font-size: 22px; margin-top: 0; margin-bottom: 8px;">Thanks for your order, ${order.customer_first_name}! ✨</h2>
-      <p style="color: #555; margin-top: 0; margin-bottom: 24px;">We've received your order and are crafting it with love and care.</p>
+      <h2 style="color: #7a403d; font-family: Georgia, serif; font-size: 22px; margin-top: 0; margin-bottom: 8px;">Thanks for your order, ${order.customer_first_name}!</h2>
+      <p style="color: #555; margin-top: 0; margin-bottom: 24px;">We've received your order and are crafting it with care.</p>
       
       <!-- ORDER INFO BOX -->
       <div style="background-color: #fcf6f6; border-radius: 12px; padding: 20px; border: 1px solid #f5e6e5; margin-bottom: 24px;">
@@ -136,7 +136,7 @@ export async function sendAdminNewOrderAlert(order, items = [], adminEmail) {
 
     const bodyHtml = `
       <div style="background-color: #fcf6f6; border-radius: 12px; padding: 20px; border: 1px solid #f5e6e5; margin-bottom: 24px;">
-        <h2 style="color: #7a403d; font-family: Georgia, serif; font-size: 20px; margin: 0 0 12px 0;">🎉 You Have a New Order!</h2>
+        <h2 style="color: #7a403d; font-family: Georgia, serif; font-size: 20px; margin: 0 0 12px 0;">New Order Notification</h2>
         <p style="margin: 4px 0;"><strong>Order Number:</strong> #${orderNum}</p>
         <p style="margin: 4px 0;"><strong>Customer Name:</strong> ${order.customer_first_name} ${order.customer_last_name}</p>
         <p style="margin: 4px 0;"><strong>Email:</strong> ${order.customer_email}</p>
@@ -164,7 +164,7 @@ export async function sendAdminNewOrderAlert(order, items = [], adminEmail) {
     const { data, error } = await resend.emails.send({
       from: `Nailexpress System <${fromEmail}>`,
       to: [adminTarget],
-      subject: `New Order #${orderNum} Received - ₦${(order.total_amount || 0).toLocaleString()}`,
+      subject: `New Order Received - #${orderNum}`,
       html: wrapEmailTemplate(`New Order Alert - #${orderNum}`, bodyHtml),
     });
 
@@ -179,7 +179,7 @@ export async function sendAdminNewOrderAlert(order, items = [], adminEmail) {
 export async function sendCustomOrderConfirmationEmail(customOrder) {
   try {
     const bodyHtml = `
-      <h2 style="color: #7a403d; font-family: Georgia, serif; font-size: 22px; margin-top: 0;">Hi ${customOrder.name}, 💅</h2>
+      <h2 style="color: #7a403d; font-family: Georgia, serif; font-size: 22px; margin-top: 0;">Hi ${customOrder.name},</h2>
       <p style="color: #555;">We received your request for a custom press-on nail set! Our team is reviewing your design specifications and will contact you shortly.</p>
       
       <div style="background-color: #fcf6f6; border-radius: 12px; padding: 20px; border: 1px solid #f5e6e5; margin: 24px 0;">
@@ -191,14 +191,14 @@ export async function sendCustomOrderConfirmationEmail(customOrder) {
         ${customOrder.notes ? `<p style="margin: 6px 0;"><strong>Special Notes:</strong> ${customOrder.notes}</p>` : ''}
       </div>
       
-      <p style="color: #666; font-size: 14px;">We'll reach out via WhatsApp or email to finalize your custom set design and price quote!</p>
+      <p style="color: #666; font-size: 14px;">We'll reach out via WhatsApp or email to finalize your custom set design and price quote.</p>
     `;
 
     const { data, error } = await resend.emails.send({
       from: `Nailexpress <${fromEmail}>`,
       to: [customOrder.email],
       replyTo: adminDefaultEmail,
-      subject: `Custom Nail Set Request Received! 💅`,
+      subject: `Custom Nail Set Request Received`,
       html: wrapEmailTemplate(`Custom Nail Request`, bodyHtml),
     });
 
@@ -216,7 +216,7 @@ export async function sendAdminCustomOrderAlert(customOrder, adminEmail) {
 
     const bodyHtml = `
       <div style="background-color: #fcf6f6; border-radius: 12px; padding: 20px; border: 1px solid #f5e6e5; margin-bottom: 24px;">
-        <h2 style="color: #7a403d; font-family: Georgia, serif; font-size: 20px; margin-top: 0;">✨ New Custom Set Request!</h2>
+        <h2 style="color: #7a403d; font-family: Georgia, serif; font-size: 20px; margin-top: 0;">New Custom Set Request</h2>
         <p style="margin: 4px 0;"><strong>Customer:</strong> ${customOrder.name} (${customOrder.email})</p>
         <p style="margin: 4px 0;"><strong>Phone:</strong> ${customOrder.phone || 'N/A'}</p>
         <p style="margin: 4px 0;"><strong>Shape:</strong> ${customOrder.shape}</p>
@@ -254,8 +254,8 @@ export async function sendOrderShippedEmail(order) {
     const orderNum = order.id ? order.id.split('-')[0] : '';
 
     const bodyHtml = `
-      <h2 style="color: #7a403d; font-family: Georgia, serif; font-size: 22px; margin-top: 0;">Great news, ${order.customer_first_name || 'Gorgeous'}! 🚚✨</h2>
-      <p style="color: #555;">Your press-on nail set is on its way! We've packaged your items with care and dispatched your order for delivery.</p>
+      <h2 style="color: #7a403d; font-family: Georgia, serif; font-size: 22px; margin-top: 0;">Your Order Has Shipped!</h2>
+      <p style="color: #555;">Hi ${order.customer_first_name || 'there'}, guess what? Your fresh set just left our studio and is headed straight to you! We've packed everything with care, so get those nails ready to slay.</p>
       
       <div style="background-color: #fcf6f6; border-radius: 12px; padding: 20px; border: 1px solid #f5e6e5; margin: 24px 0;">
         <div style="display: inline-block; background-color: #7a403d; color: #ffffff; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; letter-spacing: 1px; margin-bottom: 12px;">ORDER #${orderNum}</div>
@@ -266,14 +266,14 @@ export async function sendOrderShippedEmail(order) {
         </p>
       </div>
 
-      <p style="color: #666; font-size: 14px;">Your package will arrive shortly. If you need any assistance, reply directly to this email or chat with us on WhatsApp!</p>
+      <p style="color: #666; font-size: 14px;">If you need any assistance, reply directly to this email or chat with us on WhatsApp.</p>
     `;
 
     const { data, error } = await resend.emails.send({
       from: `Nailexpress <${fromEmail}>`,
       to: [order.customer_email],
       replyTo: adminDefaultEmail,
-      subject: `Your Nailexpress Order #${orderNum} Has Shipped! 🚚✨`,
+      subject: `Your Nailexpress Order #${orderNum} Has Shipped`,
       html: wrapEmailTemplate(`Order Shipped - #${orderNum}`, bodyHtml),
     });
 
@@ -290,19 +290,19 @@ export async function sendOrderDeliveredEmail(order) {
     const orderNum = order.id ? order.id.split('-')[0] : '';
 
     const bodyHtml = `
-      <h2 style="color: #7a403d; font-family: Georgia, serif; font-size: 22px; margin-top: 0;">Your nails have arrived, ${order.customer_first_name || 'Gorgeous'}! 💅✨</h2>
-      <p style="color: #555;">Your order <strong>#${orderNum}</strong> has been successfully delivered. We hope you absolutely love your new press-on set!</p>
+      <h2 style="color: #7a403d; font-family: Georgia, serif; font-size: 22px; margin-top: 0;">Your Order Has Been Delivered</h2>
+      <p style="color: #555;">Hi ${order.customer_first_name || 'there'}, your order <strong>#${orderNum}</strong> has been successfully delivered. We hope you love your new press-on set!</p>
       
       <div style="background-color: #fcf6f6; border-left: 4px solid #7a403d; padding: 18px; margin: 24px 0; border-radius: 8px;">
-        <h4 style="margin: 0 0 6px 0; color: #7a403d; font-size: 15px;">✨ Quick Prep Tip:</h4>
+        <h4 style="margin: 0 0 6px 0; color: #7a403d; font-size: 15px;">Application Tip:</h4>
         <p style="margin: 0; font-size: 13px; color: #555; line-height: 1.5;">
-          Clean and prep your natural nails with an alcohol pad before applying your adhesive tabs or nail glue for the longest lasting wear!
+          Clean and prep your natural nails with an alcohol pad before applying your adhesive tabs or nail glue for the longest lasting wear.
         </p>
       </div>
 
       <div style="text-align: center; margin: 28px 0; padding: 20px; background-color: #f7e8e8; border-radius: 12px;">
-        <p style="margin: 0 0 6px 0; font-weight: 700; color: #7a403d; font-size: 16px;">Show Off Your Set! 📸</p>
-        <p style="margin: 0; font-size: 13px; color: #555;">Tag us on Instagram <strong>@nailexpress.ng</strong> — we'd love to feature you!</p>
+        <p style="margin: 0 0 6px 0; font-weight: 700; color: #7a403d; font-size: 16px;">Show Off Your Set</p>
+        <p style="margin: 0; font-size: 13px; color: #555;">Tag us on Instagram <strong>@nailexpress.ng</strong> wearing your set — we'd love to feature you!</p>
       </div>
     `;
 
@@ -310,7 +310,7 @@ export async function sendOrderDeliveredEmail(order) {
       from: `Nailexpress <${fromEmail}>`,
       to: [order.customer_email],
       replyTo: adminDefaultEmail,
-      subject: `Your Order #${orderNum} Has Been Delivered! 💅✨`,
+      subject: `Your Nailexpress Order #${orderNum} Has Been Delivered`,
       html: wrapEmailTemplate(`Order Delivered - #${orderNum}`, bodyHtml),
     });
 
