@@ -271,10 +271,12 @@ export default function EmailPreviewsPage() {
                 <td align="center" width="33%" style="padding: 0 6px;">
                   <div style="background: #ffffff; padding: 14px 8px; border-radius: 10px; border: 1px solid #f0e6e5;">
                     <div style="margin-bottom: 8px;">
-                      <!-- Outlined Press-On Nail Tip Icon -->
+                      <!-- Outlined Finger Sizing & Fitting Icon -->
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7a403d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M9 3h6a3 3 0 0 1 3 3v9a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5V6a3 3 0 0 1 3-3z"/>
-                        <path d="M12 7v4"/>
+                        <path d="M5 22V9a3 3 0 0 1 6 0v13"/>
+                        <path d="M13 22V7a3 3 0 0 1 6 0v15"/>
+                        <path d="M7 4.5a1.5 1.5 0 0 1 3 0"/>
+                        <path d="M15 2.5a1.5 1.5 0 0 1 3 0"/>
                       </svg>
                     </div>
                     <div style="font-size: 12px; font-weight: 700; color: #7a403d;">2. Match Sizes</div>
