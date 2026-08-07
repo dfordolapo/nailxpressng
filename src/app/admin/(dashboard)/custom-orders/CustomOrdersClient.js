@@ -59,11 +59,11 @@ export default function CustomOrdersClient({ initialOrders = [] }) {
     setOpenMenuId(null);
     if (order.customer_phone) {
       // Use WhatsApp
-      const message = `Hi ${order.customer_name}, I'm reaching out regarding your custom nail order on Nailxpress!`;
+      const message = `Hi ${order.customer_name}, I'm reaching out regarding your custom nail order on Nailexpress!`;
       window.open(`https://wa.me/${order.customer_phone.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`, "_blank");
     } else {
       // Use Email
-      window.open(`mailto:${order.customer_email}?subject=Your Custom Order - Nailxpress`, "_blank");
+      window.open(`mailto:${order.customer_email}?subject=Your Custom Order - Nailexpress`, "_blank");
     }
   };
 

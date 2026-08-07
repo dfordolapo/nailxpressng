@@ -8,7 +8,7 @@ const fromEmail = process.env.SENDER_EMAIL || 'onboarding@resend.dev';
 export async function sendOrderConfirmationEmail(order, items) {
   try {
     const { data, error } = await resend.emails.send({
-      from: `Nailxpress <${fromEmail}>`,
+      from: `Nailexpress <${fromEmail}>`,
       to: [order.customer_email],
       replyTo: process.env.ADMIN_EMAIL || 'nailxpressng@gmail.com',
       subject: `Order Confirmation - #${order.id.split('-')[0]}`,
@@ -61,7 +61,7 @@ export async function sendOrderConfirmationEmail(order, items) {
 export async function sendAdminNewOrderAlert(order, items = [], adminEmail) {
   try {
     const { data, error } = await resend.emails.send({
-      from: `Nailxpress System <${fromEmail}>`,
+      from: `Nailexpress System <${fromEmail}>`,
       to: [adminEmail],
       subject: `New Order #${order.id.split('-')[0]} Received - ₦${order.total_amount.toLocaleString()}`,
       html: `
@@ -101,7 +101,7 @@ export async function sendAdminNewOrderAlert(order, items = [], adminEmail) {
 export async function sendCustomOrderConfirmationEmail(customOrder) {
   try {
     const { data, error } = await resend.emails.send({
-      from: `Nailxpress <${fromEmail}>`,
+      from: `Nailexpress <${fromEmail}>`,
       to: [customOrder.email],
       replyTo: process.env.ADMIN_EMAIL || 'nailxpressng@gmail.com',
       subject: `Custom Nail Set Request Received! 💅`,
@@ -133,7 +133,7 @@ export async function sendCustomOrderConfirmationEmail(customOrder) {
 export async function sendAdminCustomOrderAlert(customOrder, adminEmail) {
   try {
     const { data, error } = await resend.emails.send({
-      from: `Nailxpress System <${fromEmail}>`,
+      from: `Nailexpress System <${fromEmail}>`,
       to: [adminEmail],
       subject: `New Custom Nail Request from ${customOrder.name}`,
       html: `
@@ -165,10 +165,10 @@ export async function sendOrderShippedEmail(order) {
   try {
     const orderNum = order.id ? order.id.split('-')[0] : '';
     const { data, error } = await resend.emails.send({
-      from: `Nailxpress <${fromEmail}>`,
+      from: `Nailexpress <${fromEmail}>`,
       to: [order.customer_email],
       replyTo: process.env.ADMIN_EMAIL || 'nailxpressng@gmail.com',
-      subject: `Your Nailxpress Order #${orderNum} Has Shipped! 🚚✨`,
+      subject: `Your Nailexpress Order #${orderNum} Has Shipped! 🚚✨`,
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
           <h2 style="color: #d1758f;">Great news, ${order.customer_first_name || 'Gorgeous'}! 🎉</h2>
@@ -188,7 +188,7 @@ export async function sendOrderShippedEmail(order) {
           </p>
           
           <p style="margin-top: 32px; text-align: center; color: #999; font-size: 0.85em;">
-            Thank you for shopping with Nailxpress! 💖
+            Thank you for shopping with Nailexpress! 💖
           </p>
         </div>
       `,
@@ -204,7 +204,7 @@ export async function sendOrderDeliveredEmail(order) {
   try {
     const orderNum = order.id ? order.id.split('-')[0] : '';
     const { data, error } = await resend.emails.send({
-      from: `Nailxpress <${fromEmail}>`,
+      from: `Nailexpress <${fromEmail}>`,
       to: [order.customer_email],
       replyTo: process.env.ADMIN_EMAIL || 'nailxpressng@gmail.com',
       subject: `Your Order #${orderNum} Has Been Delivered! 💅✨`,
@@ -221,11 +221,11 @@ export async function sendOrderDeliveredEmail(order) {
           </div>
 
           <p style="font-size: 0.95em; color: #555; text-align: center; margin-top: 24px;">
-            Tag us on Instagram <strong>@nailxpress.ng</strong> wearing your set — we'd love to feature you!
+            Tag us on Instagram <strong>@nailexpress.ng</strong> wearing your set — we'd love to feature you!
           </p>
 
           <p style="margin-top: 32px; text-align: center; color: #999; font-size: 0.85em;">
-            If you have any feedback or questions, reply directly to this email. Thank you for choosing Nailxpress! 💕
+            If you have any feedback or questions, reply directly to this email. Thank you for choosing Nailexpress! 💕
           </p>
         </div>
       `,
