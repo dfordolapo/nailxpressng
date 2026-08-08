@@ -18,7 +18,7 @@ export async function generateMetadata({ params }) {
         title: `${product.name} — Nailexpress`,
         description: product.description,
         url: `${baseUrl}/product/${product.slug}`,
-        type: "product",
+        type: "website",
         images: [{ url: imageUrl }],
       },
       twitter: {
