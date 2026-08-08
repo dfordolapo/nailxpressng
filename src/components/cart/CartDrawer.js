@@ -17,7 +17,7 @@ function CloseIcon() {
 }
 
 export default function CartDrawer({ onClose }) {
-  const { items, removeItem, updateQuantity, updateItemOptions } = useCart();
+  const { items, addItem, removeItem, updateQuantity, updateItemOptions } = useCart();
   const [standardShipping, setStandardShipping] = useState(2500);
   const { subtotal, itemCount } = calculateCartTotals(items);
   const dynamicTotal = subtotal + standardShipping;
@@ -151,12 +151,31 @@ export default function CartDrawer({ onClose }) {
                         +
                       </button>
                     </div>
-                    <button
-                      className={styles.removeBtn}
-                      onClick={() => removeItem(item.id, item.selectedSize, item.selectedLength)}
-                    >
-                      Remove
-                    </button>
+                    <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+                      <button
+                        onClick={() => {
+                          const existingSizes = items
+                            .filter(i => i.id === item.id)
+                            .map(i => i.selectedSize);
+                          const nextSize = ["XS", "S", "M", "L"].find(s => !existingSizes.includes(s)) || "M";
+                          addItem(
+                            { id: item.id, slug: item.slug, name: item.name, price: item.price, images: [item.image] },
+                            1,
+                            nextSize,
+                            item.selectedLength
+                          );
+                        }}
+                        style={{ background: "none", border: "none", color: "var(--color-primary)", fontSize: "0.75rem", fontWeight: 600, cursor: "pointer", padding: 0 }}
+                      >
+                        + Add size
+                      </button>
+                      <button
+                        className={styles.removeBtn}
+                        onClick={() => removeItem(item.id, item.selectedSize, item.selectedLength)}
+                      >
+                        Remove
+                      </button>
+                    </div>
                   </div>
                   <span className={styles.cartItemPrice}>{formatPrice(item.price * item.quantity)}</span>
                 </div>

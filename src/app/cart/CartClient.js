@@ -162,13 +162,32 @@ export default function CartClient({ bestsellers = [] }) {
                         onClick={() => updateQuantity(item.id, item.selectedSize, item.selectedLength, item.quantity + 1)}
                       >+</button>
                     </div>
-                    <button
-                      className={styles.removeBtn}
-                      onClick={() => removeItem(item.id, item.selectedSize, item.selectedLength)}
-                      aria-label="Remove item"
-                    >
-                      <Trash2 size={20} strokeWidth={1.5} />
-                    </button>
+                    <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
+                      <button
+                        onClick={() => {
+                          const existingSizes = items
+                            .filter(i => i.id === item.id)
+                            .map(i => i.selectedSize);
+                          const nextSize = ["XS", "S", "M", "L"].find(s => !existingSizes.includes(s)) || "M";
+                          addItem(
+                            { id: item.id, slug: item.slug, name: item.name, price: item.price, images: [item.image] },
+                            1,
+                            nextSize,
+                            item.selectedLength
+                          );
+                        }}
+                        style={{ background: "none", border: "none", color: "var(--color-primary)", fontSize: "0.8rem", fontWeight: 600, cursor: "pointer", padding: 0 }}
+                      >
+                        + Add size
+                      </button>
+                      <button
+                        className={styles.removeBtn}
+                        onClick={() => removeItem(item.id, item.selectedSize, item.selectedLength)}
+                        aria-label="Remove item"
+                      >
+                        <Trash2 size={20} strokeWidth={1.5} />
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
