@@ -291,7 +291,7 @@ export default function CheckoutPage() {
   const isGift = activeAddress?.tag === "gift" || activeAddress?.id === "gift" || savePresetTag === "gift";
 
   return (
-    <div className={pageStyles.checkoutPage} id="checkout-page" style={{ paddingBottom: "120px" }}>
+    <div className={pageStyles.checkoutPage} id="checkout-page">
       <div className="container" style={{ maxWidth: "600px" }}>
         
         {/* Sticky Header + Step Progress Bar Container */}
@@ -681,19 +681,7 @@ export default function CheckoutPage() {
       </div>
 
       {/* Sticky Bottom Sheet / Bar */}
-      <div style={{
-        position: "fixed",
-        bottom: 0,
-        left: 0,
-        right: 0,
-        background: "rgba(255, 255, 255, 0.95)",
-        backdropFilter: "blur(16px)",
-        WebkitBackdropFilter: "blur(16px)",
-        borderTop: "1px solid var(--color-border-light)",
-        padding: "var(--space-3) var(--space-4)",
-        zIndex: 100,
-        boxShadow: "0 -8px 24px rgba(0, 0, 0, 0.08)",
-      }}>
+      <div className={pageStyles.stickySummaryBar}>
         <div style={{ maxWidth: "600px", margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <div>
             <span style={{ fontSize: "0.75rem", color: "var(--color-text-secondary)", display: "block" }}>
