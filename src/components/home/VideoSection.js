@@ -78,15 +78,16 @@ export default function VideoSection({
           <source src="https://assets.mixkit.co/videos/preview/mixkit-woman-applying-nail-polish-40899-large.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
+      </div>
 
-        <div className={styles.overlay}>
-          <Link
-            href="/shop"
-            className={`${btnStyles.btn} ${btnStyles.primary} ${btnStyles.xl}`}
-          >
-            Shop the Collection
-          </Link>
-        </div>
+      {/* Button overlay — sits on the section so it's full-width, not constrained by video wrapper */}
+      <div className={styles.overlay}>
+        <Link
+          href="/shop"
+          className={styles.ctaBtn}
+        >
+          Shop the Collection
+        </Link>
       </div>
 
       {/* Bottom Gradient Overlay */}

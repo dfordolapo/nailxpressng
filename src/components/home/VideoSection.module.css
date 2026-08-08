@@ -33,6 +33,37 @@
   pointer-events: auto;
 }
 
+/* Match hero / footer button exactly */
+.ctaBtn {
+  display: inline-block;
+  background-color: var(--color-primary-800);
+  color: var(--color-bg-warm);
+  padding: var(--space-3) var(--space-8);
+  border-radius: var(--radius-full);
+  font-family: var(--font-heading);
+  text-transform: none;
+  letter-spacing: 0.05em;
+  font-size: var(--text-base);
+  font-weight: var(--weight-medium);
+  transition: background-color var(--transition-base), transform var(--transition-base);
+}
+
+@media (min-width: 768px) {
+  .ctaBtn {
+    padding: var(--space-4) var(--space-12);
+    font-size: var(--text-lg);
+  }
+}
+
+.ctaBtn:hover {
+  background-color: var(--color-primary-900);
+  transform: translateY(-2px);
+}
+
+.ctaBtn:active {
+  transform: translateY(1px);
+}
+
 /* 📱 MOBILE STYLES (Strictly Isolated for mobile < 768px - Reduced vertical spacing) */
 @media (max-width: 767px) {
   .fullWidthSection {
