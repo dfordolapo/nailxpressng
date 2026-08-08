@@ -82,7 +82,7 @@ export default function VideoSection({
         <div className={styles.overlay}>
           <Link
             href="/shop"
-            className={`${btnStyles.btn} ${btnStyles.primary} ${btnStyles.lg}`}
+            className={`${btnStyles.btn} ${btnStyles.primary} ${btnStyles.xl}`}
           >
             Shop the Collection
           </Link>

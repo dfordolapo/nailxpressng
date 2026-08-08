@@ -57,6 +57,18 @@
   font-size: var(--text-base);
 }
 
+.xl {
+  padding: var(--space-3) var(--space-8);
+  font-size: var(--text-base);
+}
+
+@media (min-width: 768px) {
+  .xl {
+    padding: var(--space-4) var(--space-12);
+    font-size: var(--text-lg);
+  }
+}
+
 .full {
   width: 100%;
 }
