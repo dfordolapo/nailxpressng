@@ -1,49 +1,68 @@
 import { getProductBySlug, getProductsByCategory } from "@/lib/api";
+import { notFound } from "next/navigation";
 import ProductClient from "./ProductClient";
 
 export async function generateMetadata({ params }) {
-  const { slug } = await params;
-  const product = await getProductBySlug(slug);
-  if (!product) {
-    return { title: "Product Not Found" };
+  try {
+    const { slug } = await params;
+    const product = await getProductBySlug(slug);
+    if (!product) {
+      return { title: "Product Not Found — Nailexpress" };
+    }
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nailxpressng.vercel.app";
+    const imageUrl = product.images?.[0] ?? `${baseUrl}/og-default.jpg`;
+    return {
+      title: `${product.name} — Nailexpress`,
+      description: product.description,
+      openGraph: {
+        title: `${product.name} — Nailexpress`,
+        description: product.description,
+        url: `${baseUrl}/product/${product.slug}`,
+        type: "product",
+        images: [{ url: imageUrl }],
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: `${product.name} — Nailexpress`,
+        description: product.description,
+        images: [imageUrl],
+      },
+    };
+  } catch (err) {
+    console.error("generateMetadata error:", err);
+    return { title: "Product — Nailexpress" };
   }
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nailxpressng.vercel.app";
-  const imageUrl = product.images?.[0] ?? `${baseUrl}/og-default.jpg`;
-  return {
-    title: `${product.name} — Nailexpress`,
-    description: product.description,
-    openGraph: {
-      title: `${product.name} — Nailexpress`,
-      description: product.description,
-      url: `${baseUrl}/product/${product.slug}`,
-      type: "product",
-      images: [{ url: imageUrl }],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: `${product.name} — Nailexpress`,
-      description: product.description,
-      images: [imageUrl],
-    },
-  };
 }
 
 export default async function ProductDetailPage({ params }) {
-  const { slug } = await params;
-  const product = await getProductBySlug(slug);
-  
-  let relatedProducts = [];
-  if (product && product.category) {
-    const categoryProducts = await getProductsByCategory(product.category);
-    relatedProducts = categoryProducts
-      .filter((p) => p.id !== product.id)
-      .slice(0, 4);
-  }
+  try {
+    const { slug } = await params;
+    const product = await getProductBySlug(slug);
 
-  return (
-    <ProductClient 
-      product={product} 
-      relatedProducts={relatedProducts} 
-    />
-  );
+    if (!product) {
+      notFound();
+    }
+
+    let relatedProducts = [];
+    if (product.category) {
+      try {
+        const categoryProducts = await getProductsByCategory(product.category);
+        relatedProducts = categoryProducts
+          .filter((p) => p.id !== product.id)
+          .slice(0, 4);
+      } catch (err) {
+        console.error("Error fetching related products:", err);
+      }
+    }
+
+    return (
+      <ProductClient
+        product={product}
+        relatedProducts={relatedProducts}
+      />
+    );
+  } catch (err) {
+    console.error("ProductDetailPage error:", err);
+    notFound();
+  }
 }

@@ -179,7 +179,7 @@ export default function ProductClient({ product, relatedProducts = [] }) {
             <div className={pageStyles.selectorGroup}>
               <span className={pageStyles.selectorLabel}>Size: {selectedSize}</span>
               <div className={pageStyles.selectorOptions}>
-                {product.sizes.map((size) => (
+                {(product.sizes ?? []).map((size) => (
                   <button
                     key={size}
                     className={`${pageStyles.selectorOption} ${selectedSize === size ? pageStyles.selected : ""}`}
@@ -195,7 +195,7 @@ export default function ProductClient({ product, relatedProducts = [] }) {
             <div className={pageStyles.selectorGroup}>
               <span className={pageStyles.selectorLabel}>Length: {selectedLength}</span>
               <div className={pageStyles.selectorOptions}>
-                {product.lengths.map((length) => (
+                {(product.lengths ?? []).map((length) => (
                   <button
                     key={length}
                     className={`${pageStyles.selectorOption} ${selectedLength === length ? pageStyles.selected : ""}`}
