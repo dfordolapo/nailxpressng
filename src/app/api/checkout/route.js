@@ -11,10 +11,11 @@ const supabaseAdmin = createClient(
 
 export async function POST(request) {
   try {
+    const body = await request.json();
     const { formData, items, shippingMethod, shippingMethodName, deliveryTime, paymentMethod, subtotal, shippingFee, total } = body;
 
     // 1. Insert the main Order
-    const { data: order, error: orderError } = await supabaseAdmin
+    let { data: order, error: orderError } = await supabaseAdmin
       .from('orders')
       .insert([
         {
@@ -34,6 +35,32 @@ export async function POST(request) {
       ])
       .select()
       .single();
+
+    if (orderError) {
+      console.warn("Retrying order insert without delivery columns due to error:", orderError);
+      // Fallback insertion
+      const retryResult = await supabaseAdmin
+        .from('orders')
+        .insert([
+          {
+            customer_email: formData.email,
+            customer_first_name: formData.firstName,
+            customer_last_name: formData.lastName,
+            customer_phone: formData.phone,
+            shipping_address: formData.address,
+            shipping_city: formData.city,
+            shipping_state: formData.state,
+            total_amount: total,
+            shipping_fee: shippingFee,
+            status: 'pending'
+          }
+        ])
+        .select()
+        .single();
+      
+      order = retryResult.data;
+      orderError = retryResult.error;
+    }
 
     if (orderError) throw orderError;
 
