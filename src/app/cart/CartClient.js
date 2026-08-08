@@ -162,7 +162,7 @@ export default function CartClient({ bestsellers = [] }) {
                         onClick={() => updateQuantity(item.id, item.selectedSize, item.selectedLength, item.quantity + 1)}
                       >+</button>
                     </div>
-                    <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
+                    <div style={{ display: "flex", gap: "10px", alignItems: "center", marginLeft: "auto" }}>
                       <button
                         onClick={() => {
                           const existingSizes = items
@@ -176,7 +176,7 @@ export default function CartClient({ bestsellers = [] }) {
                             item.selectedLength
                           );
                         }}
-                        style={{ background: "none", border: "none", color: "var(--color-primary)", fontSize: "0.8rem", fontWeight: 600, cursor: "pointer", padding: 0 }}
+                        style={{ background: "none", border: "none", color: "var(--color-primary)", fontSize: "0.8rem", fontWeight: 600, cursor: "pointer", padding: 0, whiteSpace: "nowrap" }}
                       >
                         + Add size
                       </button>

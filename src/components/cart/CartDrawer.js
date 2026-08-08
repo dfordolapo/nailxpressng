@@ -151,7 +151,7 @@ export default function CartDrawer({ onClose }) {
                         +
                       </button>
                     </div>
-                    <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+                    <div style={{ display: "flex", gap: "8px", alignItems: "center", marginLeft: "auto" }}>
                       <button
                         onClick={() => {
                           const existingSizes = items
@@ -165,7 +165,7 @@ export default function CartDrawer({ onClose }) {
                             item.selectedLength
                           );
                         }}
-                        style={{ background: "none", border: "none", color: "var(--color-primary)", fontSize: "0.75rem", fontWeight: 600, cursor: "pointer", padding: 0 }}
+                        style={{ background: "none", border: "none", color: "var(--color-primary)", fontSize: "0.75rem", fontWeight: 600, cursor: "pointer", padding: 0, whiteSpace: "nowrap" }}
                       >
                         + Add size
                       </button>
