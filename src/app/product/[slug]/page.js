@@ -7,9 +7,24 @@ export async function generateMetadata({ params }) {
   if (!product) {
     return { title: "Product Not Found" };
   }
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nailxpressng.vercel.app";
+  const imageUrl = product.images?.[0] ?? `${baseUrl}/og-default.jpg`;
   return {
     title: `${product.name} — Nailexpress`,
     description: product.description,
+    openGraph: {
+      title: `${product.name} — Nailexpress`,
+      description: product.description,
+      url: `${baseUrl}/product/${product.slug}`,
+      type: "product",
+      images: [{ url: imageUrl }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${product.name} — Nailexpress`,
+      description: product.description,
+      images: [imageUrl],
+    },
   };
 }
 

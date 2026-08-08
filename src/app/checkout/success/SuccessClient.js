@@ -11,10 +11,7 @@ import HandmadeProductCard from '@/components/product/HandmadeProductCard';
 
 export default function SuccessClient({ orderDetails }) {
   const getTimelineSteps = (deliveryText) => {
-    const text = (deliveryText || "").toLowerCase();
-    if (text.includes("hour")) {
-      return ['Ordered', 'Processing', 'Out for Delivery', `Delivered (${deliveryText})`];
-    }
+    // Always show consistent steps with exact estimated delivery in final step
     return ['Ordered', 'Processing', 'Shipped', `Delivered (${deliveryText})`];
   };
 
