@@ -10,6 +10,11 @@ export default function ShapeFilterBar({ selectedShapes = [], onToggleShape, sel
   const dragStartY = useRef(0);
   const isDragging = useRef(false);
   const lastScrollTime = useRef(0);
+  
+  // Track button-specific touch starts/ends to block click events on drag
+  const ignoreNextClick = useRef(false);
+  const touchStartX = useRef(0);
+  const touchStartY = useRef(0);
 
   const handleTouchStart = (e) => {
     dragStartX.current = e.touches[0].clientX;
@@ -20,7 +25,6 @@ export default function ShapeFilterBar({ selectedShapes = [], onToggleShape, sel
   const handleTouchMove = (e) => {
     const deltaX = Math.abs(e.touches[0].clientX - dragStartX.current);
     const deltaY = Math.abs(e.touches[0].clientY - dragStartY.current);
-    // If user dragged horizontally or vertically by more than 6 pixels, mark as dragging
     if (deltaX > 6 || deltaY > 6) {
       isDragging.current = true;
     }
@@ -30,9 +34,27 @@ export default function ShapeFilterBar({ selectedShapes = [], onToggleShape, sel
     lastScrollTime.current = Date.now();
   };
 
+  const handleBtnTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+    ignoreNextClick.current = false;
+  };
+
+  const handleBtnTouchEnd = (e) => {
+    const deltaX = Math.abs(e.changedTouches[0].clientX - touchStartX.current);
+    const deltaY = Math.abs(e.changedTouches[0].clientY - touchStartY.current);
+    // If the touch moved by more than 5px in any direction, treat it as a drag and suppress the click
+    if (deltaX > 5 || deltaY > 5) {
+      ignoreNextClick.current = true;
+    }
+  };
+
   const handleShapeClick = (shapeId) => {
-    // Block clicks during drag/scrolling or within 200ms after a scroll event
-    if (isDragging.current || (Date.now() - lastScrollTime.current < 200)) {
+    if (ignoreNextClick.current) {
+      ignoreNextClick.current = false;
+      return;
+    }
+    if (isDragging.current || (Date.now() - lastScrollTime.current < 150)) {
       isDragging.current = false;
       return;
     }
@@ -40,8 +62,11 @@ export default function ShapeFilterBar({ selectedShapes = [], onToggleShape, sel
   };
 
   const handleLengthClick = (lengthId) => {
-    // Block clicks during drag/scrolling or within 200ms after a scroll event
-    if (isDragging.current || (Date.now() - lastScrollTime.current < 200)) {
+    if (ignoreNextClick.current) {
+      ignoreNextClick.current = false;
+      return;
+    }
+    if (isDragging.current || (Date.now() - lastScrollTime.current < 150)) {
       isDragging.current = false;
       return;
     }
@@ -64,6 +89,8 @@ export default function ShapeFilterBar({ selectedShapes = [], onToggleShape, sel
             <button
               key={shape.id}
               className={`${styles.shapeBtn} ${isSelected ? styles.selected : ""}`}
+              onTouchStart={handleBtnTouchStart}
+              onTouchEnd={handleBtnTouchEnd}
               onClick={() => handleShapeClick(shape.id)}
               aria-pressed={isSelected}
             >
@@ -90,6 +117,8 @@ export default function ShapeFilterBar({ selectedShapes = [], onToggleShape, sel
             <button
               key={`len-${length.id}`}
               className={`${styles.shapeBtn} ${styles.lengthBtn} ${isSelected ? styles.selected : ""}`}
+              onTouchStart={handleBtnTouchStart}
+              onTouchEnd={handleBtnTouchEnd}
               onClick={() => handleLengthClick(length.id)}
               aria-pressed={isSelected}
             >
