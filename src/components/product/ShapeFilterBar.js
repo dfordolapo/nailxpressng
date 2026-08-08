@@ -102,26 +102,25 @@ export default function ShapeFilterBar({ selectedShapes = [], onToggleShape, sel
 
   return (
     <div className={styles.container}>
-      {showLeftArrow && (
-        <button 
-          onClick={() => scroll('left')} 
-          className={styles.scrollBtn} 
-          style={{ left: "-8px" }}
-          aria-label="Scroll left"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-        </button>
-      )}
-      {showRightArrow && (
-        <button 
-          onClick={() => scroll('right')} 
-          className={styles.scrollBtn} 
-          style={{ right: "-8px" }}
-          aria-label="Scroll right"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-        </button>
-      )}
+      <button 
+        onClick={(e) => { e.preventDefault(); e.stopPropagation(); scroll('left'); }} 
+        onTouchStart={(e) => { e.preventDefault(); e.stopPropagation(); scroll('left'); }} 
+        className={`${styles.scrollBtn} ${!showLeftArrow ? styles.scrollBtnHidden : ""}`} 
+        style={{ left: "-8px" }}
+        aria-label="Scroll left"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+      </button>
+
+      <button 
+        onClick={(e) => { e.preventDefault(); e.stopPropagation(); scroll('right'); }} 
+        onTouchStart={(e) => { e.preventDefault(); e.stopPropagation(); scroll('right'); }} 
+        className={`${styles.scrollBtn} ${!showRightArrow ? styles.scrollBtnHidden : ""}`} 
+        style={{ right: "-8px" }}
+        aria-label="Scroll right"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
 
       <div 
         ref={scrollAreaRef}
