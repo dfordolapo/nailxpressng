@@ -162,7 +162,7 @@ export default function CheckoutPage() {
     const nameLower = locName.toLowerCase();
     if (nameLower.includes("island")) {
       return {
-        est: "3 - 5 Hours (Same-day dispatch)",
+        est: "3 - 5 Hours",
         desc: "Perfect for urgent beauty needs. Delivered via our dedicated Island riders."
       };
     } else if (nameLower.includes("mainland")) {
@@ -650,9 +650,6 @@ export default function CheckoutPage() {
                     <div style={{ paddingLeft: "30px" }}>
                       <div style={{ fontSize: "0.8rem", fontWeight: 600, color: "var(--color-success)", display: "flex", alignItems: "center", gap: "4px" }}>
                         <Clock size={12} strokeWidth={1.5} /> Est. Delivery: {details.est}
-                      </div>
-                      <div style={{ fontSize: "0.75rem", color: "var(--color-text-secondary)", marginTop: "2px" }}>
-                        {details.desc}
                       </div>
                     </div>
                   </div>
