@@ -68,6 +68,7 @@ export default function DashboardClient({ initialProducts }) {
             type="date" 
             defaultValue={todayDate} 
             min="2026-07-31"
+            suppressHydrationWarning
             style={{ 
               border: "none", 
               outline: "none", 
@@ -160,6 +161,7 @@ export default function DashboardClient({ initialProducts }) {
                     <button 
                       onClick={() => handleMenuClick(product.id)}
                       style={{ background: "none", border: "none", cursor: "pointer", color: "#888", padding: "4px" }}
+                      suppressHydrationWarning
                     >
                       <MoreVertical size={18} />
                     </button>
