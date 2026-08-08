@@ -17,7 +17,7 @@ function CloseIcon() {
 }
 
 export default function CartDrawer({ onClose }) {
-  const { items, removeItem, updateQuantity } = useCart();
+  const { items, removeItem, updateQuantity, updateItemOptions } = useCart();
   const [standardShipping, setStandardShipping] = useState(2500);
   const { subtotal, itemCount } = calculateCartTotals(items);
   const dynamicTotal = subtotal + standardShipping;
@@ -86,9 +86,55 @@ export default function CartDrawer({ onClose }) {
                 </div>
                 <div className={styles.cartItemDetails}>
                   <h4 className={styles.cartItemName}>{item.name}</h4>
-                  <p className={styles.cartItemMeta}>
-                    Size: {item.selectedSize} • Length: {item.selectedLength}
-                  </p>
+                  <div className={styles.cartItemMetaSelectors}>
+                    {item.selectedSize && (
+                      <div className={styles.metaSelectWrapper}>
+                        <label className={styles.metaLabel}>Size:</label>
+                        <select
+                          className={styles.metaSelect}
+                          value={item.selectedSize}
+                          onChange={(e) =>
+                            updateItemOptions(
+                              item.id,
+                              item.selectedSize,
+                              item.selectedLength,
+                              e.target.value,
+                              item.selectedLength
+                            )
+                          }
+                        >
+                          {["XS", "S", "M", "L"].map((s) => (
+                            <option key={s} value={s}>
+                              {s}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    )}
+
+                    <div className={styles.metaSelectWrapper}>
+                      <label className={styles.metaLabel}>Length:</label>
+                      <select
+                        className={styles.metaSelect}
+                        value={item.selectedLength ? item.selectedLength.toLowerCase() : "medium"}
+                        onChange={(e) =>
+                          updateItemOptions(
+                            item.id,
+                            item.selectedSize,
+                            item.selectedLength,
+                            item.selectedSize,
+                            e.target.value
+                          )
+                        }
+                      >
+                        {["short", "medium", "long", "extra long"].map((l) => (
+                          <option key={l} value={l}>
+                            {l.charAt(0).toUpperCase() + l.slice(1)}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
                   <div className={styles.cartItemActions}>
                     <div className={styles.quantitySelector}>
                       <button
