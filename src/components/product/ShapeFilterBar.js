@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import { nailShapes, nailLengths } from "@/data/categories";
 import styles from "@/styles/components/shapeFilter.module.css";
@@ -10,11 +10,35 @@ export default function ShapeFilterBar({ selectedShapes = [], onToggleShape, sel
   const dragStartY = useRef(0);
   const isDragging = useRef(false);
   const lastScrollTime = useRef(0);
+  const scrollAreaRef = useRef(null);
+
+  const [showLeftArrow, setShowLeftArrow] = useState(false);
+  const [showRightArrow, setShowRightArrow] = useState(false);
   
   // Track button-specific touch starts/ends to block click events on drag
   const ignoreNextClick = useRef(false);
   const touchStartX = useRef(0);
   const touchStartY = useRef(0);
+
+  const updateArrows = () => {
+    const el = scrollAreaRef.current;
+    if (!el) return;
+    setShowLeftArrow(el.scrollLeft > 10);
+    setShowRightArrow(el.scrollLeft < el.scrollWidth - el.clientWidth - 10);
+  };
+
+  useEffect(() => {
+    updateArrows();
+    window.addEventListener("resize", updateArrows);
+    return () => window.removeEventListener("resize", updateArrows);
+  }, []);
+
+  const scroll = (direction) => {
+    const el = scrollAreaRef.current;
+    if (!el) return;
+    const amount = direction === 'left' ? -220 : 220;
+    el.scrollBy({ left: amount, behavior: 'smooth' });
+  };
 
   const handleTouchStart = (e) => {
     dragStartX.current = e.touches[0].clientX;
@@ -32,6 +56,7 @@ export default function ShapeFilterBar({ selectedShapes = [], onToggleShape, sel
 
   const handleScroll = () => {
     lastScrollTime.current = Date.now();
+    updateArrows();
   };
 
   const handleBtnTouchStart = (e) => {
@@ -77,7 +102,29 @@ export default function ShapeFilterBar({ selectedShapes = [], onToggleShape, sel
 
   return (
     <div className={styles.container}>
+      {showLeftArrow && (
+        <button 
+          onClick={() => scroll('left')} 
+          className={styles.scrollBtn} 
+          style={{ left: "-8px" }}
+          aria-label="Scroll left"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        </button>
+      )}
+      {showRightArrow && (
+        <button 
+          onClick={() => scroll('right')} 
+          className={styles.scrollBtn} 
+          style={{ right: "-8px" }}
+          aria-label="Scroll right"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
+      )}
+
       <div 
+        ref={scrollAreaRef}
         className={styles.scrollArea}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
