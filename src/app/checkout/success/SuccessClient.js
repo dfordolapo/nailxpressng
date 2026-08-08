@@ -10,6 +10,16 @@ import { products } from '@/data/products';
 import HandmadeProductCard from '@/components/product/HandmadeProductCard';
 
 export default function SuccessClient({ orderDetails }) {
+  const getTimelineSteps = (deliveryText) => {
+    const text = (deliveryText || "").toLowerCase();
+    if (text.includes("hour")) {
+      return ['Ordered', 'Processing', 'Out for Delivery', `Delivered (${deliveryText})`];
+    }
+    return ['Ordered', 'Processing', 'Shipped', `Delivered (${deliveryText})`];
+  };
+
+  const steps = getTimelineSteps(orderDetails.delivery);
+
   useEffect(() => {
     // Fire confetti on load
     const duration = 3000;
@@ -65,7 +75,7 @@ export default function SuccessClient({ orderDetails }) {
           <div style={{ position: 'absolute', top: '16px', left: '10%', width: '33%', height: '2px', background: 'var(--color-primary)', zIndex: 2 }}></div>
           
           {/* Steps */}
-          {['Ordered', 'Processing', 'Shipped', 'Delivered'].map((step, index) => (
+          {steps.map((step, index) => (
             <div key={step} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', zIndex: 3, position: 'relative', width: '25%' }}>
               <div style={{ 
                 width: '32px', height: '32px', borderRadius: '50%', 
