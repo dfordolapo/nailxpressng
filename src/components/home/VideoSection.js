@@ -1,7 +1,9 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
+import Link from "next/link";
 import styles from "./VideoSection.module.css";
+import btnStyles from "@/styles/components/buttons.module.css";
 
 export default function VideoSection({ 
   videoSrc = "/images/salon-tutorial.mp4"
@@ -76,6 +78,12 @@ export default function VideoSection({
           <source src="https://assets.mixkit.co/videos/preview/mixkit-woman-applying-nail-polish-40899-large.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
+
+        <div className={styles.overlay}>
+          <Link href="/shop" className={`${btnStyles.btn} ${btnStyles.primary} ${btnStyles.lg}`}>
+            Shop the Collection
+          </Link>
+        </div>
       </div>
 
       {/* Bottom Gradient Overlay */}

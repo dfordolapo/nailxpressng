@@ -18,6 +18,21 @@
   align-items: center;
 }
 
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: var(--space-8);
+  z-index: 4;
+  pointer-events: none;
+}
+
+.overlay > * {
+  pointer-events: auto;
+}
+
 /* 📱 MOBILE STYLES (Strictly Isolated for mobile < 768px - Reduced vertical spacing) */
 @media (max-width: 767px) {
   .fullWidthSection {
