@@ -29,6 +29,7 @@ export default function CheckoutPage() {
   const [shippingMethod, setShippingMethod] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("paystack");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errors, setErrors] = useState({});
   
   const [shippingLocations, setShippingLocations] = useState([]);
   const [isLoadingRates, setIsLoadingRates] = useState(true);
@@ -96,11 +97,53 @@ export default function CheckoutPage() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    if (errors[name]) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next[name];
+        return next;
+      });
+    }
     if (name === "state") {
       setFormData({ ...formData, state: value, city: "" }); // Reset city when state changes
+      if (errors.city) {
+        setErrors((prev) => {
+          const next = { ...prev };
+          delete next.city;
+          return next;
+        });
+      }
     } else {
       setFormData({ ...formData, [name]: value });
     }
+  };
+
+  const validate = () => {
+    const errs = {};
+    const name = formData.fullName.trim();
+    const email = formData.email.trim();
+    const phone = formData.phone.trim();
+    if (!name) errs.fullName = "Please enter your full name";
+    if (!email) {
+      errs.email = "Please enter your email address";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errs.email = "Please enter a valid email address";
+    }
+    if (!phone) {
+      errs.phone = "Please enter your phone number";
+    } else if (!/^(?:\+?234|0)[0-9]{10}$/.test(phone.replace(/\s/g, ""))) {
+      errs.phone = "Please enter a valid phone number (e.g. 08012345678)";
+    }
+    if (!formData.address.trim()) errs.address = "Please enter your street address";
+    if (!formData.state) errs.state = "Please select your state";
+    if (!formData.city) errs.city = "Please select your city / LGA";
+    return errs;
+  };
+
+  const focusFirstError = () => {
+    const el = document.getElementById("checkout-step-1");
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+    setIsAddressFormOpen(true);
   };
 
   const selectedStateData = nigeriaData.find(s => s.state === formData.state);
@@ -180,6 +223,15 @@ export default function CheckoutPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const errs = validate();
+    setErrors(errs);
+    if (Object.keys(errs).length > 0) {
+      setIsSubmitting(false);
+      focusFirstError();
+      return;
+    }
+
     setIsSubmitting(true);
     
     try {
@@ -373,7 +425,7 @@ export default function CheckoutPage() {
           })()}
         </div>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} noValidate>
           
           {/* Step 1: Shipping Address */}
           <div id="checkout-step-1" style={{ marginBottom: "var(--space-8)", scrollMarginTop: "160px" }}>
@@ -509,43 +561,49 @@ export default function CheckoutPage() {
 
                 <div style={{ marginBottom: "var(--space-4)" }}>
                   <label htmlFor="fullName" style={{ display: "block", fontSize: "0.875rem", marginBottom: "4px", color: "var(--color-text-secondary)" }}>{isGift ? "Recipient's Name" : "Full Name"}</label>
-                  <input required type="text" id="fullName" name="fullName" value={formData.fullName} onChange={handleChange} placeholder="e.g. Jane Doe" style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "1px solid var(--color-border)", outline: "none" }} />
+                  <input required type="text" id="fullName" name="fullName" value={formData.fullName} onChange={handleChange} placeholder="e.g. Jane Doe" aria-invalid={!!errors.fullName} style={{ width: "100%", padding: "10px", borderRadius: "8px", border: `1px solid ${errors.fullName ? "var(--color-error)" : "var(--color-border)"}`, outline: "none" }} />
+                  {errors.fullName && <p style={{ color: "var(--color-error)", fontSize: "0.75rem", marginTop: "4px" }}>{errors.fullName}</p>}
                 </div>
                 
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-4)", marginBottom: "var(--space-4)" }}>
                   <div>
                     <label htmlFor="email" style={{ display: "block", fontSize: "0.875rem", marginBottom: "4px", color: "var(--color-text-secondary)" }}>Email Address</label>
-                    <input required type="email" id="email" name="email" value={formData.email} onChange={handleChange} placeholder="jane@example.com" style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "1px solid var(--color-border)", outline: "none" }} />
+                    <input required type="email" id="email" name="email" value={formData.email} onChange={handleChange} placeholder="jane@example.com" aria-invalid={!!errors.email} style={{ width: "100%", padding: "10px", borderRadius: "8px", border: `1px solid ${errors.email ? "var(--color-error)" : "var(--color-border)"}`, outline: "none" }} />
+                    {errors.email && <p style={{ color: "var(--color-error)", fontSize: "0.75rem", marginTop: "4px" }}>{errors.email}</p>}
                   </div>
                   <div>
                     <label htmlFor="phone" style={{ display: "block", fontSize: "0.875rem", marginBottom: "4px", color: "var(--color-text-secondary)" }}>Phone Number</label>
-                    <input required type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange} placeholder="08012345678" style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "1px solid var(--color-border)", outline: "none" }} />
+                    <input required type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange} placeholder="08012345678" aria-invalid={!!errors.phone} style={{ width: "100%", padding: "10px", borderRadius: "8px", border: `1px solid ${errors.phone ? "var(--color-error)" : "var(--color-border)"}`, outline: "none" }} />
+                    {errors.phone && <p style={{ color: "var(--color-error)", fontSize: "0.75rem", marginTop: "4px" }}>{errors.phone}</p>}
                   </div>
                 </div>
 
                 <div style={{ marginBottom: "var(--space-4)" }}>
                   <label htmlFor="address" style={{ display: "block", fontSize: "0.875rem", marginBottom: "4px", color: "var(--color-text-secondary)" }}>Street Address</label>
-                  <input required type="text" id="address" name="address" value={formData.address} onChange={handleChange} placeholder="123 Fashion Street, Apt 4B" style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "1px solid var(--color-border)", outline: "none" }} />
+                  <input required type="text" id="address" name="address" value={formData.address} onChange={handleChange} placeholder="123 Fashion Street, Apt 4B" aria-invalid={!!errors.address} style={{ width: "100%", padding: "10px", borderRadius: "8px", border: `1px solid ${errors.address ? "var(--color-error)" : "var(--color-border)"}`, outline: "none" }} />
+                  {errors.address && <p style={{ color: "var(--color-error)", fontSize: "0.75rem", marginTop: "4px" }}>{errors.address}</p>}
                 </div>
 
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-4)" }}>
                   <div>
                     <label htmlFor="state" style={{ display: "block", fontSize: "0.875rem", marginBottom: "4px", color: "var(--color-text-secondary)" }}>State</label>
-                    <select required id="state" name="state" value={formData.state} onChange={handleChange} style={{ width: "100%", padding: "10px 32px 10px 10px", borderRadius: "8px", border: "1px solid var(--color-border)", outline: "none", fontSize: "0.875rem", appearance: "none", background: "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"%23666\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"6 9 12 15 18 9\"></polyline></svg>') no-repeat right 12px center / 16px 16px white" }}>
+                    <select required id="state" name="state" value={formData.state} onChange={handleChange} aria-invalid={!!errors.state} style={{ width: "100%", padding: "10px 32px 10px 10px", borderRadius: "8px", border: `1px solid ${errors.state ? "var(--color-error)" : "var(--color-border)"}`, outline: "none", fontSize: "0.875rem", appearance: "none", background: "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"%23666\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"6 9 12 15 18 9\"></polyline></svg>') no-repeat right 12px center / 16px 16px white" }}>
                       <option value="">Select State</option>
                       {nigeriaData.map(s => (
                         <option key={s.state} value={s.state}>{s.state}</option>
                       ))}
                     </select>
+                    {errors.state && <p style={{ color: "var(--color-error)", fontSize: "0.75rem", marginTop: "4px" }}>{errors.state}</p>}
                   </div>
                   <div>
                     <label htmlFor="city" style={{ display: "block", fontSize: "0.875rem", marginBottom: "4px", color: "var(--color-text-secondary)" }}>City / LGA</label>
-                    <select required id="city" name="city" value={formData.city} onChange={handleChange} disabled={!formData.state} style={{ width: "100%", padding: "10px 32px 10px 10px", borderRadius: "8px", border: "1px solid var(--color-border)", outline: "none", fontSize: "0.875rem", appearance: "none", background: `url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"%23666\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"6 9 12 15 18 9\"></polyline></svg>') no-repeat right 12px center / 16px 16px ${formData.state ? "white" : "var(--color-background-alt)"}` }}>
+                    <select required id="city" name="city" value={formData.city} onChange={handleChange} disabled={!formData.state} aria-invalid={!!errors.city} style={{ width: "100%", padding: "10px 32px 10px 10px", borderRadius: "8px", border: `1px solid ${errors.city ? "var(--color-error)" : "var(--color-border)"}`, outline: "none", fontSize: "0.875rem", appearance: "none", background: `url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"%23666\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"6 9 12 15 18 9\"></polyline></svg>') no-repeat right 12px center / 16px 16px ${formData.state ? "white" : "var(--color-background-alt)"}` }}>
                       <option value="">Select City / LGA</option>
                       {availableLgas.map(lga => (
                         <option key={lga} value={lga}>{lga}</option>
                       ))}
                     </select>
+                    {errors.city && <p style={{ color: "var(--color-error)", fontSize: "0.75rem", marginTop: "4px" }}>{errors.city}</p>}
                   </div>
                 </div>
 
@@ -695,10 +753,10 @@ export default function CheckoutPage() {
           <button
             type="button"
             onClick={() => {
-              if (!isAddressComplete) {
-                const el = document.getElementById("checkout-step-1");
-                if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
-                setIsAddressFormOpen(true);
+              const errs = validate();
+              setErrors(errs);
+              if (Object.keys(errs).length > 0) {
+                focusFirstError();
                 return;
               }
               if (!shippingMethod) {

@@ -148,7 +148,7 @@ export default function CartClient({ bestsellers = [] }) {
                           </select>
                         </div>
                       </div>
-                      <div className={styles.cartItemPrice} style={{ marginTop: "4px" }}>{formatPrice(item.price)}</div>
+                      <div className={styles.cartItemPrice} style={{ marginTop: "4px" }}>{formatPrice(item.price * item.quantity)}</div>
                     </div>
                   </div>
                   
