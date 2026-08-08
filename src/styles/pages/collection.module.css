@@ -243,6 +243,7 @@
   background: var(--color-surface);
   border: none;
   outline: none;
+  font-family: var(--font-body);
   font-size: 1.25rem;
   line-height: 1;
   cursor: pointer;
