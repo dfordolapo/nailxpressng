@@ -1,4 +1,4 @@
-import { CURRENCY, FREE_SHIPPING_THRESHOLD, FLAT_SHIPPING_RATE } from "./constants";
+import { CURRENCY, FLAT_SHIPPING_RATE } from "./constants";
 
 /**
  * Format price in Naira
@@ -51,16 +51,6 @@ export function truncateText(text, maxLength = 100) {
 export function getDiscountPercent(price, compareAtPrice) {
   if (!compareAtPrice || compareAtPrice <= price) return 0;
   return Math.round(((compareAtPrice - price) / compareAtPrice) * 100);
-}
-
-/**
- * Generate star rating display array
- */
-export function getStarRating(rating) {
-  const full = Math.floor(rating);
-  const hasHalf = rating % 1 >= 0.5;
-  const empty = 5 - full - (hasHalf ? 1 : 0);
-  return { full, hasHalf, empty };
 }
 
 /**

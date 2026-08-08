@@ -5,7 +5,6 @@ export const SITE_DESCRIPTION = "Press-on perfection — handmade artistry & fac
 export const CURRENCY = "₦";
 export const CURRENCY_CODE = "NGN";
 
-export const FREE_SHIPPING_THRESHOLD = 20000; // Free shipping over ₦20,000
 export const FLAT_SHIPPING_RATE = 2500;
 
 export const SOCIAL_LINKS = {
@@ -32,7 +31,4 @@ export const SORT_OPTIONS = [
   { value: "newest", label: "Newest" },
   { value: "price-asc", label: "Price: Low to High" },
   { value: "price-desc", label: "Price: High to Low" },
-  { value: "rating", label: "Highest Rated" },
 ];
-
-export const ANNOUNCEMENT_TEXT = "Free shipping on orders over ₦20,000";

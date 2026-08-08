@@ -21,9 +21,6 @@ const mapProduct = (p) => ({
   inStock: p.stock_count > 0,
   stockCount: p.stock_count,
   createdAt: p.created_at,
-  // We don't have these in DB currently, adding defaults to prevent breaking UI
-  rating: 5.0,
-  reviewCount: 0,
   tags: [],
   colors: []
 });

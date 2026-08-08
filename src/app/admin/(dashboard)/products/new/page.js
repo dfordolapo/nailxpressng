@@ -28,7 +28,7 @@ export default function NewProduct() {
   const [nailStyle, setNailStyle] = useState("Solid");
   
   const [price, setPrice] = useState("");
-  const [compareAtPrice, setCompareAtPrice] = useState("");
+  const [salePrice, setSalePrice] = useState("");
   const [stockQuantity, setStockQuantity] = useState("");
   const [availability, setAvailability] = useState("In Stock");
   const [isFeatured, setIsFeatured] = useState(false);
@@ -97,8 +97,11 @@ export default function NewProduct() {
       const formData = new FormData();
       formData.append('name', name);
       formData.append('description', description);
-      formData.append('price', price);
-      if (compareAtPrice) formData.append('compareAtPrice', compareAtPrice);
+      const normalPrice = parseFloat(price) || 0;
+      const sale = salePrice ? parseFloat(salePrice) : null;
+      const onSale = sale !== null && sale > 0 && sale < normalPrice;
+      formData.append('price', onSale ? sale : normalPrice);
+      if (onSale) formData.append('compareAtPrice', normalPrice);
       formData.append('category', collection); // Map collection to category
       formData.append('stockCount', stockQuantity || '0');
       formData.append('featured', isBestseller); // Or isFeatured depending on preference
@@ -258,7 +261,7 @@ export default function NewProduct() {
                         product={{
                           id: "preview",
                           name: name || "Product Name",
-                          price: parseFloat(price || "0"),
+                          price: parseFloat(salePrice || price || "0"),
                           category: collection.toLowerCase().replace(' ', '-'),
                           image: imagePreview || "https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&q=80&w=300",
                           shortDescription: description || "Product description goes here.",
@@ -323,19 +326,19 @@ export default function NewProduct() {
               
               <div className={styles.grid2}>
                 <div className={styles.formGroup}>
-                  <label className={styles.label}>Price</label>
+                  <label className={styles.label}>Price (Normal Price)</label>
                   <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
                     <span style={{ position: "absolute", left: "15px", color: "#666", fontWeight: 500 }}>₦</span>
                     <input type="number" className={styles.input} placeholder="0.00" style={{ paddingLeft: "35px" }} value={price} onChange={e => setPrice(e.target.value)} required />
                   </div>
                 </div>
                 <div className={styles.formGroup}>
-                  <label className={styles.label}>Sale Price / Discounted Rate</label>
+                  <label className={styles.label}>Sale / Discounted Price</label>
                   <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
                     <span style={{ position: "absolute", left: "15px", color: "#666", fontWeight: 500 }}>₦</span>
-                    <input type="number" className={styles.input} placeholder="0.00" style={{ paddingLeft: "35px" }} value={compareAtPrice} onChange={e => setCompareAtPrice(e.target.value)} />
+                    <input type="number" className={styles.input} placeholder="0.00" style={{ paddingLeft: "35px" }} value={salePrice} onChange={e => setSalePrice(e.target.value)} />
                   </div>
-                  <div style={{ fontSize: "0.75rem", color: "#888", marginTop: "6px" }}>Leave blank if the product is not on sale.</div>
+                  <div style={{ fontSize: "0.75rem", color: "#888", marginTop: "6px" }}>Enter a lower price to show a "-% OFF" badge. Leave blank if the product is not on sale.</div>
                 </div>
               </div>
 
