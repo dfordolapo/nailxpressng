@@ -11,7 +11,7 @@ import pageStyles from "@/styles/pages/collection.module.css";
 import cartStyles from "@/styles/components/cart.module.css";
 import btnStyles from "@/styles/components/buttons.module.css";
 import addrStyles from "@/styles/components/checkoutAddresses.module.css";
-import { Home, Building2, Gift, Bookmark, Plus, Check, Trash2, MapPin, Sparkles, Edit2 } from "lucide-react";
+import { Home, Building2, Gift, Bookmark, Plus, Check, Trash2, MapPin, Sparkles, Edit2, Clock } from "lucide-react";
 
 export default function CheckoutPage() {
   const { items, clearCart } = useCart();
@@ -649,7 +649,7 @@ export default function CheckoutPage() {
                     </div>
                     <div style={{ paddingLeft: "30px" }}>
                       <div style={{ fontSize: "0.8rem", fontWeight: 600, color: "var(--color-success)", display: "flex", alignItems: "center", gap: "4px" }}>
-                        🕒 Est. Delivery: {details.est}
+                        <Clock size={12} strokeWidth={1.5} /> Est. Delivery: {details.est}
                       </div>
                       <div style={{ fontSize: "0.75rem", color: "var(--color-text-secondary)", marginTop: "2px" }}>
                         {details.desc}
