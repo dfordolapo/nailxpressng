@@ -222,7 +222,7 @@ export default function CheckoutPage() {
         if (!response.ok) throw new Error(data.error || 'Failed to place order');
 
         if (clearCart) clearCart();
-        router.push(`/checkout/success?orderId=${data.orderId}`);
+        router.push(`/checkout/success?orderId=${data.orderId}&delivery=${encodeURIComponent(deliveryTimeVal)}`);
       };
 
       const paystackKey = process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY;
