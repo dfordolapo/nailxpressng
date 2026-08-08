@@ -57,6 +57,23 @@ export default function SearchOverlay() {
     return matches;
   }, [query, allProducts]);
 
+  const localResults = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return [];
+    return allProducts.filter((product) => {
+      return (
+        product.name.toLowerCase().includes(q) ||
+        product.description.toLowerCase().includes(q) ||
+        product.category.toLowerCase().includes(q) ||
+        (product.tags && product.tags.some((tag) => tag.toLowerCase().includes(q)))
+      );
+    });
+  }, [query, allProducts]);
+
+  const hasLocal = allProducts.length > 0;
+  const displayResults = hasLocal ? localResults : results;
+  const displaySearching = !hasLocal && isSearching && query.trim();
+
   useEffect(() => {
     if (!isOpen || query) return;
     const interval = setInterval(() => {
@@ -274,11 +291,11 @@ export default function SearchOverlay() {
           </div>
         )}
 
-        {isSearching && query && (
+        {displaySearching && (
           <p style={{ textAlign: "center", color: "var(--color-text-tertiary)" }}>Searching...</p>
         )}
 
-        {!isSearching && query && results.length === 0 && (
+        {!displaySearching && query && displayResults.length === 0 && (
           <div className={styles.noResults} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'var(--space-4)', padding: 'var(--space-8) 0' }}>
             <div className={styles.noResultsIcon} style={{ fontSize: '3rem', marginBottom: '0' }}>🔍</div>
             <p className={styles.noResultsText} style={{ marginBottom: 'var(--space-2)' }}>No results found for &ldquo;{query}&rdquo;</p>
@@ -306,7 +323,7 @@ export default function SearchOverlay() {
           </div>
         )}
 
-        {!isSearching && results.length > 0 && (
+        {!displaySearching && displayResults.length > 0 && (
           <div>
             <div style={{ display: "flex", justifyContent: "center", marginBottom: "var(--space-6)" }}>
               <Link
@@ -333,7 +350,7 @@ export default function SearchOverlay() {
               </Link>
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "var(--space-4)" }}>
-            {results.map((product) => (
+            {displayResults.map((product) => (
               <Link
                 key={product.id}
                 href={`/product/${product.slug}`}

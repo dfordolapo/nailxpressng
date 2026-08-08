@@ -1,3 +1,4 @@
+import { connection } from "next/server";
 import { getProducts } from "@/lib/api";
 import SearchClient from "./SearchClient";
 
@@ -7,6 +8,7 @@ export const metadata = {
 };
 
 export default async function SearchPage() {
+  await connection();
   const allProducts = await getProducts();
   
   return <SearchClient allProducts={allProducts} />;
