@@ -221,23 +221,40 @@ export default function ProductClient({ product, relatedProducts = [] }) {
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
                   style={{
-                    width: 44, height: 44, display: "flex", alignItems: "center", justifyContent: "center",
-                    background: "var(--color-surface)", fontSize: "var(--text-lg)",
+                    width: 44, height: 44, minWidth: 44,
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    background: "var(--color-surface)",
+                    border: "none",
+                    fontSize: "1.25rem",
+                    lineHeight: 1,
+                    cursor: "pointer",
+                    flexShrink: 0,
                   }}
                 >
-                  −
+                  -
                 </button>
                 <span style={{
-                  width: 56, textAlign: "center", fontWeight: 600, borderLeft: "1px solid var(--color-border)",
-                  borderRight: "1px solid var(--color-border)", height: 44, display: "flex", alignItems: "center", justifyContent: "center",
+                  width: 56, minWidth: 56, textAlign: "center", fontWeight: 600,
+                  borderLeft: "1px solid var(--color-border)",
+                  borderRight: "1px solid var(--color-border)",
+                  height: 44,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  flexShrink: 0,
+                  fontSize: "var(--text-base)",
                 }}>
                   {quantity}
                 </span>
                 <button
                   onClick={() => setQuantity(quantity + 1)}
                   style={{
-                    width: 44, height: 44, display: "flex", alignItems: "center", justifyContent: "center",
-                    background: "var(--color-surface)", fontSize: "var(--text-lg)",
+                    width: 44, height: 44, minWidth: 44,
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    background: "var(--color-surface)",
+                    border: "none",
+                    fontSize: "1.25rem",
+                    lineHeight: 1,
+                    cursor: "pointer",
+                    flexShrink: 0,
                   }}
                 >
                   +
