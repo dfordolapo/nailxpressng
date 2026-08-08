@@ -211,51 +211,19 @@ export default function ProductClient({ product, relatedProducts = [] }) {
             {/* Quantity */}
             <div className={pageStyles.selectorGroup}>
               <span className={pageStyles.selectorLabel}>Quantity</span>
-              <div style={{
-                display: "inline-flex",
-                alignItems: "center",
-                border: "1px solid var(--color-border)",
-                borderRadius: "var(--radius-md)",
-                overflow: "hidden",
-              }}>
+              <div className={pageStyles.quantityAdjuster}>
                 <button
+                  className={pageStyles.quantityBtn}
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  style={{
-                    width: 44, height: 44, minWidth: 44,
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    background: "var(--color-surface)",
-                    border: "none",
-                    fontSize: "1.25rem",
-                    lineHeight: 1,
-                    cursor: "pointer",
-                    flexShrink: 0,
-                  }}
                 >
                   -
                 </button>
-                <span style={{
-                  width: 56, minWidth: 56, textAlign: "center", fontWeight: 600,
-                  borderLeft: "1px solid var(--color-border)",
-                  borderRight: "1px solid var(--color-border)",
-                  height: 44,
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  flexShrink: 0,
-                  fontSize: "var(--text-base)",
-                }}>
+                <span className={pageStyles.quantityDisplay}>
                   {quantity}
                 </span>
                 <button
+                  className={pageStyles.quantityBtn}
                   onClick={() => setQuantity(quantity + 1)}
-                  style={{
-                    width: 44, height: 44, minWidth: 44,
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    background: "var(--color-surface)",
-                    border: "none",
-                    fontSize: "1.25rem",
-                    lineHeight: 1,
-                    cursor: "pointer",
-                    flexShrink: 0,
-                  }}
                 >
                   +
                 </button>
