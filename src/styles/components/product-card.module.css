@@ -141,24 +141,6 @@
 }
 
 /* ── Rating ───────────────────────────────────────────────────────── */
-.rating {
-  display: flex;
-  align-items: center;
-  gap: var(--space-1);
-  font-size: var(--text-xs);
-  color: var(--color-text-tertiary);
-}
-
-.stars {
-  display: flex;
-  gap: 1px;
-  color: var(--color-accent);
-}
-
-.stars svg {
-  width: 14px;
-  height: 14px;
-}
 
 /* ── Product Grid ─────────────────────────────────────────────────── */
 .grid {

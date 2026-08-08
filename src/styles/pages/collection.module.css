@@ -157,28 +157,6 @@
   line-height: var(--leading-normal);
 }
 
-.productRating {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-}
-
-.ratingStars {
-  display: flex;
-  gap: 2px;
-  color: var(--color-accent);
-}
-
-.ratingStars svg {
-  width: 18px;
-  height: 18px;
-}
-
-.ratingText {
-  font-size: var(--text-sm);
-  color: var(--color-text-tertiary);
-}
-
 /* ── Selectors ────────────────────────────────────────────────────── */
 .selectorGroup {
   display: flex;

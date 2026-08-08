@@ -32,21 +32,21 @@ function sortProductsList(productList, sortBy) {
     case "price-desc":
       return sorted.sort((a, b) => b.price - a.price);
     case "newest":
-      return sorted.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-    case "rating":
-      return sorted.sort((a, b) => b.rating - a.rating);
     case "popular":
-      return sorted.sort((a, b) => b.reviewCount - a.reviewCount);
+      return sorted.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     default:
       return sorted;
   }
 }
+
+const PAGE_SIZE = 8;
 
 export default function CollectionClient({ category, allProducts, featuredProducts }) {
   const [selectedShapes, setSelectedShapes] = useState([]);
   const [selectedLengths, setSelectedLengths] = useState([]);
   const [sortBy, setSortBy] = useState("popular");
   const [viewMode, setViewMode] = useState("grid");
+  const [currentPage, setCurrentPage] = useState(1);
 
   const filtered = useMemo(() => {
     const shapeFilters = { nailShape: selectedShapes, length: selectedLengths };
@@ -54,16 +54,25 @@ export default function CollectionClient({ category, allProducts, featuredProduc
     return sortProductsList(f, sortBy);
   }, [allProducts, selectedShapes, selectedLengths, sortBy]);
 
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const safePage = Math.min(currentPage, totalPages);
+  const paginated = useMemo(() => {
+    const start = (safePage - 1) * PAGE_SIZE;
+    return filtered.slice(start, start + PAGE_SIZE);
+  }, [filtered, safePage]);
+
   const toggleShape = (shapeId) => {
     setSelectedShapes(prev => 
       prev.includes(shapeId) ? [] : [shapeId]
     );
+    setCurrentPage(1);
   };
 
   const toggleLength = (lengthId) => {
     setSelectedLengths(prev => 
       prev.includes(lengthId) ? [] : [lengthId]
     );
+    setCurrentPage(1);
   };
 
   return (
@@ -125,7 +134,7 @@ export default function CollectionClient({ category, allProducts, featuredProduc
               <select
                 className={filterStyles.sortSelect}
                 value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
+                onChange={(e) => { setSortBy(e.target.value); setCurrentPage(1); }}
                 id="sort-select"
               >
                 {SORT_OPTIONS.map((opt) => (
@@ -157,13 +166,52 @@ export default function CollectionClient({ category, allProducts, featuredProduc
                 </button>
               </div>
             ) : (
-              <div className={viewMode === "grid" ? gridStyles.masonryGrid : gridStyles.listGrid}>
-                {filtered.map((product, i) => (
-                  <div key={product.id} className={gridStyles.masonryItem}>
-                    <HandmadeProductCard product={product} index={i} viewMode={viewMode} />
+              <>
+                <div className={viewMode === "grid" ? gridStyles.masonryGrid : gridStyles.listGrid}>
+                  {paginated.map((product, i) => (
+                    <div key={product.id} className={gridStyles.masonryItem}>
+                      <HandmadeProductCard product={product} index={i} viewMode={viewMode} />
+                    </div>
+                  ))}
+                </div>
+
+                {totalPages > 1 && (
+                  <div className={filterStyles.pagination}>
+                    <span className={filterStyles.paginationInfo}>
+                      Page {safePage} of {totalPages}
+                    </span>
+                    <div className={filterStyles.paginationControls}>
+                      <button
+                        className={filterStyles.paginationBtn}
+                        onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                        disabled={safePage === 1}
+                        aria-label="Previous page"
+                      >
+                        ‹
+                      </button>
+                      {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                        <button
+                          key={page}
+                          className={`${filterStyles.paginationBtn} ${page === safePage ? filterStyles.paginationActive : ""}`}
+                          onClick={() => setCurrentPage(page)}
+                          aria-label={`Page ${page}`}
+                          aria-current={page === safePage ? "page" : undefined}
+                        >
+                          {page}
+                        </button>
+                      ))}
+                      <button
+                        className={filterStyles.paginationBtn}
+                        onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                        disabled={safePage === totalPages}
+                        aria-label="Next page"
+                      >
+                        ›
+                      </button>
+                    </div>
                   </div>
-                ))}
-              </div>
+                )}
+              </>
             )}
           </div>
         </div>

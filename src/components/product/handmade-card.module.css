@@ -265,14 +265,6 @@
   text-decoration: line-through;
 }
 
-.rating {
-  display: flex;
-  align-items: center;
-  gap: var(--space-1);
-  font-size: var(--text-xs);
-  color: var(--color-text-tertiary);
-}
-
 .stars {
   display: flex;
   gap: 1px;
@@ -731,8 +723,6 @@
   .name { font-size: var(--text-base); margin: 2px 0; }
   .price { font-size: var(--text-sm); }
   .comparePrice { font-size: 10px; }
-  .rating { font-size: 10px; }
-  .stars svg { width: 10px; height: 10px; }
 
   .flipHint { padding: var(--space-2) 0; font-size: 10px; }
   .flipHint svg { width: 12px; height: 12px; }
