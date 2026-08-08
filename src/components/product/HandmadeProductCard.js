@@ -6,6 +6,7 @@ import Image from "next/image";
 import { formatPrice, getDiscountPercent } from "@/lib/utils";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
+import { useToast } from "@/context/ToastContext";
 import { SOCIAL_LINKS, WHATSAPP_MESSAGES } from "@/lib/constants";
 import styles from "./handmade-card.module.css";
 
@@ -54,6 +55,7 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
 
   const { addItem } = useCart();
   const { toggleItem, isInWishlist } = useWishlist();
+  const { showToast } = useToast();
 
   const discount = getDiscountPercent(product.price, product.compareAtPrice);
   const wishlisted = isInWishlist(product.id);
@@ -112,6 +114,7 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
     addItem(product, qty, size, length);
     setAdded(true);
     setTimeout(() => setAdded(false), 1800);
+    showToast(`"${product.name}" added to cart`);
   };
 
   const handleSizeSelect = (size, e) => {

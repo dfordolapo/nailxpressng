@@ -4,6 +4,7 @@ import Link from "next/link";
 import { formatPrice, getDiscountPercent } from "@/lib/utils";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
+import { useToast } from "@/context/ToastContext";
 import styles from "@/styles/components/product-card.module.css";
 import btnStyles from "@/styles/components/buttons.module.css";
 
@@ -28,6 +29,7 @@ function ShoppingBagIcon() {
 export default function ProductCard({ product }) {
   const { addItem } = useCart();
   const { toggleItem, isInWishlist } = useWishlist();
+  const { showToast } = useToast();
   const discount = getDiscountPercent(product.price, product.compareAtPrice);
   const wishlisted = isInWishlist(product.id);
 
@@ -35,6 +37,7 @@ export default function ProductCard({ product }) {
     e.preventDefault();
     e.stopPropagation();
     addItem(product, 1, "M", "medium");
+    showToast(`"${product.name}" added to cart`);
   };
 
   const handleWishlist = (e) => {

@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { useSearch } from "@/context/SearchContext";
+import { getProducts } from "@/lib/api";
 import { formatPrice } from "@/lib/utils";
 import { SOCIAL_LINKS } from "@/lib/constants";
 import styles from "@/styles/pages/collection.module.css";
@@ -29,12 +30,32 @@ export default function SearchOverlay() {
   const { query, results, isSearching, isOpen, updateQuery, closeSearch } = useSearch();
 
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
+  const [allProducts, setAllProducts] = useState([]);
   const placeholders = [
     "Search for nails, styles, colors...",
     "try 'almond shape'...",
     "try 'bridal set'...",
     "search for 'ombré'..."
   ];
+
+  useEffect(() => {
+    if (!isOpen) return;
+    getProducts().then(setAllProducts).catch(() => {});
+  }, [isOpen]);
+
+  const suggestions = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return [];
+    const matches = allProducts
+      .filter((p) => p.name.toLowerCase().includes(q))
+      .sort((a, b) => {
+        const aStarts = a.name.toLowerCase().startsWith(q) ? 0 : 1;
+        const bStarts = b.name.toLowerCase().startsWith(q) ? 0 : 1;
+        return aStarts - bStarts;
+      })
+      .slice(0, 6);
+    return matches;
+  }, [query, allProducts]);
 
   useEffect(() => {
     if (!isOpen || query) return;
@@ -129,6 +150,42 @@ export default function SearchOverlay() {
           />
         </div>
       </div>
+
+      {/* Autocomplete Suggestions */}
+      {query.trim() && suggestions.length > 0 && (
+        <div style={{ maxWidth: 900, margin: "0 auto", width: "100%", padding: "0 var(--space-6)" }}>
+          <div style={{ display: "flex", flexDirection: "column", background: "white", borderRadius: "var(--radius-lg)", border: "1px solid var(--color-border-light)", boxShadow: "0 8px 30px rgba(0,0,0,0.06)", overflow: "hidden" }}>
+            {suggestions.map((p) => (
+              <Link
+                key={p.id}
+                href={`/product/${p.slug}`}
+                onClick={closeSearch}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "var(--space-3)",
+                  padding: "10px var(--space-4)",
+                  textDecoration: "none",
+                  color: "inherit",
+                  borderBottom: "1px solid var(--color-border-light)",
+                  transition: "background var(--transition-fast)",
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.background = "var(--color-primary-50)"}
+                onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}
+                id={`suggestion-${p.slug}`}
+              >
+                <span style={{ fontSize: "0.85rem", color: "var(--color-primary)", flexShrink: 0 }}>⌕</span>
+                <span style={{ flex: 1, fontSize: "0.875rem", fontWeight: 500, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                  {p.name}
+                </span>
+                <span style={{ fontSize: "0.75rem", color: "var(--color-text-tertiary)", flexShrink: 0 }}>
+                  {formatPrice(p.price)}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Results */}
       <div style={{
@@ -250,7 +307,32 @@ export default function SearchOverlay() {
         )}
 
         {!isSearching && results.length > 0 && (
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "var(--space-4)" }}>
+          <div>
+            <div style={{ display: "flex", justifyContent: "center", marginBottom: "var(--space-6)" }}>
+              <Link
+                href={`/search?q=${encodeURIComponent(query)}`}
+                onClick={closeSearch}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "var(--space-2)",
+                  background: "var(--color-primary)",
+                  color: "white",
+                  padding: "10px 24px",
+                  borderRadius: "var(--radius-full)",
+                  textDecoration: "none",
+                  fontWeight: 500,
+                  fontSize: "0.875rem",
+                  transition: "transform var(--transition-fast)",
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.transform = "scale(1.02)"}
+                onMouseLeave={(e) => e.currentTarget.style.transform = "scale(1)"}
+                id="view-all-results-btn"
+              >
+                View all results for &ldquo;{query}&rdquo; →
+              </Link>
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "var(--space-4)" }}>
             {results.map((product) => (
               <Link
                 key={product.id}
@@ -302,6 +384,7 @@ export default function SearchOverlay() {
                 </div>
               </Link>
             ))}
+            </div>
           </div>
         )}
 

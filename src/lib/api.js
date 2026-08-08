@@ -69,6 +69,17 @@ export async function getProductsByCategory(categorySlug) {
   return data.map(mapProduct);
 }
 
+export async function getProductsByIds(ids) {
+  if (!ids || ids.length === 0) return [];
+  const { data, error } = await supabase
+    .from('products')
+    .select('*, categories(slug, name)')
+    .in('id', ids);
+
+  if (error) return [];
+  return data.map(mapProduct);
+}
+
 export async function getFeaturedProducts() {
   // Using bestseller or newArrival as a proxy for featured if we don't have a featured flag
   const { data, error } = await supabase

@@ -133,15 +133,18 @@
 }
 
 .hotspot:hover .dot,
-.hotspotActive .dot {
+.hotspot:active .dot {
   background: var(--color-primary);
   border-color: var(--color-primary);
   transform: scale(1.1);
 }
 
-.hotspotActive .dot::before {
-  animation: none;
-  background: rgba(122, 64, 61, 0.2);
+.hotspot:hover .popover,
+.hotspot:active .popover {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
 }
 
 .popover {
@@ -163,14 +166,6 @@
   transition: all var(--transition-base);
   pointer-events: none;
   z-index: 20;
-}
-
-.hotspot:hover .popover,
-.hotspotActive .popover {
-  opacity: 1;
-  visibility: visible;
-  transform: translateX(-50%) translateY(0);
-  pointer-events: auto;
 }
 
 .popoverName {

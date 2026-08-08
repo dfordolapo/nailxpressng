@@ -14,11 +14,15 @@ import gridStyles from "@/components/product/handmade-card.module.css";
 function filterProductsList(productList, filters) {
   let filtered = [...productList];
   if (filters.nailShape && filters.nailShape.length > 0) {
-    filtered = filtered.filter((p) => filters.nailShape.includes(p.nailShape));
+    filtered = filtered.filter((p) =>
+      filters.nailShape.some((s) => p.nailShape?.toLowerCase() === s.toLowerCase())
+    );
   }
   if (filters.length && filters.length.length > 0) {
     filtered = filtered.filter((p) =>
-      p.lengths.some((l) => filters.length.includes(l))
+      p.lengths.some((l) =>
+        filters.length.some((fl) => l.toLowerCase() === fl.toLowerCase())
+      )
     );
   }
   return filtered;
@@ -32,7 +36,6 @@ function sortProductsList(productList, sortBy) {
     case "price-desc":
       return sorted.sort((a, b) => b.price - a.price);
     case "newest":
-    case "popular":
       return sorted.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     default:
       return sorted;
@@ -44,7 +47,7 @@ const PAGE_SIZE = 8;
 export default function CollectionClient({ category, allProducts, featuredProducts }) {
   const [selectedShapes, setSelectedShapes] = useState([]);
   const [selectedLengths, setSelectedLengths] = useState([]);
-  const [sortBy, setSortBy] = useState("popular");
+  const [sortBy, setSortBy] = useState("newest");
   const [viewMode, setViewMode] = useState("grid");
   const [currentPage, setCurrentPage] = useState(1);
 

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useCart } from "@/context/CartContext";
+import { useToast } from "@/context/ToastContext";
 import { formatPrice, calculateCartTotals } from "@/lib/utils";
 import { Trash2, ArrowLeft, ShoppingBag, Check } from "lucide-react";
 import styles from "@/styles/components/cart.module.css";
@@ -11,6 +12,7 @@ import btnStyles from "@/styles/components/buttons.module.css";
 
 export default function CartClient({ bestsellers = [] }) {
   const { items, removeItem, updateQuantity, updateItemOptions, addItem } = useCart();
+  const { showToast } = useToast();
   const [standardShipping, setStandardShipping] = useState(2500);
   const [addedMap, setAddedMap] = useState({});
   const { subtotal, total, itemCount } = calculateCartTotals(items);
@@ -249,6 +251,7 @@ export default function CartClient({ bestsellers = [] }) {
                             setTimeout(() => {
                               setAddedMap((prev) => ({ ...prev, [product.id]: false }));
                             }, 1800);
+                            showToast(`"${product.name}" added to cart`);
                           }}
                         >
                           {isAdded ? <Check size={14} strokeWidth={2.5} /> : "+"}

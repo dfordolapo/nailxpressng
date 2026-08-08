@@ -2,6 +2,7 @@ import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
 import { WishlistProvider } from "@/context/WishlistContext";
 import { SearchProvider } from "@/context/SearchContext";
+import { ToastProvider } from "@/context/ToastContext";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import SearchOverlay from "@/components/ui/SearchOverlay";
@@ -148,14 +149,16 @@ export default function RootLayout({ children }) {
         <CartProvider>
           <WishlistProvider>
             <SearchProvider>
-              <SplashAnimation />
-              <Header />
-              <SearchOverlay />
-              <PullToRefresh>
-                <main>{children}</main>
-              </PullToRefresh>
-              <Footer />
-              <OfflineBanner />
+              <ToastProvider>
+                <SplashAnimation />
+                <Header />
+                <SearchOverlay />
+                <PullToRefresh>
+                  <main>{children}</main>
+                </PullToRefresh>
+                <Footer />
+                <OfflineBanner />
+              </ToastProvider>
             </SearchProvider>
           </WishlistProvider>
         </CartProvider>

@@ -1,10 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
+import { useEffect, useState } from "react";
 import { useWishlist } from "@/context/WishlistContext";
 import { useCart } from "@/context/CartContext";
+import { useToast } from "@/context/ToastContext";
 import { formatPrice } from "@/lib/utils";
+import { getProductsByIds } from "@/lib/api";
 import { Heart, ArrowLeft, ShoppingBag, Share } from "lucide-react";
 import pageStyles from "@/styles/pages/collection.module.css";
 import btnStyles from "@/styles/components/buttons.module.css";
@@ -13,28 +15,47 @@ import { products } from "@/data/products";
 export default function WishlistPage() {
   const { items, removeItem, clearWishlist, toggleItem, isInWishlist } = useWishlist();
   const { addItem } = useCart();
+  const { showToast } = useToast();
+  const [stockMap, setStockMap] = useState({});
+
+  useEffect(() => {
+    let active = true;
+    if (items.length > 0) {
+      getProductsByIds(items.map(i => i.id)).then((liveProducts) => {
+        if (!active) return;
+        const map = {};
+        liveProducts.forEach(p => { map[p.id] = p; });
+        setStockMap(map);
+      });
+    } else {
+      setStockMap({});
+    }
+    return () => { active = false; };
+  }, [items]);
 
   const handleMoveToCart = (item) => {
-    // Construct the product format CartContext expects (needs images array)
+    const live = stockMap[item.id];
+    const size = live?.sizes?.[0] || "M";
+    const length = live?.lengths?.[0] || "medium";
     const cartProductFormat = {
       ...item,
-      images: [item.image]
+      image: live?.image || item.image,
+      images: live?.images?.length ? live.images : [item.image]
     };
-    addItem(cartProductFormat, 1, "M", "medium");
+    addItem(cartProductFormat, 1, size, length);
     removeItem(item.id);
+    showToast(`"${item.name}" moved to cart`);
   };
 
   const handleMoveAllToCart = () => {
     items.forEach(item => {
-      const cartProductFormat = {
-        ...item,
-        images: [item.image]
-      };
-      addItem(cartProductFormat, 1, "M", "medium");
+      const live = stockMap[item.id];
+      const size = live?.sizes?.[0] || "M";
+      const length = live?.lengths?.[0] || "medium";
+      addItem({ ...item, images: live?.images?.length ? live.images : [item.image] }, 1, size, length);
     });
-    // Assuming clearWishlist exists in context, or we remove one by one
-    // We didn't explicitly import clearWishlist from useWishlist above, so let's import it.
-    // Wait, useWishlist provides clearWishlist, I'll add it in the next chunk.
+    clearWishlist();
+    showToast("Wishlist items added to cart");
   };
 
   const getTimeAgo = (timestamp) => {
@@ -98,10 +119,7 @@ export default function WishlistPage() {
         
         <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "var(--space-6)" }}>
           <button 
-            onClick={() => {
-              items.forEach(item => addItem({ ...item, images: [item.image] }, 1, "M", "medium"));
-              clearWishlist();
-            }}
+            onClick={handleMoveAllToCart}
             style={{
               display: "flex", alignItems: "center", gap: "var(--space-2)",
               background: "var(--color-primary)", color: "white",
@@ -144,7 +162,12 @@ export default function WishlistPage() {
                     overflow: "hidden",
                     fontSize: "2rem"
                   }}>
-                    💅
+                    {stockMap[item.id]?.image ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={stockMap[item.id].image} alt={item.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    ) : (
+                      "💅"
+                    )}
                   </div>
                 </Link>
                 
@@ -167,14 +190,16 @@ export default function WishlistPage() {
                     <div style={{ fontSize: "0.875rem", fontWeight: 600 }}>
                       {formatPrice(item.price)}
                     </div>
-                    { (item.id % 3 === 0) ? (
-                      <span style={{ fontSize: "0.7rem", color: "var(--color-warning)", fontWeight: 600, display: "flex", alignItems: "center", gap: "2px" }}>
-                        <span style={{ display: "inline-block", width: "6px", height: "6px", borderRadius: "50%", background: "var(--color-warning)" }}></span> Only {item.id % 4 + 1} left!
-                      </span>
-                    ) : (
-                      <span style={{ fontSize: "0.7rem", color: "var(--color-success)", fontWeight: 500 }}>
-                        In stock ✓
-                      </span>
+                    {stockMap[item.id] && (
+                      stockMap[item.id].inStock ? (
+                        <span style={{ fontSize: "0.7rem", color: "var(--color-success)", fontWeight: 500, display: "flex", alignItems: "center", gap: "2px" }}>
+                          <span style={{ display: "inline-block", width: "6px", height: "6px", borderRadius: "50%", background: "var(--color-success)" }}></span> In stock ✓
+                        </span>
+                      ) : (
+                        <span style={{ fontSize: "0.7rem", color: "var(--color-warning)", fontWeight: 600, display: "flex", alignItems: "center", gap: "2px" }}>
+                          <span style={{ display: "inline-block", width: "6px", height: "6px", borderRadius: "50%", background: "var(--color-warning)" }}></span> Out of stock
+                        </span>
+                      )
                     )}
                   </div>
                   

@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import { createClient } from '@supabase/supabase-js';
 import SuccessClient from './SuccessClient';
 
@@ -32,15 +33,23 @@ export default async function OrderSuccessPage({ searchParams }) {
     }
   }
 
-  // fallback dummy data if direct navigation
+  // No valid order found (e.g. direct navigation) — show a clear state instead of fake data
   if (!orderData) {
-    orderData = {
-      orderNumber: '#NX-9482',
-      date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-      items: '3',
-      total: '₦45,500',
-      delivery: '3-5 days'
-    };
+    return (
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "60vh", textAlign: "center", padding: "2rem" }}>
+        <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>🤔</div>
+        <h1 style={{ fontSize: "1.5rem", fontWeight: 600, marginBottom: "0.5rem" }}>No Order Found</h1>
+        <p style={{ color: "var(--color-text-secondary)", marginBottom: "1.5rem", maxWidth: "400px" }}>
+          We couldn't find an order to confirm. If you just placed one, check your email for the confirmation link, or head back to the shop.
+        </p>
+        <Link
+          href="/shop"
+          style={{ background: "var(--color-primary)", color: "white", padding: "12px 32px", borderRadius: "30px", textDecoration: "none", fontWeight: 600 }}
+        >
+          Continue Shopping
+        </Link>
+      </div>
+    );
   }
 
   return <SuccessClient orderDetails={orderData} />;

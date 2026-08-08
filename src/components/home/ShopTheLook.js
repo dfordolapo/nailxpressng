@@ -1,21 +1,25 @@
-"use client";
-
-import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { SOCIAL_LINKS, WHATSAPP_MESSAGES } from '@/lib/constants';
 import { Plus } from 'lucide-react';
+import { getProducts } from '@/lib/api';
+import { formatPrice } from '@/lib/utils';
 import styles from './ShopTheLook.module.css';
 
-// TODO: When the site goes live and products are added to the database, 
-// replace this static array with a dynamic fetch from Supabase (e.g., fetch featured products).
-const HOTSPOTS = [
-  { id: 1, top: '40%', left: '30%', name: 'Bridal Almond Set', price: '₦15,000', link: '/product/bridal-almond' },
-  { id: 2, top: '65%', left: '75%', name: 'Everyday Square', price: '₦12,500', link: '/product/everyday-square' },
-];
+export default async function ShopTheLook() {
+  const allProducts = await getProducts();
+  const featured = allProducts.filter((p) => p.bestseller || p.newArrival);
+  const picks = (featured.length >= 2 ? featured : allProducts).slice(0, 2);
 
-export default function ShopTheLook() {
-  const [activeHotspot, setActiveHotspot] = useState(null);
+  const hotspots = picks.map((p, i) => ({
+    id: i + 1,
+    top: i === 0 ? '40%' : '65%',
+    left: i === 0 ? '30%' : '75%',
+    name: p.name,
+    price: formatPrice(p.price),
+    link: `/product/${p.slug}`,
+  }));
+
   const whatsappUrl = `${SOCIAL_LINKS.whatsapp}?text=${encodeURIComponent(WHATSAPP_MESSAGES.customOrder)}`;
 
   return (
@@ -38,14 +42,11 @@ export default function ShopTheLook() {
             />
             
             {/* Interactive Hotspots */}
-            {HOTSPOTS.map((spot) => (
+            {hotspots.map((spot) => (
               <div 
                 key={spot.id}
-                className={`${styles.hotspot} ${activeHotspot === spot.id ? styles.hotspotActive : ''}`}
+                className={styles.hotspot}
                 style={{ top: spot.top, left: spot.left }}
-                onMouseEnter={() => setActiveHotspot(spot.id)}
-                onMouseLeave={() => setActiveHotspot(null)}
-                onClick={() => setActiveHotspot(activeHotspot === spot.id ? null : spot.id)}
               >
                 <div className={styles.dot}>
                   <Plus size={14} color="var(--color-bg-warm)" />

@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
+import { useToast } from "@/context/ToastContext";
 import { formatPrice, getDiscountPercent } from "@/lib/utils";
 import { SOCIAL_LINKS, WHATSAPP_MESSAGES } from "@/lib/constants";
 import ProductGrid from "@/components/product/ProductGrid";
@@ -21,15 +22,27 @@ function HeartIcon({ filled }) {
 export default function ProductClient({ product, relatedProducts = [] }) {
   const { addItem } = useCart();
   const { toggleItem, isInWishlist } = useWishlist();
+  const { showToast } = useToast();
 
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedSize, setSelectedSize] = useState("M");
   const [selectedLength, setSelectedLength] = useState(product?.lengths?.[0] || "medium");
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
+  const [zoomOrigin, setZoomOrigin] = useState("50% 50%");
+  const galleryRef = useRef(null);
   
   const [showSticky, setShowSticky] = useState(false);
   const addToCartRef = useRef(null);
+
+  const handleZoomMove = (e) => {
+    const el = galleryRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    setZoomOrigin(`${x}% ${y}%`);
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -66,6 +79,7 @@ export default function ProductClient({ product, relatedProducts = [] }) {
     addItem(product, quantity, selectedSize, selectedLength);
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
+    showToast(`"${product.name}" added to cart`);
   };
 
   return (
@@ -86,19 +100,39 @@ export default function ProductClient({ product, relatedProducts = [] }) {
         <div className={pageStyles.productLayout}>
           {/* Gallery */}
           <div className={pageStyles.gallery}>
-            <div className={pageStyles.galleryZoomContainer}>
-                <div
-                  className={pageStyles.galleryZoomInner}
-                  style={{
-                    background: `linear-gradient(135deg, var(--color-primary-100), var(--color-surface), var(--color-primary-200))`,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: "6rem",
-                  }}
-                >
-                  💅
-                </div>
+            <div
+              className={pageStyles.galleryZoomContainer}
+              ref={galleryRef}
+              onMouseMove={handleZoomMove}
+              onMouseLeave={() => setZoomOrigin("50% 50%")}
+            >
+              <div
+                className={pageStyles.galleryZoomInner}
+                style={{ transformOrigin: zoomOrigin }}
+              >
+                {product.images && product.images[selectedImage] ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={product.images[selectedImage]}
+                    alt={product.name}
+                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                  />
+                ) : (
+                  <div
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      background: `linear-gradient(135deg, var(--color-primary-100), var(--color-surface), var(--color-primary-200))`,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: "6rem",
+                    }}
+                  >
+                    💅
+                  </div>
+                )}
+              </div>
             </div>
             
             {product.images && product.images.length > 1 && (
@@ -119,19 +153,12 @@ export default function ProductClient({ product, relatedProducts = [] }) {
                       padding: 0
                     }}
                   >
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        background: `linear-gradient(135deg, var(--color-primary-100), var(--color-surface))`,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        fontSize: "2rem",
-                      }}
-                    >
-                      💅
-                    </div>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={imgUrl}
+                      alt={`${product.name} thumbnail ${i + 1}`}
+                      style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                    />
                   </button>
                 ))}
               </div>
