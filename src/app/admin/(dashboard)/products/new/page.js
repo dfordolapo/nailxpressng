@@ -24,7 +24,7 @@ export default function NewProduct() {
   const [imagePreview, setImagePreview] = useState(null);
   
   const [nailShape, setNailShape] = useState("Square");
-  const [nailLength, setNailLength] = useState("Medium");
+  const [nailLength, setNailLength] = useState('medium');
   const [nailStyle, setNailStyle] = useState("Solid");
   
   const [price, setPrice] = useState("");
@@ -102,6 +102,7 @@ export default function NewProduct() {
       const onSale = sale !== null && sale > 0 && sale < normalPrice;
       formData.append('price', onSale ? sale : normalPrice);
       if (onSale) formData.append('compareAtPrice', normalPrice);
+      formData.append('length', nailLength); // Add selected length
       formData.append('category', collection); // Map collection to category
       formData.append('stockCount', stockQuantity || '0');
       formData.append('featured', isBestseller); // Or isFeatured depending on preference
@@ -299,7 +300,9 @@ export default function NewProduct() {
                 <div className={styles.formGroup}>
                   <label className={styles.label}>Length</label>
                   <select className={styles.select} value={nailLength} onChange={e => setNailLength(e.target.value)}>
-                    {nailLengths.map(l => <option key={l.id} value={l.name}>{l.name}</option>)}
+                    {nailLengths.map(l => (
+                      <option key={l.id} value={l.id}>{l.name}</option>
+                    ))}
                   </select>
                   <Link href="/admin/settings/attributes" style={{ fontSize: "0.8rem", color: "var(--color-primary)", marginTop: "8px", display: "inline-block", textDecoration: "underline" }}>Manage Lengths</Link>
                 </div>

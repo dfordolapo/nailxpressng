@@ -18,10 +18,10 @@ function filterProductsList(productList, filters) {
       filters.nailShape.some((s) => p.nailShape?.toLowerCase() === s.toLowerCase())
     );
   }
-  if (filters.length && filters.length.length > 0) {
+  if (filters.lengths && filters.lengths.length > 0) {
     filtered = filtered.filter((p) =>
-      p.lengths.some((l) =>
-        filters.length.some((fl) => l.toLowerCase() === fl.toLowerCase())
+      p.lengths && p.lengths.some((l) =>
+        filters.lengths.some((fl) => l.toLowerCase() === fl.toLowerCase())
       )
     );
   }
@@ -52,7 +52,7 @@ export default function CollectionClient({ category, allProducts, featuredProduc
   const [currentPage, setCurrentPage] = useState(1);
 
   const filtered = useMemo(() => {
-    const shapeFilters = { nailShape: selectedShapes, length: selectedLengths };
+    const shapeFilters = { nailShape: selectedShapes, lengths: selectedLengths };
     const f = filterProductsList(allProducts, shapeFilters);
     return sortProductsList(f, sortBy);
   }, [allProducts, selectedShapes, selectedLengths, sortBy]);

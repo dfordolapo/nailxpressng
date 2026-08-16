@@ -12,7 +12,7 @@ const mapProduct = (p) => ({
   categoryName: p.categories?.name || null,
   nailShape: p.nail_shape,
   style: p.style,
-  lengths: ["Short", "Medium", "Long", "Extra Long"],
+  lengths: Array.isArray(p.lengths) ? p.lengths : [],
   sizes: ["S", "M", "L"],
   images: p.images,
   image: p.images?.[0] || null,

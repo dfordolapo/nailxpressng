@@ -99,7 +99,7 @@ export default function ShapeFilterBar({ selectedShapes = [], onToggleShape, sel
       onToggleLength(lengthId);
     }
   };
-
+  
   return (
     <div className={styles.container}>
       <button 

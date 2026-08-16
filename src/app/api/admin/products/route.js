@@ -61,7 +61,7 @@ export async function POST(request) {
     }
 
     // 4. Insert Product
-    const productData = {
+    // Extract length selection\n    const length = formData.get('length');\n    // We'll store lengths as an array; if not provided, default to empty array\n    const lengthsArray = length ? [length] : [];\n    // ... existing code ...\n    const productData = {\n      name,\n      slug,\n      description: description || '',\n      price,\n      compare_at_price: compareAtPrice,\n      category_id: categoryId,\n      nail_shape: 'Square', // Defaults since form doesn't have these yet\n      style: tags || 'Solid',\n      images: imageUrls,\n      bestseller: featured,\n      stock_count: stockCount,\n      lengths: lengthsArray,\n    };
       name,
       slug,
       description: description || '',
