@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useCart } from "@/context/CartContext";
 import { useToast } from "@/context/ToastContext";
 import { formatPrice } from "@/lib/utils";
+import { useModal } from "@/components/ui/ProductModalWrapper";
 import { ChevronRight, Package, Truck } from "lucide-react";
 import styles from "@/styles/components/quick-view.module.css";
 
@@ -12,6 +13,7 @@ export default function ProductQuickView({ product }) {
   const router = useRouter();
   const { addItem } = useCart();
   const { showToast } = useToast();
+  const { onClose } = useModal();
 
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedShape, setSelectedShape] = useState(product?.nailShape || "Almond");
@@ -19,6 +21,8 @@ export default function ProductQuickView({ product }) {
   const [selectedSize, setSelectedSize] = useState("M (Most Popular)");
   const [quantity, setQuantity] = useState(1);
   const [openAccordion, setOpenAccordion] = useState(null);
+  const [imgError, setImgError] = useState(false);
+  const [thumbErrors, setThumbErrors] = useState({});
 
   const toggleAccordion = (index) => {
     setOpenAccordion(openAccordion === index ? null : index);
@@ -27,16 +31,12 @@ export default function ProductQuickView({ product }) {
   const handleAddToCart = () => {
     addItem(product, quantity, selectedSize, selectedLength);
     showToast(`"${product.name}" added to cart`);
-    // Close modal
-    router.back();
+    onClose();
   };
 
   const handleBuyNow = () => {
     addItem(product, quantity, selectedSize, selectedLength);
-    // Add small delay to let state update before redirecting
-    setTimeout(() => {
-        router.push("/checkout");
-    }, 100);
+    onClose(() => router.push("/checkout"));
   };
 
   return (
@@ -46,11 +46,16 @@ export default function ProductQuickView({ product }) {
         {/* Header */}
         <div className={styles.header}>
           <div className={styles.mainImageContainer}>
-            {product.images && product.images[selectedImage] ? (
+            {product.images && product.images[selectedImage] && !imgError ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={product.images[selectedImage]} alt={product.name} className={styles.mainImage} />
+              <img 
+                src={product.images[selectedImage]} 
+                alt={product.name} 
+                className={styles.mainImage} 
+                onError={() => setImgError(true)}
+              />
             ) : (
-              <div style={{ width: '100%', height: '100%', background: 'var(--color-primary-100)' }} />
+              <div style={{ width: '100%', height: '100%', background: 'linear-gradient(135deg, var(--color-primary-100), var(--color-surface))', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2.5rem' }}>💅</div>
             )}
           </div>
           <div className={styles.info}>
@@ -67,10 +72,17 @@ export default function ProductQuickView({ product }) {
               <button 
                 key={idx}
                 className={`${styles.thumbnail} ${selectedImage === idx ? styles.active : ""}`}
-                onClick={() => setSelectedImage(idx)}
+                onClick={() => {
+                  setSelectedImage(idx);
+                  setImgError(false);
+                }}
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={img} alt="" />
+                {thumbErrors[idx] ? (
+                  <div style={{ width: '100%', height: '100%', background: 'linear-gradient(135deg, var(--color-primary-100), var(--color-surface))', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem' }}>💅</div>
+                ) : (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={img} alt="" onError={() => setThumbErrors(prev => ({...prev, [idx]: true}))} />
+                )}
               </button>
             ))}
           </div>

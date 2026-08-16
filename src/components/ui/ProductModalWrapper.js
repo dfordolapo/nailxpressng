@@ -1,9 +1,15 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, createContext, useContext } from "react";
 import { useRouter } from "next/navigation";
 import { X } from "lucide-react";
 import styles from "@/styles/components/product-modal.module.css";
+
+export const ModalContext = createContext({ onClose: () => {} });
+
+export function useModal() {
+  return useContext(ModalContext);
+}
 
 export default function ProductModalWrapper({ children, title }) {
   const router = useRouter();
@@ -17,13 +23,17 @@ export default function ProductModalWrapper({ children, title }) {
     };
   }, []);
 
-  const handleClose = useCallback(() => {
+  const handleClose = useCallback((customAction) => {
     setIsOpen(false);
     // Wait for animation to finish before routing back
     setTimeout(() => {
-      router.back();
+      if (typeof customAction === 'function') {
+        customAction();
+      } else {
+        window.history.back();
+      }
     }, 300); // matches CSS transition duration
-  }, [router]);
+  }, []);
 
   // Close on Escape key
   useEffect(() => {
@@ -35,12 +45,13 @@ export default function ProductModalWrapper({ children, title }) {
   }, [handleClose]);
 
   return (
-    <div 
-      className={`${styles.overlay} ${isOpen ? styles.overlayOpen : ""}`} 
-      onClick={handleClose}
-      role="dialog"
-      aria-modal="true"
-    >
+    <ModalContext.Provider value={{ onClose: handleClose }}>
+      <div 
+        className={`${styles.overlay} ${isOpen ? styles.overlayOpen : ""}`} 
+        onClick={handleClose}
+        role="dialog"
+        aria-modal="true"
+      >
       <div 
         className={`${styles.modalContainer} ${isOpen ? styles.modalOpen : ""}`}
         onClick={(e) => e.stopPropagation()} // Prevent clicks inside modal from closing
@@ -61,6 +72,7 @@ export default function ProductModalWrapper({ children, title }) {
           {children}
         </div>
       </div>
-    </div>
+      </div>
+    </ModalContext.Provider>
   );
 }
