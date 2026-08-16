@@ -209,20 +209,22 @@ export default function ProductClient({ product, relatedProducts = [], isModal =
             <p className={pageStyles.productDescription}>{product.description}</p>
 
             {/* Size Selector */}
-            <div className={pageStyles.selectorGroup}>
-              <span className={pageStyles.selectorLabel}>Size: {selectedSize}</span>
-              <div className={pageStyles.selectorOptions}>
-                {(product.sizes ?? []).map((size) => (
-                  <button
-                    key={size}
-                    className={`${pageStyles.selectorOption} ${selectedSize === size ? pageStyles.selected : ""}`}
-                    onClick={() => setSelectedSize(size)}
-                  >
-                    {size}
-                  </button>
-                ))}
+            {product.category !== 'factory' && (
+              <div className={pageStyles.selectorGroup}>
+                <span className={pageStyles.selectorLabel}>Size: {selectedSize}</span>
+                <div className={pageStyles.selectorOptions}>
+                  {(product.sizes ?? []).map((size) => (
+                    <button
+                      key={size}
+                      className={`${pageStyles.selectorOption} ${selectedSize === size ? pageStyles.selected : ""}`}
+                      onClick={() => setSelectedSize(size)}
+                    >
+                      {size}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Length Selector */}
             <div className={pageStyles.selectorGroup}>

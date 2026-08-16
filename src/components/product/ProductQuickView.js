@@ -127,19 +127,21 @@ export default function ProductQuickView({ product }) {
               ))}
             </select>
           </div>
-          <div className={styles.formGroup}>
-            <label className={styles.label}>Size</label>
-            <select 
-              className={styles.select}
-              value={selectedSize}
-              onChange={(e) => setSelectedSize(e.target.value)}
-            >
-              <option value="S">S</option>
-              <option value="M (Most Popular)">M (Most Popular)</option>
-              <option value="L">L</option>
-              <option value="Custom">Custom</option>
-            </select>
-          </div>
+          {product.category !== 'factory' && (
+            <div className={styles.formGroup}>
+              <label className={styles.label}>Size</label>
+              <select 
+                className={styles.select}
+                value={selectedSize}
+                onChange={(e) => setSelectedSize(e.target.value)}
+              >
+                <option value="S">S</option>
+                <option value="M (Most Popular)">M (Most Popular)</option>
+                <option value="L">L</option>
+                <option value="Custom">Custom</option>
+              </select>
+            </div>
+          )}
         </div>
 
         {/* Quantity */}
