@@ -165,7 +165,16 @@ export default function ProductQuickView({ product }) {
               <ChevronRight className={`${styles.chevron} ${openAccordion === 0 ? styles.chevronOpen : ""}`} size={20} />
             </button>
             <div className={`${styles.accordionContent} ${openAccordion === 0 ? styles.accordionContentOpen : ""}`}>
-              10 press-on nails, nail glue, adhesive tabs, cuticle pusher, alcohol prep pad, and a mini file. Everything you need for a perfect application.
+              <ul style={{ margin: 0, padding: '0 0 0 18px', lineHeight: '1.9' }}>
+                <li>Faux nails</li>
+                <li>Nail glue</li>
+                <li>Adhesive tabs</li>
+                <li>Nail glue remover / debonder</li>
+                <li>Prep tools (mini file, cuticle pusher, alcohol wipe)</li>
+                <li>Step-by-step application guide</li>
+                <li>Nail art stickers</li>
+                <li>Cutesy functional gift</li>
+              </ul>
             </div>
           </div>
           
