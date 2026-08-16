@@ -61,18 +61,22 @@ export async function POST(request) {
     }
 
     // 4. Insert Product
-    // Extract length selection\n    const length = formData.get('length');\n    // We'll store lengths as an array; if not provided, default to empty array\n    const lengthsArray = length ? [length] : [];\n    // ... existing code ...\n    const productData = {\n      name,\n      slug,\n      description: description || '',\n      price,\n      compare_at_price: compareAtPrice,\n      category_id: categoryId,\n      nail_shape: 'Square', // Defaults since form doesn't have these yet\n      style: tags || 'Solid',\n      images: imageUrls,\n      bestseller: featured,\n      stock_count: stockCount,\n      lengths: lengthsArray,\n    };
+    const length = formData.get('length');
+    const lengthsArray = length ? [length] : [];
+
+    const productData = {
       name,
       slug,
       description: description || '',
       price,
       compare_at_price: compareAtPrice,
       category_id: categoryId,
-      nail_shape: 'Square', // Defaults since form doesn't have these yet
+      nail_shape: 'Square',
       style: tags || 'Solid',
       images: imageUrls,
       bestseller: featured,
       stock_count: stockCount,
+      lengths: lengthsArray,
     };
 
     const { data: product, error: insertError } = await supabaseAdmin
