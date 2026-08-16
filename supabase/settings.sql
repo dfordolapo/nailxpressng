@@ -3,6 +3,11 @@ CREATE TABLE IF NOT EXISTS store_settings (
   id integer PRIMARY KEY DEFAULT 1,
   shipping_standard numeric NOT NULL DEFAULT 2500,
   shipping_express numeric NOT NULL DEFAULT 5000,
+  delivery_presets jsonb DEFAULT '{
+    "factory": { "lagos": "24-48 hours", "outside": "3-5 working days" },
+    "handmade": { "lagos": "3-5 working days", "outside": "5-7 working days" },
+    "custom": { "lagos": "5-7 working days", "outside": "7-10 working days" }
+  }'::jsonb,
   updated_at timestamp with time zone DEFAULT now(),
   CONSTRAINT single_row CHECK (id = 1) -- Ensures only one row exists
 );

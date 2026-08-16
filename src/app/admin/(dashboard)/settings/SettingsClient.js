@@ -6,6 +6,11 @@ import btnStyles from '@/styles/components/buttons.module.css';
 
 export default function SettingsClient() {
   const [locations, setLocations] = useState([]);
+  const [presets, setPresets] = useState({
+    factory: { lagos: '24-48 hours', outside: '3-5 working days' },
+    handmade: { lagos: '3-5 working days', outside: '5-7 working days' },
+    custom: { lagos: '5-7 working days', outside: '7-10 working days' }
+  });
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [message, setMessage] = useState('');
@@ -25,6 +30,9 @@ export default function SettingsClient() {
             { id: 'loc-2', name: 'Lagos - Mainland', fee: 3000 },
             { id: 'loc-3', name: 'Outside Lagos', fee: 5000 }
           ]);
+        }
+        if (data.delivery_presets) {
+          setPresets(data.delivery_presets);
         }
       } catch (err) {
         console.error('Failed to fetch settings', err);
@@ -52,6 +60,13 @@ export default function SettingsClient() {
     }));
   };
 
+  const handlePresetChange = (category, region, value) => {
+    setPresets(prev => ({
+      ...prev,
+      [category]: { ...prev[category], [region]: value }
+    }));
+  };
+
   const handleSave = async (e) => {
     e.preventDefault();
     setIsSaving(true);
@@ -63,6 +78,7 @@ export default function SettingsClient() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           delivery_locations: locations,
+          delivery_presets: presets,
           // Keep these for backward compatibility if needed, or set to 0
           shipping_standard: locations.length > 0 ? locations[0].fee : 2500,
           shipping_express: 5000,
@@ -156,6 +172,90 @@ export default function SettingsClient() {
           >
             <Plus size={16} /> Add Location
           </button>
+
+          <div style={{ marginTop: 'var(--space-6)', paddingTop: 'var(--space-4)', borderTop: '1px solid var(--color-border-light)' }}>
+            <h2 style={{ fontSize: '1.125rem', fontWeight: 600, marginBottom: 'var(--space-2)' }}>Estimated Delivery Times</h2>
+            <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.875rem', marginBottom: 'var(--space-6)' }}>
+              Set the estimated delivery times for each product category automatically shown on the product page.
+            </p>
+            
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
+              {/* Factory Made */}
+              <div>
+                <h3 style={{ fontSize: '0.875rem', fontWeight: 600, marginBottom: '8px' }}>Factory Made</h3>
+                <div style={{ display: 'flex', gap: '10px' }}>
+                  <div style={{ flex: 1 }}>
+                    <label style={{ fontSize: '0.75rem', fontWeight: 500, marginBottom: '4px', display: 'block' }}>Within Lagos</label>
+                    <input 
+                      type="text" 
+                      value={presets.factory.lagos}
+                      onChange={(e) => handlePresetChange('factory', 'lagos', e.target.value)}
+                      style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)' }}
+                    />
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <label style={{ fontSize: '0.75rem', fontWeight: 500, marginBottom: '4px', display: 'block' }}>Outside Lagos</label>
+                    <input 
+                      type="text" 
+                      value={presets.factory.outside}
+                      onChange={(e) => handlePresetChange('factory', 'outside', e.target.value)}
+                      style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)' }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Handmade */}
+              <div>
+                <h3 style={{ fontSize: '0.875rem', fontWeight: 600, marginBottom: '8px' }}>Handmade</h3>
+                <div style={{ display: 'flex', gap: '10px' }}>
+                  <div style={{ flex: 1 }}>
+                    <label style={{ fontSize: '0.75rem', fontWeight: 500, marginBottom: '4px', display: 'block' }}>Within Lagos</label>
+                    <input 
+                      type="text" 
+                      value={presets.handmade.lagos}
+                      onChange={(e) => handlePresetChange('handmade', 'lagos', e.target.value)}
+                      style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)' }}
+                    />
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <label style={{ fontSize: '0.75rem', fontWeight: 500, marginBottom: '4px', display: 'block' }}>Outside Lagos</label>
+                    <input 
+                      type="text" 
+                      value={presets.handmade.outside}
+                      onChange={(e) => handlePresetChange('handmade', 'outside', e.target.value)}
+                      style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)' }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Custom Orders */}
+              <div>
+                <h3 style={{ fontSize: '0.875rem', fontWeight: 600, marginBottom: '8px' }}>Custom Orders</h3>
+                <div style={{ display: 'flex', gap: '10px' }}>
+                  <div style={{ flex: 1 }}>
+                    <label style={{ fontSize: '0.75rem', fontWeight: 500, marginBottom: '4px', display: 'block' }}>Within Lagos</label>
+                    <input 
+                      type="text" 
+                      value={presets.custom.lagos}
+                      onChange={(e) => handlePresetChange('custom', 'lagos', e.target.value)}
+                      style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)' }}
+                    />
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <label style={{ fontSize: '0.75rem', fontWeight: 500, marginBottom: '4px', display: 'block' }}>Outside Lagos</label>
+                    <input 
+                      type="text" 
+                      value={presets.custom.outside}
+                      onChange={(e) => handlePresetChange('custom', 'outside', e.target.value)}
+                      style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)' }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
           <div style={{ marginTop: 'var(--space-6)', paddingTop: 'var(--space-4)', borderTop: '1px solid var(--color-border-light)' }}>
             <button 

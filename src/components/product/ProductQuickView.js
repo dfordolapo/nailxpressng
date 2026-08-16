@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/context/CartContext";
 import { useToast } from "@/context/ToastContext";
@@ -23,6 +23,18 @@ export default function ProductQuickView({ product }) {
   const [openAccordion, setOpenAccordion] = useState(null);
   const [imgError, setImgError] = useState(false);
   const [thumbErrors, setThumbErrors] = useState({});
+  const [deliveryPresets, setDeliveryPresets] = useState(null);
+  
+  useEffect(() => {
+    fetch('/api/settings')
+      .then(res => res.json())
+      .then(data => {
+        if (data.delivery_presets) {
+          setDeliveryPresets(data.delivery_presets);
+        }
+      })
+      .catch(err => console.error('Error fetching settings:', err));
+  }, []);
 
   const toggleAccordion = (index) => {
     setOpenAccordion(openAccordion === index ? null : index);
@@ -164,7 +176,14 @@ export default function ProductQuickView({ product }) {
               <ChevronRight className={`${styles.chevron} ${openAccordion === 1 ? styles.chevronOpen : ""}`} size={20} />
             </button>
             <div className={`${styles.accordionContent} ${openAccordion === 1 ? styles.accordionContentOpen : ""}`}>
-              Standard delivery takes 3-5 business days within Nigeria. Express delivery (1-2 days) is available at checkout for selected locations.
+              {deliveryPresets && deliveryPresets[product.category] ? (
+                <>
+                  <p style={{ margin: "0 0 var(--space-2) 0" }}><strong>Within Lagos:</strong> {deliveryPresets[product.category].lagos}</p>
+                  <p style={{ margin: 0 }}><strong>Outside Lagos:</strong> {deliveryPresets[product.category].outside}</p>
+                </>
+              ) : (
+                "Standard delivery takes 3-5 business days within Nigeria. Express delivery (1-2 days) is available at checkout for selected locations."
+              )}
             </div>
           </div>
         </div>

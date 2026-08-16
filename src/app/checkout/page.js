@@ -32,6 +32,7 @@ export default function CheckoutPage() {
   const [errors, setErrors] = useState({});
   
   const [shippingLocations, setShippingLocations] = useState([]);
+  const [deliveryPresets, setDeliveryPresets] = useState(null);
   const [isLoadingRates, setIsLoadingRates] = useState(true);
 
   // Saved Addresses hook
@@ -80,6 +81,9 @@ export default function CheckoutPage() {
             // Fallback
             const fallback = [{ id: "standard", name: "Standard Delivery", fee: data.shipping_standard || 2500 }];
             setShippingLocations(fallback);
+          }
+          if (data.delivery_presets) {
+            setDeliveryPresets(data.delivery_presets);
           }
         }
       } catch (error) {
@@ -201,24 +205,50 @@ export default function CheckoutPage() {
     }, 1500);
   };
 
+  const getComputedDeliveryTime = (locName) => {
+    if (!deliveryPresets || items.length === 0) return "3-5 Business Days"; // fallback
+
+    const nameLower = locName.toLowerCase();
+    const isLagos = nameLower.includes("lagos") || nameLower.includes("island") || nameLower.includes("mainland");
+    const region = isLagos ? 'lagos' : 'outside';
+
+    // Priority ranking: Custom > Handmade > Factory
+    let highestPriority = 0;
+    let selectedCategory = 'factory';
+    
+    items.forEach(item => {
+      const cat = item.category?.toLowerCase() || 'factory';
+      let priority = 1; // factory
+      if (cat === 'handmade') priority = 2;
+      if (cat === 'custom') priority = 3;
+      
+      if (priority > highestPriority) {
+        highestPriority = priority;
+        selectedCategory = cat;
+      }
+    });
+
+    if (deliveryPresets[selectedCategory] && deliveryPresets[selectedCategory][region]) {
+      return deliveryPresets[selectedCategory][region];
+    }
+
+    return "3-5 Business Days";
+  };
+
   const getDeliveryDetails = (locName) => {
     const nameLower = locName.toLowerCase();
+    let desc = "Tracked nationwide courier service direct to your doorstep.";
+    
     if (nameLower.includes("island")) {
-      return {
-        est: "3 - 5 Hours",
-        desc: "Perfect for urgent beauty needs. Delivered via our dedicated Island riders."
-      };
+      desc = "Perfect for urgent beauty needs. Delivered via our dedicated Island riders.";
     } else if (nameLower.includes("mainland")) {
-      return {
-        est: "24 - 48 Hours",
-        desc: "Delivered safely via our mainland dispatch network."
-      };
-    } else {
-      return {
-        est: "3 - 5 Business Days",
-        desc: "Tracked nationwide courier service direct to your doorstep."
-      };
+      desc = "Delivered safely via our mainland dispatch network.";
     }
+
+    return {
+      est: getComputedDeliveryTime(locName),
+      desc
+    };
   };
 
   const handleSubmit = async (e) => {
@@ -245,7 +275,7 @@ export default function CheckoutPage() {
       const lastName = nameParts.slice(1).join(" ") || "";
 
       const selectedLoc = shippingLocations.find(loc => loc.id === shippingMethod);
-      const deliveryTimeVal = selectedLoc ? (selectedLoc.estimated_time || getDeliveryDetails(selectedLoc.name).est) : "3-5 days";
+      const deliveryTimeVal = selectedLoc ? (selectedLoc.estimated_time || getComputedDeliveryTime(selectedLoc.name)) : "3-5 days";
       const shippingMethodNameVal = selectedLoc ? selectedLoc.name : "";
 
       const orderPayload = {

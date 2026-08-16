@@ -30,10 +30,22 @@ export default function ProductClient({ product, relatedProducts = [], isModal =
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
   const [zoomOrigin, setZoomOrigin] = useState("50% 50%");
+  const [deliveryPresets, setDeliveryPresets] = useState(null);
   const galleryRef = useRef(null);
   
   const [showSticky, setShowSticky] = useState(false);
   const addToCartRef = useRef(null);
+
+  useEffect(() => {
+    fetch('/api/settings')
+      .then(res => res.json())
+      .then(data => {
+        if (data.delivery_presets) {
+          setDeliveryPresets(data.delivery_presets);
+        }
+      })
+      .catch(err => console.error('Error fetching settings:', err));
+  }, []);
 
   const handleZoomMove = (e) => {
     const el = galleryRef.current;
@@ -304,6 +316,27 @@ export default function ProductClient({ product, relatedProducts = [], isModal =
                 <li>• Includes nail glue & prep kit</li>
                 <li>• Reusable up to 3 times with proper care</li>
               </ul>
+            </div>
+
+            {/* Shipping & Delivery */}
+            <div style={{
+              borderTop: "1px solid var(--color-border-light)",
+              paddingTop: "var(--space-6)",
+              marginTop: "var(--space-6)",
+            }}>
+              <h4 style={{ fontSize: "var(--text-sm)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "var(--space-3)" }}>
+                Shipping & Delivery
+              </h4>
+              <div style={{ fontSize: "var(--text-sm)", color: "var(--color-text-secondary)" }}>
+                {deliveryPresets && deliveryPresets[product.category] ? (
+                  <>
+                    <p style={{ margin: "0 0 var(--space-2) 0" }}><strong>Within Lagos:</strong> {deliveryPresets[product.category].lagos}</p>
+                    <p style={{ margin: 0 }}><strong>Outside Lagos:</strong> {deliveryPresets[product.category].outside}</p>
+                  </>
+                ) : (
+                  "Standard delivery takes 3-5 business days within Nigeria. Express delivery (1-2 days) is available at checkout for selected locations."
+                )}
+              </div>
             </div>
           </div>
         </div>
