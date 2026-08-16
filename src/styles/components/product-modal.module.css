@@ -1,0 +1,115 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+  display: flex;
+  justify-content: flex-end; /* Drawer aligns to right */
+  align-items: stretch;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  backdrop-filter: blur(2px);
+}
+
+.overlayOpen {
+  opacity: 1;
+}
+
+.modalContainer {
+  background-color: var(--color-bg);
+  width: 100%;
+  max-width: 500px; /* Drawer width */
+  height: 100%;
+  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.1);
+  transform: translateX(100%);
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.modalOpen {
+  transform: translateX(0);
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: var(--space-1) var(--space-2) 0 var(--space-2);
+  background-color: var(--color-bg);
+  z-index: 10;
+  position: sticky;
+  top: 0;
+}
+
+.modalTitle {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  margin: 0;
+}
+
+.closeButton {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-secondary);
+  border-radius: var(--radius-full);
+  transition: background-color 0.2s ease;
+}
+
+.closeButton:hover {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+}
+
+.modalContent {
+  flex: 1;
+  overflow-y: auto;
+  position: relative;
+  scrollbar-width: thin;
+}
+
+/* Mobile Bottom Sheet */
+@media (max-width: 768px) {
+  .overlay {
+    align-items: flex-end;
+    justify-content: center;
+  }
+  
+  .modalContainer {
+    max-width: 100%;
+    height: 85vh; /* Don't cover full screen to show it's a sheet */
+    border-top-left-radius: var(--radius-xl);
+    border-top-right-radius: var(--radius-xl);
+    transform: translateY(100%);
+    box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.1);
+  }
+  
+  .modalOpen {
+    transform: translateY(0);
+  }
+
+  .modalHeader {
+    padding-top: var(--space-3); /* Space for drag handle */
+  }
+
+  .dragHandle {
+    position: absolute;
+    top: var(--space-2);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 4px;
+    border-radius: var(--radius-full);
+    background-color: var(--color-border);
+  }
+}

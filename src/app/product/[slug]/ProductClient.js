@@ -19,7 +19,7 @@ function HeartIcon({ filled }) {
   );
 }
 
-export default function ProductClient({ product, relatedProducts = [] }) {
+export default function ProductClient({ product, relatedProducts = [], isModal = false }) {
   const { addItem } = useCart();
   const { toggleItem, isInWishlist } = useWishlist();
   const { showToast } = useToast();
@@ -83,23 +83,25 @@ export default function ProductClient({ product, relatedProducts = [] }) {
   };
 
   return (
-    <div className={pageStyles.productPage} id={`product-${product.slug}`}>
-      <div className="container">
+    <div className={pageStyles.productPage} id={`product-${product.slug}`} style={isModal ? { paddingTop: 0, paddingBottom: 'var(--space-10)' } : {}}>
+      <div className="container" style={isModal ? { padding: 'var(--space-4)' } : {}}>
         {/* Breadcrumb */}
-        <nav className={pageStyles.breadcrumb} id="breadcrumb">
-          <Link href="/">Home</Link>
-          <span className={pageStyles.breadcrumbSeparator}>/</span>
-          <Link href={`/${product.category}`}>
-            {product.category === "handmade" ? "Handmade" : "Factory Made"}
-          </Link>
-          <span className={pageStyles.breadcrumbSeparator}>/</span>
-          <span>{product.name}</span>
-        </nav>
+        {!isModal && (
+          <nav className={pageStyles.breadcrumb} id="breadcrumb">
+            <Link href="/">Home</Link>
+            <span className={pageStyles.breadcrumbSeparator}>/</span>
+            <Link href={`/${product.category}`}>
+              {product.category === "handmade" ? "Handmade" : "Factory Made"}
+            </Link>
+            <span className={pageStyles.breadcrumbSeparator}>/</span>
+            <span>{product.name}</span>
+          </nav>
+        )}
 
         {/* Product Layout */}
-        <div className={pageStyles.productLayout}>
+        <div className={pageStyles.productLayout} style={isModal ? { display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' } : {}}>
           {/* Gallery */}
-          <div className={pageStyles.gallery}>
+          <div className={pageStyles.gallery} style={isModal ? { position: 'relative', top: 0, padding: 0 } : {}}>
             <div
               className={pageStyles.galleryZoomContainer}
               ref={galleryRef}
@@ -306,7 +308,7 @@ export default function ProductClient({ product, relatedProducts = [] }) {
           </div>
         </div>
 
-        {relatedProducts.length > 0 && (
+        {!isModal && relatedProducts.length > 0 && (
           <section className={pageStyles.relatedSection}>
             <div className="section__header">
               <h2 className="section__title">You Might Also Love</h2>
@@ -317,7 +319,8 @@ export default function ProductClient({ product, relatedProducts = [] }) {
       </div>
 
       {/* Sticky Action Bar */}
-      <div className={`${pageStyles.stickyActionBar} ${showSticky ? pageStyles.stickyVisible : ""}`}>
+      {!isModal && (
+        <div className={`${pageStyles.stickyActionBar} ${showSticky ? pageStyles.stickyVisible : ""}`}>
         <div className="container" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
            <div>
              <p style={{ fontWeight: 600, fontSize: "var(--text-sm)", margin: 0, color: "var(--color-text)" }}>{product.name}</p>
@@ -331,6 +334,7 @@ export default function ProductClient({ product, relatedProducts = [] }) {
            </button>
         </div>
       </div>
+      )}
     </div>
   );
 }

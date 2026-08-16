@@ -142,7 +142,7 @@ export const metadata = {
   },
 };
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children, modal }) {
   return (
     <html lang="en" data-scroll-behavior="smooth">
       <body>
@@ -156,6 +156,7 @@ export default function RootLayout({ children }) {
                 <PullToRefresh>
                   <main>{children}</main>
                 </PullToRefresh>
+                {modal}
                 <Footer />
                 <OfflineBanner />
               </ToastProvider>
