@@ -240,10 +240,10 @@ export default function CartClient({ bestsellers = [] }) {
 
                             const defaultSize = product.sizes && product.sizes.length > 0
                               ? (product.sizes.includes("M") ? "M" : product.sizes[0])
-                              : "M";
+                              : null;
                             const defaultLength = product.lengths && product.lengths.length > 0
                               ? (product.lengths.includes("Medium") ? "Medium" : (product.lengths.includes("medium") ? "medium" : product.lengths[0]))
-                              : "medium";
+                              : "Medium";
 
                             addItem(cartProductFormat, 1, defaultSize, defaultLength);
 

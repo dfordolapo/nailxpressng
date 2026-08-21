@@ -9,6 +9,7 @@ import SearchOverlay from "@/components/ui/SearchOverlay";
 import OfflineBanner from "@/components/ui/OfflineBanner";
 import SplashAnimation from "@/components/ui/SplashAnimation";
 import PullToRefresh from "@/components/ui/PullToRefresh";
+import InstallPrompt from "@/components/layout/InstallPrompt";
 
 export const viewport = {
   themeColor: [
@@ -159,6 +160,7 @@ export default function RootLayout({ children, modal }) {
                 {modal}
                 <Footer />
                 <OfflineBanner />
+                <InstallPrompt />
               </ToastProvider>
             </SearchProvider>
           </WishlistProvider>

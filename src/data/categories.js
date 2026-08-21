@@ -26,10 +26,10 @@ export const nailShapes = [
 ];
 
 export const nailLengths = [
-  { id: "short", name: "Short", description: "Subtle and practical" },
-  { id: "medium", name: "Medium", description: "Classic and versatile" },
-  { id: "long", name: "Long", description: "Bold and glamorous" },
-  { id: "extra long", name: "Extra Long", description: "Maximum drama" },
+  { id: "Short", name: "Short", description: "Subtle and practical" },
+  { id: "Medium", name: "Medium", description: "Classic and versatile" },
+  { id: "Long", name: "Long", description: "Bold and glamorous" },
+  { id: "Extra Long", name: "Extra Long", description: "Maximum drama" },
 ];
 
 export const styles = [

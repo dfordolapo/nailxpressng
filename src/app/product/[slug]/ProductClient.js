@@ -26,7 +26,7 @@ export default function ProductClient({ product, relatedProducts = [], isModal =
 
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedSize, setSelectedSize] = useState("M");
-  const [selectedLength, setSelectedLength] = useState(product?.lengths?.[0] || "medium");
+  const [selectedLength, setSelectedLength] = useState(product?.lengths?.[0] || "Medium");
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
   const [zoomOrigin, setZoomOrigin] = useState("50% 50%");
@@ -88,7 +88,8 @@ export default function ProductClient({ product, relatedProducts = [], isModal =
   const wishlisted = isInWishlist(product.id);
 
   const handleAddToCart = () => {
-    addItem(product, quantity, selectedSize, selectedLength);
+    const finalSize = product.category === 'factory' ? null : selectedSize;
+    addItem(product, quantity, finalSize, selectedLength);
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
     showToast(`"${product.name}" added to cart`);

@@ -2,7 +2,7 @@ import { createClient } from '@supabase/supabase-js';
 import { products } from '../src/data/products.js';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 async function seed() {
@@ -33,14 +33,14 @@ async function seed() {
     nail_shape: p.nailShape,
     style: p.style,
     lengths: p.lengths,
-    sizes: p.sizes,
+    sizes: p.sizes || [],
     images: p.images,
     new_arrival: p.newArrival,
     bestseller: p.bestseller,
     stock_count: p.inStock ? 50 : 0
   }));
 
-  const { data, error } = await supabase.from('products').insert(productsToInsert).select();
+  const { data, error } = await supabase.from('products').upsert(productsToInsert, { onConflict: 'slug' }).select();
 
   if (error) {
     console.error('Error inserting products:', error);

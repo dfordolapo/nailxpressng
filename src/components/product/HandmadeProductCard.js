@@ -46,6 +46,7 @@ function ArrowLeftIcon() {
 export default function HandmadeProductCard({ product, index = 0, viewMode = "grid" }) {
   const [flipped, setFlipped] = useState(false);
   const [selectedSize, setSelectedSize] = useState(null);
+  const [selectedLength, setSelectedLength] = useState(null);
   const [qty, setQty] = useState(1);
   const [qtyAnim, setQtyAnim] = useState("");
   const [added, setAdded] = useState(false);
@@ -110,7 +111,7 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
     const size = product.category === "handmade"
       ? (selectedSize || (product.sizes ? product.sizes[Math.floor(product.sizes.length / 2)] : null))
       : null;
-    const length = product.lengths[Math.floor(product.lengths.length / 2)];
+    const length = selectedLength || (product.lengths ? product.lengths[Math.floor(product.lengths.length / 2)] : "Medium");
     addItem(product, qty, size, length);
     setAdded(true);
     setTimeout(() => setAdded(false), 1800);
@@ -120,6 +121,11 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
   const handleSizeSelect = (size, e) => {
     e.stopPropagation();
     setSelectedSize(size === selectedSize ? null : size);
+  };
+
+  const handleLengthSelect = (length, e) => {
+    e.stopPropagation();
+    setSelectedLength(length === selectedLength ? null : length);
   };
 
   const tiltStyle = !flipped && isHovering
@@ -223,9 +229,26 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
                     onChange={(e) => handleSizeSelect(e.target.value, e)}
                     onClick={(e) => e.stopPropagation()}
                   >
-                    <option value="" disabled>Select</option>
+                    <option value="" disabled>Select Size</option>
                     {product.sizes?.map((size) => (
                       <option key={size} value={size}>{size}</option>
+                    ))}
+                  </select>
+                </div>
+              )}
+
+              {product.lengths && product.lengths.length > 0 && (
+                <div className={styles.selectorGroup}>
+                  <span className={styles.selectorLabel}>Length</span>
+                  <select
+                    className={styles.sizeDropdown}
+                    value={selectedLength || ""}
+                    onChange={(e) => handleLengthSelect(e.target.value, e)}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <option value="" disabled>Select Length</option>
+                    {product.lengths.map((length) => (
+                      <option key={length} value={length}>{length}</option>
                     ))}
                   </select>
                 </div>
@@ -274,9 +297,26 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
                   onChange={(e) => handleSizeSelect(e.target.value, e)}
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <option value="" disabled>Select</option>
+                  <option value="" disabled>Select Size</option>
                   {product.sizes?.map((size) => (
                     <option key={size} value={size}>{size}</option>
+                  ))}
+                </select>
+              </div>
+            )}
+
+            {product.lengths && product.lengths.length > 0 && (
+              <div className={styles.selectorGroup}>
+                <span className={styles.selectorLabel}>Length</span>
+                <select
+                  className={styles.sizeDropdown}
+                  value={selectedLength || ""}
+                  onChange={(e) => handleLengthSelect(e.target.value, e)}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <option value="" disabled>Select Length</option>
+                  {product.lengths.map((length) => (
+                    <option key={length} value={length}>{length}</option>
                   ))}
                 </select>
               </div>
