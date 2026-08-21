@@ -267,3 +267,16 @@
     font-size: 0.8rem !important;
   }
 }
+
+.mini .imageContainer {
+  border: none !important;
+  padding: 0 !important;
+  filter: none !important;
+  border-radius: var(--radius-md) !important;
+  overflow: hidden;
+}
+
+.mini .cardBack {
+  border: none !important;
+  border-radius: var(--radius-md) !important;
+}

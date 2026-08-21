@@ -5,6 +5,7 @@ import { PackageSearch } from "lucide-react";
 import HandmadeProductCard from "@/components/product/HandmadeProductCard";
 import ShapeFilterBar from "@/components/product/ShapeFilterBar";
 import CategoryShowcase from "@/components/home/CategoryShowcase";
+import FactoryVideos from "@/components/product/FactoryVideos";
 import { SORT_OPTIONS } from "@/lib/constants";
 import pageStyles from "@/styles/pages/collection.module.css";
 import filterStyles from "@/styles/components/filter.module.css";
@@ -18,15 +19,22 @@ function filterProductsList(productList, filters) {
       filters.nailShape.some((s) => p.nailShape?.toLowerCase() === s.toLowerCase())
     );
   }
-  if (filters.lengths && filters.lengths.length > 0) {
-    filtered = filtered.filter((p) =>
-      p.lengths && p.lengths.some((l) =>
-        filters.lengths.some((fl) => l.toLowerCase() === fl.toLowerCase())
-      )
-    );
+    if (filters.lengths && filters.lengths.length > 0) {
+      filtered = filtered.filter((p) =>
+        p.lengths && p.lengths.some((l) =>
+          filters.lengths.some((fl) => l.toLowerCase() === fl.toLowerCase())
+        )
+      );
+    }
+    if (filters.colors && filters.colors.length > 0) {
+      filtered = filtered.filter((p) =>
+        p.colors && p.colors.some((productColor) => 
+          filters.colors.some((filterColor) => productColor.toLowerCase() === filterColor.toLowerCase())
+        )
+      );
+    }
+    return filtered;
   }
-  return filtered;
-}
 
 function sortProductsList(productList, sortBy) {
   const sorted = [...productList];
@@ -42,20 +50,61 @@ function sortProductsList(productList, sortBy) {
   }
 }
 
+const SPECIAL_MIX_MATCH_NAMES = ["amber haze", "bridal bows", "polka dot", "gothic flora", "emerald flora"];
+
+function distributeSpecialProducts(productList, pageSize) {
+  const specials = [];
+  const normal = [];
+  
+  productList.forEach(p => {
+    if (SPECIAL_MIX_MATCH_NAMES.includes(p.name.toLowerCase())) {
+      specials.push(p);
+    } else {
+      normal.push(p);
+    }
+  });
+
+  if (specials.length === 0) return productList;
+
+  const result = [];
+  let normalIdx = 0;
+  let specialIdx = 0;
+  
+  while (normalIdx < normal.length || specialIdx < specials.length) {
+    const pageItems = [];
+    
+    if (specialIdx < specials.length) {
+      pageItems.push(specials[specialIdx]);
+      specialIdx++;
+    }
+    
+    while (pageItems.length < pageSize && normalIdx < normal.length) {
+      pageItems.push(normal[normalIdx]);
+      normalIdx++;
+    }
+    
+    result.push(...pageItems);
+  }
+  
+  return result;
+}
+
 const PAGE_SIZE = 8;
 
 export default function CollectionClient({ category, allProducts, featuredProducts }) {
   const [selectedShapes, setSelectedShapes] = useState([]);
   const [selectedLengths, setSelectedLengths] = useState([]);
+  const [selectedColors, setSelectedColors] = useState([]);
   const [sortBy, setSortBy] = useState("newest");
   const [viewMode, setViewMode] = useState("grid");
   const [currentPage, setCurrentPage] = useState(1);
 
   const filtered = useMemo(() => {
-    const shapeFilters = { nailShape: selectedShapes, lengths: selectedLengths };
+    const shapeFilters = { nailShape: selectedShapes, lengths: selectedLengths, colors: selectedColors };
     const f = filterProductsList(allProducts, shapeFilters);
-    return sortProductsList(f, sortBy);
-  }, [allProducts, selectedShapes, selectedLengths, sortBy]);
+    const sorted = sortProductsList(f, sortBy);
+    return distributeSpecialProducts(sorted, PAGE_SIZE);
+  }, [allProducts, selectedShapes, selectedLengths, selectedColors, sortBy]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const safePage = Math.min(currentPage, totalPages);
@@ -74,6 +123,13 @@ export default function CollectionClient({ category, allProducts, featuredProduc
   const toggleLength = (lengthId) => {
     setSelectedLengths(prev => 
       prev.includes(lengthId) ? [] : [lengthId]
+    );
+    setCurrentPage(1);
+  };
+
+  const toggleColor = (colorId) => {
+    setSelectedColors(prev => 
+      prev.includes(colorId) ? [] : [colorId]
     );
     setCurrentPage(1);
   };
@@ -104,6 +160,8 @@ export default function CollectionClient({ category, allProducts, featuredProduc
           onToggleShape={toggleShape} 
           selectedLengths={selectedLengths} 
           onToggleLength={toggleLength} 
+          selectedColors={selectedColors}
+          onToggleColor={toggleColor}
         />
 
         <CategoryShowcase mini items={featuredProducts} />
@@ -158,7 +216,7 @@ export default function CollectionClient({ category, allProducts, featuredProduc
                   We couldn't find any nails matching your exact shape and length preferences. Try tweaking your selection.
                 </p>
                 <button 
-                  onClick={() => { setSelectedShapes([]); setSelectedLengths([]); }}
+                  onClick={() => { setSelectedShapes([]); setSelectedLengths([]); setSelectedColors([]); }}
                   style={{
                     padding: "10px 24px", backgroundColor: "var(--color-bg)", border: "1px solid var(--color-border)",
                     borderRadius: "var(--radius-full)", color: "var(--color-text)", fontSize: "0.85rem", fontWeight: 500,
@@ -218,6 +276,8 @@ export default function CollectionClient({ category, allProducts, featuredProduc
             )}
           </div>
         </div>
+
+        {category?.slug === 'factory' && <FactoryVideos />}
       </div>
     </div>
   );

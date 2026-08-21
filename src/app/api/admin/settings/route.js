@@ -8,7 +8,7 @@ const supabaseAdmin = createClient(
 
 export async function PUT(request) {
   try {
-    const { shipping_standard, shipping_express, delivery_locations, delivery_presets } = await request.json();
+    const { shipping_standard, shipping_express, delivery_locations, delivery_presets, sitewide_discount } = await request.json();
 
     const { data, error } = await supabaseAdmin
       .from('store_settings')
@@ -17,6 +17,7 @@ export async function PUT(request) {
         shipping_express: parseFloat(shipping_express || 0),
         delivery_locations: delivery_locations || [],
         delivery_presets: delivery_presets || null,
+        sitewide_discount: parseFloat(sitewide_discount ?? 0),
         updated_at: new Date().toISOString()
       })
       .eq('id', 1)

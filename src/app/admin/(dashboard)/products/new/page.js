@@ -23,9 +23,13 @@ export default function NewProduct() {
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   
+  const [videoFile, setVideoFile] = useState(null);
+  const [videoPreview, setVideoPreview] = useState(null);
+  
   const [nailShape, setNailShape] = useState("Square");
   const [nailLength, setNailLength] = useState('medium');
   const [nailStyle, setNailStyle] = useState("Solid");
+  const [color, setColor] = useState("");
   
   const [price, setPrice] = useState("");
   const [salePrice, setSalePrice] = useState("");
@@ -36,6 +40,7 @@ export default function NewProduct() {
   
   const [isSubmitting, setIsSubmitting] = useState(false);
   const fileInputRef = useRef(null);
+  const videoInputRef = useRef(null);
 
   const handleAddTag = (e) => {
     if (e.key === 'Enter') {
@@ -84,6 +89,21 @@ export default function NewProduct() {
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
+  const handleVideoChange = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setVideoFile(file);
+      const url = URL.createObjectURL(file);
+      setVideoPreview(url);
+    }
+  };
+  
+  const removeVideo = () => {
+    setVideoFile(null);
+    setVideoPreview(null);
+    if (videoInputRef.current) videoInputRef.current.value = "";
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!name || !price) {
@@ -107,9 +127,13 @@ export default function NewProduct() {
       formData.append('stockCount', stockQuantity || '0');
       formData.append('featured', isBestseller); // Or isFeatured depending on preference
       formData.append('tags', tags.join(','));
+      if (color) formData.append('color', color);
       
       if (imageFile) {
         formData.append('image', imageFile);
+      }
+      if (videoFile) {
+        formData.append('video', videoFile);
       }
       
       const res = await fetch('/api/admin/products', {
@@ -252,6 +276,26 @@ export default function NewProduct() {
                          </div>
                        )}
                     </div>
+                    
+                    <div style={{ marginTop: '20px' }}>
+                      <div style={{ fontSize: "0.9rem", fontWeight: 500, marginBottom: "10px" }}>Product Video (Optional)</div>
+                      <input type="file" accept="video/mp4,video/webm" ref={videoInputRef} onChange={handleVideoChange} style={{ display: 'none' }} />
+                      <div 
+                        onClick={() => videoInputRef.current?.click()}
+                        style={{ border: "2px dashed var(--color-border)", borderRadius: "12px", height: "120px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", backgroundColor: "var(--color-bg)", cursor: "pointer", marginBottom: "10px" }}
+                      >
+                        <UploadCloud size={24} color="#888" style={{ marginBottom: "8px" }} />
+                        <div style={{ fontSize: "0.85rem", color: "#333", fontWeight: 500 }}>Upload Video</div>
+                        <div style={{ fontSize: "0.75rem", color: "#888" }}>MP4, WebM</div>
+                      </div>
+                      
+                      {videoPreview && (
+                         <div style={{ position: "relative", aspectRatio: "16/9", borderRadius: "8px", overflow: "hidden", backgroundColor: "#000" }}>
+                           <button type="button" onClick={removeVideo} style={{ position: "absolute", top: "5px", right: "5px", background: "white", borderRadius: "50%", padding: "2px", border: "none", cursor: "pointer", width: "20px", height: "20px", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 10 }}><X size={12}/></button>
+                           <video src={videoPreview} autoPlay muted loop style={{width: "100%", height: "100%", objectFit: "cover"}} />
+                         </div>
+                       )}
+                    </div>
                   </div>
                   
                   {/* Real Component Preview */}
@@ -308,12 +352,35 @@ export default function NewProduct() {
                 </div>
               </div>
 
-              <div className={styles.formGroup}>
-                <label className={styles.label}>Style & Finish</label>
-                <select className={styles.select} value={nailStyle} onChange={e => setNailStyle(e.target.value)}>
-                  {nailStyles.map(s => <option key={s.id} value={s.name}>{s.name}</option>)}
-                </select>
-                <Link href="/admin/settings/attributes" style={{ fontSize: "0.8rem", color: "var(--color-primary)", marginTop: "8px", display: "inline-block", textDecoration: "underline" }}>Manage Styles</Link>
+              <div className={styles.grid2}>
+                <div className={styles.formGroup}>
+                  <label className={styles.label}>Style & Finish</label>
+                  <select className={styles.select} value={nailStyle} onChange={e => setNailStyle(e.target.value)}>
+                    {nailStyles.map(s => <option key={s.id} value={s.name}>{s.name}</option>)}
+                  </select>
+                  <Link href="/admin/settings/attributes" style={{ fontSize: "0.8rem", color: "var(--color-primary)", marginTop: "8px", display: "inline-block", textDecoration: "underline" }}>Manage Styles</Link>
+                </div>
+                
+                <div className={styles.formGroup}>
+                  <label className={styles.label}>Primary Color</label>
+                  <select className={styles.select} value={color} onChange={e => setColor(e.target.value)}>
+                    <option value="">None / Mixed</option>
+                    <option value="Red">Red</option>
+                    <option value="Pink">Pink</option>
+                    <option value="Nude">Nude</option>
+                    <option value="Brown">Brown</option>
+                    <option value="Black">Black</option>
+                    <option value="White">White</option>
+                    <option value="Green">Green</option>
+                    <option value="Blue">Blue</option>
+                    <option value="Purple">Purple</option>
+                    <option value="Yellow">Yellow</option>
+                    <option value="Orange">Orange</option>
+                    <option value="Silver">Silver</option>
+                    <option value="Gold">Gold</option>
+                    <option value="Multi">Multi-color</option>
+                  </select>
+                </div>
               </div>
 
               <div className={styles.formActions}>

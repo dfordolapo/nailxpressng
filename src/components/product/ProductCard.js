@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { formatPrice, getDiscountPercent } from "@/lib/utils";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
@@ -50,18 +51,29 @@ export default function ProductCard({ product }) {
     <Link href={`/product/${product.slug}`} className={styles.card} id={`product-card-${product.slug}`}>
       {/* Image */}
       <div className={styles.imageContainer}>
-        <div
-          className={styles.image}
-          style={{
-            background: `linear-gradient(135deg, var(--color-primary-100), var(--color-surface))`,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: "3rem",
-          }}
-        >
-          💅
-        </div>
+        {product.image || (product.images && product.images[0]) ? (
+          <Image
+            src={product.image || product.images[0]}
+            alt={product.name}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className={styles.image}
+            style={{ objectFit: "cover" }}
+          />
+        ) : (
+          <div
+            className={styles.image}
+            style={{
+              background: `linear-gradient(135deg, var(--color-primary-100), var(--color-surface))`,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: "3rem",
+            }}
+          >
+            💅
+          </div>
+        )}
 
         {/* Badges */}
         <div className={styles.badges}>
@@ -106,8 +118,10 @@ export default function ProductCard({ product }) {
 
         {/* Price */}
         <div className={styles.priceRow}>
-          <span className={styles.price}>{formatPrice(product.price)}</span>
-          {product.compareAtPrice && (
+          <span className={styles.price}>
+            {product.category === 'factory' ? `${formatPrice(6500)} - ${formatPrice(8500)}` : formatPrice(product.price)}
+          </span>
+          {product.compareAtPrice && product.category !== 'factory' && (
             <span className={styles.comparePrice}>{formatPrice(product.compareAtPrice)}</span>
           )}
         </div>

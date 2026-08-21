@@ -87,9 +87,36 @@ export default function ProductClient({ product, relatedProducts = [], isModal =
   const discount = getDiscountPercent(product.price, product.compareAtPrice);
   const wishlisted = isInWishlist(product.id);
 
+  // Calculate dynamic price based on length for factory products
+  let displayPrice = product.price;
+  let displayCompareAt = product.compareAtPrice;
+
+  if (product.category === 'factory') {
+    const lowerLength = (selectedLength || '').toLowerCase();
+    if (lowerLength === 'short') {
+      displayPrice = 6500;
+    } else if (lowerLength === 'long') {
+      displayPrice = 8500;
+    } else {
+      displayPrice = 7500; // Medium or default
+    }
+
+    if (product.discountPercent > 0) {
+      displayCompareAt = displayPrice;
+      displayPrice = Math.round(displayPrice * (1 - product.discountPercent / 100));
+    } else {
+      displayCompareAt = null;
+    }
+  }
+
   const handleAddToCart = () => {
     const finalSize = product.category === 'factory' ? null : selectedSize;
-    addItem(product, quantity, finalSize, selectedLength);
+    // Pass a modified product object with the dynamic price to the cart
+    const productToAdd = {
+      ...product,
+      price: displayPrice
+    };
+    addItem(productToAdd, quantity, finalSize, selectedLength);
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
     showToast(`"${product.name}" added to cart`);
@@ -125,59 +152,105 @@ export default function ProductClient({ product, relatedProducts = [], isModal =
                 className={pageStyles.galleryZoomInner}
                 style={{ transformOrigin: zoomOrigin }}
               >
-                {product.images && product.images[selectedImage] ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={product.images[selectedImage]}
-                    alt={product.name}
-                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                  />
-                ) : (
-                  <div
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      background: `linear-gradient(135deg, var(--color-primary-100), var(--color-surface), var(--color-primary-200))`,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      fontSize: "6rem",
-                    }}
-                  >
-                    💅
-                  </div>
-                )}
+                {(() => {
+                  const mediaList = [];
+                  if (product.videoUrl) mediaList.push({ type: 'video', url: product.videoUrl });
+                  if (product.images) {
+                    product.images.forEach(img => mediaList.push({ type: 'image', url: img }));
+                  }
+                  
+                  const activeMedia = mediaList[selectedImage];
+                  
+                  if (activeMedia) {
+                    if (activeMedia.type === 'video') {
+                      return (
+                        <video
+                          src={activeMedia.url}
+                          autoPlay
+                          muted
+                          loop
+                          controls
+                          style={{ width: "100%", height: "100%", objectFit: "cover", backgroundColor: "#000" }}
+                        />
+                      );
+                    } else {
+                      return (
+                        <img
+                          src={activeMedia.url}
+                          alt={product.name}
+                          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                        />
+                      );
+                    }
+                  } else {
+                    return (
+                      <div
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          background: `linear-gradient(135deg, var(--color-primary-100), var(--color-surface), var(--color-primary-200))`,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          fontSize: "6rem",
+                        }}
+                      >
+                        💅
+                      </div>
+                    );
+                  }
+                })()}
               </div>
             </div>
             
-            {product.images && product.images.length > 1 && (
-              <div className={pageStyles.thumbnails} style={{ display: "flex", gap: "10px", marginTop: "15px" }}>
-                {product.images.map((imgUrl, i) => (
-                  <button
-                    key={i}
-                    className={`${pageStyles.thumbnail} ${selectedImage === i ? pageStyles.active : ""}`}
-                    onClick={() => setSelectedImage(i)}
-                    style={{ 
-                      position: "relative", 
-                      width: "80px", 
-                      height: "80px", 
-                      borderRadius: "var(--radius-sm)", 
-                      overflow: "hidden",
-                      border: selectedImage === i ? "2px solid var(--color-primary)" : "1px solid var(--color-border)",
-                      cursor: "pointer",
-                      padding: 0
-                    }}
-                  >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={imgUrl}
-                      alt={`${product.name} thumbnail ${i + 1}`}
-                      style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                    />
-                  </button>
-                ))}
-              </div>
-            )}
+            {(() => {
+              const mediaList = [];
+              if (product.videoUrl) mediaList.push({ type: 'video', url: product.videoUrl });
+              if (product.images) {
+                product.images.forEach(img => mediaList.push({ type: 'image', url: img }));
+              }
+              
+              if (mediaList.length > 1) {
+                return (
+                  <div className={pageStyles.thumbnails} style={{ display: "flex", gap: "10px", marginTop: "15px" }}>
+                    {mediaList.map((media, i) => (
+                      <button
+                        key={i}
+                        className={`${pageStyles.thumbnail} ${selectedImage === i ? pageStyles.active : ""}`}
+                        onClick={() => setSelectedImage(i)}
+                        style={{ 
+                          position: "relative", 
+                          width: "80px", 
+                          height: "80px", 
+                          borderRadius: "var(--radius-sm)", 
+                          overflow: "hidden",
+                          border: selectedImage === i ? "2px solid var(--color-primary)" : "1px solid var(--color-border)",
+                          cursor: "pointer",
+                          padding: 0,
+                          backgroundColor: "#000"
+                        }}
+                      >
+                        {media.type === 'video' ? (
+                          <>
+                            <video src={media.url} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                            <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", color: "white", backgroundColor: "rgba(0,0,0,0.5)", borderRadius: "50%", width: "24px", height: "24px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                            </div>
+                          </>
+                        ) : (
+                          <img
+                            src={media.url}
+                            alt={`${product.name} thumbnail ${i + 1}`}
+                            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                          />
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                );
+              }
+              return null;
+            })()}
           </div>
 
           {/* Product Info */}
@@ -200,9 +273,9 @@ export default function ProductClient({ product, relatedProducts = [], isModal =
 
             {/* Price */}
             <div className={pageStyles.productPriceRow}>
-              <span className={pageStyles.productPrice}>{formatPrice(product.price)}</span>
-              {product.compareAtPrice && (
-                <span className={pageStyles.productComparePrice}>{formatPrice(product.compareAtPrice)}</span>
+              <span className={pageStyles.productPrice}>{formatPrice(displayPrice)}</span>
+              {displayCompareAt && (
+                <span className={pageStyles.productComparePrice}>{formatPrice(displayCompareAt)}</span>
               )}
             </div>
 
@@ -274,7 +347,7 @@ export default function ProductClient({ product, relatedProducts = [], isModal =
                 onClick={handleAddToCart}
                 id="add-to-cart-btn"
               >
-                {added ? "✓ Added to Cart!" : `Add to Cart — ${formatPrice(product.price * quantity)}`}
+                {added ? "✓ Added to Cart!" : `Add to Cart — ${formatPrice(displayPrice * quantity)}`}
               </button>
               <button
                 className={`${pageStyles.wishlistBtn} ${wishlisted ? pageStyles.active : ""}`}
@@ -360,7 +433,7 @@ export default function ProductClient({ product, relatedProducts = [], isModal =
         <div className="container" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
            <div>
              <p style={{ fontWeight: 600, fontSize: "var(--text-sm)", margin: 0, color: "var(--color-text)" }}>{product.name}</p>
-             <p style={{ color: "var(--color-text-secondary)", fontSize: "var(--text-xs)", margin: 0 }}>{formatPrice(product.price * quantity)}</p>
+             <p style={{ color: "var(--color-text-secondary)", fontSize: "var(--text-xs)", margin: 0 }}>{formatPrice(displayPrice * quantity)}</p>
            </div>
            <button
              className={`${btnStyles.btn} ${btnStyles.primary} ${btnStyles.sm}`}

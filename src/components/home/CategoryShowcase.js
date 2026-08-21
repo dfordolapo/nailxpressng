@@ -21,7 +21,7 @@ export default function CategoryShowcase({ mini = false, items = null }) {
   const displayItems = items ? items.map((p, i) => ({
     id: p.id,
     name: p.name,
-    image: MOODS[i % MOODS.length].image,
+    image: p.image || (p.images && p.images[0]) || MOODS[i % MOODS.length].image,
     color: MOODS[i % MOODS.length].color,
     isProduct: true,
     slug: p.slug
@@ -89,31 +89,67 @@ export default function CategoryShowcase({ mini = false, items = null }) {
 
     resumeAutoScroll();
 
-    const onPointerDown = () => {
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+    let dragged = false;
+
+    const onPointerDown = (e) => {
       pauseAutoScroll();
+      if (e.pointerType === 'mouse') {
+        isDown = true;
+        dragged = false;
+        startX = e.pageX - track.offsetLeft;
+        scrollLeft = track.scrollLeft;
+        track.style.cursor = 'grabbing';
+      }
+    };
+
+    const onPointerMove = (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - track.offsetLeft;
+      const walk = (x - startX) * 1.5;
+      track.scrollLeft = scrollLeft - walk;
+      if (Math.abs(walk) > 5) {
+        dragged = true;
+      }
     };
 
     const onPointerUp = () => {
+      isDown = false;
+      track.style.cursor = 'grab';
       clearTimeout(track._resumeTimer);
-      track._resumeTimer = setTimeout(() => {
-        if (!pausedRef.current) return;
-        const half = track.scrollWidth / 2;
-        if (track.scrollLeft >= half) {
-          track.scrollLeft -= half;
-        }
-        resumeAutoScroll();
-      }, RESUME_DELAY);
+      
+      if (!pausedRef.current) return;
+      const half = track.scrollWidth / 2;
+      if (track.scrollLeft >= half) {
+        track.scrollLeft -= half;
+      }
+      resumeAutoScroll();
+    };
+
+    const onClickCapture = (e) => {
+      if (dragged) {
+        e.stopPropagation();
+        e.preventDefault();
+        dragged = false;
+      }
     };
 
     track.addEventListener('pointerdown', onPointerDown);
+    track.addEventListener('pointermove', onPointerMove);
     track.addEventListener('pointerup', onPointerUp);
     track.addEventListener('pointerleave', onPointerUp);
+    track.addEventListener('click', onClickCapture, { capture: true });
 
     return () => {
       cancelAnimationFrame(autoScrollRef.current);
       track.removeEventListener('pointerdown', onPointerDown);
+      track.removeEventListener('pointermove', onPointerMove);
       track.removeEventListener('pointerup', onPointerUp);
       track.removeEventListener('pointerleave', onPointerUp);
+      track.removeEventListener('click', onClickCapture, { capture: true });
       clearTimeout(track._resumeTimer);
     };
   }, [pauseAutoScroll, resumeAutoScroll]);

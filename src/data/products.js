@@ -418,7 +418,7 @@ export const products = [
     "description": "Deep blue and nude base with striking silver glitter accents.",
     "shortDescription": "Deep blue and silver glitter",
     "images": [
-      "/images/Factory made/00E55F3C-EBF0-4ED1-82C1-26F0C9298682.jpg"
+      "/images/factory-made/00E55F3C-EBF0-4ED1-82C1-26F0C9298682.jpg"
     ],
     "category": "factory",
     "nailShape": "almond",
@@ -455,7 +455,7 @@ export const products = [
     "description": "Deep red and nude base with silver star accents and metallic outlines.",
     "shortDescription": "Deep red with silver stars",
     "images": [
-      "/images/Factory made/095CC5F1-3707-404B-9A62-46C1DE96EAC6.jpg"
+      "/images/factory-made/095CC5F1-3707-404B-9A62-46C1DE96EAC6.jpg"
     ],
     "category": "factory",
     "nailShape": "almond",
@@ -492,7 +492,7 @@ export const products = [
     "description": "Vibrant blue and nude gradient with stunning 3D floral accents and rhinestones.",
     "shortDescription": "Blue gradient with 3D florals",
     "images": [
-      "/images/Factory made/0A09BD69-438E-4EA3-A4B6-790A9E08DADB.jpg"
+      "/images/factory-made/0A09BD69-438E-4EA3-A4B6-790A9E08DADB.jpg"
     ],
     "category": "factory",
     "nailShape": "square",
@@ -529,7 +529,7 @@ export const products = [
     "description": "Bright amber and nude tones featuring 3D floral art for a warm aesthetic.",
     "shortDescription": "Amber tones with 3D florals",
     "images": [
-      "/images/Factory made/103F4262-D7A4-4622-882F-E4B8C5261447.jpg"
+      "/images/factory-made/103F4262-D7A4-4622-882F-E4B8C5261447.jpg"
     ],
     "category": "factory",
     "nailShape": "square",
@@ -566,7 +566,7 @@ export const products = [
     "description": "Sleek, dark metallic chrome finish for an ultra-modern and edgy look.",
     "shortDescription": "Dark metallic chrome finish",
     "images": [
-      "/images/Factory made/16B8B425-6D92-4E02-BDD4-520E64C68F23.jpg"
+      "/images/factory-made/16B8B425-6D92-4E02-BDD4-520E64C68F23.jpg"
     ],
     "category": "factory",
     "nailShape": "stiletto",
@@ -603,7 +603,7 @@ export const products = [
     "description": "Earthy green and pale pink base with elegant gold foil and butterfly wing accents.",
     "shortDescription": "Earthy green with gold and butterfly accents",
     "images": [
-      "/images/Factory made/1713DFDC-9730-40F3-B973-72FE86DB1157.jpg"
+      "/images/factory-made/1713DFDC-9730-40F3-B973-72FE86DB1157.jpg"
     ],
     "category": "factory",
     "nailShape": "almond",
@@ -640,7 +640,7 @@ export const products = [
     "description": "A timeless blush pink base featuring a smooth gradient and pristine white French tips.",
     "shortDescription": "Blush pink with gradient French tips",
     "images": [
-      "/images/Factory made/2101CE0E-0C75-451E-97D9-5BC2A7112D8C.jpg"
+      "/images/factory-made/2101CE0E-0C75-451E-97D9-5BC2A7112D8C.jpg"
     ],
     "category": "factory",
     "nailShape": "square",
@@ -677,7 +677,7 @@ export const products = [
     "description": "Warm copper and mocha tones with a captivating magnetic cat-eye glitter finish and white edging.",
     "shortDescription": "Copper magnetic glitter with white edges",
     "images": [
-      "/images/Factory made/22400F5B-CB9D-41E1-9BF6-6D2EDDDE6B8F.jpg"
+      "/images/factory-made/22400F5B-CB9D-41E1-9BF6-6D2EDDDE6B8F.jpg"
     ],
     "category": "factory",
     "nailShape": "square",
@@ -714,7 +714,7 @@ export const products = [
     "description": "Soft pink glitter base beautifully outlined with elegant gold metallic French tips.",
     "shortDescription": "Pink glitter with gold metallic tips",
     "images": [
-      "/images/Factory made/23446207-2BC7-4036-8B60-5670EFB282B4.jpg"
+      "/images/factory-made/23446207-2BC7-4036-8B60-5670EFB282B4.jpg"
     ],
     "category": "factory",
     "nailShape": "square",
@@ -751,7 +751,7 @@ export const products = [
     "description": "Deep mocha brown gradient on a sleek coffin shape for a bold yet understated look.",
     "shortDescription": "Deep mocha brown gradient",
     "images": [
-      "/images/Factory made/4736ED6B-4024-4607-9742-D3519F43AEE5.jpg"
+      "/images/factory-made/4736ED6B-4024-4607-9742-D3519F43AEE5.jpg"
     ],
     "category": "factory",
     "nailShape": "square",
@@ -788,7 +788,7 @@ export const products = [
     "description": "Deep purple base with silver metallic abstract starbursts and distinct black-and-white checkered accents.",
     "shortDescription": "Purple with silver starbursts",
     "images": [
-      "/images/Factory made/4C0C324F-1DB6-42B9-8B52-80E120C8AD3D.jpg"
+      "/images/factory-made/4C0C324F-1DB6-42B9-8B52-80E120C8AD3D.jpg"
     ],
     "category": "factory",
     "nailShape": "almond",
@@ -825,7 +825,7 @@ export const products = [
     "description": "Bright sunshine yellow base adorned with delicate, hand-painted white daisy flower accents.",
     "shortDescription": "Yellow with white daisies",
     "images": [
-      "/images/Factory made/4F4C1324-1C0F-49AF-A1EA-A56D47E245A9.jpg"
+      "/images/factory-made/4F4C1324-1C0F-49AF-A1EA-A56D47E245A9.jpg"
     ],
     "category": "factory",
     "nailShape": "square",
@@ -862,7 +862,7 @@ export const products = [
     "description": "Deep red tortoiseshell pattern with dark tips for a classic, luxurious finish.",
     "shortDescription": "Red tortoiseshell pattern",
     "images": [
-      "/images/Factory made/5245E365-337C-4529-B046-A672D9776C81.jpg"
+      "/images/factory-made/5245E365-337C-4529-B046-A672D9776C81.jpg"
     ],
     "category": "factory",
     "nailShape": "almond",
@@ -899,7 +899,7 @@ export const products = [
     "description": "Soft pink French tip design featuring beautiful 3D deep red floral accents with gold centers.",
     "shortDescription": "Pink French with 3D florals",
     "images": [
-      "/images/Factory made/5E5DF31C-BD5F-428F-AFBD-F1C816EBBBBF.jpg"
+      "/images/factory-made/5E5DF31C-BD5F-428F-AFBD-F1C816EBBBBF.jpg"
     ],
     "category": "factory",
     "nailShape": "almond",
@@ -936,7 +936,7 @@ export const products = [
     "description": "Elegant nude base paired with multiple sleek black semi-circular French tip lines.",
     "shortDescription": "Nude with black French lines",
     "images": [
-      "/images/Factory made/5F0F934E-3F45-4C2B-B623-B7284A76833F.jpg"
+      "/images/factory-made/5F0F934E-3F45-4C2B-B623-B7284A76833F.jpg"
     ],
     "category": "factory",
     "nailShape": "almond",
@@ -973,7 +973,7 @@ export const products = [
     "description": "Olive green cat-eye base detailed with celestial gold sun, moon, and star accents.",
     "shortDescription": "Olive green with gold celestial accents",
     "images": [
-      "/images/Factory made/6408E0F8-98BE-46B4-BC18-966976F4619A.jpg"
+      "/images/factory-made/6408E0F8-98BE-46B4-BC18-966976F4619A.jpg"
     ],
     "category": "factory",
     "nailShape": "almond",
@@ -1010,7 +1010,7 @@ export const products = [
     "description": "Vibrant magenta pink encapsulated by heavy gold metallic abstract swirl outlines and subtle pearl accents.",
     "shortDescription": "Magenta with gold swirls and pearls",
     "images": [
-      "/images/Factory made/6AEC6A3E-2F21-4FC5-94AB-EF433FDA6021.jpg"
+      "/images/factory-made/6AEC6A3E-2F21-4FC5-94AB-EF433FDA6021.jpg"
     ],
     "category": "factory",
     "nailShape": "almond",
@@ -1047,7 +1047,7 @@ export const products = [
     "description": "Sophisticated nude and deep burgundy red combination with elegant gold abstract line accents.",
     "shortDescription": "Nude and burgundy with gold lines",
     "images": [
-      "/images/Factory made/7BF4233A-782D-47EC-B2C3-560C1D399A37.jpg"
+      "/images/factory-made/7BF4233A-782D-47EC-B2C3-560C1D399A37.jpg"
     ],
     "category": "factory",
     "nailShape": "almond",
@@ -1084,7 +1084,7 @@ export const products = [
     "description": "Muted slate blue base elevated with metallic gold floral stamping and edge accents.",
     "shortDescription": "Slate blue with gold floral accents",
     "images": [
-      "/images/Factory made/8B284FFF-F889-402B-B054-3E698AD0CBFE.jpg"
+      "/images/factory-made/8B284FFF-F889-402B-B054-3E698AD0CBFE.jpg"
     ],
     "category": "factory",
     "nailShape": "oval",
@@ -1121,7 +1121,7 @@ export const products = [
     "description": "Bold matte black and nude design featuring abstract glossy black zebra-like lines.",
     "shortDescription": "Matte black and nude with glossy lines",
     "images": [
-      "/images/Factory made/94AE553A-0F60-4541-BD64-D49662FEB3DD.jpg"
+      "/images/factory-made/94AE553A-0F60-4541-BD64-D49662FEB3DD.jpg"
     ],
     "category": "factory",
     "nailShape": "coffin",
@@ -1158,7 +1158,7 @@ export const products = [
     "description": "Nude almond base featuring bold leopard print French tips and subtle gold bead accents.",
     "shortDescription": "Nude with leopard print French tips",
     "images": [
-      "/images/Factory made/959EFFED-FF21-477F-B93F-2E363332E89E.jpg"
+      "/images/factory-made/959EFFED-FF21-477F-B93F-2E363332E89E.jpg"
     ],
     "category": "factory",
     "nailShape": "almond",
@@ -1195,7 +1195,7 @@ export const products = [
     "description": "Stiletto shape with a soft pink base, elegant white tips, and abstract gold metallic wavy lines.",
     "shortDescription": "Pink and white with gold waves",
     "images": [
-      "/images/Factory made/99C04EEA-06ED-47AB-8942-DB5E2006C5C4.jpg"
+      "/images/factory-made/99C04EEA-06ED-47AB-8942-DB5E2006C5C4.jpg"
     ],
     "category": "factory",
     "nailShape": "stiletto",
@@ -1232,7 +1232,7 @@ export const products = [
     "description": "Semi-transparent pink coffin shape beautifully encapsulated with sparkly silver glitter borders.",
     "shortDescription": "Pink with silver glitter borders",
     "images": [
-      "/images/Factory made/A5515E49-585D-4AAB-BF2F-14E9D7D6418E.jpg"
+      "/images/factory-made/A5515E49-585D-4AAB-BF2F-14E9D7D6418E.jpg"
     ],
     "category": "factory",
     "nailShape": "coffin",
@@ -1269,7 +1269,7 @@ export const products = [
     "description": "Brown and black gradient base adorned with delicate white heart line art and clear rhinestones.",
     "shortDescription": "Mocha gradient with white hearts",
     "images": [
-      "/images/Factory made/ABF53D45-91CB-4C62-8E56-5176DCFAE0FE.jpg"
+      "/images/factory-made/ABF53D45-91CB-4C62-8E56-5176DCFAE0FE.jpg"
     ],
     "category": "factory",
     "nailShape": "square",
@@ -1306,7 +1306,7 @@ export const products = [
     "description": "All-black matte square base featuring a 3D glossy abstract fluid texture.",
     "shortDescription": "Matte black with glossy fluid texture",
     "images": [
-      "/images/Factory made/AD76AEEF-B21E-46E3-9038-75D4903DFD7A.jpg"
+      "/images/factory-made/AD76AEEF-B21E-46E3-9038-75D4903DFD7A.jpg"
     ],
     "category": "factory",
     "nailShape": "square",
@@ -1343,7 +1343,7 @@ export const products = [
     "description": "Rich brown tortoise shell pattern mixed with soft pink, featuring gold rings and delicate floral accents.",
     "shortDescription": "Tortoise shell with florals and gold",
     "images": [
-      "/images/Factory made/B8E94C2E-3EB5-4FB7-AD2E-BB899C719984.jpg"
+      "/images/factory-made/B8E94C2E-3EB5-4FB7-AD2E-BB899C719984.jpg"
     ],
     "category": "factory",
     "nailShape": "almond",
@@ -1380,7 +1380,7 @@ export const products = [
     "description": "Classic almond shape with vibrant red French tips and striking gold metallic borders on a nude base.",
     "shortDescription": "Red French tips with gold borders",
     "images": [
-      "/images/Factory made/BEBE0F3D-88CC-417D-BF97-D0ECC1FFFAFF.jpg"
+      "/images/factory-made/BEBE0F3D-88CC-417D-BF97-D0ECC1FFFAFF.jpg"
     ],
     "category": "factory",
     "nailShape": "almond",
@@ -1417,7 +1417,7 @@ export const products = [
     "description": "Deep maroon almond base highlighted by elegant gold abstract marbling and flowing line accents.",
     "shortDescription": "Maroon with gold abstract marbling",
     "images": [
-      "/images/Factory made/CAE1CCDD-31AB-4A88-AACC-EA948BB34311.jpg"
+      "/images/factory-made/CAE1CCDD-31AB-4A88-AACC-EA948BB34311.jpg"
     ],
     "category": "factory",
     "nailShape": "almond",
@@ -1454,7 +1454,7 @@ export const products = [
     "description": "Vibrant green glitter ombré on a square base, adorned with 3D white floral embellishments and rhinestones.",
     "shortDescription": "Green glitter with 3D white florals",
     "images": [
-      "/images/Factory made/D7F28F9A-17A8-41C0-B9E8-C5CD86AC22BE.jpg"
+      "/images/factory-made/D7F28F9A-17A8-41C0-B9E8-C5CD86AC22BE.jpg"
     ],
     "category": "factory",
     "nailShape": "square",
@@ -1491,7 +1491,7 @@ export const products = [
     "description": "Soft pink and lavender marble swirl pattern accented with shimmering silver glitter borders.",
     "shortDescription": "Lavender and pink swirl with glitter",
     "images": [
-      "/images/Factory made/DC705AF5-B231-4726-99CA-4EE123882608.jpg"
+      "/images/factory-made/DC705AF5-B231-4726-99CA-4EE123882608.jpg"
     ],
     "category": "factory",
     "nailShape": "almond",
@@ -1528,7 +1528,7 @@ export const products = [
     "description": "Almond shape with a dusty rose and pearl white base, adorned with gold liquid metal accents and rhinestones.",
     "shortDescription": "Dusty rose with gold and pearls",
     "images": [
-      "/images/Factory made/E6E499E0-D62B-41CD-B313-D82BC63D3180.jpg"
+      "/images/factory-made/E6E499E0-D62B-41CD-B313-D82BC63D3180.jpg"
     ],
     "category": "factory",
     "nailShape": "almond",
@@ -1547,8 +1547,8 @@ export const products = [
     "stock": 50,
     "id": 130,
     "inStock": true,
-    "bestseller": false,
-    "featured": false,
+    "bestseller": true,
+    "featured": true,
     "newArrival": true,
     "rating": 5,
     "reviewCount": 0,
@@ -1565,7 +1565,7 @@ export const products = [
     "description": "Square shape featuring a pink base with classic white French tips, elegantly adorned with 3D white bows, flowers, and rhinestones.",
     "shortDescription": "Pink French tips with 3D bows",
     "images": [
-      "/images/Factory made/EA05CA92-2DFF-4F43-8D58-A0E01BA15CBF.jpg"
+      "/images/factory-made/EA05CA92-2DFF-4F43-8D58-A0E01BA15CBF.jpg"
     ],
     "category": "factory",
     "nailShape": "square",
@@ -1584,8 +1584,8 @@ export const products = [
     "stock": 50,
     "id": 131,
     "inStock": true,
-    "bestseller": false,
-    "featured": false,
+    "bestseller": true,
+    "featured": true,
     "newArrival": true,
     "rating": 5,
     "reviewCount": 0,
@@ -1602,7 +1602,7 @@ export const products = [
     "description": "Vibrant hot pink and beige marble almond base highlighted by 3D seashell textures, pearls, and tropical flowers.",
     "shortDescription": "Hot pink marble with 3D shells",
     "images": [
-      "/images/Factory made/F00ACB91-19E6-4C4C-BC74-31E6183EA459.jpg"
+      "/images/factory-made/F00ACB91-19E6-4C4C-BC74-31E6183EA459.jpg"
     ],
     "category": "factory",
     "nailShape": "almond",
@@ -1639,7 +1639,7 @@ export const products = [
     "description": "Cartoon pop art style on a square shape, featuring bold black outlines on pink and purple bases with playful heart motifs.",
     "shortDescription": "Pop art pink and purple hearts",
     "images": [
-      "/images/Factory made/F1D5D03B-1BE9-4A53-BB4A-EBC1D6BA63D8.jpg"
+      "/images/factory-made/F1D5D03B-1BE9-4A53-BB4A-EBC1D6BA63D8.jpg"
     ],
     "category": "factory",
     "nailShape": "square",
@@ -1658,8 +1658,8 @@ export const products = [
     "stock": 50,
     "id": 133,
     "inStock": true,
-    "bestseller": false,
-    "featured": false,
+    "bestseller": true,
+    "featured": true,
     "newArrival": true,
     "rating": 5,
     "reviewCount": 0,
@@ -1676,7 +1676,7 @@ export const products = [
     "description": "Square shape with a nude base and red French tips, beautifully adorned with hand-painted cherries and sparkling red rhinestones.",
     "shortDescription": "Nude base with red cherry French tips",
     "images": [
-      "/images/Factory made/F46051E6-3952-4829-9711-F60E2E6153E1.jpg"
+      "/images/factory-made/F46051E6-3952-4829-9711-F60E2E6153E1.jpg"
     ],
     "category": "factory",
     "nailShape": "square",
@@ -1695,8 +1695,8 @@ export const products = [
     "stock": 50,
     "id": 134,
     "inStock": true,
-    "bestseller": false,
-    "featured": false,
+    "bestseller": true,
+    "featured": true,
     "newArrival": true,
     "rating": 5,
     "reviewCount": 0,
@@ -1713,7 +1713,7 @@ export const products = [
     "description": "Dark tortoise shell and brown gradient almond base adorned with gold cross charms, pearls, and delicate hand-painted floral accents.",
     "shortDescription": "Tortoise shell with crosses and florals",
     "images": [
-      "/images/Factory made/F4955E39-1D2E-4126-8737-2B4603D080C4.jpg"
+      "/images/factory-made/F4955E39-1D2E-4126-8737-2B4603D080C4.jpg"
     ],
     "category": "factory",
     "nailShape": "almond",
@@ -1750,7 +1750,7 @@ export const products = [
     "description": "Vibrant pink and yellow sunset ombré almond base featuring 3D clear water droplets and textured red accent nails.",
     "shortDescription": "Sunset ombré with 3D water drops",
     "images": [
-      "/images/Factory made/F6747AEC-954B-40BF-A92E-591D309C1067.jpg"
+      "/images/factory-made/F6747AEC-954B-40BF-A92E-591D309C1067.jpg"
     ],
     "category": "factory",
     "nailShape": "almond",
@@ -1769,8 +1769,8 @@ export const products = [
     "stock": 50,
     "id": 136,
     "inStock": true,
-    "bestseller": false,
-    "featured": false,
+    "bestseller": true,
+    "featured": true,
     "newArrival": true,
     "rating": 5,
     "reviewCount": 0,
@@ -1787,7 +1787,7 @@ export const products = [
     "description": "Deep burgundy jelly almond base beautifully contrasted with yellow and brown marble accents.",
     "shortDescription": "Burgundy jelly with marble accents",
     "images": [
-      "/images/Factory made/FB1A5C92-D759-4911-A651-B31B358782BC.jpg"
+      "/images/factory-made/FB1A5C92-D759-4911-A651-B31B358782BC.jpg"
     ],
     "category": "factory",
     "nailShape": "almond",
@@ -1824,7 +1824,7 @@ export const products = [
     "description": "Elegant dusty rose ombré fading to clear on an almond shape, finished with subtle gold glitter tips.",
     "shortDescription": "Dusty rose ombré with gold tips",
     "images": [
-      "/images/Factory made/FBFCCEFB-2DD3-44E5-8D4C-49D8A213CDFF.jpg"
+      "/images/factory-made/FBFCCEFB-2DD3-44E5-8D4C-49D8A213CDFF.jpg"
     ],
     "category": "factory",
     "nailShape": "almond",
@@ -1861,7 +1861,7 @@ export const products = [
     "description": "Nude/tan almond base featuring a simple white side French tip and a sweeping silver glitter line.",
     "shortDescription": "Tan base with white tip and silver line",
     "images": [
-      "/images/Factory made/FFCC4B72-E44D-4342-81AA-1FD63B3B134B.jpg"
+      "/images/factory-made/FFCC4B72-E44D-4342-81AA-1FD63B3B134B.jpg"
     ],
     "category": "factory",
     "nailShape": "almond",
@@ -1898,7 +1898,7 @@ export const products = [
     "description": "Timeless square shape featuring a soft pink base and clean white French tips.",
     "shortDescription": "Classic pink and white French tips",
     "images": [
-      "/images/Factory made/Screenshot_20260512_174126_Instagram.jpg"
+      "/images/factory-made/Screenshot_20260512_174126_Instagram.jpg"
     ],
     "category": "factory",
     "nailShape": "square",
@@ -1917,8 +1917,8 @@ export const products = [
     "stock": 50,
     "id": 140,
     "inStock": true,
-    "bestseller": false,
-    "featured": false,
+    "bestseller": true,
+    "featured": true,
     "newArrival": true,
     "rating": 5,
     "reviewCount": 0,
@@ -1935,7 +1935,7 @@ export const products = [
     "description": "Square shape featuring a beautiful brown shimmery base with crisp white French tips.",
     "shortDescription": "Brown shimmer with white French tips",
     "images": [
-      "/images/Factory made/Screenshot_20260512_174139_Instagram.jpg"
+      "/images/factory-made/Screenshot_20260512_174139_Instagram.jpg"
     ],
     "category": "factory",
     "nailShape": "square",
@@ -1972,7 +1972,7 @@ export const products = [
     "description": "Playful Mix & Match set featuring black square nails with white polka dots and almond nails with black polka dot French tips.",
     "shortDescription": "Black and white polka dot mix",
     "images": [
-      "/images/Factory made/Untitled design.png"
+      "/images/factory-made/Untitled design.png"
     ],
     "category": "factory",
     "nailShape": "mixed",

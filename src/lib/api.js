@@ -1,54 +1,99 @@
 import { supabase } from './supabase';
 
+// Fetch the sitewide discount % from store settings (0 = no discount)
+export async function getSitewideDiscount() {
+  try {
+    const { data, error } = await supabase
+      .from('store_settings')
+      .select('sitewide_discount')
+      .eq('id', 1)
+      .single();
+    if (error || data == null) return 0;
+    return Number(data.sitewide_discount) || 0;
+  } catch {
+    return 0;
+  }
+}
+
 // Helper to map DB snake_case fields to camelCase for the frontend components
-const mapProduct = (p) => ({
-  id: p.id,
-  name: p.name,
-  slug: p.slug,
-  description: p.description,
-  price: Number(p.price),
-  compareAtPrice: p.compare_at_price ? Number(p.compare_at_price) : null,
-  category: p.categories?.slug || null,
-  categoryName: p.categories?.name || null,
-  nailShape: p.nail_shape,
-  style: p.style,
-  lengths: Array.isArray(p.lengths) ? p.lengths : [],
-  sizes: ["S", "M", "L"],
-  images: p.images,
-  image: p.images?.[0] || null,
-  newArrival: p.new_arrival,
-  bestseller: p.bestseller,
-  inStock: p.stock_count > 0,
-  stockCount: p.stock_count,
-  createdAt: p.created_at,
-  tags: [],
-  colors: []
-});
+// discount: number 0–100 (percent)
+const mapProduct = (p, discount = 0) => {
+  let rawPrice = Number(p.price);
+  const rawCompare = p.compare_at_price ? Number(p.compare_at_price) : null;
+
+  let price = rawPrice;
+  let compareAtPrice = rawCompare;
+
+  if (p.categories?.slug === 'factory' || p.category_id === 2) {
+    // Override factory product prices (Short: 6500, Medium: 7500, Long: 8500)
+    // We set the base price to the lowest (Short = 6500)
+    price = 6500;
+    rawPrice = 6500;
+  }
+
+  if (discount > 0) {
+    // Apply discount: discounted becomes the new price, original becomes compareAtPrice
+    price = Math.round(rawPrice * (1 - discount / 100));
+    compareAtPrice = rawPrice; // always show original as strikethrough
+  }
+
+  return {
+    id: p.id,
+    name: p.name,
+    slug: p.slug,
+    description: p.description,
+    price,
+    compareAtPrice,
+    category: p.categories?.slug || null,
+    categoryName: p.categories?.name || null,
+    nailShape: p.nail_shape,
+    style: p.style,
+    lengths: Array.isArray(p.lengths) ? p.lengths : [],
+    sizes: ["S", "M", "L"],
+    images: p.images,
+    image: p.images?.[0] || null,
+    videoUrl: p.video_url || null,
+    newArrival: p.new_arrival,
+    bestseller: p.bestseller,
+    inStock: p.stock_count > 0,
+    stockCount: p.stock_count,
+    createdAt: p.created_at,
+    tags: [],
+    color: p.color ? p.color.split(',')[0].trim() : null,
+    colors: (() => {
+      if (!p.color) return [];
+      const parsed = p.color.split(',').map(c => c.trim());
+      if (parsed.length > 1 && !parsed.includes('Multi')) {
+        parsed.push('Multi');
+      }
+      return parsed;
+    })(),
+    discountPercent: discount > 0 ? discount : null,
+  };
+};
 
 export async function getProducts() {
-  const { data, error } = await supabase
-    .from('products')
-    .select('*, categories(slug, name)');
-    
+  const [{ data, error }, discount] = await Promise.all([
+    supabase.from('products').select('*, categories(slug, name)'),
+    getSitewideDiscount(),
+  ]);
   if (error) {
     console.error('Error fetching products:', error);
     return [];
   }
-  return data.map(mapProduct);
+  return data.map((p) => mapProduct(p, discount));
 }
 
 export async function getProductBySlug(slug) {
-  const { data, error } = await supabase
-    .from('products')
-    .select('*, categories(slug, name)')
-    .eq('slug', slug)
-    .single();
-    
+  const [{ data, error }, discount] = await Promise.all([
+    supabase.from('products').select('*, categories(slug, name)').eq('slug', slug).single(),
+    getSitewideDiscount(),
+  ]);
   if (error || !data) {
     console.error(`Error fetching product ${slug}:`, error);
     return null;
   }
-  return mapProduct(data);
+  return mapProduct(data, discount);
 }
 
 export async function getProductsByCategory(categorySlug) {
@@ -60,64 +105,56 @@ export async function getProductsByCategory(categorySlug) {
 
   if (!category) return [];
 
-  const { data, error } = await supabase
-    .from('products')
-    .select('*, categories(slug, name)')
-    .eq('category_id', category.id);
-    
+  const [{ data, error }, discount] = await Promise.all([
+    supabase.from('products').select('*, categories(slug, name)').eq('category_id', category.id),
+    getSitewideDiscount(),
+  ]);
   if (error) return [];
-  return data.map(mapProduct);
+  return data.map((p) => mapProduct(p, discount));
 }
 
 export async function getProductsByIds(ids) {
   if (!ids || ids.length === 0) return [];
-  const { data, error } = await supabase
-    .from('products')
-    .select('*, categories(slug, name)')
-    .in('id', ids);
-
+  const [{ data, error }, discount] = await Promise.all([
+    supabase.from('products').select('*, categories(slug, name)').in('id', ids),
+    getSitewideDiscount(),
+  ]);
   if (error) return [];
-  return data.map(mapProduct);
+  return data.map((p) => mapProduct(p, discount));
 }
 
 export async function getFeaturedProducts() {
-  // Using bestseller or newArrival as a proxy for featured if we don't have a featured flag
-  const { data, error } = await supabase
-    .from('products')
-    .select('*, categories(slug, name)')
-    .eq('bestseller', true)
-    .limit(8);
-    
+  const [{ data, error }, discount] = await Promise.all([
+    supabase.from('products').select('*, categories(slug, name)').eq('bestseller', true).limit(8),
+    getSitewideDiscount(),
+  ]);
   if (error) return [];
-  return data.map(mapProduct);
+  return data.map((p) => mapProduct(p, discount));
 }
 
 export async function getBestsellers() {
-  const { data, error } = await supabase
-    .from('products')
-    .select('*, categories(slug, name)')
-    .eq('bestseller', true);
-    
+  const [{ data, error }, discount] = await Promise.all([
+    supabase.from('products').select('*, categories(slug, name)').eq('bestseller', true),
+    getSitewideDiscount(),
+  ]);
   if (error) return [];
-  return data.map(mapProduct);
+  return data.map((p) => mapProduct(p, discount));
 }
 
 export async function searchProducts(query) {
   if (!query) return [];
-  const { data, error } = await supabase
-    .from('products')
-    .select('*, categories(slug, name)')
-    .ilike('name', `%${query}%`);
-    
+  const [{ data, error }, discount] = await Promise.all([
+    supabase.from('products').select('*, categories(slug, name)').ilike('name', `%${query}%`),
+    getSitewideDiscount(),
+  ]);
   if (error) return [];
-  return data.map(mapProduct);
+  return data.map((p) => mapProduct(p, discount));
 }
 
 export async function getCategories() {
   const { data, error } = await supabase
     .from('categories')
     .select('*');
-    
   if (error) return [];
   return data;
 }

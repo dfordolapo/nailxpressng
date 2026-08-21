@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Save, Loader2, Plus, Trash2 } from 'lucide-react';
+import { Save, Loader2, Plus, Trash2, Tag } from 'lucide-react';
 import btnStyles from '@/styles/components/buttons.module.css';
 
 export default function SettingsClient() {
@@ -11,6 +11,7 @@ export default function SettingsClient() {
     handmade: { lagos: '3-5 working days', outside: '5-7 working days' },
     custom: { lagos: '5-7 working days', outside: '7-10 working days' }
   });
+  const [discount, setDiscount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [message, setMessage] = useState('');
@@ -33,6 +34,9 @@ export default function SettingsClient() {
         }
         if (data.delivery_presets) {
           setPresets(data.delivery_presets);
+        }
+        if (typeof data.sitewide_discount === 'number') {
+          setDiscount(data.sitewide_discount);
         }
       } catch (err) {
         console.error('Failed to fetch settings', err);
@@ -79,9 +83,9 @@ export default function SettingsClient() {
         body: JSON.stringify({
           delivery_locations: locations,
           delivery_presets: presets,
-          // Keep these for backward compatibility if needed, or set to 0
           shipping_standard: locations.length > 0 ? locations[0].fee : 2500,
           shipping_express: 5000,
+          sitewide_discount: parseFloat(discount) || 0,
         })
       });
 
@@ -105,6 +109,55 @@ export default function SettingsClient() {
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-6)' }}>
         <h1 style={{ fontSize: '1.5rem', fontWeight: 600 }}>Store Settings</h1>
+      </div>
+
+      {/* Sitewide Discount Banner */}
+      {discount > 0 && (
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px',
+          background: 'linear-gradient(135deg, #fff4e0, #ffe8b0)',
+          border: '1px solid #f5c842',
+          borderRadius: 'var(--radius-lg)',
+          padding: '12px 20px',
+          marginBottom: 'var(--space-6)',
+          fontSize: '0.9rem',
+          fontWeight: 600,
+          color: '#7a5700',
+        }}>
+          <Tag size={18} />
+          Active Sitewide Discount: <span style={{ fontSize: '1.1rem', marginLeft: 4 }}>{discount}% OFF</span> — applied to all product prices at checkout
+        </div>
+      )}
+
+      {/* Sitewide Discount Card */}
+      <div style={{ background: 'white', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-border-light)', padding: 'var(--space-6)', marginBottom: 'var(--space-6)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: 'var(--space-2)' }}>
+          <Tag size={20} color='var(--color-primary)' />
+          <h2 style={{ fontSize: '1.125rem', fontWeight: 600 }}>Sitewide Discount</h2>
+        </div>
+        <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.875rem', marginBottom: 'var(--space-4)' }}>
+          Set a percentage discount applied to all products sitewide. Set to <strong>0</strong> to disable.
+        </p>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', maxWidth: '320px' }}>
+          <input
+            id="sitewide-discount-input"
+            type="number"
+            min="0"
+            max="100"
+            step="0.5"
+            value={discount}
+            onChange={(e) => setDiscount(Math.min(100, Math.max(0, parseFloat(e.target.value) || 0)))}
+            style={{ flex: 1, padding: '10px 14px', border: '2px solid var(--color-border)', borderRadius: 'var(--radius-md)', fontSize: '1.1rem', fontWeight: 600, textAlign: 'center' }}
+          />
+          <span style={{ fontSize: '1.4rem', fontWeight: 700, color: 'var(--color-primary)' }}>%</span>
+          {discount > 0 && (
+            <span style={{ fontSize: '0.8rem', color: 'var(--color-success)', fontWeight: 600, whiteSpace: 'nowrap' }}>
+              ✓ {discount}% active
+            </span>
+          )}
+        </div>
       </div>
 
       <div style={{ background: 'white', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-border-light)', padding: 'var(--space-6)' }}>

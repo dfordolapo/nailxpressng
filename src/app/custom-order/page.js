@@ -357,7 +357,7 @@ export default function CustomOrderPage() {
                   color: "var(--color-primary-dark)",
                   fontWeight: 500
                 }}>
-                  Pricing will be sent to you after review. Custom nails start from ₦12,000.
+                  Pricing will be communicated to you after we review your design requirements.
                 </div>
               </div>
             </div>

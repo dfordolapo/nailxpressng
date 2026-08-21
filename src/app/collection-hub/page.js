@@ -103,7 +103,6 @@ export default function CollectionHub() {
                 style={{ objectFit: "cover" }}
                 sizes="(max-width: 768px) 100vw, 50vw"
                 priority={idx < 2}
-                preload={idx < 2}
               />
               <div className={styles.overlay} />
             </div>

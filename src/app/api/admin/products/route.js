@@ -18,6 +18,7 @@ export async function POST(request) {
     const stockCount = parseInt(formData.get('stockCount') || '0', 10);
     const featured = formData.get('featured') === 'true';
     const imageFile = formData.get('image');
+    const videoFile = formData.get('video');
     const tags = formData.get('tags');
     
     // 1. Get Category ID
@@ -60,9 +61,34 @@ export async function POST(request) {
       imageUrls.push(publicUrlData.publicUrl);
     }
 
+    // 3.5 Upload Video if provided
+    let videoUrl = null;
+    if (videoFile && videoFile.size > 0) {
+      const fileExt = videoFile.name.split('.').pop();
+      const fileName = `video-${slug}-${Date.now()}.${fileExt}`;
+      const buffer = await videoFile.arrayBuffer();
+
+      const { error: uploadError } = await supabaseAdmin.storage
+        .from('product-images')
+        .upload(fileName, buffer, {
+          contentType: videoFile.type,
+          upsert: false
+        });
+
+      if (uploadError) throw uploadError;
+
+      const { data: publicUrlData } = supabaseAdmin.storage
+        .from('product-images')
+        .getPublicUrl(fileName);
+        
+      videoUrl = publicUrlData.publicUrl;
+    }
+
     // 4. Insert Product
     const length = formData.get('length');
     const lengthsArray = length ? [length] : [];
+    
+    const color = formData.get('color');
 
     const productData = {
       name,
@@ -73,10 +99,12 @@ export async function POST(request) {
       category_id: categoryId,
       nail_shape: 'Square',
       style: tags || 'Solid',
+      color: color || null,
       images: imageUrls,
       bestseller: featured,
       stock_count: stockCount,
       lengths: lengthsArray,
+      video_url: videoUrl,
     };
 
     const { data: product, error: insertError } = await supabaseAdmin

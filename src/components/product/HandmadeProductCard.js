@@ -61,6 +61,14 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
   const discount = getDiscountPercent(product.price, product.compareAtPrice);
   const wishlisted = isInWishlist(product.id);
 
+  let displayPrice = product.price;
+  if (product.category === 'factory') {
+    const currentLength = (selectedLength || (product.lengths ? product.lengths[Math.floor(product.lengths.length / 2)] : "Medium")).toLowerCase();
+    if (currentLength === 'short') displayPrice = 6500;
+    else if (currentLength === 'long') displayPrice = 8500;
+    else displayPrice = 7500;
+  }
+
   const handleMouseMove = useCallback((e) => {
     if (flipped || (typeof window !== 'undefined' && window.innerWidth <= 768)) return;
     const card = cardRef.current;
@@ -112,7 +120,9 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
       ? (selectedSize || (product.sizes ? product.sizes[Math.floor(product.sizes.length / 2)] : null))
       : null;
     const length = selectedLength || (product.lengths ? product.lengths[Math.floor(product.lengths.length / 2)] : "Medium");
-    addItem(product, qty, size, length);
+    
+    const productToAdd = { ...product, price: displayPrice };
+    addItem(productToAdd, qty, size, length);
     setAdded(true);
     setTimeout(() => setAdded(false), 1800);
     showToast(`"${product.name}" added to cart`);
@@ -147,6 +157,16 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
         {/* ═══ FRONT ═══ */}
         <div className={`${styles.cardFront} ${flipped ? styles.hidden : ""}`} onClick={handleFlip}>
           <div className={styles.imageArea}>
+            {product.image || (product.images && product.images[0]) ? (
+              <Image
+                src={product.image || product.images[0]}
+                alt={product.name}
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                className={styles.flatLay}
+                style={{ objectFit: "cover", borderRadius: "var(--radius-xl)" }}
+              />
+            ) : (
               <div
                 className={styles.flatLay}
                 style={{
@@ -159,6 +179,7 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
               >
                 💅
               </div>
+            )}
 
             <div className={styles.shine} />
 
@@ -191,8 +212,10 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
             <div className={styles.frontInfo}>
               <h3 className={styles.name}>{product.name}</h3>
               <div className={styles.priceRow}>
-                <span className={styles.price}>{formatPrice(product.price)}</span>
-                {product.compareAtPrice && (
+                <span className={styles.price}>
+                  {product.category === 'factory' ? `${formatPrice(6500)} - ${formatPrice(8500)}` : formatPrice(product.price)}
+                </span>
+                {product.compareAtPrice && product.category !== 'factory' && (
                   <span className={styles.comparePrice}>{formatPrice(product.compareAtPrice)}</span>
                 )}
               </div>
@@ -202,8 +225,10 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
               <div className={styles.frontInfo}>
                 <h3 className={styles.name}>{product.name}</h3>
                 <div className={styles.priceRow}>
-                  <span className={styles.price}>{formatPrice(product.price)}</span>
-                  {product.compareAtPrice && (
+                  <span className={styles.price}>
+                    {product.category === 'factory' ? `${formatPrice(6500)} - ${formatPrice(8500)}` : formatPrice(product.price)}
+                  </span>
+                  {product.compareAtPrice && product.category !== 'factory' && (
                     <span className={styles.comparePrice}>{formatPrice(product.compareAtPrice)}</span>
                   )}
                 </div>
@@ -283,7 +308,7 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
             
             <div className={styles.backHeader}>
               <h3 className={styles.backName}>{product.name}</h3>
-              <span className={styles.backPrice}>{formatPrice(product.price)}</span>
+              <span className={styles.backPrice}>{formatPrice(displayPrice)}</span>
             </div>
 
             <p className={styles.backDesc}>{product.shortDescription}</p>
