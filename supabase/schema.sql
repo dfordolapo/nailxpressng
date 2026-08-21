@@ -42,6 +42,8 @@ CREATE TABLE orders (
   shipping_fee NUMERIC(10, 2) NOT NULL,
   status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'paid', 'processing', 'shipped', 'delivered', 'cancelled')),
   payment_reference TEXT,
+  cancellation_reason TEXT,
+  cancellation_next_steps TEXT,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 

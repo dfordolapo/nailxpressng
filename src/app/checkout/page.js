@@ -29,6 +29,7 @@ export default function CheckoutPage() {
   const [shippingMethod, setShippingMethod] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("paystack");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isConfirmingOrder, setIsConfirmingOrder] = useState(false);
   const [errors, setErrors] = useState({});
   
   const [shippingLocations, setShippingLocations] = useState([]);
@@ -323,12 +324,14 @@ export default function CheckoutPage() {
           lastname: lastName,
           phone: formData.phone,
           onSuccess: async (transaction) => {
+            setIsConfirmingOrder(true);
             try {
               await processOrderToBackend(transaction.reference);
             } catch (err) {
               console.error("Order save error after payment:", err);
               alert("Payment was successful, but there was an error saving your order. Please contact support with your email.");
               setIsSubmitting(false);
+              setIsConfirmingOrder(false);
             }
           },
           onCancel: () => {
@@ -373,8 +376,30 @@ export default function CheckoutPage() {
   const isGift = activeAddress?.tag === "gift" || activeAddress?.id === "gift" || savePresetTag === "gift";
 
   return (
-    <div className={pageStyles.checkoutPage} id="checkout-page">
-      <div className="container" style={{ maxWidth: "600px" }}>
+    <>
+      {isConfirmingOrder && (
+        <div style={{
+          position: "fixed",
+          top: 0, left: 0, right: 0, bottom: 0,
+          background: "rgba(255, 255, 255, 0.9)",
+          zIndex: 9999,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "16px",
+          backdropFilter: "blur(4px)",
+          WebkitBackdropFilter: "blur(4px)"
+        }}>
+          <div style={{ width: 48, height: 48, border: "4px solid var(--color-primary-200)", borderTopColor: "var(--color-primary)", borderRadius: "50%", animation: "checkout-spin 1s linear infinite" }} />
+          <h2 style={{ color: "var(--color-primary)", fontSize: "1.25rem", fontWeight: 600, margin: 0 }}>Verifying your payment...</h2>
+          <p style={{ color: "var(--color-text-secondary)", margin: 0 }}>Please don't close this page</p>
+          <style>{`@keyframes checkout-spin { to { transform: rotate(360deg); } }`}</style>
+        </div>
+      )}
+      
+      <div className={pageStyles.checkoutPage} id="checkout-page">
+        <div className="container" style={{ maxWidth: "600px" }}>
         
         {/* Sticky Header + Step Progress Bar Container */}
         <div style={{
@@ -819,6 +844,7 @@ export default function CheckoutPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }
 

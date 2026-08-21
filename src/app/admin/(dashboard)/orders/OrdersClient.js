@@ -10,7 +10,11 @@ export default function OrdersClient({ initialOrders }) {
   const [openMenuId, setOpenMenuId] = useState(null);
   const [isUpdating, setIsUpdating] = useState(false);
   const [viewOrder, setViewOrder] = useState(null);
-
+  
+  const [cancelOrder, setCancelOrder] = useState(null);
+  const [cancelReason, setCancelReason] = useState("");
+  const [cancelNextSteps, setCancelNextSteps] = useState("Any payments made will be fully refunded to your original payment method. Please allow a few business days for the refund to reflect in your account.");
+  
   const handleMenuClick = (id) => {
     setOpenMenuId(openMenuId === id ? null : id);
   };
@@ -32,6 +36,38 @@ export default function OrdersClient({ initialOrders }) {
     } catch (err) {
       console.error(err);
       alert("Error marking order as done.");
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
+  const submitCancelOrder = async () => {
+    if (!cancelReason.trim()) {
+      alert("Please provide a reason for cancellation.");
+      return;
+    }
+    
+    setIsUpdating(true);
+    try {
+      const res = await fetch(`/api/admin/orders/${cancelOrder.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          status: 'cancelled',
+          reason: cancelReason,
+          nextSteps: cancelNextSteps
+        })
+      });
+      if (!res.ok) throw new Error("Failed to cancel order");
+      
+      setOrders(orders.map(order => 
+        order.id === cancelOrder.id ? { ...order, status: 'cancelled', cancellation_reason: cancelReason, cancellation_next_steps: cancelNextSteps } : order
+      ));
+      setCancelOrder(null);
+      setCancelReason("");
+    } catch (err) {
+      console.error(err);
+      alert("Error cancelling order.");
     } finally {
       setIsUpdating(false);
     }
@@ -86,7 +122,7 @@ export default function OrdersClient({ initialOrders }) {
                   </td>
                   <td style={{ fontWeight: 500 }}>{formatPrice(order.total_amount)}</td>
                   <td>
-                    <span className={`${styles.badge} ${order.status === 'delivered' ? styles.inStock : (order.status === 'pending' ? styles.outOfStock : '')}`}>
+                    <span className={`${styles.badge} ${order.status === 'delivered' ? styles.inStock : (order.status === 'pending' ? styles.outOfStock : (order.status === 'cancelled' ? styles.outOfStock : ''))}`}>
                       {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
                     </span>
                   </td>
@@ -109,13 +145,24 @@ export default function OrdersClient({ initialOrders }) {
                         >
                           View Details
                         </button>
-                        <button 
-                          className={styles.kebabItem} 
-                          onClick={() => markAsDone(order.id)}
-                          style={{ display: "flex", alignItems: "center", gap: "6px" }}
-                        >
-                          <CheckCircle size={14} /> Mark as Delivered
-                        </button>
+                        {order.status !== 'delivered' && order.status !== 'cancelled' && (
+                          <>
+                            <button 
+                              className={styles.kebabItem} 
+                              onClick={() => markAsDone(order.id)}
+                              style={{ display: "flex", alignItems: "center", gap: "6px" }}
+                            >
+                              <CheckCircle size={14} /> Mark as Delivered
+                            </button>
+                            <button 
+                              className={styles.kebabItem} 
+                              onClick={() => { setCancelOrder(order); setOpenMenuId(null); }}
+                              style={{ display: "flex", alignItems: "center", gap: "6px", color: "var(--color-error)" }}
+                            >
+                              <span style={{ fontSize: "14px" }}>✕</span> Cancel Order
+                            </button>
+                          </>
+                        )}
                       </div>
                     )}
                   </td>
@@ -135,42 +182,42 @@ export default function OrdersClient({ initialOrders }) {
               <button onClick={() => setViewOrder(null)} style={{ background: "none", border: "none", cursor: "pointer", fontSize: "1.2rem", color: "#666" }}>✕</button>
             </div>
             
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-4)", marginBottom: "var(--space-6)" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-3)", marginBottom: "var(--space-4)" }}>
               <div>
-                <h4 style={{ fontSize: "0.875rem", color: "#666", marginBottom: "var(--space-2)", textTransform: "uppercase", letterSpacing: "0.5px" }}>Customer Details</h4>
-                <p style={{ fontWeight: 500, margin: "0 0 4px 0" }}>{viewOrder.customer_first_name} {viewOrder.customer_last_name}</p>
-                <p style={{ margin: "0 0 4px 0", color: "#444" }}>{viewOrder.customer_email}</p>
-                <p style={{ margin: "0", color: "#444" }}>{viewOrder.customer_phone}</p>
+                <h4 style={{ fontSize: "0.75rem", color: "#666", marginBottom: "var(--space-1)", textTransform: "uppercase", letterSpacing: "0.5px" }}>Customer Details</h4>
+                <p style={{ fontWeight: 500, margin: "0 0 2px 0", fontSize: "0.875rem" }}>{viewOrder.customer_first_name} {viewOrder.customer_last_name}</p>
+                <p style={{ margin: "0 0 2px 0", color: "#444", fontSize: "0.875rem" }}>{viewOrder.customer_email}</p>
+                <p style={{ margin: "0", color: "#444", fontSize: "0.875rem" }}>{viewOrder.customer_phone}</p>
               </div>
               <div>
-                <h4 style={{ fontSize: "0.875rem", color: "#666", marginBottom: "var(--space-2)", textTransform: "uppercase", letterSpacing: "0.5px" }}>Shipping Address</h4>
-                <p style={{ margin: "0 0 4px 0", color: "#444" }}>{viewOrder.shipping_address}</p>
-                <p style={{ margin: "0 0 4px 0", color: "#444" }}>{viewOrder.shipping_city}, {viewOrder.shipping_state}</p>
+                <h4 style={{ fontSize: "0.75rem", color: "#666", marginBottom: "var(--space-1)", textTransform: "uppercase", letterSpacing: "0.5px" }}>Shipping Address</h4>
+                <p style={{ margin: "0 0 2px 0", color: "#444", fontSize: "0.875rem" }}>{viewOrder.shipping_address}</p>
+                <p style={{ margin: "0 0 2px 0", color: "#444", fontSize: "0.875rem" }}>{viewOrder.shipping_city}, {viewOrder.shipping_state}</p>
               </div>
             </div>
 
             <div>
-              <h4 style={{ fontSize: "0.875rem", color: "#666", marginBottom: "var(--space-3)", textTransform: "uppercase", letterSpacing: "0.5px" }}>Items Ordered</h4>
-              <div style={{ background: "#f9f9f9", borderRadius: "8px", padding: "var(--space-3)" }}>
+              <h4 style={{ fontSize: "0.75rem", color: "#666", marginBottom: "var(--space-2)", textTransform: "uppercase", letterSpacing: "0.5px" }}>Items Ordered</h4>
+              <div style={{ background: "#f9f9f9", borderRadius: "8px", padding: "var(--space-3)", maxHeight: "35vh", overflowY: "auto" }}>
                 {viewOrder.order_items?.map((item, idx) => (
-                  <div key={idx} style={{ display: "flex", justifyContent: "space-between", paddingBottom: "var(--space-3)", marginBottom: "var(--space-3)", borderBottom: idx !== viewOrder.order_items.length - 1 ? "1px solid #eaeaea" : "none" }}>
+                  <div key={idx} style={{ display: "flex", justifyContent: "space-between", paddingBottom: "var(--space-2)", marginBottom: "var(--space-2)", borderBottom: idx !== viewOrder.order_items.length - 1 ? "1px solid #eaeaea" : "none" }}>
                     <div>
-                      <p style={{ fontWeight: 500, margin: "0 0 4px 0" }}>{item.product_name}</p>
+                      <p style={{ fontWeight: 500, margin: "0 0 2px 0", fontSize: "0.875rem" }}>{item.product_name}</p>
                       <p style={{ fontSize: "0.75rem", color: "#666", margin: 0 }}>Size: {item.selected_size} | Length: {item.selected_length} | Qty: {item.quantity}</p>
                     </div>
-                    <span style={{ fontWeight: 500 }}>{formatPrice(item.price * item.quantity)}</span>
+                    <span style={{ fontWeight: 500, fontSize: "0.875rem" }}>{formatPrice(item.price * item.quantity)}</span>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "var(--space-6)", paddingTop: "var(--space-4)", borderTop: "1px solid #eee" }}>
-              <span style={{ color: "#666" }}>Total Paid (includes shipping):</span>
-              <span style={{ fontSize: "1.25rem", fontWeight: 700, color: "var(--color-primary)" }}>{formatPrice(viewOrder.total_amount)}</span>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "var(--space-4)", paddingTop: "var(--space-3)", borderTop: "1px solid #eee" }}>
+              <span style={{ color: "#666", fontSize: "0.875rem" }}>Total Paid (includes shipping):</span>
+              <span style={{ fontSize: "1.125rem", fontWeight: 700, color: "var(--color-primary)" }}>{formatPrice(viewOrder.total_amount)}</span>
             </div>
 
             <div className={styles.modalActions} style={{ marginTop: "var(--space-6)" }}>
-              {viewOrder.status !== 'delivered' && (
+              {viewOrder.status !== 'delivered' && viewOrder.status !== 'cancelled' && (
                 <button 
                   className={styles.btnPrimary} 
                   style={{ width: "100%", justifyContent: "center" }}
@@ -179,6 +226,63 @@ export default function OrdersClient({ initialOrders }) {
                   Mark as Delivered
                 </button>
               )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Cancel Order Modal */}
+      {cancelOrder && (
+        <div className={styles.modalOverlay} onClick={() => setCancelOrder(null)}>
+          <div className={styles.modalContent} style={{ maxWidth: "500px", width: "90%" }} onClick={(e) => e.stopPropagation()}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "var(--space-4)", borderBottom: "1px solid #eee", paddingBottom: "var(--space-3)" }}>
+              <h3 className={styles.modalTitle} style={{ margin: 0, color: "var(--color-error)" }}>Cancel Order #{cancelOrder.id.split('-')[0]}</h3>
+              <button onClick={() => setCancelOrder(null)} style={{ background: "none", border: "none", cursor: "pointer", fontSize: "1.2rem", color: "#666" }}>✕</button>
+            </div>
+            
+            <p style={{ color: "#555", fontSize: "0.875rem", marginBottom: "var(--space-4)" }}>
+              Are you sure you want to cancel this order? An email will be sent to <strong>{cancelOrder.customer_email}</strong> to notify them.
+            </p>
+
+            <div style={{ marginBottom: "var(--space-4)" }}>
+              <label style={{ display: "block", fontSize: "0.875rem", fontWeight: 500, marginBottom: "4px" }}>Reason for Cancellation <span style={{ color: "var(--color-error)" }}>*</span></label>
+              <textarea 
+                className={styles.input}
+                value={cancelReason}
+                onChange={(e) => setCancelReason(e.target.value)}
+                placeholder="e.g. Out of stock, Requested by customer..."
+                rows={3}
+                style={{ width: "100%", padding: "8px 12px", border: "1px solid var(--color-border)", borderRadius: "8px", resize: "vertical" }}
+              />
+            </div>
+
+            <div style={{ marginBottom: "var(--space-6)" }}>
+              <label style={{ display: "block", fontSize: "0.875rem", fontWeight: 500, marginBottom: "4px" }}>Next Steps for Buyer</label>
+              <textarea 
+                className={styles.input}
+                value={cancelNextSteps}
+                onChange={(e) => setCancelNextSteps(e.target.value)}
+                rows={3}
+                style={{ width: "100%", padding: "8px 12px", border: "1px solid var(--color-border)", borderRadius: "8px", resize: "vertical" }}
+              />
+            </div>
+
+            <div className={styles.modalActions} style={{ display: "flex", gap: "12px" }}>
+              <button 
+                className={styles.btnSecondary} 
+                style={{ flex: 1, justifyContent: "center" }}
+                onClick={() => setCancelOrder(null)}
+              >
+                Keep Order
+              </button>
+              <button 
+                className={styles.btnPrimary} 
+                style={{ flex: 1, justifyContent: "center", background: "var(--color-error)" }}
+                onClick={submitCancelOrder}
+                disabled={isUpdating || !cancelReason.trim()}
+              >
+                {isUpdating ? 'Cancelling...' : 'Confirm Cancellation'}
+              </button>
             </div>
           </div>
         </div>

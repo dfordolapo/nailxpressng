@@ -277,12 +277,12 @@
 
 /* ── Cart Summary ─────────────────────────────────────────────────── */
 .summaryCard {
-  background: var(--color-bg-card);
-  border: 1px solid var(--color-border-light);
-  border-radius: var(--radius-xl);
-  padding: var(--space-8);
+  background: transparent;
+  border: none;
+  padding: 0;
   position: sticky;
-  top: calc(var(--header-height) + var(--announcement-height) + var(--space-6));
+  top: calc(var(--header-height) + var(--announcement-height, 0px) + var(--space-6));
+  z-index: 10;
 }
 
 .summaryTitle {
@@ -298,7 +298,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--space-1) 0;
+  padding: 2px 0;
   font-size: var(--text-sm);
   color: var(--color-text-secondary);
 }
@@ -307,8 +307,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-top: var(--space-3);
-  margin-top: var(--space-3);
+  padding-top: var(--space-2);
+  margin-top: var(--space-2);
   border-top: 2px solid var(--color-border);
   font-size: var(--text-xl);
   font-weight: var(--weight-bold);
@@ -321,13 +321,13 @@
 }
 
 .checkoutBtn {
-  margin-top: var(--space-4);
+  margin-top: var(--space-3);
 }
 
 .continueShopping {
   display: block;
   text-align: center;
-  margin-top: var(--space-3);
+  margin-top: var(--space-2);
   font-size: var(--text-sm);
   color: var(--color-text-tertiary);
   text-decoration: underline;
@@ -439,7 +439,17 @@
   }
 
   .summaryCard {
-    position: static;
+    position: sticky;
+    bottom: 0;
+    z-index: 50;
+    background: rgba(253, 246, 247, 0.95);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    padding: var(--space-4) var(--space-4) calc(var(--space-4) + env(safe-area-inset-bottom));
+    margin: 0 calc(var(--space-4) * -1);
+    border-top: 1px solid var(--color-border-light);
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.05);
   }
 
   .quantityBtn {

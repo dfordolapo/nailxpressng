@@ -345,3 +345,43 @@ export async function sendOrderDeliveredEmail(order) {
     return { success: false, error };
   }
 }
+
+// 7. Buyer Order Cancelled Email
+export async function sendOrderCancellationEmail(order, reason, nextSteps) {
+  try {
+    const orderNum = order.id ? order.id.split('-')[0] : '';
+
+    const bodyHtml = `
+      <h2 style="color: #7a403d; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 24px; margin-top: 0;">Update on Your Order #${orderNum}</h2>
+      <p style="color: #555; line-height: 1.6;">Hi ${order.customer_first_name || 'there'},</p>
+      <p style="color: #555; line-height: 1.6;">We are so sorry, but we have had to cancel your recent order <strong>#${orderNum}</strong>. We know how much you were looking forward to receiving your nail set, and we truly apologize for any inconvenience this may cause you.</p>
+      
+      <div style="background-color: #fcf6f6; border-radius: 12px; padding: 20px; border: 1px solid #f5e6e5; margin: 24px 0;">
+        <p style="margin: 0 0 6px 0; font-size: 13px; color: #666; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Reason for Cancellation</p>
+        <p style="margin: 0 0 16px 0; font-weight: 500; color: #2d2d2d; line-height: 1.5;">
+          ${reason || 'Unfortunately, we are unable to fulfill your order at this time.'}
+        </p>
+        
+        <p style="margin: 0 0 6px 0; font-size: 13px; color: #666; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Next Steps</p>
+        <p style="margin: 0; font-weight: 500; color: #2d2d2d; line-height: 1.5;">
+          ${nextSteps || 'Any payments made will be fully refunded to your original payment method. Please allow a few business days for the refund to reflect in your account.'}
+        </p>
+      </div>
+
+      <p style="color: #555; font-size: 14px; line-height: 1.6;">If you have any questions or concerns, please don't hesitate to reach out. We are here to help and would love the opportunity to make this up to you in the future.</p>
+    `;
+
+    const { data, error } = await resend.emails.send({
+      from: `Nailexpress <${fromEmail}>`,
+      to: [order.customer_email],
+      replyTo: adminDefaultEmail,
+      subject: `Important Update Regarding Your Nailexpress Order #${orderNum}`,
+      html: wrapEmailTemplate(`Order Cancelled - #${orderNum}`, bodyHtml),
+    });
+
+    return { success: !error, error };
+  } catch (error) {
+    console.error("Order Cancelled Email Error:", error);
+    return { success: false, error };
+  }
+}

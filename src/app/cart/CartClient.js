@@ -265,7 +265,7 @@ export default function CartClient({ bestsellers = [] }) {
           )}
 
           {/* Summary */}
-          <div className={styles.summaryCard} style={{ background: "transparent", border: "none", padding: 0 }}>
+          <div className={styles.summaryCard}>
             <div className={styles.summaryRow}>
               <span>Subtotal ({itemCount} items)</span>
               <span style={{ fontWeight: 600, color: "var(--color-text)" }}>{formatPrice(subtotal)}</span>

@@ -184,6 +184,8 @@ export default function CartDrawer({ onClose }) {
           )}
         </div>
 
+        </div>
+
         {/* Footer */}
         {items.length > 0 && (
           <div className={styles.drawerFooter}>
@@ -214,7 +216,6 @@ export default function CartDrawer({ onClose }) {
             </Link>
           </div>
         )}
-        </div>
       </div>
     </>
   );
