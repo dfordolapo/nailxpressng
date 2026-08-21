@@ -10,12 +10,12 @@ import { products } from '@/data/products';
 import HandmadeProductCard from '@/components/product/HandmadeProductCard';
 
 export default function SuccessClient({ orderDetails }) {
-  const getTimelineSteps = (deliveryText) => {
-    // Always show consistent steps with exact estimated delivery in final step
-    return ['Ordered', 'Processing', 'Shipped', `Delivered (${deliveryText})`];
+  const getTimelineSteps = () => {
+    // Always show consistent steps
+    return ['Ordered', 'Processing', 'Shipped', 'Delivered'];
   };
 
-  const steps = getTimelineSteps(orderDetails.delivery);
+  const steps = getTimelineSteps();
 
   useEffect(() => {
     // Fire confetti on load

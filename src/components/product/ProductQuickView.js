@@ -102,31 +102,7 @@ export default function ProductQuickView({ product }) {
 
         {/* Controls */}
         <div className={styles.controlsGrid}>
-          <div className={styles.formGroup}>
-            <label className={styles.label}>Shape</label>
-            <select 
-              className={styles.select} 
-              value={selectedShape}
-              onChange={(e) => setSelectedShape(e.target.value)}
-            >
-              <option value="Almond">Almond</option>
-              <option value="Coffin">Coffin</option>
-              <option value="Square">Square</option>
-              <option value="Stiletto">Stiletto</option>
-            </select>
-          </div>
-          <div className={styles.formGroup}>
-            <label className={styles.label}>Length</label>
-            <select 
-              className={styles.select}
-              value={selectedLength}
-              onChange={(e) => setSelectedLength(e.target.value)}
-            >
-              {(product.lengths || ["Short", "Medium", "Long"]).map(len => (
-                <option key={len} value={len}>{len}</option>
-              ))}
-            </select>
-          </div>
+
           {product.category !== 'factory' && (
             <div className={styles.formGroup}>
               <label className={styles.label}>Size</label>
