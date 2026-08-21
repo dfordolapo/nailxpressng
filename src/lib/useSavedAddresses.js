@@ -33,7 +33,7 @@ export const INITIAL_PRESETS = [
   {
     id: "gift",
     label: "Gift / Recipient",
-    presetLabel: "Gift / Recipient",
+    presetLabel: "",
     tag: "gift",
     fullName: "",
     email: "",
@@ -95,10 +95,14 @@ export function useSavedAddresses() {
   // Save or update an address preset with custom name/label support
   const saveAddress = useCallback((formData, targetId = "home", customLabel = "") => {
     const finalLabel = customLabel || formData.presetLabel || (targetId === "home" ? "Home" : targetId === "office" ? "Office" : targetId === "gift" ? "Gift" : "Saved Details");
+    
+    // If saving to the generic 'gift' slot, we always spawn a new individual entry 
+    // so users can have multiple gift recipients without overwriting.
+    const actualTargetId = targetId === "gift" ? `gift_${Date.now()}` : targetId;
 
     setAddresses((prev) => {
       let updated;
-      const existingIndex = prev.findIndex((item) => item.id === targetId);
+      const existingIndex = prev.findIndex((item) => item.id === actualTargetId);
 
       if (existingIndex > -1) {
         // Update existing address preset
@@ -109,26 +113,27 @@ export function useSavedAddresses() {
                 ...formData,
                 label: finalLabel,
                 presetLabel: finalLabel,
-                tag: formData.tag || item.tag || targetId,
+                tag: formData.tag || item.tag || actualTargetId,
               }
             : item
         );
       } else {
         // Create new preset
         const newAddress = {
-          id: targetId || `custom_${Date.now()}`,
+          id: actualTargetId || `custom_${Date.now()}`,
           label: finalLabel,
           presetLabel: finalLabel,
-          tag: formData.tag || (targetId.startsWith("custom") ? "custom" : targetId),
+          tag: formData.tag || (actualTargetId.startsWith("custom") || actualTargetId.startsWith("gift_") ? "gift" : actualTargetId),
           ...formData,
         };
         updated = [...prev, newAddress];
       }
 
-      persistAddresses(updated, targetId);
+      persistAddresses(updated, actualTargetId);
       return updated;
     });
-    setActiveAddressId(targetId);
+    setActiveAddressId(actualTargetId);
+    return actualTargetId;
   }, [persistAddresses]);
 
   // Delete a saved address preset

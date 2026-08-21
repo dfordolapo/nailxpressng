@@ -57,8 +57,9 @@ export default function CheckoutPage() {
   // Sync saved address details into formData when active address changes
   useEffect(() => {
     if (isLoaded && activeAddress && selectedPresetId) {
+      const rawLabel = activeAddress.presetLabel !== undefined ? activeAddress.presetLabel : activeAddress.label;
       setFormData({
-        presetLabel: activeAddress.label || activeAddress.presetLabel || "Home",
+        presetLabel: rawLabel === "Gift / Recipient" ? "" : (rawLabel || "Home"),
         fullName: activeAddress.fullName || "",
         email: activeAddress.email || "",
         phone: activeAddress.phone || "",
@@ -173,7 +174,7 @@ export default function CheckoutPage() {
     
     if (preset.id === "new") {
       setFormData({
-        presetLabel: "Gift / Recipient",
+        presetLabel: "",
         fullName: "",
         email: "",
         phone: "",
@@ -183,7 +184,7 @@ export default function CheckoutPage() {
       });
       setSavePresetTag("gift");
       setShowCustomInput(true);
-      setCustomTagInput("Gift / Recipient");
+      setCustomTagInput("");
       setIsAddressFormOpen(true); // Open immediately for new
     } else {
       selectAddress(preset.id);
@@ -198,7 +199,8 @@ export default function CheckoutPage() {
       ? `custom_${Date.now()}`
       : (selectedPresetId || "home");
 
-    saveAddress({ ...formData, tag: savePresetTag }, targetTag, customLabel);
+    const newId = saveAddress({ ...formData, tag: savePresetTag }, targetTag, customLabel);
+    setSelectedPresetId(newId);
     setSaveSuccessMsg("✓ Saved for future orders");
     setTimeout(() => {
       setSaveSuccessMsg("");
@@ -588,7 +590,8 @@ export default function CheckoutPage() {
                 {/* Name-able Preset Label */}
                 <div style={{ marginBottom: "var(--space-4)" }}>
                   <label htmlFor="presetLabel" style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.8125rem", marginBottom: "4px", color: "var(--color-primary-800)", fontWeight: 600 }}>
-                    <Bookmark size={13} strokeWidth={1.5} /> Address Name / Label
+                    {isGift ? <Gift size={13} strokeWidth={1.5} /> : <Bookmark size={13} strokeWidth={1.5} />} 
+                    {isGift ? "Gift Title / Occasion" : "Address Name / Label"}
                   </label>
                   <input
                     type="text"
@@ -599,7 +602,8 @@ export default function CheckoutPage() {
                       handleChange(e);
                       if (showCustomInput) setCustomTagInput(e.target.value);
                     }}
-                    placeholder="e.g. Home, Ada's Birthday, Corporate Client"
+                    placeholder={isGift ? "What's the occasion?" : "e.g. Home, Office, or Mom's house"}
+                    className={addrStyles.formInput}
                     style={{
                       width: "100%",
                       padding: "9px 12px",
@@ -607,7 +611,6 @@ export default function CheckoutPage() {
                       border: "1px solid var(--color-primary-200)",
                       background: "var(--color-primary-50)",
                       outline: "none",
-                      fontSize: "0.875rem",
                       fontWeight: 500,
                       color: "var(--color-text)"
                     }}
@@ -616,33 +619,33 @@ export default function CheckoutPage() {
 
                 <div style={{ marginBottom: "var(--space-4)" }}>
                   <label htmlFor="fullName" style={{ display: "block", fontSize: "0.875rem", marginBottom: "4px", color: "var(--color-text-secondary)" }}>{isGift ? "Recipient's Name" : "Full Name"}</label>
-                  <input required type="text" id="fullName" name="fullName" value={formData.fullName} onChange={handleChange} placeholder="e.g. Jane Doe" aria-invalid={!!errors.fullName} style={{ width: "100%", padding: "10px", borderRadius: "8px", border: `1px solid ${errors.fullName ? "var(--color-error)" : "var(--color-border)"}`, outline: "none" }} />
+                  <input required type="text" id="fullName" name="fullName" value={formData.fullName} onChange={handleChange} placeholder="e.g., Chioma Adeleke" aria-invalid={!!errors.fullName} className={addrStyles.formInput} style={{ width: "100%", padding: "10px", borderRadius: "8px", border: `1px solid ${errors.fullName ? "var(--color-error)" : "var(--color-border)"}`, outline: "none" }} />
                   {errors.fullName && <p style={{ color: "var(--color-error)", fontSize: "0.75rem", marginTop: "4px" }}>{errors.fullName}</p>}
                 </div>
                 
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-4)", marginBottom: "var(--space-4)" }}>
                   <div>
                     <label htmlFor="email" style={{ display: "block", fontSize: "0.875rem", marginBottom: "4px", color: "var(--color-text-secondary)" }}>Email Address</label>
-                    <input required type="email" id="email" name="email" value={formData.email} onChange={handleChange} placeholder="jane@example.com" aria-invalid={!!errors.email} style={{ width: "100%", padding: "10px", borderRadius: "8px", border: `1px solid ${errors.email ? "var(--color-error)" : "var(--color-border)"}`, outline: "none" }} />
+                    <input required type="email" id="email" name="email" value={formData.email} onChange={handleChange} placeholder="e.g., jane@example.com" aria-invalid={!!errors.email} className={addrStyles.formInput} style={{ width: "100%", padding: "10px", borderRadius: "8px", border: `1px solid ${errors.email ? "var(--color-error)" : "var(--color-border)"}`, outline: "none" }} />
                     {errors.email && <p style={{ color: "var(--color-error)", fontSize: "0.75rem", marginTop: "4px" }}>{errors.email}</p>}
                   </div>
                   <div>
                     <label htmlFor="phone" style={{ display: "block", fontSize: "0.875rem", marginBottom: "4px", color: "var(--color-text-secondary)" }}>Phone Number</label>
-                    <input required type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange} placeholder="08012345678" aria-invalid={!!errors.phone} style={{ width: "100%", padding: "10px", borderRadius: "8px", border: `1px solid ${errors.phone ? "var(--color-error)" : "var(--color-border)"}`, outline: "none" }} />
+                    <input required type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange} placeholder="e.g., 0801 234 5678" aria-invalid={!!errors.phone} className={addrStyles.formInput} style={{ width: "100%", padding: "10px", borderRadius: "8px", border: `1px solid ${errors.phone ? "var(--color-error)" : "var(--color-border)"}`, outline: "none" }} />
                     {errors.phone && <p style={{ color: "var(--color-error)", fontSize: "0.75rem", marginTop: "4px" }}>{errors.phone}</p>}
                   </div>
                 </div>
 
                 <div style={{ marginBottom: "var(--space-4)" }}>
                   <label htmlFor="address" style={{ display: "block", fontSize: "0.875rem", marginBottom: "4px", color: "var(--color-text-secondary)" }}>Street Address</label>
-                  <input required type="text" id="address" name="address" value={formData.address} onChange={handleChange} placeholder="123 Fashion Street, Apt 4B" aria-invalid={!!errors.address} style={{ width: "100%", padding: "10px", borderRadius: "8px", border: `1px solid ${errors.address ? "var(--color-error)" : "var(--color-border)"}`, outline: "none" }} />
+                  <input required type="text" id="address" name="address" value={formData.address} onChange={handleChange} placeholder="e.g., 12 Admiralty Way, Lekki Phase 1" aria-invalid={!!errors.address} className={addrStyles.formInput} style={{ width: "100%", padding: "10px", borderRadius: "8px", border: `1px solid ${errors.address ? "var(--color-error)" : "var(--color-border)"}`, outline: "none" }} />
                   {errors.address && <p style={{ color: "var(--color-error)", fontSize: "0.75rem", marginTop: "4px" }}>{errors.address}</p>}
                 </div>
 
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-4)" }}>
                   <div>
                     <label htmlFor="state" style={{ display: "block", fontSize: "0.875rem", marginBottom: "4px", color: "var(--color-text-secondary)" }}>State</label>
-                    <select required id="state" name="state" value={formData.state} onChange={handleChange} aria-invalid={!!errors.state} style={{ width: "100%", padding: "10px 32px 10px 10px", borderRadius: "8px", border: `1px solid ${errors.state ? "var(--color-error)" : "var(--color-border)"}`, outline: "none", fontSize: "0.875rem", appearance: "none", background: "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"%23666\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"6 9 12 15 18 9\"></polyline></svg>') no-repeat right 12px center / 16px 16px white" }}>
+                    <select required id="state" name="state" value={formData.state} onChange={handleChange} aria-invalid={!!errors.state} className={addrStyles.formInput} style={{ width: "100%", padding: "10px 32px 10px 10px", borderRadius: "8px", border: `1px solid ${errors.state ? "var(--color-error)" : "var(--color-border)"}`, outline: "none", appearance: "none", background: "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"%23666\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"6 9 12 15 18 9\"></polyline></svg>') no-repeat right 12px center / 16px 16px white" }}>
                       <option value="">Select State</option>
                       {nigeriaData.map(s => (
                         <option key={s.state} value={s.state}>{s.state}</option>
@@ -652,7 +655,7 @@ export default function CheckoutPage() {
                   </div>
                   <div>
                     <label htmlFor="city" style={{ display: "block", fontSize: "0.875rem", marginBottom: "4px", color: "var(--color-text-secondary)" }}>City / LGA</label>
-                    <select required id="city" name="city" value={formData.city} onChange={handleChange} disabled={!formData.state} aria-invalid={!!errors.city} style={{ width: "100%", padding: "10px 32px 10px 10px", borderRadius: "8px", border: `1px solid ${errors.city ? "var(--color-error)" : "var(--color-border)"}`, outline: "none", fontSize: "0.875rem", appearance: "none", background: `url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"%23666\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"6 9 12 15 18 9\"></polyline></svg>') no-repeat right 12px center / 16px 16px ${formData.state ? "white" : "var(--color-background-alt)"}` }}>
+                    <select required id="city" name="city" value={formData.city} onChange={handleChange} disabled={!formData.state} aria-invalid={!!errors.city} className={addrStyles.formInput} style={{ width: "100%", padding: "10px 32px 10px 10px", borderRadius: "8px", border: `1px solid ${errors.city ? "var(--color-error)" : "var(--color-border)"}`, outline: "none", appearance: "none", background: `url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"%23666\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"6 9 12 15 18 9\"></polyline></svg>') no-repeat right 12px center / 16px 16px ${formData.state ? "white" : "var(--color-background-alt)"}` }}>
                       <option value="">Select City / LGA</option>
                       {availableLgas.map(lga => (
                         <option key={lga} value={lga}>{lga}</option>
