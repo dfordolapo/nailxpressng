@@ -184,9 +184,7 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
             <div className={styles.shine} />
 
             <div className={styles.badges}>
-              {discount > 0 && (
-                <span className={`${styles.badge} ${styles.badgeSale}`}>-{discount}%</span>
-              )}
+              {/* Discount badge removed */}
               {product.newArrival && (
                 <span className={`${styles.badge} ${styles.badgeNew}`}>New</span>
               )}

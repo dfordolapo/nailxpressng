@@ -4,10 +4,10 @@ import React, { useRef } from "react";
 import styles from "./FactoryVideos.module.css";
 
 const VIDEOS = [
-  "IMG_3441.MOV", "IMG_3450.MOV", "IMG_3437.MOV", "IMG_3445.MOV", 
-  "IMG_3427.MOV", "IMG_3455.MOV", "IMG_3435.MOV", "IMG_3446.MOV", 
-  "IMG_3433.MOV", "IMG_3439.MOV", "IMG_3440.MOV", "IMG_3426.MOV", 
-  "IMG_3442.MOV", "IMG_3451.MOV", "IMG_3438.MOV"
+  "IMG_3441.mp4", "IMG_3450.mp4", "IMG_3437.mp4", "IMG_3445.mp4", 
+  "IMG_3427.mp4", "IMG_3455.mp4", "IMG_3435.mp4", "IMG_3446.mp4", 
+  "IMG_3433.mp4", "IMG_3439.mp4", "IMG_3440.mp4", "IMG_3426.mp4", 
+  "IMG_3442.mp4", "IMG_3451.mp4", "IMG_3438.mp4"
 ];
 
 export default function FactoryVideos() {
@@ -58,12 +58,12 @@ function VideoCard({ src }) {
     >
       <video
         ref={videoRef}
-        src={`${src}#t=0.001`}
+        src={src}
         className={styles.video}
         loop
         muted
         playsInline
-        preload="metadata"
+        preload="auto"
       />
       <div className={styles.playIcon}>
         <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none">

@@ -77,9 +77,7 @@ export default function ProductCard({ product }) {
 
         {/* Badges */}
         <div className={styles.badges}>
-          {discount > 0 && (
-            <span className={`${btnStyles.badge} ${btnStyles.badgeSale}`}>-{discount}%</span>
-          )}
+          {/* Discount badge removed */}
           {product.newArrival && (
             <span className={`${btnStyles.badge} ${btnStyles.badgeNew}`}>New</span>
           )}

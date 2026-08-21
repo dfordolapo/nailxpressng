@@ -13,7 +13,13 @@ export function useModal() {
 
 export default function ProductModalWrapper({ children, title }) {
   const router = useRouter();
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
+
+  // Start closed, then open on next frame so the CSS transition fires
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => setIsOpen(true));
+    return () => cancelAnimationFrame(frame);
+  }, []);
 
   // Prevent background scrolling
   useEffect(() => {
