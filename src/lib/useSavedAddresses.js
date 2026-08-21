@@ -58,7 +58,10 @@ export function useSavedAddresses() {
       if (stored) {
         const parsed = JSON.parse(stored);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          setAddresses(parsed);
+          const sanitized = parsed.map(p => 
+            p.id === "gift" ? { ...p, fullName: "", email: "", phone: "", address: "", state: "", city: "", presetLabel: "" } : p
+          );
+          setAddresses(sanitized);
         }
       }
 

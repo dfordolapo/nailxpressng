@@ -56,10 +56,17 @@ export default function CheckoutPage() {
 
   // Sync saved address details into formData when active address changes
   useEffect(() => {
-    if (isLoaded && activeAddress && selectedPresetId) {
-      const rawLabel = activeAddress.presetLabel !== undefined ? activeAddress.presetLabel : activeAddress.label;
+    if (isLoaded && activeAddress && selectedPresetId && selectedPresetId !== "new") {
+      let finalPresetLabel = activeAddress.presetLabel !== undefined ? activeAddress.presetLabel : activeAddress.label;
+      
+      if (finalPresetLabel === "Gift / Recipient" || activeAddress.id === "gift") {
+        finalPresetLabel = "";
+      } else if (!finalPresetLabel) {
+        finalPresetLabel = "Home";
+      }
+
       setFormData({
-        presetLabel: rawLabel === "Gift / Recipient" ? "" : (rawLabel || "Home"),
+        presetLabel: finalPresetLabel,
         fullName: activeAddress.fullName || "",
         email: activeAddress.email || "",
         phone: activeAddress.phone || "",
@@ -69,7 +76,7 @@ export default function CheckoutPage() {
       });
       setSavePresetTag(activeAddress.tag || activeAddress.id);
     }
-  }, [isLoaded, activeAddressId, selectedPresetId]);
+  }, [isLoaded, activeAddress, selectedPresetId]);
 
   useEffect(() => {
     async function fetchRates() {
