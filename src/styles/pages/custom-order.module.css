@@ -80,8 +80,8 @@
 }
 
 .completedDot {
-  background-color: var(--color-primary);
-  border-color: var(--color-primary);
+  background-color: var(--color-success, #22c55e);
+  border-color: var(--color-success, #22c55e);
   color: white;
 }
 

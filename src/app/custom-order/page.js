@@ -31,16 +31,23 @@ export default function CustomOrderPage() {
   const [currentStep, setCurrentStep] = useState(1);
   const scrollRef = useRef(null);
 
+  const isScrolling = useRef(false);
+
   const scroll = (direction) => {
     if (scrollRef.current) {
+      isScrolling.current = true;
       const { scrollLeft, clientWidth } = scrollRef.current;
       const scrollAmount = clientWidth * 0.8;
       scrollRef.current.scrollTo({
         left: direction === 'left' ? scrollLeft - scrollAmount : scrollLeft + scrollAmount,
         behavior: 'smooth'
       });
+      setTimeout(() => {
+        isScrolling.current = false;
+      }, 500);
     }
   };
+
 
   const handleDownload = async (e, url, id) => {
     e.stopPropagation();
@@ -74,6 +81,27 @@ export default function CustomOrderPage() {
   });
 
   const [inspirations, setInspirations] = useState([]);
+
+  const isHovered = useRef(false);
+  const isTouch = useRef(false);
+
+  useEffect(() => {
+    let animationId;
+    const scrollContainer = scrollRef.current;
+    
+    const autoScroll = () => {
+      if (scrollContainer && !isHovered.current && !isScrolling.current && inspirations.length > 0) {
+        scrollContainer.scrollLeft += 1;
+        if (scrollContainer.scrollLeft >= scrollContainer.scrollWidth / 2) {
+           scrollContainer.scrollLeft -= scrollContainer.scrollWidth / 2;
+        }
+      }
+      animationId = requestAnimationFrame(autoScroll);
+    };
+    
+    animationId = requestAnimationFrame(autoScroll);
+    return () => cancelAnimationFrame(animationId);
+  }, [inspirations]);
 
   useEffect(() => {
     const fetchInspirations = async () => {
@@ -256,7 +284,13 @@ export default function CustomOrderPage() {
                     Select a beautiful pre-designed set as your reference or download it.
                   </p>
                   
-                  <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
+                  <div 
+                    style={{ position: "relative", display: "flex", alignItems: "center" }}
+                    onMouseEnter={() => { if (!isTouch.current) isHovered.current = true; }}
+                    onMouseLeave={() => isHovered.current = false}
+                    onTouchStart={() => { isTouch.current = true; isHovered.current = true; }}
+                    onTouchEnd={() => { isHovered.current = false; setTimeout(() => isTouch.current = false, 500); }}
+                  >
                     <button 
                       onClick={() => scroll('left')}
                       style={{ position: "absolute", left: "-16px", zIndex: 10, background: "white", borderRadius: "50%", padding: "6px", boxShadow: "0 2px 10px rgba(0,0,0,0.1)", border: "1px solid var(--color-border-light)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", transition: "transform 0.2s" }}
@@ -266,7 +300,10 @@ export default function CustomOrderPage() {
                       <ChevronLeft size={24} color="var(--color-text)" />
                     </button>
                     
-                    <div ref={scrollRef} style={{ display: "flex", gap: "12px", overflowX: "auto", paddingBottom: "16px", msOverflowStyle: "none", scrollbarWidth: "none", scrollBehavior: "smooth", width: "100%" }}>
+                    <div 
+                      ref={scrollRef} 
+                      style={{ display: "flex", gap: "12px", overflowX: "auto", paddingBottom: "16px", msOverflowStyle: "none", scrollbarWidth: "none", scrollBehavior: "auto", width: "100%" }}
+                    >
                       {inspirations.map((insp) => (
                         <div 
                           key={insp.id}
