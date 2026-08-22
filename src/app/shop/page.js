@@ -1,5 +1,6 @@
 import { getProducts, getFeaturedProducts } from "@/lib/api";
 import CollectionClient from "@/components/product/CollectionClient";
+import FindYourFitQuiz from "@/components/product/FindYourFitQuiz";
 
 export const metadata = {
   title: "Shop All Products — Nailexpress",
@@ -14,10 +15,15 @@ export default async function ShopPage() {
   const featuredProducts = await getFeaturedProducts();
 
   return (
-    <CollectionClient 
-      category={category} 
-      allProducts={allProducts} 
-      featuredProducts={featuredProducts} 
-    />
+    <>
+      <div style={{ padding: "0 5%" }}>
+        <FindYourFitQuiz allProducts={allProducts} />
+      </div>
+      <CollectionClient 
+        category={category} 
+        allProducts={allProducts} 
+        featuredProducts={featuredProducts} 
+      />
+    </>
   );
 }

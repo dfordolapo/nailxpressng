@@ -16,7 +16,7 @@ export default function FactoryVideos() {
       <div className="container">
         <div className={styles.header}>
           <h2 className={styles.title}>Perfection in Motion</h2>
-          <p className={styles.subtitle}>Get a closer look at our flawless factory sets.</p>
+          <p className={styles.subtitle}>Get a closer look at our beautiful ready-to-wear sets.</p>
         </div>
       </div>
       

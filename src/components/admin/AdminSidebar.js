@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { useState, Suspense } from "react";
-import { LayoutDashboard, Package, LogOut, ChevronDown, Settings, Menu, X } from "lucide-react";
+import { LayoutDashboard, Package, LogOut, ChevronDown, Settings, Menu, X, Image as ImageIcon } from "lucide-react";
 import styles from "@/styles/admin.module.css";
 
 function SidebarContent() {

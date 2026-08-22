@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { nailShapes, nailLengths } from "@/data/categories";
 import { SOCIAL_LINKS } from "@/lib/constants";
 import customStyles from "@/styles/pages/custom-order.module.css";
 import btnStyles from "@/styles/components/buttons.module.css";
-import { UploadCloud, CheckCircle } from "lucide-react";
+import { UploadCloud, CheckCircle, ChevronLeft, ChevronRight, Download } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 
 const STEPS = [
@@ -29,6 +29,37 @@ const DESIGN_OPTIONS = [
 
 export default function CustomOrderPage() {
   const [currentStep, setCurrentStep] = useState(1);
+  const scrollRef = useRef(null);
+
+  const scroll = (direction) => {
+    if (scrollRef.current) {
+      const { scrollLeft, clientWidth } = scrollRef.current;
+      const scrollAmount = clientWidth * 0.8;
+      scrollRef.current.scrollTo({
+        left: direction === 'left' ? scrollLeft - scrollAmount : scrollLeft + scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  const handleDownload = async (e, url, id) => {
+    e.stopPropagation();
+    try {
+      const response = await fetch(url);
+      const blob = await response.blob();
+      const objectUrl = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = objectUrl;
+      link.download = `inspiration-${id}.jpg`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(objectUrl);
+    } catch (err) {
+      console.error("Download failed", err);
+      window.open(url, "_blank");
+    }
+  };
   const [order, setOrder] = useState({
     shape: "",
     length: "",
@@ -39,7 +70,25 @@ export default function CustomOrderPage() {
     name: "",
     email: "",
     phone: "",
+    inspirationUrl: null,
   });
+
+  const [inspirations, setInspirations] = useState([]);
+
+  useEffect(() => {
+    const fetchInspirations = async () => {
+      try {
+        const res = await fetch('/api/inspirations');
+        const data = await res.json();
+        if (data.images) {
+          setInspirations(data.images);
+        }
+      } catch (err) {
+        console.error("Failed to load local inspirations", err);
+      }
+    };
+    fetchInspirations();
+  }, []);
 
   const updateOrder = (field, value) => {
     setOrder({ ...order, [field]: value });
@@ -47,9 +96,9 @@ export default function CustomOrderPage() {
 
   const canProceed = () => {
     switch (currentStep) {
-      case 1: return order.shape !== "";
+      case 1: return order.shape !== "" || !!order.inspirationUrl;
       case 2: return order.length !== "";
-      case 3: return order.design !== "";
+      case 3: return order.design !== "" || !!order.inspirationUrl;
       case 4: return order.name !== "" && order.email !== "";
       default: return true;
     }
@@ -62,7 +111,18 @@ export default function CustomOrderPage() {
     const file = e.target.files[0];
     if (file) {
       updateOrder("referenceImage", file);
+      updateOrder("inspirationUrl", null); // Clear selected inspiration if they upload a file
       setReferenceImagePreview(URL.createObjectURL(file));
+    }
+  };
+
+  const handleSelectInspiration = (url) => {
+    if (order.inspirationUrl === url) {
+      setOrder(prev => ({ ...prev, inspirationUrl: null }));
+      setReferenceImagePreview(null);
+    } else {
+      setOrder(prev => ({ ...prev, inspirationUrl: url, referenceImage: null }));
+      setReferenceImagePreview(url);
     }
   };
 
@@ -92,7 +152,9 @@ export default function CustomOrderPage() {
       }
 
       // 2. Save to database
-      const orderData = { ...order, referenceImage: imageUrl };
+      // Prefer uploaded image, otherwise fallback to selected inspiration URL
+      const finalImageUrl = imageUrl || order.inspirationUrl;
+      const orderData = { ...order, referenceImage: finalImageUrl };
       const res = await fetch('/api/custom-orders', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -141,22 +203,22 @@ export default function CustomOrderPage() {
           </p>
         </div>
 
-        {/* Beautiful Progress Bar */}
+        {/* Beautiful Progress Dots */}
         <div className={customStyles.progressContainer}>
-          <div className={customStyles.progressBarBackground}>
-            <div 
-              className={customStyles.progressBarFill} 
-              style={{ width: `${progressPercentage}%` }}
-            />
-          </div>
-          <div className={customStyles.stepLabels}>
+          <div className={customStyles.stepDots}>
             {STEPS.map((step) => (
-              <span 
-                key={step.id} 
-                className={`${customStyles.stepLabel} ${currentStep === step.id ? customStyles.active : ""} ${currentStep > step.id ? customStyles.completed : ""}`}
-              >
-                {step.label}
-              </span>
+              <div key={step.id} className={customStyles.stepDotWrapper}>
+                <div 
+                  className={`${customStyles.stepDot} ${currentStep === step.id ? customStyles.activeDot : ""} ${currentStep > step.id ? customStyles.completedDot : ""}`}
+                >
+                  {currentStep > step.id ? "✓" : step.id}
+                </div>
+                <span 
+                  className={`${customStyles.stepLabel} ${currentStep === step.id ? customStyles.active : ""} ${currentStep > step.id ? customStyles.completed : ""}`}
+                >
+                  {step.label}
+                </span>
+              </div>
             ))}
           </div>
         </div>
@@ -184,6 +246,90 @@ export default function CustomOrderPage() {
                   </button>
                 ))}
               </div>
+
+              {inspirations.length > 0 && (
+                <div className={customStyles.inputGroup} style={{ marginTop: "var(--space-8)" }}>
+                  <h3 style={{ fontFamily: "var(--font-heading)", fontSize: "1.5rem", marginBottom: "var(--space-2)", textAlign: "center", color: "var(--color-primary-800)" }}>
+                    Or Browse Our Inspirations
+                  </h3>
+                  <p style={{ fontSize: "var(--text-sm)", color: "var(--color-text-secondary)", marginBottom: "var(--space-4)", textAlign: "center" }}>
+                    Select a beautiful pre-designed set as your reference or download it.
+                  </p>
+                  
+                  <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
+                    <button 
+                      onClick={() => scroll('left')}
+                      style={{ position: "absolute", left: "-16px", zIndex: 10, background: "white", borderRadius: "50%", padding: "6px", boxShadow: "0 2px 10px rgba(0,0,0,0.1)", border: "1px solid var(--color-border-light)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", transition: "transform 0.2s" }}
+                      onMouseOver={(e) => e.currentTarget.style.transform = "scale(1.1)"}
+                      onMouseOut={(e) => e.currentTarget.style.transform = "scale(1)"}
+                    >
+                      <ChevronLeft size={24} color="var(--color-text)" />
+                    </button>
+                    
+                    <div ref={scrollRef} style={{ display: "flex", gap: "12px", overflowX: "auto", paddingBottom: "16px", msOverflowStyle: "none", scrollbarWidth: "none", scrollBehavior: "smooth", width: "100%" }}>
+                      {inspirations.map((insp) => (
+                        <div 
+                          key={insp.id}
+                          onClick={() => handleSelectInspiration(insp.image_url)}
+                          style={{
+                            minWidth: "160px",
+                            height: "160px",
+                            borderRadius: "var(--radius-lg)",
+                            overflow: "hidden",
+                            cursor: "pointer",
+                            border: order.inspirationUrl === insp.image_url ? "4px solid var(--color-primary)" : "2px solid transparent",
+                            transition: "all 0.2s ease",
+                            boxShadow: "0 4px 15px rgba(0,0,0,0.08)",
+                            position: "relative",
+                            flexShrink: 0
+                          }}
+                        >
+                          <img src={insp.image_url} alt="Inspiration" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                          {order.inspirationUrl === insp.image_url && (
+                            <div style={{ position: "absolute", top: 8, right: 8, background: "white", borderRadius: "50%", padding: 2 }}>
+                              <CheckCircle size={20} color="var(--color-primary)" />
+                            </div>
+                          )}
+                          {order.inspirationUrl !== insp.image_url && (
+                            <button
+                              onClick={(e) => handleDownload(e, insp.image_url, insp.id)}
+                              style={{
+                                position: "absolute",
+                                bottom: 8,
+                                right: 8,
+                                background: "white",
+                                borderRadius: "50%",
+                                padding: "8px",
+                                boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
+                                border: "none",
+                                cursor: "pointer",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                transition: "transform 0.2s"
+                              }}
+                              title="Download Inspiration"
+                              onMouseOver={(e) => e.currentTarget.style.transform = "scale(1.1)"}
+                              onMouseOut={(e) => e.currentTarget.style.transform = "scale(1)"}
+                            >
+                              <Download size={16} color="var(--color-text)" />
+                            </button>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+
+                    <button 
+                      onClick={() => scroll('right')}
+                      style={{ position: "absolute", right: "-16px", zIndex: 10, background: "white", borderRadius: "50%", padding: "6px", boxShadow: "0 2px 10px rgba(0,0,0,0.1)", border: "1px solid var(--color-border-light)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", transition: "transform 0.2s" }}
+                      onMouseOver={(e) => e.currentTarget.style.transform = "scale(1.1)"}
+                      onMouseOut={(e) => e.currentTarget.style.transform = "scale(1)"}
+                    >
+                      <ChevronRight size={24} color="var(--color-text)" />
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
@@ -263,7 +409,7 @@ export default function CustomOrderPage() {
                 </div>
 
                 <div className={customStyles.inputGroup}>
-                  <label htmlFor="custom-ref">Reference Image (Optional)</label>
+                  <label htmlFor="custom-ref">Upload Your Own Reference (Optional)</label>
                   <div 
                     onClick={() => document.getElementById('custom-ref').click()}
                     style={{
