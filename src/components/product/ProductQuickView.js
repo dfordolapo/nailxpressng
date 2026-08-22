@@ -74,7 +74,7 @@ export default function ProductQuickView({ product }) {
                 onError={() => setImgError(true)}
               />
             ) : (
-              <div style={{ width: '100%', height: '100%', background: 'linear-gradient(135deg, var(--color-primary-100), var(--color-surface))', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2.5rem' }}>💅</div>
+              <div style={{ width: '100%', height: '100%', background: 'linear-gradient(135deg, var(--color-primary-100), var(--color-surface))', display: 'flex', alignItems: 'center', justifyContent: 'center' }}></div>
             )}
           </div>
           <div className={styles.info}>
@@ -98,7 +98,7 @@ export default function ProductQuickView({ product }) {
                 }}
               >
                 {thumbErrors[idx] ? (
-                  <div style={{ width: '100%', height: '100%', background: 'linear-gradient(135deg, var(--color-primary-100), var(--color-surface))', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem' }}>💅</div>
+                  <div style={{ width: '100%', height: '100%', background: 'linear-gradient(135deg, var(--color-primary-100), var(--color-surface))', display: 'flex', alignItems: 'center', justifyContent: 'center' }}></div>
                 ) : (
                   <Image 
                     src={img} 

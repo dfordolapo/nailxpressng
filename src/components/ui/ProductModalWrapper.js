@@ -21,10 +21,14 @@ export default function ProductModalWrapper({ children, title }) {
     return () => cancelAnimationFrame(frame);
   }, []);
 
-  // Prevent background scrolling
+  // Prevent background scrolling without layout shift
   useEffect(() => {
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    document.body.style.paddingRight = `${scrollbarWidth}px`;
     document.body.style.overflow = "hidden";
+    
     return () => {
+      document.body.style.paddingRight = "";
       document.body.style.overflow = "unset";
     };
   }, []);
@@ -38,7 +42,7 @@ export default function ProductModalWrapper({ children, title }) {
       } else {
         window.history.back();
       }
-    }, 300); // matches CSS transition duration
+    }, 200); // matches CSS transition duration
   }, []);
 
   // Close on Escape key

@@ -1,8 +1,5 @@
-import ProductModalWrapper from "@/components/ui/ProductModalWrapper";
-
 export default function LoadingModal() {
   return (
-    <ProductModalWrapper>
       <div style={{ padding: 'var(--space-4)', display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
         {/* Header Skeleton */}
         <div style={{ display: 'flex', gap: 'var(--space-3)' }}>
@@ -36,6 +33,5 @@ export default function LoadingModal() {
           }
         `}</style>
       </div>
-    </ProductModalWrapper>
   );
 }

@@ -6,10 +6,10 @@ import Image from 'next/image';
 import confetti from 'canvas-confetti';
 import styles from '@/styles/pages/success.module.css';
 import SuccessPrinterAnimation from '@/components/checkout/SuccessPrinterAnimation';
-import { products } from '@/data/products';
 import HandmadeProductCard from '@/components/product/HandmadeProductCard';
+import ProductCard from '@/components/product/ProductCard';
 
-export default function SuccessClient({ orderDetails }) {
+export default function SuccessClient({ orderDetails, recommendedProducts = [] }) {
   const getTimelineSteps = () => {
     // Always show consistent steps
     return ['Ordered', 'Processing', 'Shipped', 'Delivered'];
@@ -45,8 +45,6 @@ export default function SuccessClient({ orderDetails }) {
     frame();
   }, []);
 
-  // Get 3 recommended products (random or new arrivals)
-  const recommendations = products.slice(0, 3);
 
   return (
     <div className={styles.container}>
@@ -112,9 +110,13 @@ export default function SuccessClient({ orderDetails }) {
           scrollbarWidth: 'none',
           msOverflowStyle: 'none'
         }}>
-          {recommendations.map(product => (
+          {recommendedProducts.map(product => (
             <div key={product.id} style={{ minWidth: '220px', flexShrink: 0, scrollSnapAlign: 'start' }}>
-              <HandmadeProductCard product={product} />
+              {product.category === 'handmade' ? (
+                <HandmadeProductCard product={product} />
+              ) : (
+                <ProductCard product={product} />
+              )}
             </div>
           ))}
         </div>

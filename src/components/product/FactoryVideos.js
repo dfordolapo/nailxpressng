@@ -58,12 +58,12 @@ function VideoCard({ src }) {
     >
       <video
         ref={videoRef}
-        src={src}
+        src={`${src}#t=0.001`}
+        preload="metadata"
         className={styles.video}
         loop
         muted
         playsInline
-        preload="auto"
       />
       <div className={styles.playIcon}>
         <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none">

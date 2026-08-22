@@ -73,18 +73,10 @@ export default function CartClient({ bestsellers = [] }) {
             {items.map((item) => (
               <div key={`${item.id}-${item.selectedSize}-${item.selectedLength}`} className={styles.cartItem}>
                 <div className={styles.cartItemImage}>
-                  <div
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      background: "linear-gradient(135deg, var(--color-primary-100), var(--color-surface))",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      fontSize: "1.5rem",
-                    }}
-                  >
-                    💅
+                  <div style={{ width: "100%", height: "100%", background: "linear-gradient(135deg, var(--color-primary-100), var(--color-surface))", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    {item.image || (item.images && item.images[0]) ? (
+                      <img src={item.image || item.images[0]} alt={item.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    ) : null}
                   </div>
                 </div>
                 <div className={styles.cartItemDetails}>

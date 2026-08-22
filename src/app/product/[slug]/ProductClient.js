@@ -143,7 +143,8 @@ export default function ProductClient({ product, relatedProducts = [], isModal =
                     if (activeMedia.type === 'video') {
                       return (
                         <video
-                          src={activeMedia.url}
+                          src={`${activeMedia.url}#t=0.001`}
+                          preload="metadata"
                           autoPlay
                           muted
                           loop
@@ -165,19 +166,7 @@ export default function ProductClient({ product, relatedProducts = [], isModal =
                     }
                   } else {
                     return (
-                      <div
-                        style={{
-                          width: "100%",
-                          height: "100%",
-                          background: `linear-gradient(135deg, var(--color-primary-100), var(--color-surface), var(--color-primary-200))`,
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          fontSize: "6rem",
-                        }}
-                      >
-                        💅
-                      </div>
+                      <div style={{ width: '100%', height: '100%', background: 'linear-gradient(135deg, var(--color-primary-100), var(--color-surface))', display: 'flex', alignItems: 'center', justifyContent: 'center' }}></div>
                     );
                   }
                 })()}
@@ -213,7 +202,7 @@ export default function ProductClient({ product, relatedProducts = [], isModal =
                       >
                         {media.type === 'video' ? (
                           <>
-                            <video src={media.url} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                            <video src={`${media.url}#t=0.001`} preload="metadata" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                             <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", color: "white", backgroundColor: "rgba(0,0,0,0.5)", borderRadius: "50%", width: "24px", height: "24px", display: "flex", alignItems: "center", justifyContent: "center" }}>
                               <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
                             </div>

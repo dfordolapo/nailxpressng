@@ -219,7 +219,7 @@ export default function CheckoutPage() {
     if (!deliveryPresets || items.length === 0) return "3-5 Business Days"; // fallback
 
     const nameLower = locName.toLowerCase();
-    const isLagos = nameLower.includes("lagos") || nameLower.includes("island") || nameLower.includes("mainland");
+    const isLagos = (nameLower.includes("lagos") || nameLower.includes("island") || nameLower.includes("mainland")) && !nameLower.includes("outside");
     const region = isLagos ? 'lagos' : 'outside';
 
     // Priority ranking: Custom > Handmade > Factory

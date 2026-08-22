@@ -52,5 +52,22 @@ export default async function OrderSuccessPage({ searchParams }) {
     );
   }
 
-  return <SuccessClient orderDetails={orderData} />;
+  let recommendedProducts = [];
+  if (orderData) {
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL,
+      process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    );
+    // Fetch some real products for "while you wait"
+    const { data: products } = await supabase
+      .from('products')
+      .select('*')
+      .limit(4);
+      
+    if (products) {
+      recommendedProducts = products;
+    }
+  }
+
+  return <SuccessClient orderDetails={orderData} recommendedProducts={recommendedProducts} />;
 }

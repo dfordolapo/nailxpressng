@@ -1,128 +1,280 @@
 "use client";
 
+import { useState, useRef, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { formatPrice, getDiscountPercent } from "@/lib/utils";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { useToast } from "@/context/ToastContext";
-import styles from "@/styles/components/product-card.module.css";
-import btnStyles from "@/styles/components/buttons.module.css";
+import styles from "./handmade-card.module.css";
 
 function HeartIcon({ filled }) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill={filled ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill={filled ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
       <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
     </svg>
   );
 }
 
-function ShoppingBagIcon() {
+function CheckIcon() {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
-      <path d="M3 6h18" />
-      <path d="M16 10a4 4 0 0 1-8 0" />
+      <polyline points="20 6 9 17 4 12" />
     </svg>
   );
 }
 
-export default function ProductCard({ product, index = 0 }) {
+function FlipIcon() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M21 2v6h-6" /><path d="M3 12a9 9 0 0 1 15-6.7L21 8" />
+      <path d="M3 22v-6h6" /><path d="M21 12a9 9 0 0 1-15 6.7L3 16" />
+    </svg>
+  );
+}
+
+function ArrowLeftIcon() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="m15 18-6-6 6-6" />
+    </svg>
+  );
+}
+
+export default function ProductCard({ product, index = 0, viewMode = "grid" }) {
+  const [flipped, setFlipped] = useState(false);
+  const [qty, setQty] = useState(1);
+  const [qtyAnim, setQtyAnim] = useState("");
+  const [added, setAdded] = useState(false);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const [isHovering, setIsHovering] = useState(false);
+  const cardRef = useRef(null);
+
   const { addItem } = useCart();
   const { toggleItem, isInWishlist } = useWishlist();
   const { showToast } = useToast();
-  const discount = getDiscountPercent(product.price, product.compareAtPrice);
+
   const wishlisted = isInWishlist(product.id);
 
-  const handleQuickAdd = (e) => {
-    e.preventDefault();
+  const handleMouseMove = useCallback((e) => {
+    if (flipped || (typeof window !== 'undefined' && window.innerWidth <= 768)) return;
+    const card = cardRef.current;
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateX = ((y - centerY) / centerY) * -8;
+    const rotateY = ((x - centerX) / centerX) * 8;
+    setTilt({ x: rotateX, y: rotateY });
+  }, [flipped]);
+
+  const handleMouseEnter = () => {
+    if (typeof window !== 'undefined' && window.innerWidth > 768) {
+      setIsHovering(true);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovering(false);
+    setTilt({ x: 0, y: 0 });
+  };
+
+  const handleFlip = (e) => {
     e.stopPropagation();
-    addItem(product, 1, "M", "medium");
-    showToast(`"${product.name}" added to cart`);
+    setFlipped(!flipped);
+    setTilt({ x: 0, y: 0 });
   };
 
   const handleWishlist = (e) => {
-    e.preventDefault();
     e.stopPropagation();
     toggleItem(product);
   };
 
+  const handleQty = (delta, e) => {
+    e.stopPropagation();
+    const newQty = qty + delta;
+    if (newQty < 1 || newQty > 10) return;
+    setQtyAnim(delta > 0 ? "slideUp" : "slideDown");
+    setQty(newQty);
+    setTimeout(() => setQtyAnim(""), 200);
+  };
+
+  const handleAddToCart = (e) => {
+    e.stopPropagation();
+
+    addItem(product, qty, null, null);
+    setAdded(true);
+    setTimeout(() => setAdded(false), 1800);
+    showToast(`"${product.name}" added to cart`);
+  };
+
+  const tiltStyle = !flipped && isHovering
+    ? { transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale3d(1.02, 1.02, 1.02)` }
+    : {};
+
   return (
-    <Link href={`/product/${product.slug}`} className={styles.card} id={`product-card-${product.slug}`} prefetch={true}>
-      {/* Image */}
-      <div className={styles.imageContainer}>
-        {product.image || (product.images && product.images[0]) ? (
-          <Image
-            src={product.image || product.images[0]}
-            alt={product.name}
-            fill
-            priority={index < 4}
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className={styles.image}
-            style={{ objectFit: "cover" }}
-          />
+    <div
+      className={styles.cardWrapper}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      <div
+        ref={cardRef}
+        className={styles.cardInner}
+        style={!flipped ? tiltStyle : {}}
+      >
+        {/* ═══ FRONT ═══ */}
+        <div className={`${styles.cardFront} ${flipped ? styles.hidden : ""}`} onClick={handleFlip}>
+          <div className={styles.imageArea}>
+            {product.image || (product.images && product.images[0]) ? (
+              <Image
+                src={product.image || product.images[0]}
+                alt={product.name}
+                fill
+                priority={index < 4}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                className={styles.flatLay}
+                style={{ objectFit: "cover", borderRadius: "var(--radius-xl)" }}
+              />
+            ) : (
+              <div
+                className={styles.image}
+                style={{
+                  background: `linear-gradient(135deg, var(--color-primary-100), var(--color-surface))`,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center"
+                }}
+              >
+              </div>
+            )}
+
+            <div className={styles.shine} />
+
+            <div className={styles.badges}>
+              {product.newArrival && (
+                <span className={`${styles.badge} ${styles.badgeNew}`}>New</span>
+              )}
+              {product.bestseller && (
+                <span className={`${styles.badge} ${styles.badgeBestseller}`}>Bestseller</span>
+              )}
+            </div>
+
+            <div className={styles.glowRing} />
+          </div>
+
+          <div className={styles.quickActions}>
+            <button
+              className={`${styles.quickAction} ${wishlisted ? styles.active : ""}`}
+              onClick={handleWishlist}
+              aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
+            >
+              <HeartIcon filled={wishlisted} />
+            </button>
+          </div>
+
+          {viewMode === "list" ? (
+            <div className={styles.frontInfo}>
+              <h3 className={styles.name}>{product.name}</h3>
+              <div className={styles.priceRow}>
+                <span className={styles.price}>
+                  {formatPrice(product.price)}
+                </span>
+              </div>
+            </div>
+          ) : (
+            <>
+              <div className={styles.frontInfo}>
+                <h3 className={styles.name}>{product.name}</h3>
+                <div className={styles.priceRow}>
+                  <span className={styles.price}>
+                    {formatPrice(product.price)}
+                  </span>
+                </div>
+              </div>
+              <button className={styles.flipHint} onClick={handleFlip}>
+                Quick add
+                <FlipIcon />
+              </button>
+            </>
+          )}
+        </div>
+
+        {/* ═══ BACK ═══ */}
+        {viewMode === "list" ? (
+          <div className={`${styles.cardBack} ${!flipped ? styles.hidden : ""}`} onClick={handleFlip}>
+            <div className={styles.backContent} onClick={(e) => e.stopPropagation()}>
+              
+              <div className={styles.qtyRow}>
+                <span className={styles.selectorLabel}>Quantity</span>
+                <div className={styles.qtyControl}>
+                  <button className={styles.qtyBtn} onClick={(e) => handleQty(-1, e)} disabled={qty <= 1}>−</button>
+                  <div className={styles.qtyValue}>
+                    <span className={`${styles.qtyNumber} ${qtyAnim ? styles[qtyAnim] : ""}`} key={qty}>{qty}</span>
+                  </div>
+                  <button className={styles.qtyBtn} onClick={(e) => handleQty(1, e)} disabled={qty >= 10}>+</button>
+                </div>
+              </div>
+
+              <button
+                className={`${styles.addBtn} ${added ? styles.added : styles.default}`}
+                onClick={handleAddToCart}
+              >
+                <span className={styles.addBtnContent}>
+                  {added ? (<><CheckIcon /> Added to Cart</>) : "Add to Cart"}
+                </span>
+              </button>
+            </div>
+          </div>
         ) : (
-          <div
-            className={styles.image}
-            style={{
-              background: `linear-gradient(135deg, var(--color-primary-100), var(--color-surface))`,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: "3rem",
-            }}
-          >
-            💅
+          <div className={`${styles.cardBack} ${!flipped ? styles.hidden : ""}`}>
+            <button className={styles.flipBackBtnAbsolute} onClick={handleFlip} aria-label="Go back">
+              <ArrowLeftIcon />
+            </button>
+            
+            <div className={styles.backHeader}>
+              <h3 className={styles.backName}>{product.name}</h3>
+              <span className={styles.backPrice}>{formatPrice(product.price)}</span>
+            </div>
+
+            <p className={styles.backDesc}>{product.shortDescription || "Essential nail art supplies and accessories."}</p>
+
+            <div className={styles.qtyRow}>
+              <span className={styles.selectorLabel}>Quantity</span>
+              <div className={styles.qtyControl}>
+                <button className={styles.qtyBtn} onClick={(e) => handleQty(-1, e)} disabled={qty <= 1}>−</button>
+                <div className={styles.qtyValue}>
+                  <span className={`${styles.qtyNumber} ${qtyAnim ? styles[qtyAnim] : ""}`} key={qty}>{qty}</span>
+                </div>
+                <button className={styles.qtyBtn} onClick={(e) => handleQty(1, e)} disabled={qty >= 10}>+</button>
+              </div>
+            </div>
+
+            <button
+              className={`${styles.addBtn} ${added ? styles.added : styles.default}`}
+              onClick={handleAddToCart}
+            >
+              <span className={styles.addBtnContent}>
+                {added ? (<><CheckIcon /> Added to Cart</>) : "Add to Cart"}
+              </span>
+            </button>
+
+            <div className={styles.backActions}>
+              <Link
+                href={`/product/${product.slug}`}
+                className={styles.viewLink}
+                prefetch={true}
+              >
+                Details
+              </Link>
+            </div>
           </div>
         )}
-
-        {/* Badges */}
-        <div className={styles.badges}>
-          {/* Discount badge removed */}
-          {product.newArrival && (
-            <span className={`${btnStyles.badge} ${btnStyles.badgeNew}`}>New</span>
-          )}
-          {product.bestseller && (
-            <span className={`${btnStyles.badge} ${btnStyles.badgeBestseller}`}>Bestseller</span>
-          )}
-          {product.category === "handmade" && (
-            <span className={`${btnStyles.badge} ${btnStyles.badgeHandmade}`}>Handmade</span>
-          )}
-        </div>
-
-        {/* Quick Actions */}
-        <div className={styles.quickActions}>
-          <button
-            className={`${styles.quickAction} ${wishlisted ? styles.active : ""}`}
-            onClick={handleWishlist}
-            aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
-          >
-            <HeartIcon filled={wishlisted} />
-          </button>
-          <button
-            className={styles.quickAction}
-            onClick={handleQuickAdd}
-            aria-label="Quick add to cart"
-          >
-            <ShoppingBagIcon />
-          </button>
-        </div>
       </div>
-
-      {/* Info */}
-      <div className={styles.info}>
-        <span className={styles.category}>{product.category}</span>
-        <h3 className={styles.name}>{product.name}</h3>
-
-
-        {/* Price */}
-        <div className={styles.priceRow}>
-          <span className={styles.price}>
-            {formatPrice(product.price)}
-          </span>
-
-        </div>
-      </div>
-    </Link>
+    </div>
   );
 }
