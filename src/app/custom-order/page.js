@@ -270,7 +270,7 @@ export default function CustomOrderPage() {
           {/* Step 1: Shape */}
           {currentStep === 1 && (
             <div>
-              <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "1.5rem", marginBottom: "var(--space-6)", textAlign: "center", color: "var(--color-primary-800)" }}>
+              <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "1.2rem", marginBottom: "var(--space-6)", textAlign: "center", color: "var(--color-primary-800)" }}>
                 Pick Your Nail Shape
               </h2>
               <div className={customStyles.shapeGrid}>
@@ -386,7 +386,7 @@ export default function CustomOrderPage() {
           {/* Step 2: Length */}
           {currentStep === 2 && (
             <div>
-              <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "var(--text-2xl)", marginBottom: "var(--space-8)", textAlign: "center", color: "var(--color-text)" }}>
+              <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "1.2rem", marginBottom: "var(--space-6)", textAlign: "center", color: "var(--color-primary-800)" }}>
                 Choose Your Length
               </h2>
               <div className={customStyles.shapeGrid}>
@@ -407,7 +407,7 @@ export default function CustomOrderPage() {
           {/* Step 3: Design */}
           {currentStep === 3 && (
             <div>
-              <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "var(--text-2xl)", marginBottom: "var(--space-8)", textAlign: "center", color: "var(--color-text)" }}>
+              <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "1.2rem", marginBottom: "var(--space-6)", textAlign: "center", color: "var(--color-primary-800)" }}>
                 Select a Design Style
               </h2>
               <div className={customStyles.shapeGrid}>
@@ -429,7 +429,7 @@ export default function CustomOrderPage() {
           {/* Step 4: Details */}
           {currentStep === 4 && (
             <div>
-              <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "var(--text-2xl)", marginBottom: "var(--space-8)", textAlign: "center", color: "var(--color-text)" }}>
+              <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "1.2rem", marginBottom: "var(--space-6)", textAlign: "center", color: "var(--color-primary-800)" }}>
                 Tell Us More
               </h2>
               <div className={customStyles.glassForm}>
@@ -517,7 +517,7 @@ export default function CustomOrderPage() {
           {/* Step 5: Review */}
           {currentStep === 5 && (
             <div>
-              <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "var(--text-2xl)", marginBottom: "var(--space-8)", textAlign: "center", color: "var(--color-text)" }}>
+              <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "1.2rem", marginBottom: "var(--space-6)", textAlign: "center", color: "var(--color-primary-800)" }}>
                 Review Your Order
               </h2>
               <div className={customStyles.reviewSummary}>
