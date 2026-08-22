@@ -27,7 +27,7 @@ function ShoppingBagIcon() {
   );
 }
 
-export default function ProductCard({ product }) {
+export default function ProductCard({ product, index = 0 }) {
   const { addItem } = useCart();
   const { toggleItem, isInWishlist } = useWishlist();
   const { showToast } = useToast();
@@ -48,7 +48,7 @@ export default function ProductCard({ product }) {
   };
 
   return (
-    <Link href={`/product/${product.slug}`} className={styles.card} id={`product-card-${product.slug}`}>
+    <Link href={`/product/${product.slug}`} className={styles.card} id={`product-card-${product.slug}`} prefetch={true}>
       {/* Image */}
       <div className={styles.imageContainer}>
         {product.image || (product.images && product.images[0]) ? (
@@ -56,6 +56,7 @@ export default function ProductCard({ product }) {
             src={product.image || product.images[0]}
             alt={product.name}
             fill
+            priority={index < 4}
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className={styles.image}
             style={{ objectFit: "cover" }}
@@ -117,11 +118,9 @@ export default function ProductCard({ product }) {
         {/* Price */}
         <div className={styles.priceRow}>
           <span className={styles.price}>
-            {product.category === 'factory' ? `${formatPrice(6500)} - ${formatPrice(8500)}` : formatPrice(product.price)}
+            {formatPrice(product.price)}
           </span>
-          {product.compareAtPrice && product.category !== 'factory' && (
-            <span className={styles.comparePrice}>{formatPrice(product.compareAtPrice)}</span>
-          )}
+
         </div>
       </div>
     </Link>

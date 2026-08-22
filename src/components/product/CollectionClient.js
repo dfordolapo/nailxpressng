@@ -97,7 +97,7 @@ export default function CollectionClient({ category, allProducts, featuredProduc
   const [selectedColors, setSelectedColors] = useState([]);
   const [sortBy, setSortBy] = useState("newest");
   const [viewMode, setViewMode] = useState("grid");
-  const [currentPage, setCurrentPage] = useState(1);
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   const filtered = useMemo(() => {
     const shapeFilters = { nailShape: selectedShapes, lengths: selectedLengths, colors: selectedColors };
@@ -106,32 +106,31 @@ export default function CollectionClient({ category, allProducts, featuredProduc
     return distributeSpecialProducts(sorted, PAGE_SIZE);
   }, [allProducts, selectedShapes, selectedLengths, selectedColors, sortBy]);
 
-  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
-  const safePage = Math.min(currentPage, totalPages);
   const paginated = useMemo(() => {
-    const start = (safePage - 1) * PAGE_SIZE;
-    return filtered.slice(start, start + PAGE_SIZE);
-  }, [filtered, safePage]);
+    return filtered.slice(0, visibleCount);
+  }, [filtered, visibleCount]);
+
+  const hasMore = visibleCount < filtered.length;
 
   const toggleShape = (shapeId) => {
     setSelectedShapes(prev => 
       prev.includes(shapeId) ? [] : [shapeId]
     );
-    setCurrentPage(1);
+    setVisibleCount(PAGE_SIZE);
   };
 
   const toggleLength = (lengthId) => {
     setSelectedLengths(prev => 
       prev.includes(lengthId) ? [] : [lengthId]
     );
-    setCurrentPage(1);
+    setVisibleCount(PAGE_SIZE);
   };
 
   const toggleColor = (colorId) => {
     setSelectedColors(prev => 
       prev.includes(colorId) ? [] : [colorId]
     );
-    setCurrentPage(1);
+    setVisibleCount(PAGE_SIZE);
   };
 
   return (
@@ -195,7 +194,7 @@ export default function CollectionClient({ category, allProducts, featuredProduc
               <select
                 className={filterStyles.sortSelect}
                 value={sortBy}
-                onChange={(e) => { setSortBy(e.target.value); setCurrentPage(1); }}
+                onChange={(e) => { setSortBy(e.target.value); setVisibleCount(PAGE_SIZE); }}
                 id="sort-select"
               >
                 {SORT_OPTIONS.map((opt) => (
@@ -236,40 +235,25 @@ export default function CollectionClient({ category, allProducts, featuredProduc
                   ))}
                 </div>
 
-                {totalPages > 1 && (
-                  <div className={filterStyles.pagination}>
-                    <span className={filterStyles.paginationInfo}>
-                      Page {safePage} of {totalPages}
-                    </span>
-                    <div className={filterStyles.paginationControls}>
-                      <button
-                        className={filterStyles.paginationBtn}
-                        onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-                        disabled={safePage === 1}
-                        aria-label="Previous page"
-                      >
-                        ‹
-                      </button>
-                      {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                        <button
-                          key={page}
-                          className={`${filterStyles.paginationBtn} ${page === safePage ? filterStyles.paginationActive : ""}`}
-                          onClick={() => setCurrentPage(page)}
-                          aria-label={`Page ${page}`}
-                          aria-current={page === safePage ? "page" : undefined}
-                        >
-                          {page}
-                        </button>
-                      ))}
-                      <button
-                        className={filterStyles.paginationBtn}
-                        onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
-                        disabled={safePage === totalPages}
-                        aria-label="Next page"
-                      >
-                        ›
-                      </button>
-                    </div>
+                {hasMore && (
+                  <div style={{ display: 'flex', justifyContent: 'center', marginTop: 'var(--space-12)' }}>
+                    <button 
+                      onClick={() => setVisibleCount(prev => prev + PAGE_SIZE)}
+                      style={{
+                        padding: "12px 32px",
+                        backgroundColor: "var(--color-primary)",
+                        color: "var(--color-text-inverse)",
+                        border: "none",
+                        borderRadius: "var(--radius-full)",
+                        fontSize: "1rem",
+                        fontWeight: "600",
+                        cursor: "pointer",
+                        transition: "all 0.3s ease",
+                        minWidth: "200px"
+                      }}
+                    >
+                      Load More
+                    </button>
                   </div>
                 )}
               </>

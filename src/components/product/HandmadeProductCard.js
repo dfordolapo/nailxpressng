@@ -62,12 +62,6 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
   const wishlisted = isInWishlist(product.id);
 
   let displayPrice = product.price;
-  if (product.category === 'factory') {
-    const currentLength = (selectedLength || (product.lengths ? product.lengths[Math.floor(product.lengths.length / 2)] : "Medium")).toLowerCase();
-    if (currentLength === 'short') displayPrice = 6500;
-    else if (currentLength === 'long') displayPrice = 8500;
-    else displayPrice = 7500;
-  }
 
   const handleMouseMove = useCallback((e) => {
     if (flipped || (typeof window !== 'undefined' && window.innerWidth <= 768)) return;
@@ -119,7 +113,9 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
     const size = product.category === "handmade"
       ? (selectedSize || (product.sizes ? product.sizes[Math.floor(product.sizes.length / 2)] : null))
       : null;
-    const length = selectedLength || (product.lengths ? product.lengths[Math.floor(product.lengths.length / 2)] : "Medium");
+    const length = product.category === "handmade" 
+      ? (selectedLength || (product.lengths ? product.lengths[Math.floor(product.lengths.length / 2)] : "Medium"))
+      : null;
     
     const productToAdd = { ...product, price: displayPrice };
     addItem(productToAdd, qty, size, length);
@@ -162,6 +158,7 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
                 src={product.image || product.images[0]}
                 alt={product.name}
                 fill
+                priority={index < 4}
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className={styles.flatLay}
                 style={{ objectFit: "cover", borderRadius: "var(--radius-xl)" }}
@@ -211,11 +208,9 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
               <h3 className={styles.name}>{product.name}</h3>
               <div className={styles.priceRow}>
                 <span className={styles.price}>
-                  {product.category === 'factory' ? `${formatPrice(6500)} - ${formatPrice(8500)}` : formatPrice(product.price)}
+                  {formatPrice(product.price)}
                 </span>
-                {product.compareAtPrice && product.category !== 'factory' && (
-                  <span className={styles.comparePrice}>{formatPrice(product.compareAtPrice)}</span>
-                )}
+
               </div>
             </div>
           ) : (
@@ -224,11 +219,9 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
                 <h3 className={styles.name}>{product.name}</h3>
                 <div className={styles.priceRow}>
                   <span className={styles.price}>
-                    {product.category === 'factory' ? `${formatPrice(6500)} - ${formatPrice(8500)}` : formatPrice(product.price)}
+                    {formatPrice(product.price)}
                   </span>
-                  {product.compareAtPrice && product.category !== 'factory' && (
-                    <span className={styles.comparePrice}>{formatPrice(product.compareAtPrice)}</span>
-                  )}
+
                 </div>
               </div>
               <button className={styles.flipHint} onClick={handleFlip}>
@@ -260,7 +253,7 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
                 </div>
               )}
 
-              {product.lengths && product.lengths.length > 0 && (
+              {product.category === "handmade" && product.lengths && product.lengths.length > 0 && (
                 <div className={styles.selectorGroup}>
                   <span className={styles.selectorLabel}>Length</span>
                   <select
@@ -306,7 +299,7 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
             
             <div className={styles.backHeader}>
               <h3 className={styles.backName}>{product.name}</h3>
-              <span className={styles.backPrice}>{formatPrice(displayPrice)}</span>
+              <span className={styles.backPrice}>{formatPrice(product.price)}</span>
             </div>
 
             <p className={styles.backDesc}>{product.shortDescription}</p>
@@ -328,7 +321,7 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
               </div>
             )}
 
-            {product.lengths && product.lengths.length > 0 && (
+            {product.category === "handmade" && product.lengths && product.lengths.length > 0 && (
               <div className={styles.selectorGroup}>
                 <span className={styles.selectorLabel}>Length</span>
                 <select
@@ -369,6 +362,7 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
               <Link
                 href={`/product/${product.slug}`}
                 className={styles.viewLink}
+                prefetch={true}
               >
                 Details
               </Link>

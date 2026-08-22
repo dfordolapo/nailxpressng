@@ -101,6 +101,22 @@ function ProductsContent({ initialProducts }) {
         </Link>
       </div>
 
+      <div style={{
+        background: "rgba(var(--color-primary-rgb), 0.1)",
+        border: "1px solid var(--color-primary)",
+        color: "var(--color-primary-700)",
+        padding: "12px 16px",
+        borderRadius: "var(--radius-md)",
+        marginBottom: "24px",
+        fontSize: "0.9rem",
+        display: "flex",
+        alignItems: "center",
+        gap: "8px"
+      }}>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        <span><strong>Performance Caching Enabled:</strong> Any changes made to products or prices may take up to 5 minutes to appear on the live storefront.</span>
+      </div>
+
       <div className={styles.toolbar}>
         <div className={styles.tabs}>
           <button 

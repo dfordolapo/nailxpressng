@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { useToast } from "@/context/ToastContext";
@@ -87,36 +88,13 @@ export default function ProductClient({ product, relatedProducts = [], isModal =
   const discount = getDiscountPercent(product.price, product.compareAtPrice);
   const wishlisted = isInWishlist(product.id);
 
-  // Calculate dynamic price based on length for factory products
   let displayPrice = product.price;
   let displayCompareAt = product.compareAtPrice;
 
-  if (product.category === 'factory') {
-    const lowerLength = (selectedLength || '').toLowerCase();
-    if (lowerLength === 'short') {
-      displayPrice = 6500;
-    } else if (lowerLength === 'long') {
-      displayPrice = 8500;
-    } else {
-      displayPrice = 7500; // Medium or default
-    }
-
-    if (product.discountPercent > 0) {
-      displayCompareAt = displayPrice;
-      displayPrice = Math.round(displayPrice * (1 - product.discountPercent / 100));
-    } else {
-      displayCompareAt = null;
-    }
-  }
-
   const handleAddToCart = () => {
     const finalSize = product.category === 'factory' ? null : selectedSize;
-    // Pass a modified product object with the dynamic price to the cart
-    const productToAdd = {
-      ...product,
-      price: displayPrice
-    };
-    addItem(productToAdd, quantity, finalSize, selectedLength);
+    const finalLength = product.category === 'factory' ? null : selectedLength;
+    addItem(product, quantity, finalSize, finalLength);
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
     showToast(`"${product.name}" added to cart`);
@@ -150,7 +128,7 @@ export default function ProductClient({ product, relatedProducts = [], isModal =
             >
               <div
                 className={pageStyles.galleryZoomInner}
-                style={{ transformOrigin: zoomOrigin }}
+                style={{ transformOrigin: zoomOrigin, position: "relative", width: "100%", height: "100%" }}
               >
                 {(() => {
                   const mediaList = [];
@@ -175,10 +153,13 @@ export default function ProductClient({ product, relatedProducts = [], isModal =
                       );
                     } else {
                       return (
-                        <img
+                        <Image
                           src={activeMedia.url}
                           alt={product.name}
-                          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                          fill
+                          priority={true}
+                          sizes="(max-width: 768px) 100vw, 50vw"
+                          style={{ objectFit: "cover" }}
                         />
                       );
                     }
@@ -238,10 +219,12 @@ export default function ProductClient({ product, relatedProducts = [], isModal =
                             </div>
                           </>
                         ) : (
-                          <img
+                          <Image
                             src={media.url}
                             alt={`${product.name} thumbnail ${i + 1}`}
-                            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                            fill
+                            sizes="80px"
+                            style={{ objectFit: "cover" }}
                           />
                         )}
                       </button>
@@ -301,21 +284,23 @@ export default function ProductClient({ product, relatedProducts = [], isModal =
             )}
 
             {/* Length Selector */}
-            <div className={pageStyles.selectorGroup}>
-              <span className={pageStyles.selectorLabel}>Length: {selectedLength}</span>
-              <div className={pageStyles.selectorOptions}>
-                {(product.lengths ?? []).map((length) => (
-                  <button
-                    key={length}
-                    className={`${pageStyles.selectorOption} ${selectedLength === length ? pageStyles.selected : ""}`}
-                    onClick={() => setSelectedLength(length)}
-                    style={{ textTransform: "capitalize" }}
-                  >
-                    {length}
-                  </button>
-                ))}
+            {product.category !== 'factory' && (
+              <div className={pageStyles.selectorGroup}>
+                <span className={pageStyles.selectorLabel}>Length: {selectedLength}</span>
+                <div className={pageStyles.selectorOptions}>
+                  {(product.lengths ?? []).map((length) => (
+                    <button
+                      key={length}
+                      className={`${pageStyles.selectorOption} ${selectedLength === length ? pageStyles.selected : ""}`}
+                      onClick={() => setSelectedLength(length)}
+                      style={{ textTransform: "capitalize" }}
+                    >
+                      {length}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Quantity */}
             <div className={pageStyles.selectorGroup}>

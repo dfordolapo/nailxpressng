@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { useCart } from "@/context/CartContext";
 import { useToast } from "@/context/ToastContext";
 import { formatPrice } from "@/lib/utils";
@@ -40,14 +41,17 @@ export default function ProductQuickView({ product }) {
     setOpenAccordion(openAccordion === index ? null : index);
   };
 
+  const getFinalSize = () => product.category === 'factory' ? null : selectedSize;
+  const getFinalLength = () => product.category === 'factory' ? null : selectedLength;
+
   const handleAddToCart = () => {
-    addItem(product, quantity, selectedSize, selectedLength);
+    addItem(product, quantity, getFinalSize(), getFinalLength());
     showToast(`"${product.name}" added to cart`);
     onClose();
   };
 
   const handleBuyNow = () => {
-    addItem(product, quantity, selectedSize, selectedLength);
+    addItem(product, quantity, getFinalSize(), getFinalLength());
     onClose(() => router.push("/checkout"));
   };
 
@@ -57,13 +61,16 @@ export default function ProductQuickView({ product }) {
         
         {/* Header */}
         <div className={styles.header}>
-          <div className={styles.mainImageContainer}>
+          <div className={styles.mainImageContainer} style={{ position: "relative" }}>
             {product.images && product.images[selectedImage] && !imgError ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img 
+              <Image 
                 src={product.images[selectedImage]} 
                 alt={product.name} 
                 className={styles.mainImage} 
+                fill
+                priority={true}
+                sizes="(max-width: 768px) 100vw, 50vw"
+                style={{ objectFit: "cover" }}
                 onError={() => setImgError(true)}
               />
             ) : (
@@ -84,6 +91,7 @@ export default function ProductQuickView({ product }) {
               <button 
                 key={idx}
                 className={`${styles.thumbnail} ${selectedImage === idx ? styles.active : ""}`}
+                style={{ position: "relative" }}
                 onClick={() => {
                   setSelectedImage(idx);
                   setImgError(false);
@@ -92,8 +100,14 @@ export default function ProductQuickView({ product }) {
                 {thumbErrors[idx] ? (
                   <div style={{ width: '100%', height: '100%', background: 'linear-gradient(135deg, var(--color-primary-100), var(--color-surface))', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem' }}>💅</div>
                 ) : (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={img} alt="" onError={() => setThumbErrors(prev => ({...prev, [idx]: true}))} />
+                  <Image 
+                    src={img} 
+                    alt="" 
+                    fill
+                    sizes="80px"
+                    style={{ objectFit: "cover" }}
+                    onError={() => setThumbErrors(prev => ({...prev, [idx]: true}))} 
+                  />
                 )}
               </button>
             ))}

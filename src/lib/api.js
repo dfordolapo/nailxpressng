@@ -1,7 +1,9 @@
+import { cache } from 'react';
 import { supabase } from './supabase';
 
 // Fetch the sitewide discount % from store settings (0 = no discount)
-export async function getSitewideDiscount() {
+// Wrapped in React cache to ensure it only runs once per server request
+export const getSitewideDiscount = cache(async () => {
   try {
     const { data, error } = await supabase
       .from('store_settings')
@@ -13,7 +15,7 @@ export async function getSitewideDiscount() {
   } catch {
     return 0;
   }
-}
+});
 
 // Helper to map DB snake_case fields to camelCase for the frontend components
 // discount: number 0–100 (percent)
@@ -24,12 +26,7 @@ const mapProduct = (p, discount = 0) => {
   let price = rawPrice;
   let compareAtPrice = rawCompare;
 
-  if (p.categories?.slug === 'factory' || p.category_id === 2) {
-    // Override factory product prices (Short: 6500, Medium: 7500, Long: 8500)
-    // We set the base price to the lowest (Short = 6500)
-    price = 6500;
-    rawPrice = 6500;
-  }
+  // (Factory price overrides removed per requirements)
 
   if (discount > 0) {
     // Apply discount: discounted becomes the new price, original becomes compareAtPrice
