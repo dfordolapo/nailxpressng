@@ -41,8 +41,8 @@ export default function ProductQuickView({ product }) {
     setOpenAccordion(openAccordion === index ? null : index);
   };
 
-  const getFinalSize = () => product.category === 'factory' ? null : selectedSize;
-  const getFinalLength = () => product.category === 'factory' ? null : selectedLength;
+  const getFinalSize = () => product.category === 'handmade' ? selectedSize : null;
+  const getFinalLength = () => product.category === 'handmade' ? selectedLength : null;
 
   const handleAddToCart = () => {
     addItem(product, quantity, getFinalSize(), getFinalLength());
@@ -117,7 +117,7 @@ export default function ProductQuickView({ product }) {
         {/* Controls */}
         <div className={styles.controlsGrid}>
 
-          {product.category !== 'factory' && (
+          {product.category === 'handmade' && (
             <div className={styles.formGroup}>
               <label className={styles.label}>Size</label>
               <select 

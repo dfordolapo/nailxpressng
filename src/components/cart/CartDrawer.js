@@ -78,7 +78,8 @@ export default function CartDrawer({ onClose }) {
                 </div>
                 <div className={styles.cartItemDetails}>
                   <h4 className={styles.cartItemName}>{item.name}</h4>
-                  <div className={styles.cartItemMetaSelectors}>
+                  {(item.selectedSize || item.selectedLength) && (
+                    <div className={styles.cartItemMetaSelectors}>
                     {item.selectedSize && (
                       <div className={styles.metaSelectWrapper}>
                         <label className={styles.metaLabel}>Size:</label>
@@ -104,30 +105,9 @@ export default function CartDrawer({ onClose }) {
                       </div>
                     )}
 
-                    <div className={styles.metaSelectWrapper}>
-                      <label className={styles.metaLabel}>Length:</label>
-                      <select
-                        className={styles.metaSelect}
-                        value={item.selectedLength ? item.selectedLength.toLowerCase() : "medium"}
-                        onChange={(e) =>
-                          updateItemOptions(
-                            item.id,
-                            item.selectedSize,
-                            item.selectedLength,
-                            item.selectedSize,
-                            e.target.value
-                          )
-                        }
-                      >
-                        {["short", "medium", "long", "extra long"].map((l) => (
-                          <option key={l} value={l}>
-                            {l.charAt(0).toUpperCase() + l.slice(1)}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-                  <div className={styles.cartItemActions}>
+
+                  </div>)}
+                  <div className={styles.cartItemControls} style={{ display: "flex", alignItems: "center", gap: "12px" }}>
                     <div className={styles.quantitySelector}>
                       <button
                         className={styles.quantityBtn}
@@ -143,24 +123,26 @@ export default function CartDrawer({ onClose }) {
                         +
                       </button>
                     </div>
-                    <div style={{ display: "flex", gap: "8px", alignItems: "center", marginLeft: "auto" }}>
-                      <button
-                        onClick={() => {
-                          const existingSizes = items
-                            .filter(i => i.id === item.id)
-                            .map(i => i.selectedSize);
-                          const nextSize = ["XS", "S", "M", "L"].find(s => !existingSizes.includes(s)) || "M";
-                          addItem(
-                            { id: item.id, slug: item.slug, name: item.name, price: item.price, images: [item.image] },
-                            1,
-                            nextSize,
-                            item.selectedLength
-                          );
-                        }}
-                        style={{ background: "none", border: "none", color: "var(--color-primary)", fontSize: "0.75rem", fontWeight: 600, cursor: "pointer", padding: 0, whiteSpace: "nowrap" }}
-                      >
-                        + Add size
-                      </button>
+                    <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+                      {item.category === 'handmade' && (
+                        <button
+                          onClick={() => {
+                            const existingSizes = items
+                              .filter(i => i.id === item.id)
+                              .map(i => i.selectedSize);
+                            const nextSize = ["XS", "S", "M", "L"].find(s => !existingSizes.includes(s)) || "M";
+                            addItem(
+                              { id: item.id, slug: item.slug, name: item.name, price: item.price, images: [item.image], category: item.category },
+                              1,
+                              nextSize,
+                              item.selectedLength
+                            );
+                          }}
+                          style={{ background: "none", border: "none", color: "var(--color-primary)", fontSize: "0.75rem", fontWeight: 600, cursor: "pointer", padding: 0, whiteSpace: "nowrap" }}
+                        >
+                          + Add size
+                        </button>
+                      )}
                       <button
                         className={styles.removeBtn}
                         onClick={() => removeItem(item.id, item.selectedSize, item.selectedLength)}

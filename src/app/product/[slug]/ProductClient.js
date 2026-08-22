@@ -92,8 +92,8 @@ export default function ProductClient({ product, relatedProducts = [], isModal =
   let displayCompareAt = product.compareAtPrice;
 
   const handleAddToCart = () => {
-    const finalSize = product.category === 'factory' ? null : selectedSize;
-    const finalLength = product.category === 'factory' ? null : selectedLength;
+    const finalSize = product.category === 'handmade' ? selectedSize : null;
+    const finalLength = product.category === 'handmade' ? selectedLength : null;
     addItem(product, quantity, finalSize, finalLength);
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
@@ -255,7 +255,7 @@ export default function ProductClient({ product, relatedProducts = [], isModal =
             <p className={pageStyles.productDescription}>{product.description}</p>
 
             {/* Size Selector */}
-            {product.category !== 'factory' && (
+            {product.category === 'handmade' && (
               <div className={pageStyles.selectorGroup}>
                 <span className={pageStyles.selectorLabel}>Size: {selectedSize}</span>
                 <div className={pageStyles.selectorOptions}>
@@ -273,7 +273,7 @@ export default function ProductClient({ product, relatedProducts = [], isModal =
             )}
 
             {/* Length Selector */}
-            {product.category !== 'factory' && (
+            {product.category === 'handmade' && false && (
               <div className={pageStyles.selectorGroup}>
                 <span className={pageStyles.selectorLabel}>Length: {selectedLength}</span>
                 <div className={pageStyles.selectorOptions}>

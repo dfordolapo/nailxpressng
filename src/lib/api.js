@@ -46,7 +46,7 @@ const mapProduct = (p, discount = 0) => {
     nailShape: p.nail_shape,
     style: p.style,
     lengths: Array.isArray(p.lengths) ? p.lengths : [],
-    sizes: ["S", "M", "L"],
+    sizes: p.categories?.slug === 'handmade' ? ["S", "M", "L"] : [],
     images: p.images,
     image: p.images?.[0] || null,
     videoUrl: p.video_url || null,

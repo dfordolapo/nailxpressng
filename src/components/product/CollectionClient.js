@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react";
 import { PackageSearch } from "lucide-react";
 import HandmadeProductCard from "@/components/product/HandmadeProductCard";
+import ProductCard from "@/components/product/ProductCard";
 import ShapeFilterBar from "@/components/product/ShapeFilterBar";
 import CategoryShowcase from "@/components/home/CategoryShowcase";
 import FactoryVideos from "@/components/product/FactoryVideos";
@@ -230,7 +231,11 @@ export default function CollectionClient({ category, allProducts, featuredProduc
                 <div className={viewMode === "grid" ? gridStyles.masonryGrid : gridStyles.listGrid}>
                   {paginated.map((product, i) => (
                     <div key={product.id} className={gridStyles.masonryItem}>
-                      <HandmadeProductCard product={product} index={i} viewMode={viewMode} />
+                      {product.category === 'handmade' ? (
+                        <HandmadeProductCard product={product} index={i} viewMode={viewMode} />
+                      ) : (
+                        <ProductCard product={product} index={i} viewMode={viewMode} />
+                      )}
                     </div>
                   ))}
                 </div>

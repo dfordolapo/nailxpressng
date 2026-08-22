@@ -5,6 +5,7 @@ import { ArrowLeft, UploadCloud, X, Heart } from "lucide-react";
 import styles from "@/styles/admin.module.css";
 import { nailShapes, nailLengths, styles as nailStyles, categories as nailCategories } from "@/data/categories";
 import HandmadeProductCard from "@/components/product/HandmadeProductCard";
+import ProductCard from "@/components/product/ProductCard";
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 
@@ -301,22 +302,36 @@ export default function NewProduct() {
                   {/* Real Component Preview */}
                   <div>
                     <div style={{ fontSize: "0.85rem", color: "#666", marginBottom: "10px" }}>Preview (As Customer Sees)</div>
-                    <div style={{ pointerEvents: "auto", width: "100%", maxWidth: "300px" }}>
-                      <HandmadeProductCard 
-                        product={{
-                          id: "preview",
-                          name: name || "Product Name",
-                          price: parseFloat(salePrice || price || "0"),
-                          category: collection.toLowerCase().replace(' ', '-'),
-                          image: imagePreview || "https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&q=80&w=300",
-                          shortDescription: description || "Product description goes here.",
-                          sizes: ["XS", "S", "M", "L"],
-                          lengths: ["Short", "Medium", "Long"],
-                          bestseller: isBestseller,
-                          newArrival: true
-                        }} 
-                        viewMode="grid" 
-                      />
+                      {collection.toLowerCase().replace(' ', '-') === 'handmade' ? (
+                        <HandmadeProductCard 
+                          product={{
+                            id: "preview",
+                            name: name || "Product Name",
+                            price: parseFloat(salePrice || price || "0"),
+                            category: collection.toLowerCase().replace(' ', '-'),
+                            image: imagePreview || "https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&q=80&w=300",
+                            shortDescription: description || "Product description goes here.",
+                            sizes: ["XS", "S", "M", "L"],
+                            lengths: ["Short", "Medium", "Long"],
+                            bestseller: isBestseller,
+                            newArrival: true
+                          }} 
+                          viewMode="grid" 
+                        />
+                      ) : (
+                        <ProductCard 
+                          product={{
+                            id: "preview",
+                            name: name || "Product Name",
+                            price: parseFloat(salePrice || price || "0"),
+                            category: collection.toLowerCase().replace(' ', '-'),
+                            image: imagePreview || "https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&q=80&w=300",
+                            shortDescription: description || "Product description goes here.",
+                            bestseller: isBestseller,
+                            newArrival: true
+                          }} 
+                        />
+                      )}
                     </div>
                   </div>
                </div>
