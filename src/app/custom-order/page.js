@@ -240,7 +240,7 @@ export default function CustomOrderPage() {
             }} />
           </div>
           <p className={customStyles.customOrderSubtitle}>
-            Design your dream nail set — we&apos;ll bring it to life
+            Design your nail set — we&apos;ll bring it to life
           </p>
         </div>
 
