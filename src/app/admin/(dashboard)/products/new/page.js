@@ -334,7 +334,6 @@ export default function NewProduct() {
                       )}
                     </div>
                   </div>
-               </div>
 
                <div className={styles.formActions}>
                  <button type="button" className={styles.btnSecondary} onClick={() => setActiveTab("basic")}>Back</button>
