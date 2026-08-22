@@ -223,7 +223,7 @@ export default function CustomOrderPage() {
   return (
     <div className={customStyles.customOrderPage} id="custom-order-page">
       <div className="container container--narrow">
-        <div className={collectionStyles.collectionHeader} style={{ position: "relative" }}>
+        <div className={collectionStyles.collectionHeader} style={{ position: "relative", borderBottom: "none" }}>
           <div style={{ position: "relative", display: "inline-block" }}>
             <h1 className={collectionStyles.collectionTitle}>Custom Order</h1>
             <span style={{
