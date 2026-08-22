@@ -322,6 +322,7 @@ export default function CustomOrderPage() {
                           key={insp.id}
                           onClick={() => handleSelectInspiration(insp.image_url)}
                           style={{
+                            width: "160px",
                             minWidth: "160px",
                             height: "160px",
                             borderRadius: "var(--radius-lg)",
