@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { nailShapes, nailLengths } from "@/data/categories";
 import { SOCIAL_LINKS } from "@/lib/constants";
 import customStyles from "@/styles/pages/custom-order.module.css";
+import collectionStyles from "@/styles/pages/collection.module.css";
 import btnStyles from "@/styles/components/buttons.module.css";
 import { UploadCloud, CheckCircle, ChevronLeft, ChevronRight, Download } from "lucide-react";
 import { supabase } from "@/lib/supabase";
@@ -222,10 +223,22 @@ export default function CustomOrderPage() {
   return (
     <div className={customStyles.customOrderPage} id="custom-order-page">
       <div className="container container--narrow">
-        <div style={{ textAlign: "center", marginBottom: "var(--space-8)" }}>
-          <h1 style={{ fontFamily: "var(--font-heading)", fontSize: "clamp(2rem, 5vw, 3rem)", fontWeight: 500, color: "var(--color-primary)", marginBottom: "var(--space-2)" }}>
-            Custom Order
-          </h1>
+        <div className={collectionStyles.collectionHeader} style={{ position: "relative" }}>
+          <div style={{ position: "relative", display: "inline-block" }}>
+            <h1 className={collectionStyles.collectionTitle}>Custom Order</h1>
+            <span style={{
+              position: "absolute",
+              bottom: "2px",
+              left: "50%",
+              transform: "translateX(-50%) rotate(-1deg)",
+              width: "60%",
+              height: "8px",
+              background: "linear-gradient(90deg, transparent, var(--color-accent), transparent)",
+              borderRadius: "var(--radius-full)",
+              opacity: 0.6,
+              pointerEvents: "none",
+            }} />
+          </div>
           <p className={customStyles.customOrderSubtitle}>
             Design your dream nail set —<br className={customStyles.mobileBreak} /> we&apos;ll bring it to life
           </p>
