@@ -37,12 +37,41 @@ export default function CustomOrderPage() {
 
   const isScrolling = useRef(false);
 
+  const [shapeScroll, setShapeScroll] = useState({ show: true, atEnd: false });
+  const [lengthScroll, setLengthScroll] = useState({ show: true, atEnd: false });
+  const [designScroll, setDesignScroll] = useState({ show: true, atEnd: false });
+
+  const updateScrollState = (ref, setter) => {
+    if (ref.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = ref.current;
+      setter({
+        show: scrollWidth > clientWidth,
+        atEnd: scrollLeft + clientWidth >= scrollWidth - 10
+      });
+    }
+  };
+
+  useEffect(() => {
+    const handleResize = () => {
+      updateScrollState(shapeScrollRef, setShapeScroll);
+      updateScrollState(lengthScrollRef, setLengthScroll);
+      updateScrollState(designScrollRef, setDesignScroll);
+    };
+    // Give DOM time to paint before checking scroll widths
+    const timer = setTimeout(handleResize, 100);
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      clearTimeout(timer);
+    };
+  }, [currentStep]);
+
   const scroll = (direction, ref = scrollRef) => {
     if (ref.current) {
       isScrolling.current = true;
       const { scrollLeft, clientWidth } = ref.current;
       const scrollAmount = clientWidth * 0.8;
-      scrollRef.current.scrollTo({
+      ref.current.scrollTo({
         left: direction === 'left' ? scrollLeft - scrollAmount : scrollLeft + scrollAmount,
         behavior: 'smooth'
       });
@@ -277,13 +306,15 @@ export default function CustomOrderPage() {
                 Pick Your Nail Shape
               </h2>
               <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
-                <button 
-                  onClick={() => scroll('left', shapeScrollRef)}
-                  style={{ position: "absolute", left: "-16px", zIndex: 10, background: "white", borderRadius: "50%", padding: "6px", boxShadow: "0 2px 10px rgba(0,0,0,0.1)", border: "1px solid var(--color-border-light)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", transition: "transform 0.2s" }}
-                >
-                  <ChevronLeft size={24} color="var(--color-text)" />
-                </button>
-                <div className={customStyles.shapeGrid} ref={shapeScrollRef}>
+                {shapeScroll.show && (
+                  <button 
+                    onClick={() => scroll(shapeScroll.atEnd ? 'left' : 'right', shapeScrollRef)}
+                    style={{ position: "absolute", [shapeScroll.atEnd ? "left" : "right"]: "-16px", zIndex: 10, background: "white", borderRadius: "50%", padding: "6px", boxShadow: "0 2px 10px rgba(0,0,0,0.1)", border: "1px solid var(--color-border-light)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.2s" }}
+                  >
+                    {shapeScroll.atEnd ? <ChevronLeft size={24} color="var(--color-text)" /> : <ChevronRight size={24} color="var(--color-text)" />}
+                  </button>
+                )}
+                <div className={customStyles.shapeGrid} ref={shapeScrollRef} onScroll={() => updateScrollState(shapeScrollRef, setShapeScroll)}>
                   {nailShapes.map((shape) => (
                     <button
                       key={shape.id}
@@ -297,12 +328,6 @@ export default function CustomOrderPage() {
                     </button>
                   ))}
                 </div>
-                <button 
-                  onClick={() => scroll('right', shapeScrollRef)}
-                  style={{ position: "absolute", right: "-16px", zIndex: 10, background: "white", borderRadius: "50%", padding: "6px", boxShadow: "0 2px 10px rgba(0,0,0,0.1)", border: "1px solid var(--color-border-light)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", transition: "transform 0.2s" }}
-                >
-                  <ChevronRight size={24} color="var(--color-text)" />
-                </button>
               </div>
 
               {inspirations.length > 0 && (
@@ -408,13 +433,15 @@ export default function CustomOrderPage() {
                 Choose Your Length
               </h2>
               <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
-                <button 
-                  onClick={() => scroll('left', lengthScrollRef)}
-                  style={{ position: "absolute", left: "-16px", zIndex: 10, background: "white", borderRadius: "50%", padding: "6px", boxShadow: "0 2px 10px rgba(0,0,0,0.1)", border: "1px solid var(--color-border-light)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", transition: "transform 0.2s" }}
-                >
-                  <ChevronLeft size={24} color="var(--color-text)" />
-                </button>
-                <div className={customStyles.shapeGrid} ref={lengthScrollRef}>
+                {lengthScroll.show && (
+                  <button 
+                    onClick={() => scroll(lengthScroll.atEnd ? 'left' : 'right', lengthScrollRef)}
+                    style={{ position: "absolute", [lengthScroll.atEnd ? "left" : "right"]: "-16px", zIndex: 10, background: "white", borderRadius: "50%", padding: "6px", boxShadow: "0 2px 10px rgba(0,0,0,0.1)", border: "1px solid var(--color-border-light)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.2s" }}
+                  >
+                    {lengthScroll.atEnd ? <ChevronLeft size={24} color="var(--color-text)" /> : <ChevronRight size={24} color="var(--color-text)" />}
+                  </button>
+                )}
+                <div className={customStyles.shapeGrid} ref={lengthScrollRef} onScroll={() => updateScrollState(lengthScrollRef, setLengthScroll)}>
                   {nailLengths.map((length) => (
                     <button
                       key={length.id}
@@ -426,12 +453,6 @@ export default function CustomOrderPage() {
                     </button>
                   ))}
                 </div>
-                <button 
-                  onClick={() => scroll('right', lengthScrollRef)}
-                  style={{ position: "absolute", right: "-16px", zIndex: 10, background: "white", borderRadius: "50%", padding: "6px", boxShadow: "0 2px 10px rgba(0,0,0,0.1)", border: "1px solid var(--color-border-light)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", transition: "transform 0.2s" }}
-                >
-                  <ChevronRight size={24} color="var(--color-text)" />
-                </button>
               </div>
             </div>
           )}
@@ -443,13 +464,15 @@ export default function CustomOrderPage() {
                 Select a Design Style
               </h2>
               <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
-                <button 
-                  onClick={() => scroll('left', designScrollRef)}
-                  style={{ position: "absolute", left: "-16px", zIndex: 10, background: "white", borderRadius: "50%", padding: "6px", boxShadow: "0 2px 10px rgba(0,0,0,0.1)", border: "1px solid var(--color-border-light)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", transition: "transform 0.2s" }}
-                >
-                  <ChevronLeft size={24} color="var(--color-text)" />
-                </button>
-                <div className={customStyles.shapeGrid} ref={designScrollRef}>
+                {designScroll.show && (
+                  <button 
+                    onClick={() => scroll(designScroll.atEnd ? 'left' : 'right', designScrollRef)}
+                    style={{ position: "absolute", [designScroll.atEnd ? "left" : "right"]: "-16px", zIndex: 10, background: "white", borderRadius: "50%", padding: "6px", boxShadow: "0 2px 10px rgba(0,0,0,0.1)", border: "1px solid var(--color-border-light)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.2s" }}
+                  >
+                    {designScroll.atEnd ? <ChevronLeft size={24} color="var(--color-text)" /> : <ChevronRight size={24} color="var(--color-text)" />}
+                  </button>
+                )}
+                <div className={customStyles.shapeGrid} ref={designScrollRef} onScroll={() => updateScrollState(designScrollRef, setDesignScroll)}>
                   {DESIGN_OPTIONS.map((design) => (
                     <button
                       key={design.id}
@@ -462,12 +485,6 @@ export default function CustomOrderPage() {
                     </button>
                   ))}
                 </div>
-                <button 
-                  onClick={() => scroll('right', designScrollRef)}
-                  style={{ position: "absolute", right: "-16px", zIndex: 10, background: "white", borderRadius: "50%", padding: "6px", boxShadow: "0 2px 10px rgba(0,0,0,0.1)", border: "1px solid var(--color-border-light)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", transition: "transform 0.2s" }}
-                >
-                  <ChevronRight size={24} color="var(--color-text)" />
-                </button>
               </div>
             </div>
           )}
