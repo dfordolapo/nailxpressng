@@ -270,7 +270,7 @@ export default function CustomOrderPage() {
           {/* Step 1: Shape */}
           {currentStep === 1 && (
             <div>
-              <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "var(--text-2xl)", marginBottom: "var(--space-8)", textAlign: "center", color: "var(--color-text)" }}>
+              <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "1.5rem", marginBottom: "var(--space-6)", textAlign: "center", color: "var(--color-primary-800)" }}>
                 Pick Your Nail Shape
               </h2>
               <div className={customStyles.shapeGrid}>
@@ -290,7 +290,7 @@ export default function CustomOrderPage() {
 
               {inspirations.length > 0 && (
                 <div className={customStyles.inputGroup} style={{ marginTop: "var(--space-8)" }}>
-                  <h3 style={{ fontFamily: "var(--font-heading)", fontSize: "1.5rem", marginBottom: "var(--space-2)", textAlign: "center", color: "var(--color-primary-800)" }}>
+                  <h3 style={{ fontFamily: "var(--font-heading)", fontSize: "1.2rem", marginBottom: "var(--space-2)", textAlign: "center", color: "var(--color-primary-800)" }}>
                     Or Browse Our Inspirations
                   </h3>
                   <p style={{ fontSize: "var(--text-sm)", color: "var(--color-text-secondary)", marginBottom: "var(--space-4)", textAlign: "center" }}>
@@ -334,7 +334,7 @@ export default function CustomOrderPage() {
                             flexShrink: 0
                           }}
                         >
-                          <img src={insp.image_url} alt="Inspiration" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                          <img src={insp.image_url} alt="Inspiration" style={{ width: "100%", height: "100%", objectFit: "contain", backgroundColor: "var(--color-bg-warm)" }} />
                           {order.inspirationUrl === insp.image_url && (
                             <div style={{ position: "absolute", top: 8, right: 8, background: "white", borderRadius: "50%", padding: 2 }}>
                               <CheckCircle size={20} color="var(--color-primary)" />
@@ -395,7 +395,6 @@ export default function CustomOrderPage() {
                     key={length.id}
                     className={`${customStyles.visualCard} ${order.length === length.id ? customStyles.selected : ""}`}
                     onClick={() => updateOrder("length", length.id)}
-                    style={{ minHeight: "180px" }}
                   >
                     <div className={customStyles.cardTitle}>{length.name}</div>
                     <div className={customStyles.cardDescription}>{length.description}</div>
@@ -417,7 +416,6 @@ export default function CustomOrderPage() {
                     key={design.id}
                     className={`${customStyles.visualCard} ${order.design === design.id ? customStyles.selected : ""}`}
                     onClick={() => updateOrder("design", design.id)}
-                    style={{ minHeight: "160px" }}
                   >
                     {design.emoji && <div style={{ fontSize: "2rem", marginBottom: "var(--space-3)" }}>{design.emoji}</div>}
                     <div className={customStyles.cardTitle} style={design.emoji ? {} : { marginBottom: "var(--space-2)" }}>{design.name}</div>
