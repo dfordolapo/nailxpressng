@@ -132,8 +132,7 @@
     padding-right: var(--space-4);
     margin-left: calc(-1 * var(--space-4));
     margin-right: calc(-1 * var(--space-4));
-    -webkit-mask-image: linear-gradient(to right, black 90%, transparent 100%);
-    mask-image: linear-gradient(to right, black 90%, transparent 100%);
+    gap: var(--space-3);
   }
 }
 
@@ -171,7 +170,7 @@
 @media (max-width: 768px) {
   .visualCard {
     flex: 0 0 auto;
-    width: 115px;
+    width: 80px;
     padding: var(--space-2);
   }
 }

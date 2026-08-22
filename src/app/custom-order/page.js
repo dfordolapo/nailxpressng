@@ -31,13 +31,16 @@ const DESIGN_OPTIONS = [
 export default function CustomOrderPage() {
   const [currentStep, setCurrentStep] = useState(1);
   const scrollRef = useRef(null);
+  const shapeScrollRef = useRef(null);
+  const lengthScrollRef = useRef(null);
+  const designScrollRef = useRef(null);
 
   const isScrolling = useRef(false);
 
-  const scroll = (direction) => {
-    if (scrollRef.current) {
+  const scroll = (direction, ref = scrollRef) => {
+    if (ref.current) {
       isScrolling.current = true;
-      const { scrollLeft, clientWidth } = scrollRef.current;
+      const { scrollLeft, clientWidth } = ref.current;
       const scrollAmount = clientWidth * 0.8;
       scrollRef.current.scrollTo({
         left: direction === 'left' ? scrollLeft - scrollAmount : scrollLeft + scrollAmount,
@@ -273,19 +276,33 @@ export default function CustomOrderPage() {
               <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "1.2rem", marginBottom: "var(--space-3)", textAlign: "center", color: "var(--color-primary-800)" }}>
                 Pick Your Nail Shape
               </h2>
-              <div className={customStyles.shapeGrid}>
-                {nailShapes.map((shape) => (
-                  <button
-                    key={shape.id}
-                    className={`${customStyles.visualCard} ${order.shape === shape.id ? customStyles.selected : ""}`}
-                    onClick={() => updateOrder("shape", shape.id)}
-                  >
-                    <div className={customStyles.cardImageContainer}>
-                      <img src={shape.image} alt={`${shape.name} nail shape`} />
-                    </div>
-                    <div className={customStyles.cardTitle}>{shape.name}</div>
-                  </button>
-                ))}
+              <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
+                <button 
+                  onClick={() => scroll('left', shapeScrollRef)}
+                  style={{ position: "absolute", left: "-16px", zIndex: 10, background: "white", borderRadius: "50%", padding: "6px", boxShadow: "0 2px 10px rgba(0,0,0,0.1)", border: "1px solid var(--color-border-light)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", transition: "transform 0.2s" }}
+                >
+                  <ChevronLeft size={24} color="var(--color-text)" />
+                </button>
+                <div className={customStyles.shapeGrid} ref={shapeScrollRef}>
+                  {nailShapes.map((shape) => (
+                    <button
+                      key={shape.id}
+                      className={`${customStyles.visualCard} ${order.shape === shape.id ? customStyles.selected : ""}`}
+                      onClick={() => updateOrder("shape", shape.id)}
+                    >
+                      <div className={customStyles.cardImageContainer}>
+                        <img src={shape.image} alt={`${shape.name} nail shape`} />
+                      </div>
+                      <div className={customStyles.cardTitle}>{shape.name}</div>
+                    </button>
+                  ))}
+                </div>
+                <button 
+                  onClick={() => scroll('right', shapeScrollRef)}
+                  style={{ position: "absolute", right: "-16px", zIndex: 10, background: "white", borderRadius: "50%", padding: "6px", boxShadow: "0 2px 10px rgba(0,0,0,0.1)", border: "1px solid var(--color-border-light)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", transition: "transform 0.2s" }}
+                >
+                  <ChevronRight size={24} color="var(--color-text)" />
+                </button>
               </div>
 
               {inspirations.length > 0 && (
@@ -390,17 +407,31 @@ export default function CustomOrderPage() {
               <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "1.2rem", marginBottom: "var(--space-3)", textAlign: "center", color: "var(--color-primary-800)" }}>
                 Choose Your Length
               </h2>
-              <div className={customStyles.shapeGrid}>
-                {nailLengths.map((length) => (
-                  <button
-                    key={length.id}
-                    className={`${customStyles.visualCard} ${order.length === length.id ? customStyles.selected : ""}`}
-                    onClick={() => updateOrder("length", length.id)}
-                  >
-                    <div className={customStyles.cardTitle}>{length.name}</div>
-                    <div className={customStyles.cardDescription}>{length.description}</div>
-                  </button>
-                ))}
+              <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
+                <button 
+                  onClick={() => scroll('left', lengthScrollRef)}
+                  style={{ position: "absolute", left: "-16px", zIndex: 10, background: "white", borderRadius: "50%", padding: "6px", boxShadow: "0 2px 10px rgba(0,0,0,0.1)", border: "1px solid var(--color-border-light)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", transition: "transform 0.2s" }}
+                >
+                  <ChevronLeft size={24} color="var(--color-text)" />
+                </button>
+                <div className={customStyles.shapeGrid} ref={lengthScrollRef}>
+                  {nailLengths.map((length) => (
+                    <button
+                      key={length.id}
+                      className={`${customStyles.visualCard} ${order.length === length.id ? customStyles.selected : ""}`}
+                      onClick={() => updateOrder("length", length.id)}
+                    >
+                      <div className={customStyles.cardTitle}>{length.name}</div>
+                      <div className={customStyles.cardDescription}>{length.description}</div>
+                    </button>
+                  ))}
+                </div>
+                <button 
+                  onClick={() => scroll('right', lengthScrollRef)}
+                  style={{ position: "absolute", right: "-16px", zIndex: 10, background: "white", borderRadius: "50%", padding: "6px", boxShadow: "0 2px 10px rgba(0,0,0,0.1)", border: "1px solid var(--color-border-light)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", transition: "transform 0.2s" }}
+                >
+                  <ChevronRight size={24} color="var(--color-text)" />
+                </button>
               </div>
             </div>
           )}
@@ -411,18 +442,32 @@ export default function CustomOrderPage() {
               <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "1.2rem", marginBottom: "var(--space-3)", textAlign: "center", color: "var(--color-primary-800)" }}>
                 Select a Design Style
               </h2>
-              <div className={customStyles.shapeGrid}>
-                {DESIGN_OPTIONS.map((design) => (
-                  <button
-                    key={design.id}
-                    className={`${customStyles.visualCard} ${order.design === design.id ? customStyles.selected : ""}`}
-                    onClick={() => updateOrder("design", design.id)}
-                  >
-                    {design.emoji && <div style={{ fontSize: "2rem", marginBottom: "var(--space-3)" }}>{design.emoji}</div>}
-                    <div className={customStyles.cardTitle} style={design.emoji ? {} : { marginBottom: "var(--space-2)" }}>{design.name}</div>
-                    <div className={customStyles.cardDescription}>{design.description}</div>
-                  </button>
-                ))}
+              <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
+                <button 
+                  onClick={() => scroll('left', designScrollRef)}
+                  style={{ position: "absolute", left: "-16px", zIndex: 10, background: "white", borderRadius: "50%", padding: "6px", boxShadow: "0 2px 10px rgba(0,0,0,0.1)", border: "1px solid var(--color-border-light)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", transition: "transform 0.2s" }}
+                >
+                  <ChevronLeft size={24} color="var(--color-text)" />
+                </button>
+                <div className={customStyles.shapeGrid} ref={designScrollRef}>
+                  {DESIGN_OPTIONS.map((design) => (
+                    <button
+                      key={design.id}
+                      className={`${customStyles.visualCard} ${order.design === design.id ? customStyles.selected : ""}`}
+                      onClick={() => updateOrder("design", design.id)}
+                    >
+                      {design.emoji && <div style={{ fontSize: "2rem", marginBottom: "var(--space-3)" }}>{design.emoji}</div>}
+                      <div className={customStyles.cardTitle} style={design.emoji ? {} : { marginBottom: "var(--space-2)" }}>{design.name}</div>
+                      <div className={customStyles.cardDescription}>{design.description}</div>
+                    </button>
+                  ))}
+                </div>
+                <button 
+                  onClick={() => scroll('right', designScrollRef)}
+                  style={{ position: "absolute", right: "-16px", zIndex: 10, background: "white", borderRadius: "50%", padding: "6px", boxShadow: "0 2px 10px rgba(0,0,0,0.1)", border: "1px solid var(--color-border-light)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", transition: "transform 0.2s" }}
+                >
+                  <ChevronRight size={24} color="var(--color-text)" />
+                </button>
               </div>
             </div>
           )}
