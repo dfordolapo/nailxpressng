@@ -69,6 +69,16 @@ const mapProduct = (p, discount = 0) => {
   };
 };
 
+// Fisher-Yates shuffle to randomize products
+function shuffleArray(array) {
+  const newArray = [...array];
+  for (let i = newArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+  }
+  return newArray;
+}
+
 export async function getProducts() {
   const [{ data, error }, discount] = await Promise.all([
     supabase.from('products').select('*, categories(slug, name)'),
@@ -78,7 +88,7 @@ export async function getProducts() {
     console.error('Error fetching products:', error);
     return [];
   }
-  return data.map((p) => mapProduct(p, discount));
+  return shuffleArray(data.map((p) => mapProduct(p, discount)));
 }
 
 export async function getProductBySlug(slug) {
@@ -107,7 +117,7 @@ export async function getProductsByCategory(categorySlug) {
     getSitewideDiscount(),
   ]);
   if (error) return [];
-  return data.map((p) => mapProduct(p, discount));
+  return shuffleArray(data.map((p) => mapProduct(p, discount)));
 }
 
 export async function getProductsByIds(ids) {
@@ -126,7 +136,7 @@ export async function getFeaturedProducts() {
     getSitewideDiscount(),
   ]);
   if (error) return [];
-  return data.map((p) => mapProduct(p, discount));
+  return shuffleArray(data.map((p) => mapProduct(p, discount)));
 }
 
 export async function getBestsellers() {
@@ -135,7 +145,7 @@ export async function getBestsellers() {
     getSitewideDiscount(),
   ]);
   if (error) return [];
-  return data.map((p) => mapProduct(p, discount));
+  return shuffleArray(data.map((p) => mapProduct(p, discount)));
 }
 
 export async function searchProducts(query) {
