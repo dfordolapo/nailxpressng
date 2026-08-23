@@ -5,7 +5,7 @@ import styles from './Testimonials.module.css';
 const TESTIMONIALS_DATA = [
   {
     id: 1,
-    text: "You might say you were just selling your product, but you sold me an experience. You sold joy and confidence through this set.",
+    text: "You didn't just sell me a product, you sold me an experience. You sold joy and confidence through this set.",
     name: "Phummie",
     role: "Lagos, NG",
     avatar: "/images/dolapo.jpg",
