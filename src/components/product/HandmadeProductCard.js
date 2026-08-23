@@ -203,17 +203,8 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
             <div className={styles.shine} />
 
             <div className={styles.badges}>
-              {!product.inStock ? (
+              {!product.inStock && (
                 <span className={`${styles.badge}`} style={{ backgroundColor: "var(--color-surface-hover)", color: "var(--color-text-secondary)", border: "1px solid var(--color-border)" }}>Sold Out</span>
-              ) : (
-                <>
-                  {product.newArrival && (
-                    <span className={`${styles.badge} ${styles.badgeNew}`}>New</span>
-                  )}
-                  {product.bestseller && (
-                    <span className={`${styles.badge} ${styles.badgeBestseller}`}>Bestseller</span>
-                  )}
-                </>
               )}
             </div>
 

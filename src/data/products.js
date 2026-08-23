@@ -2002,6 +2002,4121 @@ export const products = [
       "pattern",
       "mixed"
     ]
+  },
+  {
+      "id": 143,
+      "slug": "velvet-gem-144",
+      "name": "Velvet Gem",
+      "price": 11500,
+      "compareAtPrice": 13500,
+      "description": "A stunning custom handmade set named Velvet Gem. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/0CA15AE0-DB94-4430-B735-01CE27565C41.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "oval",
+      "style": "custom",
+      "colors": [
+          "nude",
+          "purple"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 144,
+      "slug": "dreamy-halo-145",
+      "name": "Dreamy Halo",
+      "price": 12500,
+      "compareAtPrice": 14500,
+      "description": "A stunning custom handmade set named Dreamy Halo. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/176564D5-B430-4AB4-9CBF-866757EA86F1.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "oval",
+      "style": "custom",
+      "colors": [
+          "gold",
+          "green"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": false
+  },
+  {
+      "id": 145,
+      "slug": "midnight-glow-146",
+      "name": "Midnight Glow",
+      "price": 12500,
+      "compareAtPrice": 14500,
+      "description": "A stunning custom handmade set named Midnight Glow. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/198FF394-69AF-4F0A-810D-79CE6C20CC6F.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "stiletto",
+      "style": "custom",
+      "colors": [
+          "green",
+          "nude"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 146,
+      "slug": "mystic-eclipse-147",
+      "name": "Mystic Eclipse",
+      "price": 14500,
+      "compareAtPrice": 16500,
+      "description": "A stunning custom handmade set named Mystic Eclipse. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/254CFEEA-7A7C-4FE3-9E4C-E08301ED8FED.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "square",
+      "style": "custom",
+      "colors": [
+          "gold",
+          "white"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": false
+  },
+  {
+      "id": 147,
+      "slug": "matte-pearl-148",
+      "name": "Matte Pearl",
+      "price": 12500,
+      "compareAtPrice": 14500,
+      "description": "A stunning custom handmade set named Matte Pearl. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/2AA4C98A-4845-4545-BD10-99A472DB3950.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "almond",
+      "style": "custom",
+      "colors": [
+          "purple",
+          "green"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": false
+  },
+  {
+      "id": 148,
+      "slug": "mystic-charm-149",
+      "name": "Mystic Charm",
+      "price": 11500,
+      "compareAtPrice": 13500,
+      "description": "A stunning custom handmade set named Mystic Charm. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/2BC79C26-8C5D-470F-85B1-EC112A2B47C6.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "squoval",
+      "style": "custom",
+      "colors": [
+          "green"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": false
+  },
+  {
+      "id": 149,
+      "slug": "luxe-halo-150",
+      "name": "Luxe Halo",
+      "price": 12500,
+      "compareAtPrice": 14500,
+      "description": "A stunning custom handmade set named Luxe Halo. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/2C78BF5A-57CD-47AA-B05C-E40DDAEFC6CC.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "stiletto",
+      "style": "custom",
+      "colors": [
+          "green",
+          "purple"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 150,
+      "slug": "soft-rose-151",
+      "name": "Soft Rose",
+      "price": 12500,
+      "compareAtPrice": 14500,
+      "description": "A stunning custom handmade set named Soft Rose. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/327D6E74-92BE-4FFB-8694-6FB97975CC96.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "stiletto",
+      "style": "custom",
+      "colors": [
+          "nude",
+          "red"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": false
+  },
+  {
+      "id": 151,
+      "slug": "luxe-gem-152",
+      "name": "Luxe Gem",
+      "price": 11500,
+      "compareAtPrice": 13500,
+      "description": "A stunning custom handmade set named Luxe Gem. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/32C3D1BC-5F26-401A-BEC3-3975AE635AD6.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "square",
+      "style": "custom",
+      "colors": [
+          "green",
+          "black"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 152,
+      "slug": "mystic-aura-153",
+      "name": "Mystic Aura",
+      "price": 11500,
+      "compareAtPrice": 13500,
+      "description": "A stunning custom handmade set named Mystic Aura. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/34CE6FB2-60EC-4DB3-A575-9DA4870534D9.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "coffin",
+      "style": "custom",
+      "colors": [
+          "red",
+          "nude"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 153,
+      "slug": "midnight-bloom-154",
+      "name": "Midnight Bloom",
+      "price": 9500,
+      "compareAtPrice": 11500,
+      "description": "A stunning custom handmade set named Midnight Bloom. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/357ED727-C067-488D-9163-1AE55AFB0C4B.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "oval",
+      "style": "custom",
+      "colors": [
+          "gold",
+          "black"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 154,
+      "slug": "glossy-glow-155",
+      "name": "Glossy Glow",
+      "price": 14500,
+      "compareAtPrice": 16500,
+      "description": "A stunning custom handmade set named Glossy Glow. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/387015C9-E0AB-49CE-99A0-F581FB50F2C9.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "almond",
+      "style": "custom",
+      "colors": [
+          "gold",
+          "silver"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 155,
+      "slug": "midnight-vibe-156",
+      "name": "Midnight Vibe",
+      "price": 10500,
+      "compareAtPrice": 12500,
+      "description": "A stunning custom handmade set named Midnight Vibe. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/3AA54BD9-16E3-4435-BA05-0E97AFB6E46B.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "oval",
+      "style": "custom",
+      "colors": [
+          "pink",
+          "nude"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 156,
+      "slug": "glossy-glow-157",
+      "name": "Glossy Glow",
+      "price": 7500,
+      "compareAtPrice": 9500,
+      "description": "A stunning custom handmade set named Glossy Glow. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/3B76658D-6CFA-48B5-8461-288F0AEFE9EA.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "coffin",
+      "style": "custom",
+      "colors": [
+          "green",
+          "purple"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": true
+  },
+  {
+      "id": 157,
+      "slug": "subtle-aura-158",
+      "name": "Subtle Aura",
+      "price": 14500,
+      "compareAtPrice": 16500,
+      "description": "A stunning custom handmade set named Subtle Aura. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/422B2CDC-5FA8-4200-BBC9-20DDB496A5A3.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "stiletto",
+      "style": "custom",
+      "colors": [
+          "gold",
+          "white"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 158,
+      "slug": "midnight-quartz-159",
+      "name": "Midnight Quartz",
+      "price": 14500,
+      "compareAtPrice": 16500,
+      "description": "A stunning custom handmade set named Midnight Quartz. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/427FBA99-CB56-436E-8760-102D20CD6EC8.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "almond",
+      "style": "custom",
+      "colors": [
+          "gold",
+          "black"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 159,
+      "slug": "dreamy-halo-160",
+      "name": "Dreamy Halo",
+      "price": 10500,
+      "compareAtPrice": 12500,
+      "description": "A stunning custom handmade set named Dreamy Halo. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/454C3F85-C8C3-4B4B-8B71-D2F81DCE0C18.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "stiletto",
+      "style": "custom",
+      "colors": [
+          "green"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": false
+  },
+  {
+      "id": 160,
+      "slug": "midnight-glow-161",
+      "name": "Midnight Glow",
+      "price": 8500,
+      "compareAtPrice": 10500,
+      "description": "A stunning custom handmade set named Midnight Glow. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/4727575C-FE79-4515-AF54-DBF8A40277E1.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "squoval",
+      "style": "custom",
+      "colors": [
+          "red",
+          "purple"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 161,
+      "slug": "bold-vibe-162",
+      "name": "Bold Vibe",
+      "price": 9500,
+      "compareAtPrice": 11500,
+      "description": "A stunning custom handmade set named Bold Vibe. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/4EACCEDD-5B50-44C2-9F18-04D7113F56D1.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "oval",
+      "style": "custom",
+      "colors": [
+          "silver",
+          "purple"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 162,
+      "slug": "vibrant-petal-163",
+      "name": "Vibrant Petal",
+      "price": 12500,
+      "compareAtPrice": 14500,
+      "description": "A stunning custom handmade set named Vibrant Petal. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/55C13A8E-D89A-42EA-851D-8E53CE8ED882.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "coffin",
+      "style": "custom",
+      "colors": [
+          "purple"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 163,
+      "slug": "velvet-quartz-164",
+      "name": "Velvet Quartz",
+      "price": 12500,
+      "compareAtPrice": 14500,
+      "description": "A stunning custom handmade set named Velvet Quartz. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/560BBDF6-3ED2-4E04-96BB-4BFA994FEE70.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "coffin",
+      "style": "custom",
+      "colors": [
+          "white",
+          "nude"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 164,
+      "slug": "glamour-bloom-165",
+      "name": "Glamour Bloom",
+      "price": 14500,
+      "compareAtPrice": 16500,
+      "description": "A stunning custom handmade set named Glamour Bloom. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/56B80B7F-BC4E-4753-9CBF-DED2CBEFC7A8.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "stiletto",
+      "style": "custom",
+      "colors": [
+          "red",
+          "blue"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": false
+  },
+  {
+      "id": 165,
+      "slug": "glazed-rose-166",
+      "name": "Glazed Rose",
+      "price": 12500,
+      "compareAtPrice": 14500,
+      "description": "A stunning custom handmade set named Glazed Rose. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/592DE443-E69A-4CC2-8B9B-78E437B2E1A5.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "oval",
+      "style": "custom",
+      "colors": [
+          "nude",
+          "black"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 166,
+      "slug": "velvet-gem-167",
+      "name": "Velvet Gem",
+      "price": 8500,
+      "compareAtPrice": 10500,
+      "description": "A stunning custom handmade set named Velvet Gem. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/62207CED-73D6-4175-8553-09165180F7D9.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "oval",
+      "style": "custom",
+      "colors": [
+          "white",
+          "green"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": true
+  },
+  {
+      "id": 167,
+      "slug": "soft-pearl-168",
+      "name": "Soft Pearl",
+      "price": 9500,
+      "compareAtPrice": 11500,
+      "description": "A stunning custom handmade set named Soft Pearl. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/6361CE6D-6368-40D3-B3CA-0F4C850A83B2.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "coffin",
+      "style": "custom",
+      "colors": [
+          "pink",
+          "gold"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 168,
+      "slug": "luxe-pearl-169",
+      "name": "Luxe Pearl",
+      "price": 12500,
+      "compareAtPrice": 14500,
+      "description": "A stunning custom handmade set named Luxe Pearl. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/6702F001-94EA-459A-B940-B4A4750B695E.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "stiletto",
+      "style": "custom",
+      "colors": [
+          "silver",
+          "nude"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": true
+  },
+  {
+      "id": 169,
+      "slug": "glossy-gem-170",
+      "name": "Glossy Gem",
+      "price": 9500,
+      "compareAtPrice": 11500,
+      "description": "A stunning custom handmade set named Glossy Gem. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/670F85D4-FFFF-4703-9E43-DA73266A4DDC.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "coffin",
+      "style": "custom",
+      "colors": [
+          "purple",
+          "blue"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 170,
+      "slug": "matte-rose-171",
+      "name": "Matte Rose",
+      "price": 14500,
+      "compareAtPrice": 16500,
+      "description": "A stunning custom handmade set named Matte Rose. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/6BD71292-E2A0-4851-9902-85D8CAEDBB26.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "oval",
+      "style": "custom",
+      "colors": [
+          "green",
+          "black"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 171,
+      "slug": "chic-dusk-172",
+      "name": "Chic Dusk",
+      "price": 13500,
+      "compareAtPrice": 15500,
+      "description": "A stunning custom handmade set named Chic Dusk. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/73ACE369-2B36-42F4-911A-29F21E22676F.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "oval",
+      "style": "custom",
+      "colors": [
+          "red",
+          "purple"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": false
+  },
+  {
+      "id": 172,
+      "slug": "luxe-quartz-173",
+      "name": "Luxe Quartz",
+      "price": 7500,
+      "compareAtPrice": 9500,
+      "description": "A stunning custom handmade set named Luxe Quartz. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/7477B0D5-2F82-4C5E-8B9B-DBF7B95792A5.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "oval",
+      "style": "custom",
+      "colors": [
+          "gold",
+          "purple"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": false
+  },
+  {
+      "id": 173,
+      "slug": "elegant-vibe-174",
+      "name": "Elegant Vibe",
+      "price": 10500,
+      "compareAtPrice": 12500,
+      "description": "A stunning custom handmade set named Elegant Vibe. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/75CB9273-BCBB-47B1-A54F-1856471C482C.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "square",
+      "style": "custom",
+      "colors": [
+          "gold",
+          "silver"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": true
+  },
+  {
+      "id": 174,
+      "slug": "mystic-glow-175",
+      "name": "Mystic Glow",
+      "price": 9500,
+      "compareAtPrice": 11500,
+      "description": "A stunning custom handmade set named Mystic Glow. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/776D57DC-C4EB-4B2C-B378-E08065B443F0.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "coffin",
+      "style": "custom",
+      "colors": [
+          "pink",
+          "nude"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 175,
+      "slug": "chic-pearl-176",
+      "name": "Chic Pearl",
+      "price": 8500,
+      "compareAtPrice": 10500,
+      "description": "A stunning custom handmade set named Chic Pearl. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/7D38DD4B-8C7C-4A31-B3D1-1D19545EB5B5.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "coffin",
+      "style": "custom",
+      "colors": [
+          "black",
+          "green"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 176,
+      "slug": "glazed-petal-177",
+      "name": "Glazed Petal",
+      "price": 13500,
+      "compareAtPrice": 15500,
+      "description": "A stunning custom handmade set named Glazed Petal. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/8597212E-675E-46DD-8AEA-E880297E2D7D.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "stiletto",
+      "style": "custom",
+      "colors": [
+          "nude",
+          "blue"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": true
+  },
+  {
+      "id": 177,
+      "slug": "fierce-crystal-178",
+      "name": "Fierce Crystal",
+      "price": 14500,
+      "compareAtPrice": 16500,
+      "description": "A stunning custom handmade set named Fierce Crystal. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/89CCF55C-75D4-4758-A849-EEDAFE4DE909.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "squoval",
+      "style": "custom",
+      "colors": [
+          "blue",
+          "green"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 178,
+      "slug": "dreamy-bloom-179",
+      "name": "Dreamy Bloom",
+      "price": 14500,
+      "compareAtPrice": 16500,
+      "description": "A stunning custom handmade set named Dreamy Bloom. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/8F80CA8A-3183-4770-9DF3-1437477DB87F.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "oval",
+      "style": "custom",
+      "colors": [
+          "purple",
+          "green"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 179,
+      "slug": "subtle-petal-180",
+      "name": "Subtle Petal",
+      "price": 14500,
+      "compareAtPrice": 16500,
+      "description": "A stunning custom handmade set named Subtle Petal. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/8FE9B11E-FF23-4A53-819A-505AC44D8879.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "stiletto",
+      "style": "custom",
+      "colors": [
+          "black",
+          "green"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": true
+  },
+  {
+      "id": 180,
+      "slug": "mystic-gem-181",
+      "name": "Mystic Gem",
+      "price": 8500,
+      "compareAtPrice": 10500,
+      "description": "A stunning custom handmade set named Mystic Gem. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/8FFCAA53-56A4-4458-9CE3-F65F70B8B212.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "almond",
+      "style": "custom",
+      "colors": [
+          "green",
+          "gold"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 181,
+      "slug": "mystic-rose-182",
+      "name": "Mystic Rose",
+      "price": 11500,
+      "compareAtPrice": 13500,
+      "description": "A stunning custom handmade set named Mystic Rose. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/90A82006-E71C-422B-B57C-3F24D14398D8.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "coffin",
+      "style": "custom",
+      "colors": [
+          "purple",
+          "nude"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 182,
+      "slug": "bold-petal-183",
+      "name": "Bold Petal",
+      "price": 14500,
+      "compareAtPrice": 16500,
+      "description": "A stunning custom handmade set named Bold Petal. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/93206EBC-9643-432D-A718-361162FE48BC.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "squoval",
+      "style": "custom",
+      "colors": [
+          "nude",
+          "white"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": false
+  },
+  {
+      "id": 183,
+      "slug": "chic-crystal-184",
+      "name": "Chic Crystal",
+      "price": 11500,
+      "compareAtPrice": 13500,
+      "description": "A stunning custom handmade set named Chic Crystal. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/9D209AAC-7B90-43AB-A66F-FDD64B5CC78C.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "squoval",
+      "style": "custom",
+      "colors": [
+          "gold",
+          "red"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": true
+  },
+  {
+      "id": 184,
+      "slug": "matte-petal-185",
+      "name": "Matte Petal",
+      "price": 13500,
+      "compareAtPrice": 15500,
+      "description": "A stunning custom handmade set named Matte Petal. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/A2BA7E06-7A0C-4F26-BB92-5A8665105EEC.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "oval",
+      "style": "custom",
+      "colors": [
+          "nude",
+          "white"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 185,
+      "slug": "vibrant-halo-186",
+      "name": "Vibrant Halo",
+      "price": 13500,
+      "compareAtPrice": 15500,
+      "description": "A stunning custom handmade set named Vibrant Halo. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/A2DF508E-D951-4FEF-88C2-09F888D6A650.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "squoval",
+      "style": "custom",
+      "colors": [
+          "green",
+          "nude"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 186,
+      "slug": "bold-crystal-187",
+      "name": "Bold Crystal",
+      "price": 12500,
+      "compareAtPrice": 14500,
+      "description": "A stunning custom handmade set named Bold Crystal. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/A3DE1548-FFF5-4A7C-B94B-1E4AB85A2853.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "square",
+      "style": "custom",
+      "colors": [
+          "black",
+          "purple"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": false
+  },
+  {
+      "id": 187,
+      "slug": "fierce-glow-188",
+      "name": "Fierce Glow",
+      "price": 7500,
+      "compareAtPrice": 9500,
+      "description": "A stunning custom handmade set named Fierce Glow. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/A43E3F97-0E22-4503-A747-ADD33DC0C588.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "squoval",
+      "style": "custom",
+      "colors": [
+          "black",
+          "gold"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 188,
+      "slug": "luxe-onyx-189",
+      "name": "Luxe Onyx",
+      "price": 9500,
+      "compareAtPrice": 11500,
+      "description": "A stunning custom handmade set named Luxe Onyx. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/A5D3B735-91C2-4B8B-A432-268CCFF137A9.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "squoval",
+      "style": "custom",
+      "colors": [
+          "green",
+          "blue"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": true
+  },
+  {
+      "id": 189,
+      "slug": "elegant-charm-190",
+      "name": "Elegant Charm",
+      "price": 7500,
+      "compareAtPrice": 9500,
+      "description": "A stunning custom handmade set named Elegant Charm. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/A73E802D-1C1C-4BFC-90E9-052EBEA63D0D.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "square",
+      "style": "custom",
+      "colors": [
+          "blue",
+          "gold"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": true
+  },
+  {
+      "id": 190,
+      "slug": "soft-aura-191",
+      "name": "Soft Aura",
+      "price": 8500,
+      "compareAtPrice": 10500,
+      "description": "A stunning custom handmade set named Soft Aura. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/A8C55C76-F1B6-46E9-9098-7284EDA52169.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "stiletto",
+      "style": "custom",
+      "colors": [
+          "gold",
+          "red"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 191,
+      "slug": "glamour-charm-192",
+      "name": "Glamour Charm",
+      "price": 12500,
+      "compareAtPrice": 14500,
+      "description": "A stunning custom handmade set named Glamour Charm. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/AB452090-D61F-4C5E-86B0-51C13187ECC4.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "squoval",
+      "style": "custom",
+      "colors": [
+          "pink",
+          "gold"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": true
+  },
+  {
+      "id": 192,
+      "slug": "subtle-aura-193",
+      "name": "Subtle Aura",
+      "price": 14500,
+      "compareAtPrice": 16500,
+      "description": "A stunning custom handmade set named Subtle Aura. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/AE4B81C4-95D9-4DDD-8FF5-E4A01C6BC4FC.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "square",
+      "style": "custom",
+      "colors": [
+          "purple",
+          "white"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 193,
+      "slug": "soft-bloom-194",
+      "name": "Soft Bloom",
+      "price": 11500,
+      "compareAtPrice": 13500,
+      "description": "A stunning custom handmade set named Soft Bloom. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/AE7234AF-E2DE-4B04-B915-7066D77C4F4C.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "almond",
+      "style": "custom",
+      "colors": [
+          "pink",
+          "silver"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": true
+  },
+  {
+      "id": 194,
+      "slug": "glossy-aura-195",
+      "name": "Glossy Aura",
+      "price": 9500,
+      "compareAtPrice": 11500,
+      "description": "A stunning custom handmade set named Glossy Aura. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/B029F57B-5752-4E3F-A860-8B1373171A1D.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "stiletto",
+      "style": "custom",
+      "colors": [
+          "purple",
+          "blue"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 195,
+      "slug": "sparkle-rose-196",
+      "name": "Sparkle Rose",
+      "price": 13500,
+      "compareAtPrice": 15500,
+      "description": "A stunning custom handmade set named Sparkle Rose. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/B2986DC3-8911-4FD3-9322-D2DA0AE2D5B1.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "squoval",
+      "style": "custom",
+      "colors": [
+          "silver",
+          "green"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": false
+  },
+  {
+      "id": 196,
+      "slug": "midnight-onyx-197",
+      "name": "Midnight Onyx",
+      "price": 8500,
+      "compareAtPrice": 10500,
+      "description": "A stunning custom handmade set named Midnight Onyx. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/B82233CC-C6D0-4478-900F-9D0BEE8E71E8.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "coffin",
+      "style": "custom",
+      "colors": [
+          "blue",
+          "purple"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": false
+  },
+  {
+      "id": 197,
+      "slug": "soft-onyx-198",
+      "name": "Soft Onyx",
+      "price": 9500,
+      "compareAtPrice": 11500,
+      "description": "A stunning custom handmade set named Soft Onyx. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/BE324685-1BF2-4612-8E42-7FE6F60ED475.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "squoval",
+      "style": "custom",
+      "colors": [
+          "blue",
+          "green"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": false
+  },
+  {
+      "id": 198,
+      "slug": "radiant-dawn-199",
+      "name": "Radiant Dawn",
+      "price": 7500,
+      "compareAtPrice": 9500,
+      "description": "A stunning custom handmade set named Radiant Dawn. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/C2C7B7DC-81E9-4CC9-BDD2-5C83CD52020A.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "stiletto",
+      "style": "custom",
+      "colors": [
+          "nude",
+          "silver"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 199,
+      "slug": "bold-glow-200",
+      "name": "Bold Glow",
+      "price": 9500,
+      "compareAtPrice": 11500,
+      "description": "A stunning custom handmade set named Bold Glow. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/C379AD9A-F12F-46E2-811C-12728BA47615.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "coffin",
+      "style": "custom",
+      "colors": [
+          "purple",
+          "silver"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": true
+  },
+  {
+      "id": 200,
+      "slug": "soft-vibe-201",
+      "name": "Soft Vibe",
+      "price": 7500,
+      "compareAtPrice": 9500,
+      "description": "A stunning custom handmade set named Soft Vibe. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/C3850C7A-6EE4-4F04-B305-3B34FC147FC8.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "square",
+      "style": "custom",
+      "colors": [
+          "silver",
+          "purple"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": false
+  },
+  {
+      "id": 201,
+      "slug": "fierce-glow-202",
+      "name": "Fierce Glow",
+      "price": 10500,
+      "compareAtPrice": 12500,
+      "description": "A stunning custom handmade set named Fierce Glow. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/C48E8805-911B-4454-A747-B9DD539E7915.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "square",
+      "style": "custom",
+      "colors": [
+          "green",
+          "nude"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": true
+  },
+  {
+      "id": 202,
+      "slug": "chic-dusk-203",
+      "name": "Chic Dusk",
+      "price": 11500,
+      "compareAtPrice": 13500,
+      "description": "A stunning custom handmade set named Chic Dusk. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/C4E7345C-3764-4E22-9673-44A3B4A01D00.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "oval",
+      "style": "custom",
+      "colors": [
+          "gold"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 203,
+      "slug": "matte-dusk-204",
+      "name": "Matte Dusk",
+      "price": 14500,
+      "compareAtPrice": 16500,
+      "description": "A stunning custom handmade set named Matte Dusk. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/C70F979A-CB05-4825-8FD7-D8D5A3C1CDAB.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "almond",
+      "style": "custom",
+      "colors": [
+          "silver",
+          "gold"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 204,
+      "slug": "glazed-dawn-205",
+      "name": "Glazed Dawn",
+      "price": 13500,
+      "compareAtPrice": 15500,
+      "description": "A stunning custom handmade set named Glazed Dawn. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/CAE43CA3-111B-4621-A073-7482FB911749.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "almond",
+      "style": "custom",
+      "colors": [
+          "blue",
+          "silver"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 205,
+      "slug": "velvet-quartz-206",
+      "name": "Velvet Quartz",
+      "price": 11500,
+      "compareAtPrice": 13500,
+      "description": "A stunning custom handmade set named Velvet Quartz. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/CD0C80CA-F658-46FE-ABAC-91582AD85ECD.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "square",
+      "style": "custom",
+      "colors": [
+          "pink",
+          "gold"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": false
+  },
+  {
+      "id": 206,
+      "slug": "classic-onyx-207",
+      "name": "Classic Onyx",
+      "price": 11500,
+      "compareAtPrice": 13500,
+      "description": "A stunning custom handmade set named Classic Onyx. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/CF157BA5-7931-4A13-9099-A3624E2E0025.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "coffin",
+      "style": "custom",
+      "colors": [
+          "silver",
+          "red"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 207,
+      "slug": "luxe-eclipse-208",
+      "name": "Luxe Eclipse",
+      "price": 12500,
+      "compareAtPrice": 14500,
+      "description": "A stunning custom handmade set named Luxe Eclipse. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/D1A1ACC9-2C15-4E5A-BC02-1250F135B770.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "stiletto",
+      "style": "custom",
+      "colors": [
+          "pink",
+          "purple"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": true
+  },
+  {
+      "id": 208,
+      "slug": "glazed-quartz-209",
+      "name": "Glazed Quartz",
+      "price": 10500,
+      "compareAtPrice": 12500,
+      "description": "A stunning custom handmade set named Glazed Quartz. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/D2F8ADD2-B1B2-443B-BBC3-B411D48313D3.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "stiletto",
+      "style": "custom",
+      "colors": [
+          "black",
+          "nude"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": false
+  },
+  {
+      "id": 209,
+      "slug": "elegant-onyx-210",
+      "name": "Elegant Onyx",
+      "price": 14500,
+      "compareAtPrice": 16500,
+      "description": "A stunning custom handmade set named Elegant Onyx. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/D31AFAB6-3058-4CE9-8F27-1B2503D949B2.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "square",
+      "style": "custom",
+      "colors": [
+          "green",
+          "silver"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": false
+  },
+  {
+      "id": 210,
+      "slug": "matte-eclipse-211",
+      "name": "Matte Eclipse",
+      "price": 9500,
+      "compareAtPrice": 11500,
+      "description": "A stunning custom handmade set named Matte Eclipse. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/D4D0AD2B-C36F-4CEC-A045-BBFDA787FD7D.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "almond",
+      "style": "custom",
+      "colors": [
+          "silver",
+          "pink"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": false
+  },
+  {
+      "id": 211,
+      "slug": "matte-halo-212",
+      "name": "Matte Halo",
+      "price": 12500,
+      "compareAtPrice": 14500,
+      "description": "A stunning custom handmade set named Matte Halo. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/D51ADAB7-1452-407E-8501-E88328377C4F.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "coffin",
+      "style": "custom",
+      "colors": [
+          "red",
+          "white"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 212,
+      "slug": "radiant-crystal-213",
+      "name": "Radiant Crystal",
+      "price": 8500,
+      "compareAtPrice": 10500,
+      "description": "A stunning custom handmade set named Radiant Crystal. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/D55D5936-7E61-4F2A-B7B8-1B14D3A65C43.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "squoval",
+      "style": "custom",
+      "colors": [
+          "pink",
+          "silver"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 213,
+      "slug": "midnight-bloom-214",
+      "name": "Midnight Bloom",
+      "price": 12500,
+      "compareAtPrice": 14500,
+      "description": "A stunning custom handmade set named Midnight Bloom. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/D5D7F124-84BB-45F6-B05D-02FBD93795C2.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "oval",
+      "style": "custom",
+      "colors": [
+          "blue",
+          "green"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 214,
+      "slug": "midnight-eclipse-215",
+      "name": "Midnight Eclipse",
+      "price": 7500,
+      "compareAtPrice": 9500,
+      "description": "A stunning custom handmade set named Midnight Eclipse. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/D66C939E-7C7C-4DEA-9117-78D6704AF655.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "square",
+      "style": "custom",
+      "colors": [
+          "white",
+          "pink"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": true
+  },
+  {
+      "id": 215,
+      "slug": "mystic-aura-216",
+      "name": "Mystic Aura",
+      "price": 9500,
+      "compareAtPrice": 11500,
+      "description": "A stunning custom handmade set named Mystic Aura. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/DF16A852-8A73-4BF9-9450-4095723562E9.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "almond",
+      "style": "custom",
+      "colors": [
+          "silver",
+          "nude"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": false
+  },
+  {
+      "id": 216,
+      "slug": "mystic-crystal-217",
+      "name": "Mystic Crystal",
+      "price": 12500,
+      "compareAtPrice": 14500,
+      "description": "A stunning custom handmade set named Mystic Crystal. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/E0232FA2-027A-4D81-AD6F-3173594F0559.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "oval",
+      "style": "custom",
+      "colors": [
+          "green",
+          "black"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 217,
+      "slug": "glossy-crystal-218",
+      "name": "Glossy Crystal",
+      "price": 7500,
+      "compareAtPrice": 9500,
+      "description": "A stunning custom handmade set named Glossy Crystal. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/E8EEB0A8-642A-4C8F-A7FA-2762E9647693.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "coffin",
+      "style": "custom",
+      "colors": [
+          "blue",
+          "green"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 218,
+      "slug": "velvet-eclipse-219",
+      "name": "Velvet Eclipse",
+      "price": 14500,
+      "compareAtPrice": 16500,
+      "description": "A stunning custom handmade set named Velvet Eclipse. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/E916CB8C-CEE6-48DD-AEE4-E371295E07D5.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "square",
+      "style": "custom",
+      "colors": [
+          "black",
+          "pink"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 219,
+      "slug": "subtle-quartz-220",
+      "name": "Subtle Quartz",
+      "price": 12500,
+      "compareAtPrice": 14500,
+      "description": "A stunning custom handmade set named Subtle Quartz. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/EAFA7288-08C0-4FD9-B895-60CE3E70434E.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "oval",
+      "style": "custom",
+      "colors": [
+          "white",
+          "nude"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 220,
+      "slug": "bold-gem-221",
+      "name": "Bold Gem",
+      "price": 11500,
+      "compareAtPrice": 13500,
+      "description": "A stunning custom handmade set named Bold Gem. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/EBBD2ECD-0563-4FB1-B0B0-3AC7E3F9C08C.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "square",
+      "style": "custom",
+      "colors": [
+          "red",
+          "purple"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 221,
+      "slug": "matte-pearl-222",
+      "name": "Matte Pearl",
+      "price": 9500,
+      "compareAtPrice": 11500,
+      "description": "A stunning custom handmade set named Matte Pearl. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/EC952C84-A5C9-48B3-B915-4D4B7E14F1B9.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "almond",
+      "style": "custom",
+      "colors": [
+          "silver",
+          "green"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 222,
+      "slug": "chic-dawn-223",
+      "name": "Chic Dawn",
+      "price": 10500,
+      "compareAtPrice": 12500,
+      "description": "A stunning custom handmade set named Chic Dawn. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/F44B119D-E322-48DA-900C-F2D133CFBA2C.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "oval",
+      "style": "custom",
+      "colors": [
+          "black",
+          "pink"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 223,
+      "slug": "glamour-quartz-224",
+      "name": "Glamour Quartz",
+      "price": 13500,
+      "compareAtPrice": 15500,
+      "description": "A stunning custom handmade set named Glamour Quartz. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/F8B0E14C-7707-4D0B-AE91-E973E511B9E3.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "stiletto",
+      "style": "custom",
+      "colors": [
+          "blue",
+          "purple"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": false
+  },
+  {
+      "id": 224,
+      "slug": "sparkle-rose-225",
+      "name": "Sparkle Rose",
+      "price": 10500,
+      "compareAtPrice": 12500,
+      "description": "A stunning custom handmade set named Sparkle Rose. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/IMG_2665.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "oval",
+      "style": "custom",
+      "colors": [
+          "gold",
+          "red"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 225,
+      "slug": "classic-aura-226",
+      "name": "Classic Aura",
+      "price": 9500,
+      "compareAtPrice": 11500,
+      "description": "A stunning custom handmade set named Classic Aura. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/IMG_2667.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "oval",
+      "style": "custom",
+      "colors": [
+          "black",
+          "gold"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": false
+  },
+  {
+      "id": 226,
+      "slug": "mystic-crystal-227",
+      "name": "Mystic Crystal",
+      "price": 9500,
+      "compareAtPrice": 11500,
+      "description": "A stunning custom handmade set named Mystic Crystal. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/IMG_2668.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "oval",
+      "style": "custom",
+      "colors": [
+          "pink",
+          "white"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 227,
+      "slug": "glamour-glow-228",
+      "name": "Glamour Glow",
+      "price": 14500,
+      "compareAtPrice": 16500,
+      "description": "A stunning custom handmade set named Glamour Glow. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/IMG_2669.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "coffin",
+      "style": "custom",
+      "colors": [
+          "black"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 228,
+      "slug": "soft-petal-229",
+      "name": "Soft Petal",
+      "price": 12500,
+      "compareAtPrice": 14500,
+      "description": "A stunning custom handmade set named Soft Petal. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/IMG_2671.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "square",
+      "style": "custom",
+      "colors": [
+          "blue"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": true
+  },
+  {
+      "id": 229,
+      "slug": "fierce-dawn-230",
+      "name": "Fierce Dawn",
+      "price": 10500,
+      "compareAtPrice": 12500,
+      "description": "A stunning custom handmade set named Fierce Dawn. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/IMG_2672.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "squoval",
+      "style": "custom",
+      "colors": [
+          "silver"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 230,
+      "slug": "midnight-eclipse-231",
+      "name": "Midnight Eclipse",
+      "price": 12500,
+      "compareAtPrice": 14500,
+      "description": "A stunning custom handmade set named Midnight Eclipse. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/IMG_2673.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "coffin",
+      "style": "custom",
+      "colors": [
+          "blue",
+          "gold"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": false
+  },
+  {
+      "id": 231,
+      "slug": "matte-glow-232",
+      "name": "Matte Glow",
+      "price": 9500,
+      "compareAtPrice": 11500,
+      "description": "A stunning custom handmade set named Matte Glow. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/IMG_2674.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "stiletto",
+      "style": "custom",
+      "colors": [
+          "white",
+          "silver"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 232,
+      "slug": "vibrant-vibe-233",
+      "name": "Vibrant Vibe",
+      "price": 8500,
+      "compareAtPrice": 10500,
+      "description": "A stunning custom handmade set named Vibrant Vibe. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/IMG_2675.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "almond",
+      "style": "custom",
+      "colors": [
+          "green",
+          "black"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 233,
+      "slug": "velvet-vibe-234",
+      "name": "Velvet Vibe",
+      "price": 7500,
+      "compareAtPrice": 9500,
+      "description": "A stunning custom handmade set named Velvet Vibe. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/IMG_2678.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "square",
+      "style": "custom",
+      "colors": [
+          "silver",
+          "blue"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": false
+  },
+  {
+      "id": 234,
+      "slug": "velvet-aura-235",
+      "name": "Velvet Aura",
+      "price": 12500,
+      "compareAtPrice": 14500,
+      "description": "A stunning custom handmade set named Velvet Aura. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/IMG_2680.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "square",
+      "style": "custom",
+      "colors": [
+          "pink",
+          "purple"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": false
+  },
+  {
+      "id": 235,
+      "slug": "radiant-gem-236",
+      "name": "Radiant Gem",
+      "price": 9500,
+      "compareAtPrice": 11500,
+      "description": "A stunning custom handmade set named Radiant Gem. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/IMG_3174.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "coffin",
+      "style": "custom",
+      "colors": [
+          "white",
+          "red"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 236,
+      "slug": "bold-bloom-237",
+      "name": "Bold Bloom",
+      "price": 7500,
+      "compareAtPrice": 9500,
+      "description": "A stunning custom handmade set named Bold Bloom. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/IMG_3175.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "coffin",
+      "style": "custom",
+      "colors": [
+          "blue"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": false
+  },
+  {
+      "id": 237,
+      "slug": "subtle-dusk-238",
+      "name": "Subtle Dusk",
+      "price": 12500,
+      "compareAtPrice": 14500,
+      "description": "A stunning custom handmade set named Subtle Dusk. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/IMG_3176.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "stiletto",
+      "style": "custom",
+      "colors": [
+          "red",
+          "white"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": true
+  },
+  {
+      "id": 238,
+      "slug": "classic-dawn-239",
+      "name": "Classic Dawn",
+      "price": 8500,
+      "compareAtPrice": 10500,
+      "description": "A stunning custom handmade set named Classic Dawn. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/IMG_3177.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "square",
+      "style": "custom",
+      "colors": [
+          "black",
+          "white"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 239,
+      "slug": "mystic-rose-240",
+      "name": "Mystic Rose",
+      "price": 13500,
+      "compareAtPrice": 15500,
+      "description": "A stunning custom handmade set named Mystic Rose. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/IMG_3178.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "square",
+      "style": "custom",
+      "colors": [
+          "red",
+          "green"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": true
+  },
+  {
+      "id": 240,
+      "slug": "glossy-dusk-241",
+      "name": "Glossy Dusk",
+      "price": 11500,
+      "compareAtPrice": 13500,
+      "description": "A stunning custom handmade set named Glossy Dusk. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/IMG_3179.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "oval",
+      "style": "custom",
+      "colors": [
+          "red",
+          "purple"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 241,
+      "slug": "midnight-rose-242",
+      "name": "Midnight Rose",
+      "price": 9500,
+      "compareAtPrice": 11500,
+      "description": "A stunning custom handmade set named Midnight Rose. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/IMG_3180.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "square",
+      "style": "custom",
+      "colors": [
+          "silver",
+          "black"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 242,
+      "slug": "glamour-onyx-243",
+      "name": "Glamour Onyx",
+      "price": 12500,
+      "compareAtPrice": 14500,
+      "description": "A stunning custom handmade set named Glamour Onyx. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/IMG_3181.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "stiletto",
+      "style": "custom",
+      "colors": [
+          "silver",
+          "red"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": true
+  },
+  {
+      "id": 243,
+      "slug": "glossy-eclipse-244",
+      "name": "Glossy Eclipse",
+      "price": 14500,
+      "compareAtPrice": 16500,
+      "description": "A stunning custom handmade set named Glossy Eclipse. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/IMG_3182.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "oval",
+      "style": "custom",
+      "colors": [
+          "pink",
+          "gold"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": true
+  },
+  {
+      "id": 244,
+      "slug": "sparkle-glow-245",
+      "name": "Sparkle Glow",
+      "price": 12500,
+      "compareAtPrice": 14500,
+      "description": "A stunning custom handmade set named Sparkle Glow. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/IMG_3183.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "oval",
+      "style": "custom",
+      "colors": [
+          "pink",
+          "blue"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": false
+  },
+  {
+      "id": 245,
+      "slug": "classic-aura-246",
+      "name": "Classic Aura",
+      "price": 11500,
+      "compareAtPrice": 13500,
+      "description": "A stunning custom handmade set named Classic Aura. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/IMG_3184.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "coffin",
+      "style": "custom",
+      "colors": [
+          "blue",
+          "nude"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": false
+  },
+  {
+      "id": 246,
+      "slug": "soft-onyx-247",
+      "name": "Soft Onyx",
+      "price": 10500,
+      "compareAtPrice": 12500,
+      "description": "A stunning custom handmade set named Soft Onyx. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/IMG_3185.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "square",
+      "style": "custom",
+      "colors": [
+          "white",
+          "red"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 247,
+      "slug": "classic-glow-248",
+      "name": "Classic Glow",
+      "price": 10500,
+      "compareAtPrice": 12500,
+      "description": "A stunning custom handmade set named Classic Glow. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/IMG_3186.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "square",
+      "style": "custom",
+      "colors": [
+          "gold"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": false
+  },
+  {
+      "id": 248,
+      "slug": "midnight-eclipse-249",
+      "name": "Midnight Eclipse",
+      "price": 13500,
+      "compareAtPrice": 15500,
+      "description": "A stunning custom handmade set named Midnight Eclipse. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/IMG_3187.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "coffin",
+      "style": "custom",
+      "colors": [
+          "red",
+          "blue"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": false
+  },
+  {
+      "id": 249,
+      "slug": "matte-dusk-250",
+      "name": "Matte Dusk",
+      "price": 8500,
+      "compareAtPrice": 10500,
+      "description": "A stunning custom handmade set named Matte Dusk. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/IMG_3188.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "oval",
+      "style": "custom",
+      "colors": [
+          "white",
+          "nude"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": false
+  },
+  {
+      "id": 250,
+      "slug": "midnight-eclipse-251",
+      "name": "Midnight Eclipse",
+      "price": 13500,
+      "compareAtPrice": 15500,
+      "description": "A stunning custom handmade set named Midnight Eclipse. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/IMG_3189.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "almond",
+      "style": "custom",
+      "colors": [
+          "silver",
+          "white"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 251,
+      "slug": "radiant-dusk-252",
+      "name": "Radiant Dusk",
+      "price": 10500,
+      "compareAtPrice": 12500,
+      "description": "A stunning custom handmade set named Radiant Dusk. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/IMG_3190.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "squoval",
+      "style": "custom",
+      "colors": [
+          "red",
+          "silver"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": false
+  },
+  {
+      "id": 252,
+      "slug": "velvet-onyx-253",
+      "name": "Velvet Onyx",
+      "price": 12500,
+      "compareAtPrice": 14500,
+      "description": "A stunning custom handmade set named Velvet Onyx. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/IMG_3191.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "squoval",
+      "style": "custom",
+      "colors": [
+          "silver",
+          "purple"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": false
+  },
+  {
+      "id": 253,
+      "slug": "midnight-charm-254",
+      "name": "Midnight Charm",
+      "price": 14500,
+      "compareAtPrice": 16500,
+      "description": "A stunning custom handmade set named Midnight Charm. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/IMG_3192.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "stiletto",
+      "style": "custom",
+      "colors": [
+          "purple",
+          "blue"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": false
+  },
+  {
+      "id": 254,
+      "slug": "luxe-bloom-255",
+      "name": "Luxe Bloom",
+      "price": 8500,
+      "compareAtPrice": 10500,
+      "description": "A stunning custom handmade set named Luxe Bloom. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/IMG_3194.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "coffin",
+      "style": "custom",
+      "colors": [
+          "blue",
+          "white"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 255,
+      "slug": "luxe-halo-256",
+      "name": "Luxe Halo",
+      "price": 9500,
+      "compareAtPrice": 11500,
+      "description": "A stunning custom handmade set named Luxe Halo. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/IMG_3195.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "coffin",
+      "style": "custom",
+      "colors": [
+          "black",
+          "nude"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 256,
+      "slug": "chic-glow-257",
+      "name": "Chic Glow",
+      "price": 7500,
+      "compareAtPrice": 9500,
+      "description": "A stunning custom handmade set named Chic Glow. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/IMG_3257.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "coffin",
+      "style": "custom",
+      "colors": [
+          "gold",
+          "purple"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": false
+  },
+  {
+      "id": 257,
+      "slug": "classic-eclipse-258",
+      "name": "Classic Eclipse",
+      "price": 14500,
+      "compareAtPrice": 16500,
+      "description": "A stunning custom handmade set named Classic Eclipse. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/IMG_3258.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "oval",
+      "style": "custom",
+      "colors": [
+          "nude",
+          "black"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": false
+  },
+  {
+      "id": 258,
+      "slug": "luxe-pearl-259",
+      "name": "Luxe Pearl",
+      "price": 14500,
+      "compareAtPrice": 16500,
+      "description": "A stunning custom handmade set named Luxe Pearl. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/IMG_3261.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "almond",
+      "style": "custom",
+      "colors": [
+          "nude",
+          "silver"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": false
+  },
+  {
+      "id": 259,
+      "slug": "chic-dawn-260",
+      "name": "Chic Dawn",
+      "price": 12500,
+      "compareAtPrice": 14500,
+      "description": "A stunning custom handmade set named Chic Dawn. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/IMG_3262.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "oval",
+      "style": "custom",
+      "colors": [
+          "white",
+          "silver"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": true
+  },
+  {
+      "id": 260,
+      "slug": "vibrant-rose-261",
+      "name": "Vibrant Rose",
+      "price": 12500,
+      "compareAtPrice": 14500,
+      "description": "A stunning custom handmade set named Vibrant Rose. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/IMG_3263.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "squoval",
+      "style": "custom",
+      "colors": [
+          "nude",
+          "green"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": false
+  },
+  {
+      "id": 261,
+      "slug": "elegant-vibe-262",
+      "name": "Elegant Vibe",
+      "price": 7500,
+      "compareAtPrice": 9500,
+      "description": "A stunning custom handmade set named Elegant Vibe. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/IMG_3264.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "almond",
+      "style": "custom",
+      "colors": [
+          "black",
+          "purple"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": false
+  },
+  {
+      "id": 262,
+      "slug": "mystic-halo-263",
+      "name": "Mystic Halo",
+      "price": 10500,
+      "compareAtPrice": 12500,
+      "description": "A stunning custom handmade set named Mystic Halo. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/IMG_3265.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "squoval",
+      "style": "custom",
+      "colors": [
+          "blue",
+          "red"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": false
+  },
+  {
+      "id": 263,
+      "slug": "velvet-quartz-264",
+      "name": "Velvet Quartz",
+      "price": 13500,
+      "compareAtPrice": 15500,
+      "description": "A stunning custom handmade set named Velvet Quartz. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/IMG_3267.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "almond",
+      "style": "custom",
+      "colors": [
+          "silver",
+          "green"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 264,
+      "slug": "midnight-aura-265",
+      "name": "Midnight Aura",
+      "price": 9500,
+      "compareAtPrice": 11500,
+      "description": "A stunning custom handmade set named Midnight Aura. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/IMG_3269.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "almond",
+      "style": "custom",
+      "colors": [
+          "red"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": true
+  },
+  {
+      "id": 265,
+      "slug": "velvet-dawn-266",
+      "name": "Velvet Dawn",
+      "price": 12500,
+      "compareAtPrice": 14500,
+      "description": "A stunning custom handmade set named Velvet Dawn. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/IMG_3270.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "almond",
+      "style": "custom",
+      "colors": [
+          "blue",
+          "red"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 266,
+      "slug": "glossy-pearl-267",
+      "name": "Glossy Pearl",
+      "price": 7500,
+      "compareAtPrice": 9500,
+      "description": "A stunning custom handmade set named Glossy Pearl. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/IMG_3275.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "squoval",
+      "style": "custom",
+      "colors": [
+          "nude",
+          "blue"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": false,
+      "bestseller": false
+  },
+  {
+      "id": 267,
+      "slug": "glossy-rose-268",
+      "name": "Glossy Rose",
+      "price": 11500,
+      "compareAtPrice": 13500,
+      "description": "A stunning custom handmade set named Glossy Rose. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "shortDescription": "Beautiful handcrafted press-on nails",
+      "images": [
+          "/images/Handmade/IMG_3277.jpg"
+      ],
+      "category": "handmade",
+      "nailShape": "squoval",
+      "style": "custom",
+      "colors": [
+          "silver",
+          "blue"
+      ],
+      "lengths": [
+          "Short",
+          "Medium",
+          "Long"
+      ],
+      "sizes": [
+          "S",
+          "M",
+          "L"
+      ],
+      "inStock": true,
+      "stockCount": 1,
+      "newArrival": true,
+      "bestseller": false
   }
 ];
 

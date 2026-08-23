@@ -204,7 +204,7 @@ export default function CollectionClient({ category, allProducts, featuredProduc
               </select>
             </div>
 
-            {filtered.length === 0 ? (
+            {allProducts.length === 0 ? (
               <div className={filterStyles.noResults} style={{ 
                 display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
                 padding: "80px 20px", background: "var(--color-bg-card)", borderRadius: "var(--radius-xl)", 
@@ -212,6 +212,18 @@ export default function CollectionClient({ category, allProducts, featuredProduc
               }}>
                 <PackageSearch size={48} color="var(--color-primary)" style={{ marginBottom: "20px", opacity: 0.8 }} />
                 <h3 style={{ fontSize: "1.25rem", color: "var(--color-text)", marginBottom: "8px" }}>We're fresh out of sets!</h3>
+                <p className={filterStyles.mobileSmallText} style={{ color: "var(--color-text-secondary)", fontSize: "0.95rem", maxWidth: "450px", marginBottom: "24px", lineHeight: "1.6" }}>
+                  We're currently sold out of this entire collection! Check back soon for restocks.
+                </p>
+              </div>
+            ) : filtered.length === 0 ? (
+              <div className={filterStyles.noResults} style={{ 
+                display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+                padding: "80px 20px", background: "var(--color-bg-card)", borderRadius: "var(--radius-xl)", 
+                border: "1px dashed var(--color-border)", textAlign: "center", minHeight: "400px"
+              }}>
+                <PackageSearch size={48} color="var(--color-primary)" style={{ marginBottom: "20px", opacity: 0.8 }} />
+                <h3 style={{ fontSize: "1.25rem", color: "var(--color-text)", marginBottom: "8px" }}>No exact matches</h3>
                 <p className={filterStyles.mobileSmallText} style={{ color: "var(--color-text-secondary)", fontSize: "0.95rem", maxWidth: "450px", marginBottom: "24px", lineHeight: "1.6" }}>
                   We couldn't find any nails matching your exact shape and length preferences. Try tweaking your selection.
                 </p>
@@ -267,6 +279,7 @@ export default function CollectionClient({ category, allProducts, featuredProduc
         </div>
 
         {category?.slug === 'factory' && <FactoryVideos />}
+        {category?.slug === 'handmade' && <FactoryVideos />}
       </div>
     </div>
   );

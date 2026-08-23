@@ -8,8 +8,9 @@ import styles from './ShopTheLook.module.css';
 
 export default async function ShopTheLook() {
   const allProducts = await getProducts();
-  const featured = allProducts.filter((p) => p.bestseller || p.newArrival);
-  const picks = (featured.length >= 2 ? featured : allProducts).slice(0, 2);
+  const pick1 = allProducts.find(p => p.name === 'Elegant Quartz') || allProducts[0];
+  const pick2 = allProducts.find(p => p.name === 'Mystic Vibe') || allProducts[1];
+  const picks = [pick1, pick2].filter(Boolean);
 
   const hotspots = picks.map((p, i) => ({
     id: i + 1,

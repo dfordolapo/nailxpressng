@@ -6,7 +6,7 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "placeholde
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   global: {
     fetch: (url, options) => {
-      return fetch(url, { ...options, next: { revalidate: 300 } });
+      return fetch(url, { ...options, next: { revalidate: 0 } });
     },
   },
 });

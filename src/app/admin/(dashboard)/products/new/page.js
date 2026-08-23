@@ -6,11 +6,15 @@ import styles from "@/styles/admin.module.css";
 import { nailShapes, nailLengths, styles as nailStyles, categories as nailCategories } from "@/data/categories";
 import HandmadeProductCard from "@/components/product/HandmadeProductCard";
 import ProductCard from "@/components/product/ProductCard";
-import { useState, useRef } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useRef, useEffect, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { supabase } from "@/lib/supabase";
 
-export default function NewProduct() {
+function NewProductContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const editId = searchParams.get("edit");
+  const isEditMode = !!editId;
   
   const [activeTab, setActiveTab] = useState("basic");
   
@@ -42,6 +46,47 @@ export default function NewProduct() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const fileInputRef = useRef(null);
   const videoInputRef = useRef(null);
+  
+  const [isLoading, setIsLoading] = useState(isEditMode);
+
+  useEffect(() => {
+    if (isEditMode) {
+      const fetchProduct = async () => {
+        try {
+          const { data, error } = await supabase.from('products').select('*, categories(slug, name)').eq('id', editId).single();
+          if (error) throw error;
+          
+          setName(data.name || "");
+          setCollection(data.categories?.name === "Handmade" ? "Handmade" : data.categories?.name || "Factory");
+          setTags(data.style ? data.style.split(',').map(s => s.trim()) : []);
+          setDescription(data.description || "");
+          setNailShape(data.nail_shape || "Square");
+          setNailLength(data.lengths && data.lengths.length > 0 ? data.lengths[0] : "medium");
+          setColor(data.color || "");
+          setPrice(data.price?.toString() || "");
+          setSalePrice(data.compare_at_price ? data.price?.toString() : "");
+          if (data.compare_at_price) setPrice(data.compare_at_price?.toString()); // if sale, compare_at is original
+          
+          setStockQuantity(data.stock_count?.toString() || "0");
+          setAvailability(data.stock_count > 0 ? "In Stock" : "Out of Stock");
+          setIsFeatured(data.bestseller || false);
+          
+          if (data.images && data.images.length > 0) {
+            setImagePreview(data.images[0]);
+          }
+          if (data.video_url) {
+            setVideoPreview(data.video_url);
+          }
+        } catch (err) {
+          console.error("Error loading product:", err);
+          alert("Failed to load product details");
+        } finally {
+          setIsLoading(false);
+        }
+      };
+      fetchProduct();
+    }
+  }, [editId, isEditMode]);
 
   const handleAddTag = (e) => {
     if (e.key === 'Enter') {
@@ -137,16 +182,20 @@ export default function NewProduct() {
         formData.append('video', videoFile);
       }
       
-      const res = await fetch('/api/admin/products', {
-        method: 'POST',
+      if (isEditMode) {
+        formData.append('id', editId);
+      }
+      
+      const res = await fetch(isEditMode ? `/api/admin/products/${editId}` : '/api/admin/products', {
+        method: isEditMode ? 'PUT' : 'POST',
         body: formData
       });
       
       const data = await res.json();
       
-      if (!res.ok) throw new Error(data.error || "Failed to create product");
+      if (!res.ok) throw new Error(data.error || `Failed to ${isEditMode ? 'update' : 'create'} product`);
       
-      alert("Product created successfully!");
+      alert(`Product ${isEditMode ? 'updated' : 'created'} successfully!`);
       router.push('/admin/products');
       
     } catch (err) {
@@ -165,8 +214,12 @@ export default function NewProduct() {
             <ArrowLeft size={24} />
           </Link>
           <div>
-            <h1 className={styles.pageTitle} style={{ fontSize: "1.5rem" }}>Add New Product</h1>
-            <p className={styles.pageSubtitle}>Create a new product for your store.</p>
+            <h1 className={styles.pageTitle} style={{ fontSize: "1.5rem" }}>
+              {isEditMode ? "Edit Product" : "Add New Product"}
+            </h1>
+            <p className={styles.pageSubtitle}>
+              {isEditMode ? "Update the product details below." : "Create a new product for your store."}
+            </p>
           </div>
         </div>
       </div>
@@ -506,5 +559,13 @@ export default function NewProduct() {
         </div>
       </div>
     </>
+  );
+}
+
+export default function NewProduct() {
+  return (
+    <Suspense fallback={<div style={{ padding: "40px" }}>Loading...</div>}>
+      <NewProductContent />
+    </Suspense>
   );
 }

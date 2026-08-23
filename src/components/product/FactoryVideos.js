@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import styles from "./FactoryVideos.module.css";
 
 const VIDEOS = [
@@ -11,17 +11,25 @@ const VIDEOS = [
 ];
 
 export default function FactoryVideos() {
+  const [shuffledVideos, setShuffledVideos] = useState(VIDEOS);
+
+  useEffect(() => {
+    // Shuffle the videos array on client-side
+    const shuffle = [...VIDEOS].sort(() => Math.random() - 0.5);
+    setShuffledVideos(shuffle);
+  }, []);
+
   return (
     <section className={styles.section}>
       <div className="container">
         <div className={styles.header}>
           <h2 className={styles.title}>Perfection in Motion</h2>
-          <p className={styles.subtitle}>Get a closer look at our beautiful ready-to-wear sets.</p>
+          <p className={styles.subtitle}>Get a closer look at our ready-to-wear sets.</p>
         </div>
       </div>
       
       <div className={styles.carousel}>
-        {VIDEOS.map((videoName, idx) => (
+        {shuffledVideos.map((videoName, idx) => (
           <VideoCard key={idx} src={`/images/factory-made/${videoName}`} />
         ))}
       </div>
@@ -46,9 +54,7 @@ function VideoCard({ src }) {
 
   return (
     <div 
-      className={styles.videoCard} 
-      onMouseEnter={handleMouseEnter} 
-      onMouseLeave={handleMouseLeave}
+      className={styles.videoCard}
       onClick={() => {
         if (videoRef.current) {
           if (videoRef.current.paused) videoRef.current.play();
