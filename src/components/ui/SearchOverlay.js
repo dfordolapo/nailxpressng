@@ -65,6 +65,8 @@ export default function SearchOverlay() {
         product.name?.toLowerCase().includes(q) ||
         product.description?.toLowerCase().includes(q) ||
         product.category?.toLowerCase().includes(q) ||
+        product.color?.toLowerCase().includes(q) ||
+        (product.colors && product.colors.some((c) => c.toLowerCase().includes(q))) ||
         (product.tags && product.tags.some((tag) => tag.toLowerCase().includes(q)))
       );
     });

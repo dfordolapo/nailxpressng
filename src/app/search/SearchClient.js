@@ -18,10 +18,12 @@ function searchLocalProducts(query, productList) {
   const lowercaseQuery = query.toLowerCase();
   return productList.filter((product) => {
     return (
-      product.name.toLowerCase().includes(lowercaseQuery) ||
-      product.description.toLowerCase().includes(lowercaseQuery) ||
-      product.category.toLowerCase().includes(lowercaseQuery) ||
-      product.tags.some((tag) => tag.toLowerCase().includes(lowercaseQuery))
+      product.name?.toLowerCase().includes(lowercaseQuery) ||
+      product.description?.toLowerCase().includes(lowercaseQuery) ||
+      product.category?.toLowerCase().includes(lowercaseQuery) ||
+      product.color?.toLowerCase().includes(lowercaseQuery) ||
+      (product.colors && product.colors.some((c) => c.toLowerCase().includes(lowercaseQuery))) ||
+      (product.tags && product.tags.some((tag) => tag.toLowerCase().includes(lowercaseQuery)))
     );
   });
 }
