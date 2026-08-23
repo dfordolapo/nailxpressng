@@ -13,6 +13,7 @@ export default async function ShopPage() {
   // Fetch data on the server
   const allProducts = await getProducts();
   const featuredProducts = await getFeaturedProducts();
+  console.log("DEBUG: Bridal Bows => ", allProducts.find(p => p.name === 'Bridal Bows'));
 
   return (
     <>

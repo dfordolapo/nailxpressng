@@ -7,6 +7,7 @@ import { formatPrice, getDiscountPercent } from "@/lib/utils";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { useToast } from "@/context/ToastContext";
+import ImageZoomModal from "@/components/product/ImageZoomModal";
 import { SOCIAL_LINKS, WHATSAPP_MESSAGES } from "@/lib/constants";
 import styles from "./handmade-card.module.css";
 
@@ -43,12 +44,25 @@ function ArrowLeftIcon() {
   );
 }
 
+
+function ZoomInIcon() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="11" cy="11" r="8" />
+      <path d="m21 21-4.3-4.3" />
+      <path d="M8 11h6" />
+      <path d="M11 8v6" />
+    </svg>
+  );
+}
+
 export default function HandmadeProductCard({ product, index = 0, viewMode = "grid" }) {
   const [flipped, setFlipped] = useState(false);
   const [selectedSize, setSelectedSize] = useState(null);
   const [qty, setQty] = useState(1);
   const [qtyAnim, setQtyAnim] = useState("");
   const [added, setAdded] = useState(false);
+  const [isZoomOpen, setIsZoomOpen] = useState(false);
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
   const cardRef = useRef(null);
@@ -98,6 +112,12 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
     toggleItem(product);
   };
 
+  const handleZoom = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsZoomOpen(true);
+  };
+
   const handleQty = (delta, e) => {
     e.stopPropagation();
     const newQty = qty + delta;
@@ -132,8 +152,9 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
     : {};
 
   return (
-    <div
-      className={styles.cardWrapper}
+    <>
+      <div
+        className={styles.cardWrapper}
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -169,17 +190,33 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
               </div>
             )}
 
+            
+            <button 
+              className={styles.quickAction} 
+              style={{ position: 'absolute', bottom: '12px', right: '12px', zIndex: 10 }}
+              onClick={handleZoom}
+              aria-label="Zoom image"
+            >
+              <ZoomInIcon />
+            </button>
+
             <div className={styles.shine} />
 
             <div className={styles.badges}>
-              {/* Discount badge removed */}
-              {product.newArrival && (
-                <span className={`${styles.badge} ${styles.badgeNew}`}>New</span>
-              )}
-              {product.bestseller && (
-                <span className={`${styles.badge} ${styles.badgeBestseller}`}>Bestseller</span>
+              {!product.inStock ? (
+                <span className={`${styles.badge}`} style={{ backgroundColor: "var(--color-surface-hover)", color: "var(--color-text-secondary)", border: "1px solid var(--color-border)" }}>Sold Out</span>
+              ) : (
+                <>
+                  {product.newArrival && (
+                    <span className={`${styles.badge} ${styles.badgeNew}`}>New</span>
+                  )}
+                  {product.bestseller && (
+                    <span className={`${styles.badge} ${styles.badgeBestseller}`}>Bestseller</span>
+                  )}
+                </>
               )}
             </div>
+
 
             <div className={styles.glowRing} />
           </div>
@@ -275,9 +312,11 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
               <button
                 className={`${styles.addBtn} ${added ? styles.added : styles.default}`}
                 onClick={handleAddToCart}
+                disabled={!product.inStock}
+                style={!product.inStock ? { opacity: 0.5, cursor: "not-allowed" } : {}}
               >
                 <span className={styles.addBtnContent}>
-                  {added ? (<><CheckIcon /> Added to Cart</>) : "Add to Cart"}
+                  {!product.inStock ? "Sold Out" : added ? (<><CheckIcon /> Added to Cart</>) : "Add to Cart"}
                 </span>
               </button>
             </div>
@@ -324,11 +363,13 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
             </div>
 
             <button
-              className={`${styles.addBtn} ${added ? styles.added : styles.default}`}
-              onClick={handleAddToCart}
-            >
+                className={`${styles.addBtn} ${added ? styles.added : styles.default}`}
+                onClick={handleAddToCart}
+                disabled={!product.inStock}
+                style={!product.inStock ? { opacity: 0.5, cursor: "not-allowed" } : {}}
+              >
               <span className={styles.addBtnContent}>
-                {added ? (<><CheckIcon /> Added to Cart</>) : "Add to Cart"}
+                {!product.inStock ? "Sold Out" : added ? (<><CheckIcon /> Added to Cart</>) : "Add to Cart"}
               </span>
             </button>
 
@@ -345,5 +386,12 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
         )}
       </div>
     </div>
+      <ImageZoomModal 
+        isOpen={isZoomOpen} 
+        onClose={() => setIsZoomOpen(false)} 
+        imageSrc={product.image || (product.images && product.images[0]) || "https://images.unsplash.com/photo-1604654894610-df63bc536371?q=80&w=1000&auto=format&fit=crop"}
+        altText={product.name}
+      />
+    </>
   );
 }

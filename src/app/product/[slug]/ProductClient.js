@@ -317,11 +317,12 @@ export default function ProductClient({ product, relatedProducts = [], isModal =
             <div className={pageStyles.addToCartSection} ref={addToCartRef}>
               <button
                 className={`${btnStyles.btn} ${btnStyles.primary} ${btnStyles.lg}`}
-                style={{ flex: 1 }}
+                style={{ flex: 1, ...(!product.inStock ? { opacity: 0.5, cursor: "not-allowed" } : {}) }}
                 onClick={handleAddToCart}
+                disabled={!product.inStock}
                 id="add-to-cart-btn"
               >
-                {added ? "✓ Added to Cart!" : `Add to Cart — ${formatPrice(displayPrice * quantity)}`}
+                {!product.inStock ? "Sold Out" : added ? "✓ Added to Cart!" : `Add to Cart — ${formatPrice(displayPrice * quantity)}`}
               </button>
               <button
                 className={`${pageStyles.wishlistBtn} ${wishlisted ? pageStyles.active : ""}`}
@@ -412,8 +413,10 @@ export default function ProductClient({ product, relatedProducts = [], isModal =
            <button
              className={`${btnStyles.btn} ${btnStyles.primary} ${btnStyles.sm}`}
              onClick={handleAddToCart}
+             disabled={!product.inStock}
+             style={!product.inStock ? { opacity: 0.5, cursor: "not-allowed" } : {}}
            >
-             {added ? "✓ Added" : "Add to Cart"}
+             {!product.inStock ? "Sold Out" : added ? "✓ Added" : "Add to Cart"}
            </button>
         </div>
       </div>
