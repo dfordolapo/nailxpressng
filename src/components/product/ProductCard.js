@@ -272,7 +272,7 @@ export default function ProductCard({ product, index = 0, viewMode = "grid" }) {
               <span className={styles.backPrice}>{formatPrice(product.price)}</span>
             </div>
 
-            <p className={styles.backDesc}>{product.shortDescription || "Essential nail art supplies and accessories."}</p>
+            <p className={styles.backDesc}>{product.shortDescription || product.description}</p>
 
             <div className={styles.qtyRow}>
               <span className={styles.selectorLabel}>Quantity</span>

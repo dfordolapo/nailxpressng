@@ -323,7 +323,7 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
               <span className={styles.backPrice}>{formatPrice(product.price)}</span>
             </div>
 
-            <p className={styles.backDesc}>{product.shortDescription}</p>
+            <p className={styles.backDesc}>{product.shortDescription || product.description}</p>
 
             {product.category === "handmade" && (
               <div className={styles.selectorGroup}>
