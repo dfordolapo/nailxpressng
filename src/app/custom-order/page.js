@@ -336,7 +336,7 @@ export default function CustomOrderPage() {
                     Or Browse Our Inspirations
                   </h3>
                   <p style={{ fontSize: "var(--text-sm)", color: "var(--color-text-secondary)", marginBottom: "var(--space-4)", textAlign: "center" }}>
-                    Select a beautiful pre-designed set as your reference or download it.
+                    Select a pre-designed set as your reference or download it.
                   </p>
                   
                   <div 
