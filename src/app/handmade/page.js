@@ -11,8 +11,13 @@ export default async function HandmadePage() {
   
   // Fetch data on the server
   const allProducts = await getProductsByCategory("handmade");
-  const allFeatured = await getFeaturedProducts();
-  const featuredProducts = allFeatured.filter(p => p.category === "handmade");
+  
+  // Specifically select the ones requested for the marquee
+  const marqueeNames = [
+    "Soft Vibe", "Fierce Bloom", "Dreamy Dawn", "Vibrant Bloom", 
+    "Glazed Dawn", "Matte Dawn", "Velvet Aura", "Vibrant Gem"
+  ];
+  const featuredProducts = allProducts.filter(p => marqueeNames.includes(p.name));
 
   return (
     <CollectionClient 
