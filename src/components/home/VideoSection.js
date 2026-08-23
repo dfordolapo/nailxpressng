@@ -86,7 +86,7 @@ export default function VideoSection({
           href="/shop"
           className={styles.ctaBtn}
         >
-          Shop the Collection
+          See What's New
         </Link>
       </div>
 

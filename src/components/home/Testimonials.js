@@ -5,24 +5,24 @@ import styles from './Testimonials.module.css';
 const TESTIMONIALS_DATA = [
   {
     id: 1,
-    text: "The quality is amazing. They look like they grew out of my fingers.",
-    name: "Dolapo",
+    text: "You might say you were just selling your product, but you sold me an experience. You sold joy and confidence through this set.",
+    name: "Phummie",
     role: "Lagos, NG",
     avatar: "/images/dolapo.jpg",
     color: "#C4866C",
   },
   {
     id: 2,
-    text: "Super easy to apply. And I get compliments every single time I wear them.",
-    name: "Teni",
+    text: "I am very hard to please but these nails are strong and even better than the pictures, and the packaging is superb.",
+    name: "Dr Latre",
     role: "London, UK",
     avatar: "/images/teni.jpg",
     color: "#B84C6A",
   },
   {
     id: 3,
-    text: "Finally, press-ons that fit just right and actually stay on.",
-    name: "Chioma",
+    text: "I love the details. From the packaging, prep materials and the gift you added. I'm glad I came across your page.",
+    name: "Shola",
     role: "Abuja, NG",
     avatar: "/images/chioma.jpg",
     color: "#8B6B8A",
@@ -55,11 +55,11 @@ export default function Testimonials() {
                     fill
                     sizes="40px"
                     className={styles.avatar}
+                    style={testimonial.name === "Phummie" ? { transform: "scale(1.5) translateY(-10%)", objectPosition: "center" } : {}}
                   />
                 </div>
                 <div className={styles.info}>
                   <h4 className={styles.name}>{testimonial.name}</h4>
-                  <p className={styles.role}>{testimonial.role}</p>
                 </div>
               </div>
             </div>
