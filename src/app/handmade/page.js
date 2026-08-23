@@ -14,7 +14,7 @@ export default async function HandmadePage() {
   
   // Specifically select the ones requested for the marquee
   const marqueeNames = [
-    "Soft Vibe", "Fierce Bloom", "Dreamy Dawn", "Vibrant Bloom", 
+    "Fierce Bloom", "Glazed Pearl", "Vibrant Bloom", 
     "Glazed Dawn", "Matte Dawn", "Velvet Aura", "Vibrant Gem"
   ];
   const featuredProducts = allProducts.filter(p => marqueeNames.includes(p.name));

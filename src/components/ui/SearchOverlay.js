@@ -47,10 +47,10 @@ export default function SearchOverlay() {
     const q = query.trim().toLowerCase();
     if (!q) return [];
     const matches = allProducts
-      .filter((p) => p.name.toLowerCase().includes(q))
+      .filter((p) => p.name?.toLowerCase().includes(q))
       .sort((a, b) => {
-        const aStarts = a.name.toLowerCase().startsWith(q) ? 0 : 1;
-        const bStarts = b.name.toLowerCase().startsWith(q) ? 0 : 1;
+        const aStarts = a.name?.toLowerCase().startsWith(q) ? 0 : 1;
+        const bStarts = b.name?.toLowerCase().startsWith(q) ? 0 : 1;
         return aStarts - bStarts;
       })
       .slice(0, 6);
@@ -62,9 +62,9 @@ export default function SearchOverlay() {
     if (!q) return [];
     return allProducts.filter((product) => {
       return (
-        product.name.toLowerCase().includes(q) ||
-        product.description.toLowerCase().includes(q) ||
-        product.category.toLowerCase().includes(q) ||
+        product.name?.toLowerCase().includes(q) ||
+        product.description?.toLowerCase().includes(q) ||
+        product.category?.toLowerCase().includes(q) ||
         (product.tags && product.tags.some((tag) => tag.toLowerCase().includes(q)))
       );
     });
