@@ -5861,7 +5861,7 @@ export const products = [
       "name": "Vibrant Rose",
       "price": 12500,
       "compareAtPrice": 14500,
-      "description": "A stunning custom handmade set named Vibrant Rose. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "description": "A classic and elegant square set featuring a rich, deep burgundy glossy finish for a timeless look.",
       "shortDescription": "Beautiful handcrafted press-on nails",
       "images": [
           "/images/Handmade/IMG_3263.jpg"
