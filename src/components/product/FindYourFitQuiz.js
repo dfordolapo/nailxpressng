@@ -101,17 +101,25 @@ export default function FindYourFitQuiz({ allProducts = [], hideBanner = false }
             if (product.category === 'factory') score += 1; // Factory sets generally skew shorter
         }
         if (finalAnswers.shape === 'shape_medium' && (lengths.includes('medium') || textToSearch.includes('medium'))) score += 2;
-        if (finalAnswers.shape === 'shape_long' && (lengths.includes('long') || lengths.includes('extra long') || textToSearch.includes('long'))) score += 2;
+        if (finalAnswers.shape === 'shape_long' && (lengths.includes('long') || lengths.includes('extra long') || lengths.includes('xl') || textToSearch.includes('long') || textToSearch.includes('xl'))) score += 2;
 
         // Color Scoring
-        if (finalAnswers.color === 'color_nude' && (textToSearch.includes('nude') || textToSearch.includes('brown') || textToSearch.includes('beige') || textToSearch.includes('pink') || textToSearch.includes('white') || textToSearch.includes('clear'))) score += 2;
-        if (finalAnswers.color === 'color_dark' && (textToSearch.includes('dark') || textToSearch.includes('black') || textToSearch.includes('midnight') || textToSearch.includes('ruby') || textToSearch.includes('burgundy') || textToSearch.includes('deep'))) score += 2;
-        if (finalAnswers.color === 'color_pop' && (textToSearch.includes('color') || textToSearch.includes('bright') || textToSearch.includes('neon') || textToSearch.includes('blue') || textToSearch.includes('green') || textToSearch.includes('red') || textToSearch.includes('purple'))) score += 2;
+        const hasWord = (word) => new RegExp(`\\b${word}\\b`, 'i').test(textToSearch);
+        if (finalAnswers.color === 'color_nude' && (hasWord('nude') || hasWord('brown'))) score += 2;
+        if (finalAnswers.color === 'color_dark' && (hasWord('dark') || hasWord('black'))) score += 2;
+        if (finalAnswers.color === 'color_pop' && (hasWord('pink') || hasWord('yellow') || hasWord('multi'))) score += 2;
 
         return { ...product, score };
       });
 
-      scoredProducts.sort((a, b) => b.score - a.score || 0.5 - Math.random());
+      // Properly shuffle first to ensure true randomness for items with identical scores
+      for (let i = scoredProducts.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [scoredProducts[i], scoredProducts[j]] = [scoredProducts[j], scoredProducts[i]];
+      }
+      
+      // Then stable sort by score descending
+      scoredProducts.sort((a, b) => b.score - a.score);
       
       const selected = scoredProducts.slice(0, 3);
       setRecommendations(selected);
@@ -159,7 +167,7 @@ export default function FindYourFitQuiz({ allProducts = [], hideBanner = false }
                 <div className={styles.startScreen}>
                   <h2 className={styles.title}>The Style Quiz</h2>
                   <p className={styles.subtitle}>
-                    Discover your perfect nail aesthetic. We'll curate a personalized selection just for you.
+                    Not sure what to pick? Answer 3 quick questions to get recommendations.
                   </p>
                   <button className={styles.startBtn} onClick={handleStart}>
                     Begin the Experience

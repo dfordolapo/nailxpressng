@@ -7,7 +7,7 @@ const customDescriptions = {
   "Regal Coral": "Vibrant sun-warmed coral pink base adorned with majestic ornate gold detailing and subtle rhinestones.",
   "Opal Prism": "Milky iridescent semi-translucent base featuring light-refracting holographic foil fragments and a high-gloss finish.",
   "Moonlit Ridge": "Cool-toned pale silver glow base with structured linear metallic detailing mimicking moonlit textures.",
-  "Glossy Gem": "Sleek, highly reflective jet-black surface elevated by rich emerald jewel-toned accents and a flawless glossy finish.",
+  "Glossy Gem": "A striking set featuring deep green magnetic cat-eye and sheer milky bases, overlaid with intricate 3D metallic chrome linework for an edgy, dark fantasy aesthetic.",
   "Bold Eclipse": "Striking half-and-half contrast design featuring a matte black and glossy white split with bold shadow-play accents.",
   "Radiant Rose": "Soft rosy blush ombré base seamlessly transitioning to milky white, finished with a warm radiant shimmer.",
   "Bold Pearl": "Unapologetic sheer white base featuring an array of 3D pearlescent white accents and tiny silver micro-beads.",

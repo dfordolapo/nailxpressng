@@ -1303,7 +1303,7 @@ export const products = [
   {
     "name": "Liquid Onyx",
     "slug": "liquid-onyx",
-    "description": "All-black matte square base featuring a 3D glossy abstract fluid texture.",
+    "description": "A sleek and edgy square set featuring a matte black base topped with glossy 3D black liquid-like abstract swirls.",
     "shortDescription": "Matte black with glossy fluid texture",
     "images": [
       "/images/factory-made/AD76AEEF-B21E-46E3-9038-75D4903DFD7A.jpg"
@@ -2864,7 +2864,7 @@ export const products = [
       "name": "Glossy Gem",
       "price": 9500,
       "compareAtPrice": 11500,
-      "description": "A stunning custom handmade set named Glossy Gem. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "description": "A vibrant square set featuring bright pink and orange tie-dye French tips, accented with a beautiful 3D pink flower.",
       "shortDescription": "Beautiful handcrafted press-on nails",
       "images": [
           "/images/Handmade/670F85D4-FFFF-4703-9E43-DA73266A4DDC.jpg"
@@ -4447,7 +4447,7 @@ export const products = [
       "name": "Glossy Crystal",
       "price": 7500,
       "compareAtPrice": 9500,
-      "description": "A stunning custom handmade set named Glossy Crystal. Crafted with precision and intricate artistry to give your nails a perfect, salon-quality finish.",
+      "description": "A chic almond set showcasing a rich tortoiseshell design with gold outlines, paired with solid red textured accent nails.",
       "shortDescription": "Beautiful handcrafted press-on nails",
       "images": [
           "/images/Handmade/E8EEB0A8-642A-4C8F-A7FA-2762E9647693.jpg"

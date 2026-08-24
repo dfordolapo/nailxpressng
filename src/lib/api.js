@@ -128,7 +128,7 @@ export async function getProductsByIds(ids) {
 
 export async function getFeaturedProducts() {
   const [{ data, error }, discount] = await Promise.all([
-    supabase.from('products').select('*, categories(slug, name)').eq('bestseller', true).limit(8),
+    supabase.from('products').select('*, categories(slug, name)').eq('bestseller', true),
     getSitewideDiscount(),
   ]);
   if (error) return [];
