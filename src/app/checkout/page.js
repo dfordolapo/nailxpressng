@@ -773,6 +773,9 @@ export default function CheckoutPage() {
                     </div>
                 );
               })}
+              <div style={{ fontSize: "0.75rem", color: "var(--color-text-secondary)", marginTop: "4px", padding: "0 4px" }}>
+                * For packages above 1kg (Outside Lagos), final shipping price will be communicated.
+              </div>
             </div>
           </div>
           
