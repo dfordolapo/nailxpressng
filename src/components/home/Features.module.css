@@ -46,7 +46,7 @@
   flex-direction: column;
   overflow: hidden;
   transition: transform var(--transition-base);
-  flex: 0 0 75%;
+  flex: 0 0 60%;
   scroll-snap-align: center;
 }
 
