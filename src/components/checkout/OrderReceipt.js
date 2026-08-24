@@ -28,10 +28,7 @@ export default function OrderReceipt({ orderDetails }) {
         <span>{total}</span>
       </div>
       
-      <div className={styles.receiptLine}>
-        <span>Delivery</span>
-        <span>{delivery}</span>
-      </div>
+
       
     </div>
   );
