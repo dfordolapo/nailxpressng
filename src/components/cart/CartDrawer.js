@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import { formatPrice, calculateCartTotals } from "@/lib/utils";
+import { SOCIAL_LINKS, WHATSAPP_MESSAGES } from "@/lib/constants";
 import styles from "@/styles/components/cart.module.css";
 import btnStyles from "@/styles/components/buttons.module.css";
 
@@ -86,17 +87,21 @@ export default function CartDrawer({ onClose }) {
                         <select
                           className={styles.metaSelect}
                           value={item.selectedSize}
-                          onChange={(e) =>
+                          onChange={(e) => {
+                            if (e.target.value === "Customize") {
+                              const url = `${SOCIAL_LINKS.whatsapp}?text=${encodeURIComponent(WHATSAPP_MESSAGES.customOrder)}`;
+                              window.open(url, "_blank");
+                            }
                             updateItemOptions(
                               item.id,
                               item.selectedSize,
                               item.selectedLength,
                               e.target.value,
                               item.selectedLength
-                            )
-                          }
+                            );
+                          }}
                         >
-                          {["S", "M", "L"].map((s) => (
+                          {["S", "M", "L", "Customize"].map((s) => (
                             <option key={s} value={s}>
                               {s}
                             </option>

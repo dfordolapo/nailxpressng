@@ -7,6 +7,7 @@ import { useCart } from "@/context/CartContext";
 import { useToast } from "@/context/ToastContext";
 import { formatPrice, calculateCartTotals } from "@/lib/utils";
 import { Trash2, ArrowLeft, ShoppingBag, Check } from "lucide-react";
+import { SOCIAL_LINKS, WHATSAPP_MESSAGES } from "@/lib/constants";
 import styles from "@/styles/components/cart.module.css";
 import btnStyles from "@/styles/components/buttons.module.css";
 
@@ -93,19 +94,23 @@ export default function CartClient({ bestsellers = [] }) {
                             <select
                               className={styles.metaSelect}
                               value={item.selectedSize}
-                              onChange={(e) =>
+                              onChange={(e) => {
+                                if (e.target.value === "Customize") {
+                                  const url = `${SOCIAL_LINKS.whatsapp}?text=${encodeURIComponent(WHATSAPP_MESSAGES.customOrder)}`;
+                                  window.open(url, "_blank");
+                                }
                                 updateItemOptions(
                                   item.id,
                                   item.selectedSize,
                                   item.selectedLength,
                                   e.target.value,
                                   item.selectedLength
-                                )
-                              }
+                                );
+                              }}
                             >
-                              {["S", "M", "L"]
+                              {["S", "M", "L", "Customize"]
                                 .concat(
-                                  item.selectedSize && !["S", "M", "L"].includes(item.selectedSize)
+                                  item.selectedSize && !["S", "M", "L", "Customize"].includes(item.selectedSize)
                                     ? [item.selectedSize]
                                     : []
                                 )
