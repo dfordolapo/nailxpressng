@@ -59,11 +59,7 @@ const mapProduct = (p, discount = 0) => {
     color: p.color ? p.color.split(',')[0].trim() : null,
     colors: (() => {
       if (!p.color) return [];
-      const parsed = p.color.split(',').map(c => c.trim());
-      if (parsed.length > 1 && !parsed.includes('Multi')) {
-        parsed.push('Multi');
-      }
-      return parsed;
+      return p.color.split(',').map(c => c.trim());
     })(),
     discountPercent: discount > 0 ? discount : null,
   };
