@@ -16,7 +16,7 @@ function NewProductContent() {
   const editId = searchParams.get("edit");
   const isEditMode = !!editId;
   
-  const [activeTab, setActiveTab] = useState("basic");
+  const [activeTab, setActiveTab] = useState("images");
   
   // Form State
   const [name, setName] = useState("");
@@ -264,12 +264,12 @@ function NewProductContent() {
       <div className={styles.formContainer}>
         {/* Form Sidebar */}
         <div className={styles.formSidebar}>
-          <button type="button" className={`${styles.formNavBtn} ${activeTab === "basic" ? styles.active : ""}`} onClick={() => setActiveTab("basic")}>
-            Basic Information
-          </button>
           <button type="button" className={`${styles.formNavBtn} ${activeTab === "images" ? styles.active : ""}`} onClick={() => setActiveTab("images")}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
             Images
+          </button>
+          <button type="button" className={`${styles.formNavBtn} ${activeTab === "basic" ? styles.active : ""}`} onClick={() => setActiveTab("basic")}>
+            Basic Information
           </button>
           <button type="button" className={`${styles.formNavBtn} ${activeTab === "details" ? styles.active : ""}`} onClick={() => setActiveTab("details")}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
@@ -346,8 +346,8 @@ function NewProductContent() {
               </div>
 
               <div className={styles.formActions}>
-                <button type="button" className={styles.btnSecondary} onClick={() => window.history.back()}>Cancel</button>
-                <button type="button" className={styles.btnPrimary} onClick={() => setActiveTab("images")}>Next</button>
+                <button type="button" className={styles.btnSecondary} onClick={() => setActiveTab("images")}>Back</button>
+                <button type="button" className={styles.btnPrimary} onClick={() => setActiveTab("details")}>Next</button>
               </div>
             </div>
           )}
@@ -436,8 +436,8 @@ function NewProductContent() {
                   </div>
 
                <div className={styles.formActions}>
-                 <button type="button" className={styles.btnSecondary} onClick={() => setActiveTab("basic")}>Back</button>
-                 <button type="button" className={styles.btnPrimary} onClick={() => setActiveTab("details")}>Next</button>
+                 <button type="button" className={styles.btnSecondary} onClick={() => window.history.back()}>Cancel</button>
+                 <button type="button" className={styles.btnPrimary} onClick={() => setActiveTab("basic")}>Next</button>
                </div>
             </div>
           )}
