@@ -766,7 +766,16 @@ export default function CheckoutPage() {
                         <div style={{ width: 18, height: 18, borderRadius: "50%", border: `2px solid ${shippingMethod === loc.id ? "var(--color-primary)" : "var(--color-border)"}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
                           {shippingMethod === loc.id && <div style={{ width: 10, height: 10, borderRadius: "50%", background: "var(--color-primary)" }}></div>}
                         </div>
-                        <span style={{ fontWeight: 600, color: "var(--color-text)", fontSize: "0.95rem" }}>{loc.name}</span>
+                        <div style={{ display: "flex", flexDirection: "column" }}>
+                          {loc.name.includes(" - ") ? (
+                            <>
+                              <span style={{ fontWeight: 600, color: "var(--color-text)", fontSize: "0.95rem" }}>{loc.name.split(" - ")[0]}</span>
+                              <span style={{ fontWeight: 500, color: "var(--color-text-secondary)", fontSize: "0.8rem", marginTop: "2px" }}>{loc.name.split(" - ").slice(1).join(" - ")}</span>
+                            </>
+                          ) : (
+                            <span style={{ fontWeight: 600, color: "var(--color-text)", fontSize: "0.95rem" }}>{loc.name}</span>
+                          )}
+                        </div>
                       </div>
                       <span style={{ fontWeight: 700, color: "var(--color-primary)", fontSize: "0.95rem" }}>{formatPrice(loc.fee)}</span>
                     </div>
