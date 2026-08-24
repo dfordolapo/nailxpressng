@@ -99,7 +99,8 @@ export default function CartClient({ bestsellers = [] }) {
                                   const productUrl = `${window.location.origin}/product/${item.slug}`;
                                   const message = `Hi! I'd like to customize the nail set "${item.name}".\n\nProduct Link: ${productUrl}`;
                                   const url = `${SOCIAL_LINKS.whatsapp}?text=${encodeURIComponent(message)}`;
-                                  window.open(url, "_blank");
+                                  window.location.href = url;
+                                  return;
                                 }
                                 updateItemOptions(
                                   item.id,
