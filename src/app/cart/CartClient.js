@@ -103,9 +103,9 @@ export default function CartClient({ bestsellers = [] }) {
                                 )
                               }
                             >
-                              {["XS", "S", "M", "L"]
+                              {["S", "M", "L"]
                                 .concat(
-                                  item.selectedSize && !["XS", "S", "M", "L"].includes(item.selectedSize)
+                                  item.selectedSize && !["S", "M", "L"].includes(item.selectedSize)
                                     ? [item.selectedSize]
                                     : []
                                 )
@@ -144,7 +144,7 @@ export default function CartClient({ bestsellers = [] }) {
                             const existingSizes = items
                               .filter(i => i.id === item.id)
                               .map(i => i.selectedSize);
-                            const nextSize = ["XS", "S", "M", "L"].find(s => !existingSizes.includes(s)) || "M";
+                            const nextSize = ["S", "M", "L"].find(s => !existingSizes.includes(s)) || "M";
                             addItem(
                               { id: item.id, slug: item.slug, name: item.name, price: item.price, images: [item.image], category: item.category },
                               1,

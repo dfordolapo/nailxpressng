@@ -96,7 +96,7 @@ export default function CartDrawer({ onClose }) {
                             )
                           }
                         >
-                          {["XS", "S", "M", "L"].map((s) => (
+                          {["S", "M", "L"].map((s) => (
                             <option key={s} value={s}>
                               {s}
                             </option>
@@ -130,7 +130,7 @@ export default function CartDrawer({ onClose }) {
                             const existingSizes = items
                               .filter(i => i.id === item.id)
                               .map(i => i.selectedSize);
-                            const nextSize = ["XS", "S", "M", "L"].find(s => !existingSizes.includes(s)) || "M";
+                            const nextSize = ["S", "M", "L"].find(s => !existingSizes.includes(s)) || "M";
                             addItem(
                               { id: item.id, slug: item.slug, name: item.name, price: item.price, images: [item.image], category: item.category },
                               1,
