@@ -193,7 +193,7 @@ export default function ProductQuickView({ product }) {
       {/* Bottom Bar */}
       <div className={styles.bottomBar}>
         <button className={styles.btnPrimary} onClick={handleAddToCart}>
-          Add to Cart <span>{formatPrice(product.price * quantity)}</span>
+          Add to Cart
         </button>
         <button className={styles.btnSecondary} onClick={handleBuyNow}>
           Buy Now

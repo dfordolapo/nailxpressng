@@ -27,6 +27,7 @@ export default function Features() {
         <div className={styles.header}>
           <h2 className={styles.title}>Salon looks with zero appointments</h2>
           <p className={styles.subtitle}>For hot babes, by hot babes</p>
+          <p className={styles.swipeHint}>Swipe <span aria-hidden>→</span></p>
         </div>
         
         <div className={styles.grid}>

@@ -770,12 +770,7 @@ export default function CheckoutPage() {
                       </div>
                       <span style={{ fontWeight: 700, color: "var(--color-primary)", fontSize: "0.95rem" }}>{formatPrice(loc.fee)}</span>
                     </div>
-                    <div style={{ paddingLeft: "30px" }}>
-                      <div style={{ fontSize: "0.8rem", fontWeight: 600, color: "var(--color-success)", display: "flex", alignItems: "center", gap: "4px" }}>
-                        <Clock size={12} strokeWidth={1.5} /> Est. Delivery: {details.est}
-                      </div>
                     </div>
-                  </div>
                 );
               })}
             </div>

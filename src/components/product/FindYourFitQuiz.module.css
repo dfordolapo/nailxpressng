@@ -381,4 +381,8 @@
   .title {
     font-size: 1.8rem;
   }
+
+  .questionTitle {
+    font-size: 1.15rem;
+  }
 }

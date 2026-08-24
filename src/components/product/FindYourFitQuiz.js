@@ -19,7 +19,7 @@ const QUESTIONS = [
   },
   {
     id: "shape",
-    question: "What's your ideal length & shape?",
+    question: "What's your ideal length?",
     options: [
       { id: "shape_short", text: "Short & Practical", image: "/images/factory-made/00E55F3C-EBF0-4ED1-82C1-26F0C9298682.jpg" },
       { id: "shape_medium", text: "Medium & Classic", image: "/images/Handmade/IMG_3174.jpg" },

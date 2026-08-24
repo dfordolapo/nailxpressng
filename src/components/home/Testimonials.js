@@ -36,6 +36,7 @@ export default function Testimonials() {
         <div className={styles.header}>
           <h2 className={styles.title}>We nail it no matter the occasion</h2>
           <p className={styles.subtitle}>You’re in good hands.</p>
+          <p className={styles.swipeHint}>Swipe <span aria-hidden>→</span></p>
         </div>
         
         <div className={styles.grid}>

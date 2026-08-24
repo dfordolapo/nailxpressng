@@ -111,7 +111,7 @@ export default function SuccessClient({ orderDetails, recommendedProducts = [] }
           msOverflowStyle: 'none'
         }}>
           {recommendedProducts.map(product => (
-            <div key={product.id} style={{ minWidth: '220px', flexShrink: 0, scrollSnapAlign: 'start' }}>
+            <div key={product.id} style={{ minWidth: '160px', width: '160px', flexShrink: 0, scrollSnapAlign: 'start' }}>
               {product.category === 'handmade' ? (
                 <HandmadeProductCard product={product} />
               ) : (
