@@ -14,7 +14,7 @@ export default function OrderReceipt({ orderDetails }) {
       </div>
       
       <div className={styles.receiptLine}>
-        <span>Date & Time</span>
+        <span>Date</span>
         <span>{date}</span>
       </div>
       
