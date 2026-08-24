@@ -44,6 +44,7 @@ function NewProductContent() {
   const [isBestseller, setIsBestseller] = useState(false);
   
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
   const fileInputRef = useRef(null);
   const videoInputRef = useRef(null);
   
@@ -148,6 +149,42 @@ function NewProductContent() {
     setVideoFile(null);
     setVideoPreview(null);
     if (videoInputRef.current) videoInputRef.current.value = "";
+  };
+
+  const generateDescription = async () => {
+    if (!imagePreview) {
+      alert("Please upload an image first to generate a description.");
+      return;
+    }
+    
+    setIsGenerating(true);
+    try {
+      let imageUrl = imagePreview;
+      
+      if (imageFile) {
+        imageUrl = await new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve(reader.result);
+          reader.readAsDataURL(imageFile);
+        });
+      }
+
+      const res = await fetch('/api/admin/generate-description', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ imageUrl })
+      });
+      
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to generate');
+      
+      setDescription(data.description);
+    } catch (err) {
+      console.error(err);
+      alert("Error generating description: " + err.message);
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -293,8 +330,18 @@ function NewProductContent() {
               </div>
 
               <div className={styles.formGroup}>
-                <label className={styles.label}>Description</label>
-                <textarea className={styles.textarea} placeholder="Write a one liner about this product." value={description} onChange={e => setDescription(e.target.value)}></textarea>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <label className={styles.label} style={{ margin: 0 }}>Description</label>
+                  <button 
+                    type="button" 
+                    onClick={generateDescription}
+                    disabled={isGenerating || !imagePreview}
+                    style={{ background: "var(--color-primary-100)", color: "var(--color-primary-800)", border: "none", borderRadius: "6px", padding: "6px 12px", fontSize: "0.85rem", display: "flex", alignItems: "center", gap: "6px", cursor: (!imagePreview || isGenerating) ? "not-allowed" : "pointer", opacity: (!imagePreview || isGenerating) ? 0.5 : 1, transition: "all 0.2s" }}
+                  >
+                    ✨ {isGenerating ? "Generating..." : "Auto-Generate"}
+                  </button>
+                </div>
+                <textarea className={styles.textarea} placeholder="Write a one liner about this product." value={description} onChange={e => setDescription(e.target.value)} style={{ marginTop: "10px" }}></textarea>
                 <div className={styles.charCount}>{description.length}/300</div>
               </div>
 
