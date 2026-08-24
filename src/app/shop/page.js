@@ -18,7 +18,7 @@ export default async function ShopPage() {
   return (
     <>
       <div style={{ padding: "0 5%" }}>
-        <FindYourFitQuiz allProducts={allProducts} />
+        <FindYourFitQuiz allProducts={allProducts} hideBanner={true} />
       </div>
       <CollectionClient 
         category={category} 

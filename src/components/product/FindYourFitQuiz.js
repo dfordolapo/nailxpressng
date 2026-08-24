@@ -12,35 +12,60 @@ const QUESTIONS = [
     id: "vibe",
     question: "What's your current vibe?",
     options: [
-      { id: "vibe_minimalist", text: "Cozy & Minimalist", image: "/images/everyday.png" },
-      { id: "vibe_glam", text: "Glam & Dramatic", image: "/images/glamour.png" },
-      { id: "vibe_artistic", text: "Fun & Artistic", image: "/images/art.png" },
+      { id: "vibe_minimalist", text: "Cozy & Minimalist", image: "/images/factory-made/0A09BD69-438E-4EA3-A4B6-790A9E08DADB.jpg" },
+      { id: "vibe_glam", text: "Glam & Dramatic", image: "/images/factory-made/EA05CA92-2DFF-4F43-8D58-A0E01BA15CBF.jpg" },
+      { id: "vibe_artistic", text: "Fun & Artistic", image: "/images/Handmade/IMG_3267.jpg" },
     ],
   },
   {
     id: "shape",
     question: "What's your ideal length & shape?",
     options: [
-      { id: "shape_short", text: "Short & Practical", image: "/images/factory-collection.png" },
-      { id: "shape_medium", text: "Medium & Classic", image: "/images/shapes/almond.png" },
-      { id: "shape_long", text: "Long & Fierce", image: "/images/shapes/stiletto.png" },
+      { id: "shape_short", text: "Short & Practical", image: "/images/factory-made/00E55F3C-EBF0-4ED1-82C1-26F0C9298682.jpg" },
+      { id: "shape_medium", text: "Medium & Classic", image: "/images/Handmade/IMG_3174.jpg" },
+      { id: "shape_long", text: "Long & Fierce", image: "/images/Handmade/IMG_3181.jpg" },
     ],
   },
   {
     id: "color",
     question: "Pick a color mood!",
     options: [
-      { id: "color_nude", text: "Nudes & Earth Tones", image: "https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=800&q=80" },
-      { id: "color_dark", text: "Dark & Moody", image: "https://images.unsplash.com/photo-1522337660859-02fbefca4702?auto=format&fit=crop&w=800&q=80" },
-      { id: "color_pop", text: "Pops of Color", image: "https://images.unsplash.com/photo-1528362359491-039cfa39cd28?auto=format&fit=crop&w=800&q=80" },
+      { id: "color_nude", text: "Nudes & Earth Tones", image: "/images/factory-made/16B8B425-6D92-4E02-BDD4-520E64C68F23.jpg" },
+      { id: "color_dark", text: "Dark & Moody", image: "/images/Handmade/IMG_2667.jpg" },
+      { id: "color_pop", text: "Pops of Color", image: "/images/Handmade/IMG_2674.jpg" },
     ],
   }
 ];
 
-export default function FindYourFitQuiz({ allProducts = [] }) {
+export default function FindYourFitQuiz({ allProducts = [], hideBanner = false }) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [step, setStep] = useState(0); // 0 = start, 1-3 = questions, 4 = loading, 5 = results
   const [answers, setAnswers] = useState({});
   const [recommendations, setRecommendations] = useState([]);
+
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isModalOpen]);
+
+  // Auto-show modal after 60 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!sessionStorage.getItem('quizSeen')) {
+        setIsModalOpen(true);
+        sessionStorage.setItem('quizSeen', 'true');
+      }
+    }, 60000); // 60 seconds
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleStart = () => setStep(1);
 
@@ -62,24 +87,26 @@ export default function FindYourFitQuiz({ allProducts = [] }) {
       const scoredProducts = allProducts.map(product => {
         let score = 0;
         const textToSearch = `${product.name} ${product.description} ${product.category} ${product.tags?.join(' ')} ${product.colors?.join(' ')}`.toLowerCase();
+        const lengths = (product.lengths || []).map(l => l.toLowerCase());
+        const shape = (product.nailShape || '').toLowerCase();
         
         // Vibe Scoring
         if (finalAnswers.vibe === 'vibe_minimalist' && (textToSearch.includes('minimal') || textToSearch.includes('everyday') || textToSearch.includes('simple') || textToSearch.includes('nude') || textToSearch.includes('clear'))) score += 2;
-        if (finalAnswers.vibe === 'vibe_glam' && (textToSearch.includes('glam') || textToSearch.includes('luxury') || textToSearch.includes('sparkle') || textToSearch.includes('gold') || textToSearch.includes('crystal'))) score += 2;
-        if (finalAnswers.vibe === 'vibe_artistic' && (textToSearch.includes('art') || textToSearch.includes('paint') || textToSearch.includes('vibrant') || textToSearch.includes('bold'))) score += 2;
+        if (finalAnswers.vibe === 'vibe_glam' && (textToSearch.includes('glam') || textToSearch.includes('luxury') || textToSearch.includes('sparkle') || textToSearch.includes('gold') || textToSearch.includes('crystal') || textToSearch.includes('chrome') || textToSearch.includes('3d') || textToSearch.includes('rhinestones'))) score += 2;
+        if (finalAnswers.vibe === 'vibe_artistic' && (textToSearch.includes('art') || textToSearch.includes('paint') || textToSearch.includes('vibrant') || textToSearch.includes('bold') || textToSearch.includes('abstract') || textToSearch.includes('swirls'))) score += 2;
 
         // Shape/Length Scoring
         if (finalAnswers.shape === 'shape_short') {
-            if (product.category === 'factory') score += 3; // Factory sets are short and have prices
-            if (textToSearch.includes('short') || textToSearch.includes('square')) score += 1;
+            if (lengths.includes('short') || textToSearch.includes('short')) score += 2;
+            if (product.category === 'factory') score += 1; // Factory sets generally skew shorter
         }
-        if (finalAnswers.shape === 'shape_medium' && (textToSearch.includes('medium') || textToSearch.includes('almond'))) score += 2;
-        if (finalAnswers.shape === 'shape_long' && (textToSearch.includes('long') || textToSearch.includes('stiletto') || product.category === 'handmade')) score += 2;
+        if (finalAnswers.shape === 'shape_medium' && (lengths.includes('medium') || textToSearch.includes('medium'))) score += 2;
+        if (finalAnswers.shape === 'shape_long' && (lengths.includes('long') || lengths.includes('extra long') || textToSearch.includes('long'))) score += 2;
 
         // Color Scoring
-        if (finalAnswers.color === 'color_nude' && (textToSearch.includes('nude') || textToSearch.includes('brown') || textToSearch.includes('beige') || textToSearch.includes('pink'))) score += 2;
-        if (finalAnswers.color === 'color_dark' && (textToSearch.includes('dark') || textToSearch.includes('black') || textToSearch.includes('midnight') || textToSearch.includes('ruby'))) score += 2;
-        if (finalAnswers.color === 'color_pop' && (textToSearch.includes('color') || textToSearch.includes('bright') || textToSearch.includes('neon') || textToSearch.includes('blue') || textToSearch.includes('green'))) score += 2;
+        if (finalAnswers.color === 'color_nude' && (textToSearch.includes('nude') || textToSearch.includes('brown') || textToSearch.includes('beige') || textToSearch.includes('pink') || textToSearch.includes('white') || textToSearch.includes('clear'))) score += 2;
+        if (finalAnswers.color === 'color_dark' && (textToSearch.includes('dark') || textToSearch.includes('black') || textToSearch.includes('midnight') || textToSearch.includes('ruby') || textToSearch.includes('burgundy') || textToSearch.includes('deep'))) score += 2;
+        if (finalAnswers.color === 'color_pop' && (textToSearch.includes('color') || textToSearch.includes('bright') || textToSearch.includes('neon') || textToSearch.includes('blue') || textToSearch.includes('green') || textToSearch.includes('red') || textToSearch.includes('purple'))) score += 2;
 
         return { ...product, score };
       });
@@ -97,86 +124,114 @@ export default function FindYourFitQuiz({ allProducts = [] }) {
     setStep(1);
     setRecommendations([]);
   };
+  
+  const handleClose = () => {
+    setIsModalOpen(false);
+    // Optionally reset step if they close it, or keep progress
+  };
 
   return (
-    <div className={styles.quizContainer}>
-      {step === 0 && (
-        <div className={styles.startScreen}>
-          <h2 className={styles.title}>Style Quiz</h2>
-          <p className={styles.subtitle}>
-            Not sure which set is for you? Take our 3-question quiz to get personalized recommendations.
-          </p>
-          <button className={styles.startBtn} onClick={handleStart}>
-            Take the Quiz
-          </button>
-        </div>
-      )}
-
-      {step > 0 && step <= QUESTIONS.length && (
-        <div className={styles.questionScreen}>
-          <div className={styles.progressHeader}>
-            <div className={styles.progressBar}>
-              <div 
-                className={styles.progressFill} 
-                style={{ width: `${(step / QUESTIONS.length) * 100}%` }}
-              />
+    <>
+      {!hideBanner && (
+        <div className={styles.bannerWrapper}>
+          <div className={styles.banner} onClick={() => setIsModalOpen(true)}>
+            <div className={styles.bannerContent}>
+              <span className={styles.bannerIcon}>✨</span>
+              <div className={styles.bannerText}>
+                <h3 className={styles.bannerTitle}>Find Your Perfect Fit</h3>
+                <p className={styles.bannerSubtitle}>Not sure what to pick? Take our 30-second Style Quiz</p>
+              </div>
             </div>
-            <span className={styles.progressText}>{step} / {QUESTIONS.length}</span>
+            <button className={styles.bannerBtn}>Take Quiz</button>
           </div>
+        </div>
+      )}
 
-          <h3 className={styles.questionTitle}>{QUESTIONS[step - 1].question}</h3>
-
-          <div className={styles.optionsGrid}>
-            {QUESTIONS[step - 1].options.map((option) => (
-              <div 
-                key={option.id} 
-                className={styles.optionCard}
-                onClick={() => handleAnswer(QUESTIONS[step - 1].id, option.id)}
-              >
-                <div className={styles.optionImageWrapper}>
-                  {/* using regular img tag for placeholder support before we generate real next/image paths */}
-                  <img src={option.image} alt={option.text} className={styles.optionImage} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
+      {isModalOpen && (
+        <div className={styles.modalOverlay} onClick={handleClose}>
+          <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
+            <button className={styles.closeBtn} onClick={handleClose} aria-label="Close quiz">
+              &times;
+            </button>
+            
+            <div className={styles.quizContainer}>
+              {step === 0 && (
+                <div className={styles.startScreen}>
+                  <h2 className={styles.title}>The Style Quiz</h2>
+                  <p className={styles.subtitle}>
+                    Discover your perfect nail aesthetic. We'll curate a personalized selection just for you.
+                  </p>
+                  <button className={styles.startBtn} onClick={handleStart}>
+                    Begin the Experience
+                  </button>
                 </div>
-                <div className={styles.optionText}>{option.text}</div>
-              </div>
-            ))}
+              )}
+
+              {step > 0 && step <= QUESTIONS.length && (
+                <div className={styles.questionScreen}>
+                  <div className={styles.progressHeader}>
+                    <div className={styles.progressBar}>
+                      <div 
+                        className={styles.progressFill} 
+                        style={{ width: `${(step / QUESTIONS.length) * 100}%` }}
+                      />
+                    </div>
+                    <span className={styles.progressText}>{step} / {QUESTIONS.length}</span>
+                  </div>
+
+                  <h3 className={styles.questionTitle}>{QUESTIONS[step - 1].question}</h3>
+
+                  <div className={styles.optionsGrid}>
+                    {QUESTIONS[step - 1].options.map((option) => (
+                      <div 
+                        key={option.id} 
+                        className={styles.optionCard}
+                        onClick={() => handleAnswer(QUESTIONS[step - 1].id, option.id)}
+                      >
+                        <div className={styles.optionText}>{option.text}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {step === QUESTIONS.length + 1 && (
+                <div className={styles.loadingScreen}>
+                  <div className={styles.spinner}></div>
+                  <p className={styles.loadingText}>Curating your aesthetic...</p>
+                </div>
+              )}
+
+              {step === QUESTIONS.length + 2 && (
+                <div className={styles.resultsScreen}>
+                  <div className={styles.resultsHeader}>
+                    <h2 className={styles.title}>Your Curated Picks</h2>
+                    <p className={styles.subtitle}>
+                      We analyzed your vibe. These sets are calling your name.
+                    </p>
+                  </div>
+
+                  <div className={styles.resultsGrid}>
+                    {recommendations.map((product, i) => (
+                      <div key={product.id} onClick={handleClose} className={styles.resultItem}>
+                        {product.category === 'handmade' ? (
+                          <HandmadeProductCard product={product} index={i} />
+                        ) : (
+                          <ProductCard product={product} index={i} />
+                        )}
+                      </div>
+                    ))}
+                  </div>
+
+                  <button className={styles.retakeBtn} onClick={handleRetake}>
+                    <RotateCcw size={16} /> Retake Quiz
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}
-
-      {step === QUESTIONS.length + 1 && (
-        <div className={styles.loadingScreen}>
-          <div className={styles.spinner}></div>
-          <p className={styles.loadingText}>Curating your recommendations...</p>
-        </div>
-      )}
-
-      {step === QUESTIONS.length + 2 && (
-        <div className={styles.resultsScreen}>
-          <div className={styles.resultsHeader}>
-            <h2 className={styles.title}>Your Curated Picks</h2>
-            <p className={styles.subtitle}>
-              We analyzed your vibe, and these sets are calling your name!
-            </p>
-          </div>
-
-          <div className={styles.resultsGrid}>
-            {recommendations.map((product, i) => (
-              <div key={product.id}>
-                {product.category === 'handmade' ? (
-                  <HandmadeProductCard product={product} index={i} />
-                ) : (
-                  <ProductCard product={product} index={i} />
-                )}
-              </div>
-            ))}
-          </div>
-
-          <button className={styles.retakeBtn} onClick={handleRetake}>
-            <RotateCcw size={16} /> Retake Quiz
-          </button>
-        </div>
-      )}
-    </div>
+    </>
   );
 }

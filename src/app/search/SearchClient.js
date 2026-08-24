@@ -22,7 +22,9 @@ function searchLocalProducts(query, productList) {
       product.description?.toLowerCase().includes(lowercaseQuery) ||
       product.category?.toLowerCase().includes(lowercaseQuery) ||
       product.color?.toLowerCase().includes(lowercaseQuery) ||
+      product.nailShape?.toLowerCase().includes(lowercaseQuery) ||
       (product.colors && product.colors.some((c) => c.toLowerCase().includes(lowercaseQuery))) ||
+      (product.lengths && product.lengths.some((l) => l.toLowerCase().includes(lowercaseQuery))) ||
       (product.tags && product.tags.some((tag) => tag.toLowerCase().includes(lowercaseQuery)))
     );
   });

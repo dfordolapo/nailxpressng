@@ -1,66 +1,196 @@
-.quizContainer {
-  margin: var(--space-12) 0;
-  border-radius: var(--radius-xl);
-  overflow: hidden;
-  background: var(--color-surface);
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
-  position: relative;
-  min-height: 450px;
+/* ── Banner Trigger ── */
+.bannerWrapper {
+  margin: var(--space-8) 0;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
 }
 
+.banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(135deg, var(--color-primary-800), var(--color-primary-900));
+  border: 1px solid var(--color-primary-700);
+  padding: var(--space-6) var(--space-8);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  width: 100%;
+  max-width: 900px;
+  transition: var(--transition-base);
+  box-shadow: var(--shadow-md);
+}
+
+.banner:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--color-accent-dark);
+}
+
+.bannerContent {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.bannerIcon {
+  font-size: 1.5rem;
+  background: var(--color-primary-700);
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.bannerTitle {
+  color: var(--color-primary-50);
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  margin-bottom: 2px;
+}
+
+.bannerSubtitle {
+  color: var(--color-primary-200);
+  font-size: 0.9rem;
+}
+
+.bannerBtn {
+  background: var(--color-accent);
+  color: var(--color-primary-900);
+  padding: 10px 24px;
+  border-radius: 30px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: var(--transition-fast);
+}
+
+.banner:hover .bannerBtn {
+  background: var(--color-accent-light);
+  transform: scale(1.05);
+}
+
+/* ── Modal Overlay ── */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(20, 10, 10, 0.8);
+  backdrop-filter: blur(8px);
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6);
+  animation: fadeIn var(--transition-base) forwards;
+}
+
+.modalContent {
+  background: var(--color-primary-900);
+  border: 1px solid var(--color-primary-700);
+  border-radius: var(--radius-xl);
+  width: 100%;
+  max-width: 900px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  animation: scaleIn var(--transition-base) forwards;
+}
+
+.closeBtn {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  background: var(--color-primary-800);
+  color: var(--color-primary-200);
+  border: 1px solid var(--color-primary-700);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: var(--transition-fast);
+}
+
+.closeBtn:hover {
+  background: var(--color-primary-700);
+  color: var(--color-primary-50);
+  transform: rotate(90deg);
+}
+
+/* ── Quiz Container (Inside Modal) ── */
+.quizContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 500px;
+  color: var(--color-primary-50);
+}
+
+/* ── Screens ── */
 .startScreen {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: var(--space-12) var(--space-6);
-  background: linear-gradient(135deg, var(--color-primary-100), var(--color-bg-warm));
+  padding: var(--space-16) var(--space-6);
   flex: 1;
+  background: linear-gradient(180deg, var(--color-primary-800) 0%, var(--color-primary-900) 100%);
+  border-radius: var(--radius-xl);
 }
 
 .title {
   font-family: var(--font-heading);
-  font-size: 1.5rem;
-  color: var(--color-primary-800);
+  font-size: 2.5rem;
+  color: var(--color-accent-light);
   margin-bottom: var(--space-4);
+  font-style: italic;
 }
 
 .subtitle {
-  font-size: 0.95rem;
-  color: var(--color-text-secondary);
+  font-size: 1.1rem;
+  color: var(--color-primary-200);
   max-width: 500px;
-  margin: 0 auto var(--space-8);
+  margin: 0 auto var(--space-10);
   line-height: 1.6;
+  font-weight: 300;
 }
 
 .startBtn {
-  background: var(--color-primary);
-  color: white;
-  border: none;
+  background: transparent;
+  color: var(--color-accent-light);
+  border: 1px solid var(--color-accent);
   padding: 16px 40px;
   border-radius: 30px;
   font-size: 0.95rem;
   font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(122, 64, 61, 0.2);
 }
 
 .startBtn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(122, 64, 61, 0.3);
-  background: var(--color-primary-800);
+  background: var(--color-accent);
+  color: var(--color-primary-900);
+  box-shadow: 0 0 20px rgba(211, 159, 153, 0.4);
 }
 
 .questionScreen {
-  padding: var(--space-10) var(--space-6);
+  padding: var(--space-10) var(--space-8);
   flex: 1;
   display: flex;
   flex-direction: column;
-  background: var(--color-bg-card);
 }
 
 .progressHeader {
@@ -68,35 +198,38 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: var(--space-8);
+  padding: 0 var(--space-4);
 }
 
 .progressBar {
   flex: 1;
-  height: 6px;
-  background: var(--color-border);
-  border-radius: 3px;
-  margin-right: var(--space-4);
+  height: 4px;
+  background: var(--color-primary-800);
+  border-radius: 2px;
+  margin-right: var(--space-6);
   overflow: hidden;
 }
 
 .progressFill {
   height: 100%;
-  background: var(--color-primary);
+  background: var(--color-accent);
   transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .progressText {
   font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--color-text-tertiary);
+  font-weight: 500;
+  color: var(--color-primary-300);
+  letter-spacing: 2px;
 }
 
 .questionTitle {
   font-family: var(--font-heading);
-  font-size: 1.25rem;
-  color: var(--color-text);
-  margin-bottom: var(--space-8);
+  font-size: 2rem;
+  color: var(--color-primary-50);
+  margin-bottom: var(--space-10);
   text-align: center;
+  font-weight: 400;
 }
 
 .optionsGrid {
@@ -109,40 +242,31 @@
 }
 
 .optionCard {
-  background: white;
-  border: 2px solid transparent;
+  background: var(--color-primary-800);
+  border: 1px solid var(--color-primary-700);
   border-radius: var(--radius-lg);
-  padding: var(--space-4);
+  padding: var(--space-8) var(--space-4);
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   text-align: center;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100px;
 }
 
 .optionCard:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-  border-color: var(--color-primary-100);
-}
-
-.optionImageWrapper {
-  width: 100%;
-  aspect-ratio: 1;
-  position: relative;
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  margin-bottom: var(--space-4);
-  background: var(--color-surface);
-}
-
-.optionImage {
-  object-fit: cover;
+  border-color: var(--color-accent);
+  background: var(--color-primary-700);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
 
 .optionText {
-  font-weight: 600;
-  color: var(--color-text);
-  font-size: 0.9rem;
+  font-weight: 300;
+  color: var(--color-primary-100);
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
 }
 
 .loadingScreen {
@@ -151,36 +275,33 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: var(--color-bg-card);
-  padding: var(--space-12) 0;
+  padding: var(--space-20) 0;
 }
 
 .spinner {
-  width: 50px;
-  height: 50px;
-  border: 3px solid var(--color-primary-100);
-  border-top-color: var(--color-primary);
+  width: 60px;
+  height: 60px;
+  border: 2px solid var(--color-primary-700);
+  border-top-color: var(--color-accent);
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: var(--space-6);
 }
 
 @keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+  to { transform: rotate(360deg); }
 }
 
 .loadingText {
-  font-size: 1rem;
-  color: var(--color-primary);
-  font-weight: 500;
+  font-size: 1.1rem;
+  color: var(--color-accent);
+  font-weight: 300;
   font-family: var(--font-heading);
+  letter-spacing: 1px;
 }
 
 .resultsScreen {
   padding: var(--space-10) var(--space-6);
-  background: var(--color-bg-card);
 }
 
 .resultsHeader {
@@ -188,24 +309,23 @@
   margin-bottom: var(--space-10);
 }
 
-.resultsTitle {
-  font-family: var(--font-heading);
-  font-size: 1.5rem;
-  color: var(--color-primary-800);
-  margin-bottom: var(--space-2);
-}
-
-.resultsSubtitle {
-  font-size: 0.95rem;
-  color: var(--color-text-secondary);
-}
-
 .resultsGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: var(--space-6);
-  max-width: 1100px;
+  max-width: 1000px;
   margin: 0 auto;
+}
+
+.resultItem {
+  background: var(--color-primary-800);
+  border-radius: var(--radius-xl);
+  padding: var(--space-4);
+  transition: transform 0.3s ease;
+}
+
+.resultItem:hover {
+  transform: translateY(-5px);
 }
 
 .retakeBtn {
@@ -213,18 +333,52 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  margin: var(--space-10) auto 0;
+  margin: var(--space-12) auto 0;
   background: transparent;
-  border: 1px solid var(--color-border);
-  color: var(--color-text-secondary);
-  padding: 10px 24px;
-  border-radius: 20px;
-  font-size: 0.85rem;
+  border: 1px solid var(--color-primary-600);
+  color: var(--color-primary-200);
+  padding: 12px 32px;
+  border-radius: 30px;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 .retakeBtn:hover {
-  background: var(--color-surface);
-  color: var(--color-text);
+  background: var(--color-primary-800);
+  color: var(--color-primary-50);
+  border-color: var(--color-primary-500);
+}
+
+/* Responsive Overrides */
+@media (max-width: 768px) {
+  .banner {
+    flex-direction: column;
+    text-align: center;
+    gap: var(--space-4);
+    padding: var(--space-6);
+  }
+  
+  .bannerContent {
+    flex-direction: column;
+  }
+  
+  .modalContent {
+    max-height: 95vh;
+  }
+  
+  .questionScreen {
+    padding: var(--space-6) var(--space-4);
+  }
+
+  .subtitle {
+    font-size: 0.85rem;
+    padding: 0 var(--space-4);
+  }
+
+  .title {
+    font-size: 1.8rem;
+  }
 }

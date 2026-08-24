@@ -1,5 +1,6 @@
-import { getProductsByCategory, getFeaturedProducts } from "@/lib/api";
+import { getProductsByCategory, getFeaturedProducts, getProducts } from "@/lib/api";
 import CollectionClient from "@/components/product/CollectionClient";
+import FindYourFitQuiz from "@/components/product/FindYourFitQuiz";
 
 export const metadata = {
   title: "Factory Made Nails — Nailexpress",
@@ -11,14 +12,20 @@ export default async function FactoryPage() {
   
   // Fetch data on the server
   const allProducts = await getProductsByCategory("factory");
+  // Fetch full catalog for the quiz
+  const fullCatalog = await getProducts();
+
   const allFeatured = await getFeaturedProducts();
   const featuredProducts = allFeatured.filter(p => p.category === "factory");
 
   return (
-    <CollectionClient 
-      category={category} 
-      allProducts={allProducts} 
-      featuredProducts={featuredProducts} 
-    />
+    <>
+      <FindYourFitQuiz allProducts={fullCatalog} hideBanner={true} />
+      <CollectionClient 
+        category={category} 
+        allProducts={allProducts} 
+        featuredProducts={featuredProducts} 
+      />
+    </>
   );
 }

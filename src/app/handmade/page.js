@@ -1,5 +1,6 @@
-import { getProductsByCategory, getFeaturedProducts } from "@/lib/api";
+import { getProductsByCategory, getProducts } from "@/lib/api";
 import CollectionClient from "@/components/product/CollectionClient";
+import FindYourFitQuiz from "@/components/product/FindYourFitQuiz";
 
 export const metadata = {
   title: "Handmade Nails — Nailexpress",
@@ -12,6 +13,9 @@ export default async function HandmadePage() {
   // Fetch data on the server
   const allProducts = await getProductsByCategory("handmade");
   
+  // Fetch full catalog for the quiz
+  const fullCatalog = await getProducts();
+  
   // Specifically select the ones requested for the marquee
   const marqueeNames = [
     "Fierce Bloom", "Glazed Pearl", "Vibrant Bloom", 
@@ -20,10 +24,13 @@ export default async function HandmadePage() {
   const featuredProducts = allProducts.filter(p => marqueeNames.includes(p.name));
 
   return (
-    <CollectionClient 
-      category={category} 
-      allProducts={allProducts} 
-      featuredProducts={featuredProducts} 
-    />
+    <>
+      <FindYourFitQuiz allProducts={fullCatalog} hideBanner={true} />
+      <CollectionClient 
+        category={category} 
+        allProducts={allProducts} 
+        featuredProducts={featuredProducts} 
+      />
+    </>
   );
 }
