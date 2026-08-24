@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { createClient } from '@supabase/supabase-js';
+import { getFeaturedProducts } from '@/lib/api';
 import SuccessClient from './SuccessClient';
 
 export const dynamic = 'force-dynamic';
@@ -54,18 +55,9 @@ export default async function OrderSuccessPage({ searchParams }) {
 
   let recommendedProducts = [];
   if (orderData) {
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL,
-      process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-    );
-    // Fetch some real products for "while you wait"
-    const { data: products } = await supabase
-      .from('products')
-      .select('*')
-      .limit(4);
-      
-    if (products) {
-      recommendedProducts = products;
+    const featured = await getFeaturedProducts();
+    if (featured && featured.length > 0) {
+      recommendedProducts = featured.slice(0, 4);
     }
   }
 
