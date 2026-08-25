@@ -401,8 +401,8 @@ function NewProductContent() {
                   </div>
                   
                   {/* Real Component Preview */}
-                  <div style={{ maxWidth: "280px", justifySelf: "center" }}>
-                    <div style={{ fontSize: "0.85rem", color: "#666", marginBottom: "10px" }}>Preview (As Customer Sees)</div>
+                  <div style={{ maxWidth: "200px", justifySelf: "center", transform: "scale(0.9)", transformOrigin: "top center" }}>
+                    <div style={{ fontSize: "0.85rem", color: "#666", marginBottom: "10px", textAlign: "center" }}>Preview (As Customer Sees)</div>
                       {collection.toLowerCase().replace(' ', '-') === 'handmade' ? (
                         <HandmadeProductCard 
                           product={{
