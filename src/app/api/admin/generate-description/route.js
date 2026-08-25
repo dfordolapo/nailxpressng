@@ -23,12 +23,12 @@ export async function POST(request) {
         messages: [
           {
             role: "system",
-            content: "You are an expert copywriter for a premium press-on nail brand. Your task is to write a single, perfectly crafted 1-2 sentence description of a nail set based on an image. The tone should be engaging, elegant, and descriptive. Mention the base color, the prominent nail art/3D elements/patterns, and the aesthetic. Do not mention the shape unless it is very obvious, and do not include quotes."
+            content: "You are an expert copywriter for a premium press-on nail brand. Your task is to write a short, catchy 2-3 word name for a nail set AND a single, perfectly crafted 1-2 sentence description based on an image. The name should be elegant (e.g., 'Velvet Bloom', 'Glossy Dawn'). The description should mention the base color, the prominent nail art/3D elements, and the aesthetic. Output JSON format with two keys: 'name' and 'description'."
           },
           {
             role: "user",
             content: [
-              { type: "text", text: "Please describe this nail set in 1-2 elegant sentences." },
+              { type: "text", text: "Please provide a JSON with a 'name' and 'description' for this nail set." },
               {
                 type: "image_url",
                 image_url: {
@@ -39,8 +39,9 @@ export async function POST(request) {
             ]
           }
         ],
-        max_tokens: 100,
+        max_tokens: 150,
         temperature: 0.7,
+        response_format: { type: "json_object" },
       })
     });
 
@@ -51,9 +52,13 @@ export async function POST(request) {
     }
 
     const data = await response.json();
-    const description = data.choices[0].message.content.trim();
+    const resultText = data.choices[0].message.content.trim();
+    const resultJson = JSON.parse(resultText);
 
-    return NextResponse.json({ description });
+    return NextResponse.json({ 
+      name: resultJson.name, 
+      description: resultJson.description 
+    });
   } catch (error) {
     console.error("Error generating description:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });

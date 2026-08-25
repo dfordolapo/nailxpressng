@@ -178,7 +178,8 @@ function NewProductContent() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Failed to generate');
       
-      setDescription(data.description);
+      if (!name) setName(data.name || "");
+      setDescription(data.description || "");
     } catch (err) {
       console.error(err);
       alert("Error generating description: " + err.message);
@@ -286,7 +287,17 @@ function NewProductContent() {
           <form onSubmit={handleSubmit}>
           {activeTab === "basic" && (
             <div className={styles.formSection}>
-              <h2 className={styles.formSectionTitle}>Basic Information</h2>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
+                <h2 className={styles.formSectionTitle} style={{ marginBottom: 0 }}>Basic Information</h2>
+                <button 
+                  type="button" 
+                  onClick={generateDescription}
+                  disabled={isGenerating || !imagePreview}
+                  style={{ background: "var(--color-primary-100)", color: "var(--color-primary-800)", border: "none", borderRadius: "6px", padding: "8px 14px", fontSize: "0.85rem", display: "flex", alignItems: "center", gap: "6px", cursor: (!imagePreview || isGenerating) ? "not-allowed" : "pointer", opacity: (!imagePreview || isGenerating) ? 0.5 : 1, transition: "all 0.2s", fontWeight: 500 }}
+                >
+                  ✨ {isGenerating ? "Generating..." : "AI Generate Name & Desc"}
+                </button>
+              </div>
               
               <div className={styles.formGroup}>
                 <label className={styles.label}>Product Name</label>
@@ -330,18 +341,8 @@ function NewProductContent() {
               </div>
 
               <div className={styles.formGroup}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <label className={styles.label} style={{ margin: 0 }}>Description</label>
-                  <button 
-                    type="button" 
-                    onClick={generateDescription}
-                    disabled={isGenerating || !imagePreview}
-                    style={{ background: "var(--color-primary-100)", color: "var(--color-primary-800)", border: "none", borderRadius: "6px", padding: "6px 12px", fontSize: "0.85rem", display: "flex", alignItems: "center", gap: "6px", cursor: (!imagePreview || isGenerating) ? "not-allowed" : "pointer", opacity: (!imagePreview || isGenerating) ? 0.5 : 1, transition: "all 0.2s" }}
-                  >
-                    ✨ {isGenerating ? "Generating..." : "Auto-Generate"}
-                  </button>
-                </div>
-                <textarea className={styles.textarea} placeholder="Write a one liner about this product." value={description} onChange={e => setDescription(e.target.value)} style={{ marginTop: "10px" }}></textarea>
+                <label className={styles.label}>Description</label>
+                <textarea className={styles.textarea} placeholder="Write a one liner about this product." value={description} onChange={e => setDescription(e.target.value)}></textarea>
                 <div className={styles.charCount}>{description.length}/300</div>
               </div>
 
