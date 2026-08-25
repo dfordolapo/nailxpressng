@@ -22,7 +22,7 @@ export async function POST(request) {
 
     const prompt = "You are an expert copywriter for a premium press-on nail brand. Your task is to write a short, catchy 2-3 word name for a nail set AND a single, perfectly crafted 1-2 sentence description based on an image. The name should be elegant (e.g., 'Velvet Bloom', 'Glossy Dawn'). The description should mention the base color, the prominent nail art/3D elements, and the aesthetic. Output JSON format with two keys: 'name' and 'description'.";
 
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-pro-preview:generateContent?key=${process.env.GEMINI_API_KEY}`, {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
