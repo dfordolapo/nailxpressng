@@ -48,7 +48,8 @@ export async function POST(request) {
     if (!response.ok) {
       const errData = await response.json();
       console.error("OpenAI API Error:", errData);
-      return NextResponse.json({ error: "Failed to generate description with AI" }, { status: 500 });
+      const errorMessage = errData.error?.message || "Failed to generate description with AI";
+      return NextResponse.json({ error: errorMessage }, { status: 500 });
     }
 
     const data = await response.json();
