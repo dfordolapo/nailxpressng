@@ -28,7 +28,7 @@
   object-fit: contain;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1025px) {
   .section {
   padding: 60px 0;
   }

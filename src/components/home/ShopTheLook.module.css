@@ -66,13 +66,13 @@
   object-fit: cover;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1024px) {
   .grid {
     gap: 100px;
   }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1025px) {
   .section {
   padding: 60px 0;
   }

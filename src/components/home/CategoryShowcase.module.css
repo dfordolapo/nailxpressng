@@ -54,7 +54,7 @@
   cursor: pointer;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1025px) {
   .section {
     padding: calc(var(--space-12) + 60px) 0 60px;
   }
@@ -138,7 +138,7 @@
   text-align: center;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1024px) {
   .label {
     width: 130px;
     font-size: 0.6rem;
@@ -183,7 +183,7 @@
   box-shadow: var(--shadow-sm);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1025px) {
   .punLine {
     font-size: var(--text-lg);
   }
@@ -203,7 +203,7 @@
   transition: background-color var(--transition-base), transform var(--transition-base);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1025px) {
   .button {
     padding: var(--space-4) var(--space-12);
     font-size: var(--text-lg);
@@ -222,7 +222,7 @@
 .desktopBtn { display: inline-flex; }
 .mobileBtn { display: none; }
 
-@media (max-width: 767px) {
+@media (max-width: 1024px) {
   .desktopBtn { display: none; }
   .mobileBtn { display: inline-flex; }
 }
@@ -248,7 +248,7 @@
   width: auto !important;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1025px) {
   .mini .card {
     width: 120px !important;
   }
@@ -262,7 +262,7 @@
   font-size: 0.6rem !important;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1025px) {
   .mini .punLine {
     font-size: 0.8rem !important;
   }

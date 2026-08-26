@@ -101,7 +101,7 @@
   letter-spacing: 1px;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1025px) {
   .grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);

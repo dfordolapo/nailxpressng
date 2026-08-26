@@ -48,7 +48,7 @@
   transition: background-color var(--transition-base), transform var(--transition-base);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1025px) {
   .ctaBtn {
     padding: var(--space-4) var(--space-12);
     font-size: var(--text-lg);
@@ -65,7 +65,7 @@
 }
 
 /* 📱 MOBILE STYLES (Strictly Isolated for mobile < 768px - Reduced vertical spacing) */
-@media (max-width: 767px) {
+@media (max-width: 1024px) {
   .fullWidthSection {
     padding: var(--space-3) 0;
     margin: var(--space-3) 0;
@@ -125,7 +125,7 @@
 }
 
 /* 💻 DESKTOP / WEB STYLES (Strictly Isolated for web >= 768px - 100% UNTOUCHED) */
-@media (min-width: 768px) {
+@media (min-width: 1025px) {
   .fullWidthSection {
     padding: var(--space-12) 0;
     margin: var(--space-12) 0;
