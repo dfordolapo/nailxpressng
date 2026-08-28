@@ -254,6 +254,11 @@
 .mini .gridWrapper {
   margin-bottom: var(--space-4) !important;
   padding: 0 0 var(--space-4) !important;
+  transform: none !important;
+}
+
+.mini .card:nth-child(n) {
+  transform: none !important;
 }
 
 .mini .card {
