@@ -133,7 +133,7 @@ export default function CategoryShowcase({ mini = false, items = null }) {
       }, 500);
     };
 
-    const onScroll = () => {
+    const onWheel = () => {
       if (!isDown) {
         pauseAutoScroll();
         clearTimeout(track._resumeTimer);
@@ -160,7 +160,7 @@ export default function CategoryShowcase({ mini = false, items = null }) {
     track.addEventListener('pointerup', onPointerUp);
     track.addEventListener('pointerleave', onPointerUp);
     track.addEventListener('pointercancel', onPointerUp);
-    track.addEventListener('scroll', onScroll, { passive: true });
+    track.addEventListener('wheel', onWheel, { passive: true });
 
     return () => {
       cancelAnimationFrame(autoScrollRef.current);
@@ -169,7 +169,7 @@ export default function CategoryShowcase({ mini = false, items = null }) {
       track.removeEventListener('pointerup', onPointerUp);
       track.removeEventListener('pointerleave', onPointerUp);
       track.removeEventListener('pointercancel', onPointerUp);
-      track.removeEventListener('scroll', onScroll);
+      track.removeEventListener('wheel', onWheel);
       track.removeEventListener('click', onClickCapture, { capture: true });
       clearTimeout(track._resumeTimer);
     };
