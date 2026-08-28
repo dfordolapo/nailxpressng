@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 import { Plus, Trash2, Image as ImageIcon } from "lucide-react";
+import Image from "next/image";
 import styles from "./inspirations.module.css";
 import btnStyles from "@/styles/components/buttons.module.css";
 
@@ -134,7 +135,7 @@ export default function InspirationsClient() {
           {inspirations.map((insp) => (
             <div key={insp.id} className={styles.card}>
               <div className={styles.imageWrapper}>
-                <img src={insp.image_url} alt="Nail Inspiration" className={styles.image} />
+                <Image src={insp.image_url} alt="Nail Inspiration" fill sizes="(max-width: 768px) 50vw, 33vw" className={styles.image} style={{ objectFit: 'cover' }} />
                 <button 
                   className={styles.deleteBtn}
                   onClick={() => handleDelete(insp.id, insp.image_url)}

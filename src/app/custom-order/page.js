@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { nailShapes, nailLengths } from "@/data/categories";
 import { SOCIAL_LINKS } from "@/lib/constants";
+import Image from "next/image";
 import customStyles from "@/styles/pages/custom-order.module.css";
 import collectionStyles from "@/styles/pages/collection.module.css";
 import btnStyles from "@/styles/components/buttons.module.css";
@@ -324,8 +325,8 @@ export default function CustomOrderPage() {
                       className={`${customStyles.visualCard} ${order.shape === shape.id ? customStyles.selected : ""}`}
                       onClick={() => updateOrder("shape", shape.id)}
                     >
-                      <div className={customStyles.cardImageContainer}>
-                        <img src={shape.image} alt={`${shape.name} nail shape`} />
+                      <div className={customStyles.cardImageContainer} style={{ position: "relative" }}>
+                        <Image src={shape.image} alt={`${shape.name} nail shape`} fill sizes="100px" style={{ objectFit: "contain" }} />
                       </div>
                       <div className={customStyles.cardTitle}>{shape.name}</div>
                     </button>
@@ -380,7 +381,7 @@ export default function CustomOrderPage() {
                             flexShrink: 0
                           }}
                         >
-                          <img src={insp.image_url} alt="Inspiration" style={{ width: "100%", height: "100%", objectFit: "contain", backgroundColor: "var(--color-bg-warm)" }} />
+                          <Image src={insp.image_url} alt="Inspiration" fill sizes="160px" style={{ objectFit: "contain", backgroundColor: "var(--color-bg-warm)" }} />
                           {order.inspirationUrl === insp.image_url && (
                             <div style={{ position: "absolute", top: 8, right: 8, background: "white", borderRadius: "50%", padding: 2 }}>
                               <CheckCircle size={20} color="var(--color-primary)" />

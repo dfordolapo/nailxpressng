@@ -8,6 +8,7 @@ import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { useToast } from "@/context/ToastContext";
 import ImageZoomModal from "@/components/product/ImageZoomModal";
+import { motion } from "framer-motion";
 import styles from "./handmade-card.module.css";
 
 function HeartIcon({ filled }) {
@@ -137,12 +138,16 @@ export default function ProductCard({ product, index = 0, viewMode = "grid" }) {
 
   return (
     <>
-      <div
+      <motion.div
         className={styles.cardWrapper}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
+        onMouseMove={handleMouseMove}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.1 }}
+        transition={{ duration: 0.5, delay: index * 0.05 }}
+      >
       <div
         ref={cardRef}
         className={styles.cardInner}
@@ -308,7 +313,7 @@ export default function ProductCard({ product, index = 0, viewMode = "grid" }) {
           </div>
         )}
       </div>
-    </div>
+      </motion.div>
       <ImageZoomModal 
         isOpen={isZoomOpen} 
         onClose={() => setIsZoomOpen(false)} 

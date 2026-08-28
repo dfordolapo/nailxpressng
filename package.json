@@ -10,10 +10,12 @@
   },
   "dependencies": {
     "@ducanh2912/next-pwa": "^10.2.9",
+    "@google/generative-ai": "^0.24.1",
     "@paystack/inline-js": "^2.23.1",
     "@supabase/supabase-js": "^2.110.1",
     "canvas-confetti": "^1.9.4",
     "dotenv": "^17.4.2",
+    "framer-motion": "^13.1.1",
     "heic-convert": "^2.1.0",
     "lucide-react": "^1.24.0",
     "naija-state-local-government": "^1.1.2",

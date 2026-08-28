@@ -2,6 +2,8 @@
 import { useState, useEffect } from "react";
 
 import Link from "next/link";
+import Image from "next/image";
+import { motion } from "framer-motion";
 import { useCart } from "@/context/CartContext";
 import { formatPrice, calculateCartTotals } from "@/lib/utils";
 import { SOCIAL_LINKS, WHATSAPP_MESSAGES } from "@/lib/constants";
@@ -42,8 +44,21 @@ export default function CartDrawer({ onClose }) {
 
   return (
     <>
-      <div className={styles.drawerOverlay} onClick={onClose} />
-      <div className={styles.drawer} id="cart-drawer">
+      <motion.div 
+        className={styles.drawerOverlay} 
+        onClick={onClose} 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      />
+      <motion.div 
+        className={styles.drawer} 
+        id="cart-drawer"
+        initial={{ x: "100%" }}
+        animate={{ x: 0 }}
+        exit={{ x: "100%" }}
+        transition={{ type: "spring", damping: 25, stiffness: 200 }}
+      >
         {/* Header */}
         <div className={styles.drawerHeader}>
           <h3 className={styles.drawerTitle}>Your Cart ({itemCount})</h3>
@@ -71,9 +86,9 @@ export default function CartDrawer({ onClose }) {
             items.map((item) => (
               <div key={`${item.id}-${item.selectedSize}-${item.selectedLength}`} className={styles.cartItem}>
                 <div className={styles.cartItemImage}>
-                  <div style={{ width: "100%", height: "100%", background: "linear-gradient(135deg, var(--color-primary-100), var(--color-surface))", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <div style={{ position: "relative", width: "100%", height: "100%", background: "linear-gradient(135deg, var(--color-primary-100), var(--color-surface))", display: "flex", alignItems: "center", justifyContent: "center" }}>
                     {item.image || (item.images && item.images[0]) ? (
-                      <img src={item.image || item.images[0]} alt={item.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                      <Image src={item.image || item.images[0]} alt={item.name} fill sizes="100px" style={{ objectFit: "cover" }} />
                     ) : null}
                   </div>
                 </div>
@@ -198,7 +213,7 @@ export default function CartDrawer({ onClose }) {
             </Link>
           </div>
         )}
-      </div>
+      </motion.div>
     </>
   );
 }

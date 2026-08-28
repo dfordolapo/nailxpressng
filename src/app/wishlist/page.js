@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useWishlist } from "@/context/WishlistContext";
 import { useCart } from "@/context/CartContext";
@@ -160,11 +161,10 @@ export default function WishlistPage() {
                     alignItems: "center",
                     justifyContent: "center",
                     overflow: "hidden",
-                    fontSize: "2rem"
+                    position: "relative"
                   }}>
                     {stockMap[item.id]?.image ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={stockMap[item.id].image} alt={item.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                      <Image src={stockMap[item.id].image} alt={item.name} fill sizes="100px" style={{ objectFit: "cover" }} />
                     ) : (
                       "💅"
                     )}

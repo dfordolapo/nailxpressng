@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Calendar, Package, ArrowUpRight, MoreVertical, Star } from "lucide-react";
 import styles from "@/styles/admin.module.css";
@@ -144,8 +145,7 @@ export default function DashboardClient({ initialProducts }) {
                 <tr key={product.id}>
                   <td>
                     <div className={styles.productCell}>
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={product.images?.[0] || '/images/hero.png'} alt={product.name} className={styles.productImg} />
+                      <Image src={product.images?.[0] || '/images/hero.png'} alt={product.name} className={styles.productImg} width={48} height={48} style={{ objectFit: 'cover' }} />
                       <span className={styles.productName}>{product.name}</span>
                     </div>
                   </td>

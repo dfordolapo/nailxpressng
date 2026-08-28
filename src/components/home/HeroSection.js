@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 import styles from './HeroSection.module.css';
 
 export default function HeroSection() {
@@ -22,20 +23,34 @@ export default function HeroSection() {
     <section className={styles.hero}>
       <div className={styles.content}>
         <div className={styles.textContent}>
-          <h1 className={`${styles.title} animate-fade-in-up`}>
+          <motion.h1 
+            className={styles.title}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          >
             The upgrade<br />is instant
-          </h1>
-          <p className={`${styles.subtitle} animate-fade-in-up`} style={{ animationDelay: '150ms' }}>
+          </motion.h1>
+          <motion.p 
+            className={styles.subtitle}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+          >
             Press-on. Slay. Repeat.
-          </p>
-          <div className="animate-fade-in-up" style={{ animationDelay: '300ms' }}>
+          </motion.p>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          >
             <Link href="/shop" className={`${styles.button} ${styles.desktopBtn}`}>
               Shop bestsellers
             </Link>
             <Link href="/shop" className={`${styles.button} ${styles.mobileBtn}`}>
               Shop bestsellers
             </Link>
-          </div>
+          </motion.div>
         </div>
       </div>
       <div className={styles.imageWrapper}>

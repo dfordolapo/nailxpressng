@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ShoppingCart } from 'lucide-react';
+import { motion } from 'framer-motion';
 import styles from './CategoryShowcase.module.css';
 
 const MOODS = [
@@ -176,7 +177,13 @@ export default function CategoryShowcase({ mini = false, items = null }) {
   }, [pauseAutoScroll, resumeAutoScroll]);
 
   return (
-    <section className={`${styles.section} ${mini ? styles.mini : ''}`}>
+    <motion.section 
+      className={`${styles.section} ${mini ? styles.mini : ''}`}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.7 }}
+    >
       {!mini && (
         <h2 className={styles.title}>
           Nails that match your every mood
@@ -241,6 +248,6 @@ export default function CategoryShowcase({ mini = false, items = null }) {
           </Link>
         </div>
       )}
-    </section>
+    </motion.section>
   );
 }

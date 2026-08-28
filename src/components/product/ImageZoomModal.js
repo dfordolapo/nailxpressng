@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import Image from "next/image";
 import { X } from "lucide-react";
 
 export default function ImageZoomModal({ isOpen, onClose, imageSrc, altText }) {
@@ -82,12 +83,12 @@ export default function ImageZoomModal({ isOpen, onClose, imageSrc, altText }) {
         }}
         onClick={(e) => e.stopPropagation()} 
       >
-        <img 
+        <Image 
           src={imageSrc} 
           alt={altText || "Product Image Zoom"} 
+          fill
+          sizes="100vw"
           style={{
-            maxWidth: '100%',
-            maxHeight: '100%',
             objectFit: 'contain',
             borderRadius: '8px'
           }}
