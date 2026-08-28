@@ -19,6 +19,7 @@ export const categories = [
 
 export const nailShapes = [
   { id: "almond", name: "Almond", image: "/images/shapes/almond.png" },
+  { id: "stiletto", name: "Stiletto", image: "/images/shapes/stiletto.png" },
   { id: "oval", name: "Oval", image: "/images/shapes/oval.png" },
   { id: "square", name: "Square", image: "/images/shapes/square.png" },
   { id: "coffin", name: "Coffin", image: "/images/shapes/coffin.png" },
