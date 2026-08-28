@@ -140,9 +140,12 @@ export default function CustomOrderPage() {
     const fetchInspirations = async () => {
       try {
         const res = await fetch('/api/inspirations');
-        const data = await res.json();
-        if (data.images) {
-          setInspirations(data.images);
+        const contentType = res.headers.get("content-type");
+        if (res.ok && contentType && contentType.indexOf("application/json") !== -1) {
+          const data = await res.json();
+          if (data.images) {
+            setInspirations(data.images);
+          }
         }
       } catch (err) {
         console.error("Failed to load local inspirations", err);
