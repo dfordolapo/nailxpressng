@@ -15,15 +15,15 @@ export default async function ShopTheLook() {
   const hotspots = [
     {
       id: 1,
-      top: '40%',
-      left: '30%',
+      top: '60%',
+      left: '20%',
       name: pick1.name,
       price: formatPrice(pick1.price),
       link: `/product/${pick1.slug}`,
     },
     {
       id: 2,
-      top: '65%',
+      top: '75%',
       left: '75%',
       name: pick2.name,
       price: formatPrice(pick2.price),
@@ -31,8 +31,8 @@ export default async function ShopTheLook() {
     },
     {
       id: 3,
-      top: '25%',
-      left: '60%',
+      top: '60%',
+      left: '85%',
       name: 'Custom Order',
       price: 'Price varies',
       link: '/custom-order',
