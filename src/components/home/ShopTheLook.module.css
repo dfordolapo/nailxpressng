@@ -1,8 +1,7 @@
 .section {
   background: linear-gradient(to bottom, var(--color-bg-warm) 0%, var(--color-bg) 100%);
-  padding: 50px 0;
+  padding: 50px 0 100px;
   position: relative;
-  overflow: hidden;
 }
 
 .grid {
@@ -58,12 +57,11 @@
   position: relative;
   width: 100%;
   aspect-ratio: 1.2 / 1;
-  border-radius: var(--radius-2xl);
-  overflow: hidden;
 }
 
 .image {
   object-fit: cover;
+  border-radius: var(--radius-2xl);
 }
 
 @media (max-width: 1024px) {

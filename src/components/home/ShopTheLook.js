@@ -12,14 +12,32 @@ export default async function ShopTheLook() {
   const pick2 = allProducts.find(p => p.name === 'Lava Eclipse') || allProducts[1];
   const picks = [pick1, pick2].filter(Boolean);
 
-  const hotspots = picks.map((p, i) => ({
-    id: i + 1,
-    top: i === 0 ? '40%' : '65%',
-    left: i === 0 ? '30%' : '75%',
-    name: p.name,
-    price: formatPrice(p.price),
-    link: `/product/${p.slug}`,
-  }));
+  const hotspots = [
+    {
+      id: 1,
+      top: '40%',
+      left: '30%',
+      name: pick1.name,
+      price: formatPrice(pick1.price),
+      link: `/product/${pick1.slug}`,
+    },
+    {
+      id: 2,
+      top: '65%',
+      left: '75%',
+      name: pick2.name,
+      price: formatPrice(pick2.price),
+      link: `/product/${pick2.slug}`,
+    },
+    {
+      id: 3,
+      top: '25%',
+      left: '60%',
+      name: 'Custom Order',
+      price: 'Price varies',
+      link: '/custom-order',
+    }
+  ];
 
   const whatsappUrl = `${SOCIAL_LINKS.whatsapp}?text=${encodeURIComponent(WHATSAPP_MESSAGES.customOrder)}`;
 
