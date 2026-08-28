@@ -3,6 +3,7 @@
   padding: 100px 0 40px;
   text-align: center;
   position: relative;
+  overflow: hidden;
 }
 
 .title {
@@ -18,12 +19,13 @@
   display: flex;
   overflow-x: auto;
   overflow-y: hidden;
-  padding: var(--space-4) 0;
+  padding: var(--space-8) 0;
   margin-bottom: var(--space-10);
   scrollbar-width: none;
   -ms-overflow-style: none;
   touch-action: pan-x;
   cursor: grab;
+  transform: rotate(-4deg) scale(1.05);
 }
 
 .gridWrapper::-webkit-scrollbar {
@@ -54,6 +56,14 @@
   cursor: pointer;
 }
 
+.card:nth-child(odd) {
+  transform: translateY(-16px) rotate(-1.5deg);
+}
+
+.card:nth-child(even) {
+  transform: translateY(16px) rotate(1.5deg);
+}
+
 @media (min-width: 1025px) {
   .section {
     padding: calc(var(--space-12) + 60px) 0 60px;
@@ -61,6 +71,14 @@
 
   .card {
     width: 240px;
+  }
+  
+  .card:nth-child(odd) {
+    transform: translateY(-24px) rotate(-2deg);
+  }
+
+  .card:nth-child(even) {
+    transform: translateY(24px) rotate(2deg);
   }
 }
 
