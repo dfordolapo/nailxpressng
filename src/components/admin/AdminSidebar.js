@@ -163,7 +163,18 @@ function SidebarContent() {
           </div>
         </nav>
 
-        <button className={styles.logoutBtn} onClick={() => router.push("/admin/login")}>
+        <button
+          className={styles.logoutBtn}
+          onClick={async () => {
+            try {
+              await fetch("/api/admin/logout", { method: "POST" });
+            } catch (e) {
+              console.error(e);
+            }
+            router.push("/admin/login");
+            router.refresh();
+          }}
+        >
           <LogOut size={18} />
           Logout
         </button>
