@@ -97,7 +97,7 @@ export default function WishlistPage() {
           <p style={{ color: "var(--color-text-secondary)", fontSize: "0.875rem", maxWidth: "600px", margin: "0 auto var(--space-12) auto", textWrap: "balance" }}>
             Tap the heart icon on any set to save it for later.
           </p>
-          <Link href="/" className={`${btnStyles.btn} ${btnStyles.primary} ${btnStyles.md}`}>
+          <Link href="/shop" className={`${btnStyles.btn} ${btnStyles.primary} ${btnStyles.md}`}>
             Explore Products
           </Link>
         </div>
