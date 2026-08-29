@@ -461,7 +461,7 @@ export default function ProductReviews({ product, compact = false }) {
                   onClick={() => fileInputRef.current?.click()}
                 >
                   <UploadCloud size={24} className={styles.uploadIcon} />
-                  <p className={styles.uploadPrompt}>Show off those tips — snap a hand selfie</p>
+                  <p className={styles.uploadPrompt}>Show us how you styled it</p>
                   <p className={styles.uploadSub}>Tap to browse or take a photo</p>
                 </div>
 
