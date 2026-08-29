@@ -40,11 +40,11 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  padding: var(--space-1) var(--space-2) 0 var(--space-2);
+  padding: 8px 12px;
   background-color: var(--color-bg);
-  z-index: 10;
-  position: sticky;
-  top: 0;
+  z-index: 50;
+  flex-shrink: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
 }
 
 .modalTitle {
@@ -54,21 +54,21 @@
 }
 
 .closeButton {
-  background: transparent;
+  background: rgba(0, 0, 0, 0.04);
   border: none;
   cursor: pointer;
-  padding: var(--space-1);
+  padding: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-text-secondary);
+  color: var(--color-text);
   border-radius: var(--radius-full);
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .closeButton:hover {
-  background-color: var(--color-surface);
-  color: var(--color-text);
+  background-color: rgba(0, 0, 0, 0.08);
+  transform: scale(1.05);
 }
 
 .modalContent {

@@ -325,9 +325,13 @@ export async function sendOrderDeliveredEmail(order) {
         </p>
       </div>
 
-      <div style="text-align: center; margin: 28px 0; padding: 20px; background-color: #f7e8e8; border-radius: 12px;">
-        <p style="margin: 0 0 6px 0; font-weight: 600; color: #7a403d; font-size: 16px;">Show Off Your Set</p>
-        <p style="margin: 0; font-size: 13px; color: #555;">Tag us on Instagram <strong>@nailexpress.ng</strong> wearing your set — we'd love to feature you!</p>
+      <div style="text-align: center; margin: 28px 0; padding: 24px 20px; background-color: #fcf6f6; border-radius: 12px; border: 1px solid #f2e2e1;">
+        <p style="margin: 0 0 6px 0; font-weight: 600; color: #7a403d; font-size: 17px; font-family: 'Cormorant Garamond', Georgia, serif;">Your nails arrived. Time to show off a little. ✨</p>
+        <p style="margin: 0 0 16px 0; font-size: 13px; color: #666; line-height: 1.5;">Drop an entry in The Press-On Journal with a quick photo of your set in real life. No login needed!</p>
+        <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'https://nailexpress.ng'}/shop" 
+           style="display: inline-block; padding: 12px 24px; background-color: #7a403d; color: #ffffff; text-decoration: none; border-radius: 24px; font-weight: 600; font-size: 13px;">
+          Flaunt Your Set in The Journal ↗
+        </a>
       </div>
     `;
 

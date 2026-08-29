@@ -7,7 +7,8 @@ import { useCart } from "@/context/CartContext";
 import { useToast } from "@/context/ToastContext";
 import { formatPrice } from "@/lib/utils";
 import { useModal } from "@/components/ui/ProductModalWrapper";
-import { ChevronRight, Package, Truck } from "lucide-react";
+import { ChevronRight, Package, Truck, Star } from "lucide-react";
+import ProductReviews from "@/components/product/ProductReviews";
 import styles from "@/styles/components/quick-view.module.css";
 
 export default function ProductQuickView({ product }) {
@@ -185,6 +186,20 @@ export default function ProductQuickView({ product }) {
               ) : (
                 "Standard delivery takes 3-5 business days within Nigeria. Express delivery (1-2 days) is available at checkout for selected locations."
               )}
+            </div>
+          </div>
+
+          {/* Reviews Accordion in Bottom Sheet */}
+          <div className={styles.accordion}>
+            <button className={styles.accordionHeader} onClick={() => toggleAccordion(2)}>
+              <div className={styles.accordionTitle}>
+                <Star className={styles.accordionIcon} size={20} style={{ color: "#e59840" }} />
+                Reviews
+              </div>
+              <ChevronRight className={`${styles.chevron} ${openAccordion === 2 ? styles.chevronOpen : ""}`} size={20} />
+            </button>
+            <div className={`${styles.accordionContent} ${openAccordion === 2 ? styles.accordionContentOpen : ""}`} style={{ padding: "0 0 16px 0" }}>
+              <ProductReviews product={product} compact={true} />
             </div>
           </div>
         </div>

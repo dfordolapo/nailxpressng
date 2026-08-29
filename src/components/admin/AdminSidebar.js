@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { useState, Suspense } from "react";
-import { LayoutDashboard, Package, LogOut, ChevronDown, Settings, Menu, X, Image as ImageIcon } from "lucide-react";
+import { LayoutDashboard, Package, LogOut, ChevronDown, Settings, Menu, X, Image as ImageIcon, Star } from "lucide-react";
 import styles from "@/styles/admin.module.css";
 
 function SidebarContent() {
@@ -73,6 +73,17 @@ function SidebarContent() {
             >
               <Package size={18} />
               Custom Orders
+            </Link>
+          </div>
+
+          <div className={styles.navGroup}>
+            <Link
+              href="/admin/reviews"
+              className={`${styles.navItem} ${pathname.startsWith("/admin/reviews") ? styles.active : ""}`}
+              onClick={() => setIsMobileOpen(false)}
+            >
+              <Star size={18} />
+              The Journal (Reviews)
             </Link>
           </div>
 

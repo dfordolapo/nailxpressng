@@ -9,6 +9,7 @@ import { useToast } from "@/context/ToastContext";
 import { formatPrice, getDiscountPercent } from "@/lib/utils";
 import { SOCIAL_LINKS, WHATSAPP_MESSAGES } from "@/lib/constants";
 import ProductGrid from "@/components/product/ProductGrid";
+import ProductReviews from "@/components/product/ProductReviews";
 import pageStyles from "@/styles/pages/collection.module.css";
 import btnStyles from "@/styles/components/buttons.module.css";
 
@@ -391,6 +392,9 @@ export default function ProductClient({ product, relatedProducts = [], isModal =
             </div>
           </div>
         </div>
+
+        {/* The Press-On Journal (Customer Reviews & Photos) */}
+        <ProductReviews product={product} />
 
         {!isModal && relatedProducts.length > 0 && (
           <section className={pageStyles.relatedSection}>
