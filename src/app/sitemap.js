@@ -1,7 +1,7 @@
 import { products } from '@/data/products';
 
 export default async function sitemap() {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nailxpressng.vercel.app';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nailexpress.ng';
 
   // Static route mappings
   const routes = [

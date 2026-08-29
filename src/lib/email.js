@@ -160,7 +160,7 @@ export async function sendAdminNewOrderAlert(order, items = [], adminEmail) {
       </div>
 
       <div align="center">
-        <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'https://nailxpressng.vercel.app'}/admin/orders" 
+        <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'https://nailexpress.ng'}/admin/orders" 
            style="display: inline-block; padding: 13px 26px; background-color: #7a403d; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 13px; letter-spacing: 1px; text-transform: uppercase;">
           View Order in Admin Dashboard
         </a>

@@ -9,7 +9,7 @@ export async function generateMetadata({ params }) {
     if (!product) {
       return { title: "Product Not Found — Nailexpress" };
     }
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nailxpressng.vercel.app";
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nailexpress.ng";
     const imageUrl = product.images?.[0] ?? `${baseUrl}/og-default.jpg`;
     return {
       title: `${product.name} — Nailexpress`,
