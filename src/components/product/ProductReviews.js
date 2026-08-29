@@ -379,7 +379,7 @@ export default function ProductReviews({ product, compact = false }) {
               <div>
                 <h3 className={styles.modalTitle}>Flaunt Your Set</h3>
                 <p className={styles.modalSubtitle}>
-                  No sign-in needed. Tell us how the set looks, feels, and slays in real life.
+                  Tell us how the set looks, feels, and slays in real life.
                 </p>
               </div>
               <button
