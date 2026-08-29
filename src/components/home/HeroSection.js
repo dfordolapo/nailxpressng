@@ -4,10 +4,12 @@ import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { useSplash } from '@/context/SplashContext';
 import styles from './HeroSection.module.css';
 
 export default function HeroSection() {
   const [offsetY, setOffsetY] = useState(0);
+  const { isSplashComplete } = useSplash();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -26,7 +28,7 @@ export default function HeroSection() {
           <motion.h1 
             className={styles.title}
             initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={isSplashComplete ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
             The upgrade<br />is instant
@@ -34,14 +36,14 @@ export default function HeroSection() {
           <motion.p 
             className={styles.subtitle}
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={isSplashComplete ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
           >
             Press-on. Slay. Repeat.
           </motion.p>
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={isSplashComplete ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
           >
             <Link href="/shop" className={`${styles.button} ${styles.desktopBtn}`}>

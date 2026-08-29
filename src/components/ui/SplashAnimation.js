@@ -1,10 +1,13 @@
 "use client";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { useSplash } from "@/context/SplashContext";
 
 export default function SplashAnimation() {
   const [show, setShow] = useState(true);
   const [animateOut, setAnimateOut] = useState(false);
+
+  const { setIsSplashComplete } = useSplash();
 
   useEffect(() => {
     try {
@@ -12,6 +15,7 @@ export default function SplashAnimation() {
         const hasSeenSplash = sessionStorage.getItem("hasSeenSplash");
         if (hasSeenSplash) {
           setShow(false);
+          setIsSplashComplete(true);
           return;
         }
         sessionStorage.setItem("hasSeenSplash", "true");
@@ -35,6 +39,7 @@ export default function SplashAnimation() {
 
     const timer1 = setTimeout(() => {
       setAnimateOut(true);
+      setIsSplashComplete(true);
     }, holdTime);
 
     const timer2 = setTimeout(() => {
@@ -45,7 +50,7 @@ export default function SplashAnimation() {
       clearTimeout(timer1);
       clearTimeout(timer2);
     };
-  }, []);
+  }, [setIsSplashComplete]);
 
   if (!show) return null;
 

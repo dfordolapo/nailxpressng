@@ -3,6 +3,7 @@ import { CartProvider } from "@/context/CartContext";
 import { WishlistProvider } from "@/context/WishlistContext";
 import { SearchProvider } from "@/context/SearchContext";
 import { ToastProvider } from "@/context/ToastContext";
+import { SplashProvider } from "@/context/SplashContext";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import SearchOverlay from "@/components/ui/SearchOverlay";
@@ -151,16 +152,18 @@ export default function RootLayout({ children, modal }) {
           <WishlistProvider>
             <SearchProvider>
               <ToastProvider>
-                <SplashAnimation />
-                <Header />
-                <SearchOverlay />
-                <PullToRefresh>
-                  <main>{children}</main>
-                </PullToRefresh>
-                {modal}
-                <Footer />
-                <OfflineBanner />
-                <InstallPrompt />
+                <SplashProvider>
+                  <SplashAnimation />
+                  <Header />
+                  <SearchOverlay />
+                  <PullToRefresh>
+                    <main>{children}</main>
+                  </PullToRefresh>
+                  {modal}
+                  <Footer />
+                  <OfflineBanner />
+                  <InstallPrompt />
+                </SplashProvider>
               </ToastProvider>
             </SearchProvider>
           </WishlistProvider>
