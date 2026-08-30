@@ -16,7 +16,7 @@ const MOODS = [
   { id: 'custom', name: 'Custom Sets', image: '/images/art.png', color: '#7A8C6B', pun: 'Nail art as unique as your fingerprint.' },
 ];
 
-const SCROLL_SPEED = 1.4;
+const SCROLL_SPEED = 2.2;
 const RESUME_DELAY = 2000;
 
 export default function CategoryShowcase({ mini = false, items = null }) {
@@ -52,29 +52,34 @@ export default function CategoryShowcase({ mini = false, items = null }) {
   };
 
   const [centerCardIdx, setCenterCardIdx] = useState(null);
+  const scrollPosRef = useRef(0);
+  const lastCheckTimeRef = useRef(0);
 
-  // Detect card closest to center on mobile
-  const updateCenterCard = useCallback(() => {
+  // Detect card closest to center on mobile (throttled for high frame rate)
+  const checkCenterCard = useCallback(() => {
     if (typeof window === 'undefined' || window.innerWidth > 768) return;
     const track = trackRef.current;
     if (!track) return;
 
     const cards = track.querySelectorAll(`.${styles.card}`);
+    if (!cards.length) return;
+    
     const screenCenter = window.innerWidth / 2;
     let closestIdx = null;
     let closestDist = Infinity;
 
-    cards.forEach((card, idx) => {
+    for (let idx = 0; idx < cards.length; idx++) {
+      const card = cards[idx];
       const rect = card.getBoundingClientRect();
       const cardCenter = rect.left + rect.width / 2;
       const dist = Math.abs(screenCenter - cardCenter);
-      if (dist < closestDist && dist < rect.width * 0.85) {
+      if (dist < closestDist && dist < rect.width * 0.8) {
         closestDist = dist;
         closestIdx = idx;
       }
-    });
+    }
 
-    setCenterCardIdx(closestIdx);
+    setCenterCardIdx((prev) => (prev === closestIdx ? prev : closestIdx));
   }, []);
 
   const pauseAutoScroll = useCallback(() => {
@@ -94,24 +99,34 @@ export default function CategoryShowcase({ mini = false, items = null }) {
       const track = trackRef.current;
       if (!track) return;
 
-      if (lastTimeRef.current === null) lastTimeRef.current = time;
-      const delta = time - lastTimeRef.current;
+      if (lastTimeRef.current === null) {
+        lastTimeRef.current = time;
+        scrollPosRef.current = track.scrollLeft;
+      }
+      
+      const delta = Math.min(time - lastTimeRef.current, 50); // Clamp delta to avoid frame spikes
       lastTimeRef.current = time;
 
-      track.scrollLeft += SCROLL_SPEED * delta * 0.1;
+      scrollPosRef.current += SCROLL_SPEED * (delta / 16.67);
 
       const half = track.scrollWidth / 2;
-      if (track.scrollLeft >= half) {
-        track.scrollLeft -= half;
+      if (scrollPosRef.current >= half) {
+        scrollPosRef.current -= half;
       }
 
-      updateCenterCard();
+      track.scrollLeft = scrollPosRef.current;
+
+      // Throttle center card detection to every ~60ms instead of every frame
+      if (time - lastCheckTimeRef.current > 60) {
+        lastCheckTimeRef.current = time;
+        checkCenterCard();
+      }
 
       autoScrollRef.current = requestAnimationFrame(tick);
     };
 
     autoScrollRef.current = requestAnimationFrame(tick);
-  }, [updateCenterCard]);
+  }, [checkCenterCard]);
 
   useEffect(() => {
     const track = trackRef.current;
@@ -131,6 +146,7 @@ export default function CategoryShowcase({ mini = false, items = null }) {
         dragged = false;
         startX = e.pageX - track.offsetLeft;
         scrollLeft = track.scrollLeft;
+        scrollPosRef.current = track.scrollLeft;
         track.style.cursor = 'grabbing';
       }
     };
@@ -141,6 +157,7 @@ export default function CategoryShowcase({ mini = false, items = null }) {
       const x = e.pageX - track.offsetLeft;
       const walk = (x - startX) * 1.5;
       track.scrollLeft = scrollLeft - walk;
+      scrollPosRef.current = track.scrollLeft;
       if (Math.abs(walk) > 5) {
         dragged = true;
       }
@@ -156,6 +173,7 @@ export default function CategoryShowcase({ mini = false, items = null }) {
       if (track.scrollLeft >= half) {
         track.scrollLeft -= half;
       }
+      scrollPosRef.current = track.scrollLeft;
       
       // Add a slight delay before resuming to prevent jumping
       track._resumeTimer = setTimeout(() => {
@@ -219,7 +237,7 @@ export default function CategoryShowcase({ mini = false, items = null }) {
         </h2>
       )}
       
-      <div className={styles.gridWrapper} ref={trackRef} onScroll={updateCenterCard}>
+      <div className={styles.gridWrapper} ref={trackRef} onScroll={checkCenterCard}>
         <div className={styles.marqueeTrack}>
           {marqueeItems.map((item, i) => (
             <div

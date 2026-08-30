@@ -11,17 +11,15 @@ import styles from './HeroSection.module.css';
 export default function HeroSection() {
   const [offsetY, setOffsetY] = useState(0);
   const { isSplashComplete } = useSplash();
-  const [shouldAnimate, setShouldAnimate] = useState(false);
+  const [hasEntered, setHasEntered] = useState(false);
 
   useEffect(() => {
     if (isSplashComplete) {
-      setShouldAnimate(true);
-    } else {
-      // Fallback timer in case splash context is already in progress/finishing
-      const timer = setTimeout(() => {
-        setShouldAnimate(true);
-      }, 3500);
-      return () => clearTimeout(timer);
+      // Small tick delay so DOM has painted post-splash before starting hero entrance
+      const t = setTimeout(() => {
+        setHasEntered(true);
+      }, 100);
+      return () => clearTimeout(t);
     }
   }, [isSplashComplete]);
 
@@ -30,12 +28,9 @@ export default function HeroSection() {
       setOffsetY(window.scrollY);
     };
     
-    // Only run on client
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  const isVisible = isSplashComplete || shouldAnimate;
 
   return (
     <section className={styles.hero}>
@@ -43,24 +38,24 @@ export default function HeroSection() {
         <div className={styles.textContent}>
           <motion.h1 
             className={styles.title}
-            initial={{ opacity: 0, y: 30 }}
-            animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            initial={{ opacity: 0, y: 36 }}
+            animate={hasEntered ? { opacity: 1, y: 0 } : { opacity: 0, y: 36 }}
+            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
           >
             The upgrade<br />is instant
           </motion.h1>
           <motion.p 
             className={styles.subtitle}
-            initial={{ opacity: 0, y: 20 }}
-            animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+            initial={{ opacity: 0, y: 24 }}
+            animate={hasEntered ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+            transition={{ duration: 0.8, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
           >
             Press-on. Slay. Repeat.
           </motion.p>
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
-            animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            animate={hasEntered ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.8, delay: 0.32, ease: [0.16, 1, 0.3, 1] }}
           >
             <MagneticButton href="/shop" className={styles.button}>
               <span style={{ display: 'inline-flex', alignItems: 'center', gap: '9px' }}>
@@ -75,9 +70,9 @@ export default function HeroSection() {
         <div style={{ transform: `translateY(${offsetY * 0.35}px)`, width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }}>
           <motion.div
             style={{ width: '100%', height: '100%', position: 'relative' }}
-            initial={{ scale: 1.06, opacity: 0.8 }}
-            animate={isVisible ? { scale: 1, opacity: 1 } : { scale: 1.06, opacity: 0.8 }}
-            transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1] }}
+            initial={{ scale: 1.08, opacity: 0.2 }}
+            animate={hasEntered ? { scale: 1, opacity: 1 } : { scale: 1.08, opacity: 0.2 }}
+            transition={{ duration: 1.3, ease: [0.16, 1, 0.3, 1] }}
           >
             <Image
               src="/images/hero.png"
