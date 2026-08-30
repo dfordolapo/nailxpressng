@@ -10,7 +10,7 @@ export async function generateMetadata({ params }) {
       return { title: "Product Not Found — Nailexpress" };
     }
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nailexpress.ng";
-    const imageUrl = product.images?.[0] ?? `${baseUrl}/og-default.jpg`;
+    const imageUrl = product.images?.[0] ?? `${baseUrl}/images/og-preview.jpg`;
     return {
       title: `${product.name} — Nailexpress`,
       description: product.description,
@@ -18,8 +18,9 @@ export async function generateMetadata({ params }) {
         title: `${product.name} — Nailexpress`,
         description: product.description,
         url: `${baseUrl}/product/${product.slug}`,
+        siteName: "Nailexpress",
         type: "website",
-        images: [{ url: imageUrl }],
+        images: [{ url: imageUrl, width: 1000, height: 1000, alt: product.name }],
       },
       twitter: {
         card: "summary_large_image",

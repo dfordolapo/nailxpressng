@@ -11,7 +11,26 @@ import FooterHero from "@/components/home/FooterHero";
 
 export const metadata = {
   title: "Nailexpress — Press-On Perfection",
-  description: "Press-on perfection — handmade artistry & factory precision. Shop handmade and factory-made press-on nails. Express yourself, one nail at a time.",
+  description: "Press-on perfection — handmade artistry & factory precision. Express yourself, one nail at a time. Shop luxury press-on nails in Nigeria.",
+  openGraph: {
+    title: "Nailexpress — Press-On Perfection",
+    description: "Press-on perfection — handmade artistry & factory precision. Express yourself, one nail at a time. Shop luxury press-on nails in Nigeria.",
+    images: [
+      {
+        url: "/images/og-preview.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Nailexpress — Press-On Perfection",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Nailexpress — Press-On Perfection",
+    description: "Press-on perfection — handmade artistry & factory precision. Express yourself, one nail at a time.",
+    images: ["/images/og-preview.jpg"],
+  },
 };
 
 export default function Home() {

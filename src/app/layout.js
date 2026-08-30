@@ -23,9 +23,44 @@ export const viewport = {
 };
 
 export const metadata = {
-  title: "Nailexpress — Press-On Perfection",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://nailexpress.ng'),
+  title: {
+    default: "Nailexpress — Press-On Perfection",
+    template: "%s | Nailexpress",
+  },
   description: "Press-on perfection — handmade artistry & factory precision. Express yourself, one nail at a time. Shop handmade and factory-made press-on nails in Nigeria.",
-  keywords: "press-on nails, handmade nails, factory nails, nail art, Nigeria, custom nails",
+  keywords: ["press-on nails", "handmade nails", "factory nails", "nail art", "Nigeria", "custom nails", "luxury nails"],
+  authors: [{ name: "Nailexpress" }],
+  creator: "Nailexpress",
+  publisher: "Nailexpress",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  openGraph: {
+    title: "Nailexpress — Press-On Perfection",
+    description: "Press-on perfection — handmade artistry & factory precision. Express yourself, one nail at a time. Shop handmade and factory-made press-on nails in Nigeria.",
+    url: "https://nailexpress.ng",
+    siteName: "Nailexpress",
+    images: [
+      {
+        url: "/images/og-preview.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Nailexpress — Press-On Perfection",
+      },
+    ],
+    locale: "en_NG",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Nailexpress — Press-On Perfection",
+    description: "Press-on perfection — handmade artistry & factory precision. Express yourself, one nail at a time.",
+    images: ["/images/og-preview.jpg"],
+    creator: "@nailexpressng",
+  },
   manifest: "/manifest.json",
   icons: {
     icon: [
