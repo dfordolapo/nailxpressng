@@ -1,0 +1,650 @@
+[
+  {
+    "name": "Tortoise Bloom",
+    "description": "Rich brown tortoise shell pattern mixed with soft pink, featuring gold rings and delicate floral accents."
+  },
+  {
+    "name": "Maroon Marble",
+    "description": "Deep maroon almond base highlighted by elegant gold abstract marbling and flowing line accents."
+  },
+  {
+    "name": "Magenta Swirl",
+    "description": "Vibrant magenta pink encapsulated by heavy gold metallic abstract swirl outlines and subtle pearl accents."
+  },
+  {
+    "name": "Heartfelt Mocha",
+    "description": "Brown and black gradient base adorned with delicate white heart line art and clear rhinestones."
+  },
+  {
+    "name": "Noir Curves",
+    "description": "Elegant nude base paired with multiple sleek black semi-circular French tip lines."
+  },
+  {
+    "name": "Gilded Waves",
+    "description": "A soft pink base, elegant white tips, and abstract gold metallic wavy lines."
+  },
+  {
+    "name": "Velvet Muse",
+    "description": "Sophisticated nude and deep burgundy red combination with elegant gold abstract line accents."
+  },
+  {
+    "name": "Radiant Pearl",
+    "description": "Soft radiant shimmer adorned with pearl-like luminosity."
+  },
+  {
+    "name": "Emerald Flora",
+    "description": "Vibrant green glitter ombré on a square base, adorned with 3D white floral embellishments and rhinestones. Includes 12 pieces finger nails and 12 pieces toe nails."
+  },
+  {
+    "name": "Onyx Zebra",
+    "description": "Bold matte black and nude design featuring abstract glossy black zebra-like lines."
+  },
+  {
+    "name": "Rose Pearl",
+    "description": "A dusty rose and pearl white base, adorned with gold liquid metal accents and rhinestones."
+  },
+  {
+    "name": "Leopard Tips",
+    "description": "Nude almond base featuring bold leopard print French tips and subtle gold bead accents."
+  },
+  {
+    "name": "Glazed Rose",
+    "description": "Lustrous glazed coating in a warm rose-inspired palette."
+  },
+  {
+    "name": "Liquid Onyx",
+    "description": "A sleek and edgy square set featuring a matte black base topped with glossy 3D black liquid-like abstract swirls."
+  },
+  {
+    "name": "Glamour Charm",
+    "description": "Classic French tips elevated with beautiful gel polish flowers and a flawless glossy finish for a truly charming aesthetic."
+  },
+  {
+    "name": "Classic French",
+    "description": "Timeless square shape featuring a soft pink base and clean white French tips."
+  },
+  {
+    "name": "Glazed Charm",
+    "description": "Lustrous glazed coating with charming decorative details."
+  },
+  {
+    "name": "Mystic Gem",
+    "description": "Enchanting mystic depth with gemstone-inspired depth."
+  },
+  {
+    "name": "Sunset Drops",
+    "description": "Vibrant pink and yellow sunset ombré almond base featuring 3D clear water droplets and textured red accent nails."
+  },
+  {
+    "name": "Silver Sweep",
+    "description": "Nude/tan almond base featuring a simple white side French tip and a sweeping silver glitter line."
+  },
+  {
+    "name": "Smooth Quartz",
+    "description": "Eye-catching sparkle finish featuring crystalline quartz accents."
+  },
+  {
+    "name": "Subtle Quartz",
+    "description": "Soft muted tones in translucent rose quartz tones."
+  },
+  {
+    "name": "Lavender Swirl",
+    "description": "Soft pink and lavender marble swirl pattern accented with shimmering silver glitter borders."
+  },
+  {
+    "name": "Silver Lining",
+    "description": "Semi-transparent pink coffin shape beautifully encapsulated with sparkly silver glitter borders."
+  },
+  {
+    "name": "Rose Glaze",
+    "description": "Soft pink glitter base beautifully outlined with elegant gold metallic French tips."
+  },
+  {
+    "name": "Crimson Gold",
+    "description": "Classic almond shape with vibrant red French tips and striking gold metallic borders on a nude base."
+  },
+  {
+    "name": "Fierce Dusk",
+    "description": "Dramatic eye-catching style with dusky sunset undertones."
+  },
+  {
+    "name": "Amber Haze",
+    "description": "Bright amber and nude tones featuring 3D floral art for a warm aesthetic. Includes 12 pieces finger nails and 12 pieces toe nails."
+  },
+  {
+    "name": "Ash Glaze",
+    "description": "Sleek, dark metallic chrome finish for an ultra-modern and edgy look."
+  },
+  {
+    "name": "Dusty Dawn",
+    "description": "Elegant dusty rose ombré fading to clear on an almond shape, finished with subtle gold glitter tips."
+  },
+  {
+    "name": "Burgundy Marble",
+    "description": "Deep burgundy jelly almond base beautifully contrasted with yellow and brown marble accents."
+  },
+  {
+    "name": "Midnight Frost",
+    "description": "Deep blue and nude base with striking silver glitter accents."
+  },
+  {
+    "name": "Mocha Glow",
+    "description": "Warm copper and mocha tones with a captivating magnetic cat-eye glitter finish and white edging."
+  },
+  {
+    "name": "Forest Drift",
+    "description": "Earthy green and pale pink base with elegant gold foil and butterfly wing accents."
+  },
+  {
+    "name": "Molten Rouge",
+    "description": "Deep red and nude base with silver star accents and metallic outlines."
+  },
+  {
+    "name": "Mocha Noir",
+    "description": "Deep mocha brown gradient on a sleek coffin shape for a bold yet understated look."
+  },
+  {
+    "name": "Chic Halo",
+    "description": "Vibrant blue and nude gradient with stunning 3D floral accents and rhinestones."
+  },
+  {
+    "name": "Crimson Tortoise",
+    "description": "Deep red tortoiseshell pattern with dark tips for a classic, luxurious finish."
+  },
+  {
+    "name": "Olive Cosmos",
+    "description": "Olive green cat-eye base detailed with celestial gold sun, moon, and star accents."
+  },
+  {
+    "name": "Blush Petal",
+    "description": "Soft pink French tip design featuring beautiful 3D deep red floral accents with gold centers."
+  },
+  {
+    "name": "Violet Spark",
+    "description": "Deep purple base with silver metallic abstract starbursts and distinct black-and-white checkered accents."
+  },
+  {
+    "name": "Sunny Daisy",
+    "description": "Bright sunshine yellow base adorned with delicate, hand-painted white daisy flower accents."
+  },
+  {
+    "name": "Slate Flora",
+    "description": "Muted slate blue base elevated with metallic gold floral stamping and edge accents."
+  },
+  {
+    "name": "Vibrant Rose",
+    "description": "A classic and elegant square set featuring a rich, deep burgundy glossy finish for a timeless look."
+  },
+  {
+    "name": "Gothic Flora",
+    "description": "Dark tortoise shell and brown gradient almond base adorned with gold cross charms, pearls, and delicate hand-painted floral accents."
+  },
+  {
+    "name": "Bridal Bows",
+    "description": "Square shape featuring a pink base with classic white French tips, elegantly adorned with 3D white bows, flowers, and rhinestones. Includes 12 pieces finger nails and 12 pieces toe nails."
+  },
+  {
+    "name": "Polka Dot",
+    "description": "Playful Mix & Match set featuring black square nails with white polka dots and almond nails with black polka dot French tips. Includes 12 pieces finger nails and 12 pieces toe nails."
+  },
+  {
+    "name": "Cherry Bomb",
+    "description": "A nude base and red French tips, beautifully adorned with hand-painted cherries and sparkling red rhinestones. Includes 12 pieces finger nails and 12 pieces toe nails."
+  },
+  {
+    "name": "Tropical Shell",
+    "description": "Vibrant hot pink and beige marble almond base highlighted by 3D seashell textures, pearls, and tropical flowers."
+  },
+  {
+    "name": "Comic Hearts",
+    "description": "Cartoon pop art style on a square shape, featuring bold black outlines on pink and purple bases with playful heart motifs."
+  },
+  {
+    "name": "Barbie Rose",
+    "description": "Rich velvet-smooth finish in a warm rose-inspired palette."
+  },
+  {
+    "name": "Soft Dawn",
+    "description": "Deep purple magnetic cat-eye base with thin silver chrome French tips and delicate clear rhinestones and silver bead clusters along the side edges."
+  },
+  {
+    "name": "Soft Halo",
+    "description": "Light airy aesthetic with a delicate ring of shimmer."
+  },
+  {
+    "name": "Glossy Crystal",
+    "description": "A chic almond set showcasing a rich tortoiseshell design with gold outlines, paired with solid red textured accent nails."
+  },
+  {
+    "name": "Vibrant Bloom",
+    "description": "Rich saturated hues featuring blossoming design elements."
+  },
+  {
+    "name": "Luminous Shimmer",
+    "description": "Glowing inner radiance with a light-catching shimmer coat."
+  },
+  {
+    "name": "Glamour Quartz",
+    "description": "Glamorous rhinestone accents featuring crystalline quartz accents."
+  },
+  {
+    "name": "Polka Dawn",
+    "description": "Whimsical pastel blend in soft sunrise-inspired tones."
+  },
+  {
+    "name": "Glossy Aura",
+    "description": "Mirror-like glossy shine with a captivating aura glow."
+  },
+  {
+    "name": "Iridescent Mirage",
+    "description": "Rainbow sheen accents with a mesmerising colour play."
+  },
+  {
+    "name": "Subtle Pearl",
+    "description": "Soft muted tones featuring iridescent pearl tones."
+  },
+  {
+    "name": "Velvet Bloom",
+    "description": "An elegant almond set featuring a natural base, beautifully complemented by delicate floral accents and charming details."
+  },
+  {
+    "name": "Fierce Petal",
+    "description": "Striking contrast patterns featuring flower-petal textures."
+  },
+  {
+    "name": "Velvet Bloom",
+    "description": "An elegant almond set featuring a natural base, beautifully complemented by delicate floral accents and charming details."
+  },
+  {
+    "name": "Bold Dawn",
+    "description": "A delicate almond set featuring a nude base with periwinkle blue French tips, elegantly accented by gold outlines, gold studs, and charming 3D white flowers."
+  },
+  {
+    "name": "Radiant Bloom",
+    "description": "Soft radiant shimmer featuring blossoming design elements."
+  },
+  {
+    "name": "Glamour Glow",
+    "description": "Glamorous rhinestone accents featuring a lit-from-within radiance."
+  },
+  {
+    "name": "Glamour Dawn",
+    "description": "Glamorous rhinestone accents with warm early-morning hues."
+  },
+  {
+    "name": "Leopard Eclipse",
+    "description": "Vivid colour palette featuring striking shadow play."
+  },
+  {
+    "name": "Radiant Onyx",
+    "description": "Soft radiant shimmer in deep onyx black tones."
+  },
+  {
+    "name": "Polished Whisper",
+    "description": "Flawless polished surface featuring whisper-soft colour hints."
+  },
+  {
+    "name": "Chic Gem",
+    "description": "Trendy contemporary style adorned with gem-like brilliance."
+  },
+  {
+    "name": "Elegant Quartz",
+    "description": "Refined sophisticated design with quartz-crystal clarity."
+  },
+  {
+    "name": "Vibrant Gem",
+    "description": "A timeless French tip design accented with striking gold detailing, adding a luxurious and vibrant touch to your everyday look."
+  },
+  {
+    "name": "Regal Flare",
+    "description": "Regal ornate detailing with a bold radiant burst."
+  },
+  {
+    "name": "Green Lava",
+    "description": "Sleek matte green finish featuring distinct, contrasting veins that mimic natural lava stone."
+  },
+  {
+    "name": "Soft Lava",
+    "description": "A light, airy aesthetic with subtle, soft-toned veins running through a gentle base."
+  },
+  {
+    "name": "Sparkle Gem",
+    "description": "Eye-catching sparkle finish featuring jewel-toned richness."
+  },
+  {
+    "name": "Glazed Dusk",
+    "description": "High-shine glazed surface in rich twilight-inspired tones."
+  },
+  {
+    "name": "Polka Tips",
+    "description": "Chic French tips featuring playful polka dots for a fun, stylish look."
+  },
+  {
+    "name": "Vibrant Dusk",
+    "description": "Rich saturated hues in rich twilight-inspired tones."
+  },
+  {
+    "name": "Radiant Halo",
+    "description": "Soft radiant shimmer featuring angelic light accents."
+  },
+  {
+    "name": "Fierce Dawn",
+    "description": "Dramatic eye-catching style with warm early-morning hues."
+  },
+  {
+    "name": "Prismatic Maple",
+    "description": "Spectrum colour shifts in warm autumn maple tones."
+  },
+  {
+    "name": "Chic Bloom",
+    "description": "Ethereal translucent milky white base with intricate, wispy smokey black marble veining and subtle silver chrome accents."
+  },
+  {
+    "name": "Velvet Quartz",
+    "description": "Soft milky nude base with deep burgundy tortoiseshell marble accents and striking thick textured gold chrome outlines."
+  },
+  {
+    "name": "Classic Vibe",
+    "description": "Effortlessly chic look featuring effortless cool-girl energy."
+  },
+  {
+    "name": "Subtle Dawn",
+    "description": "Elegant nude base featuring minimalistic textured gold chrome dripping waves along the tips."
+  },
+  {
+    "name": "Elegant Dusk",
+    "description": "Polished classic aesthetic in rich twilight-inspired tones."
+  },
+  {
+    "name": "Glazed Pearl",
+    "description": "Lustrous glazed coating with pearlescent white accents."
+  },
+  {
+    "name": "Velvet Petal",
+    "description": "Luxurious soft-touch surface featuring flower-petal textures."
+  },
+  {
+    "name": "Subtle Gem",
+    "description": "Delicate minimalist design adorned with gem-like brilliance."
+  },
+  {
+    "name": "Glazed Glow",
+    "description": "A bold almond set showcasing a deep purple base adorned with intricate 3D gold metallic swirls and star accents."
+  },
+  {
+    "name": "Mixed Lava",
+    "description": "Translucent black jelly base with white smokey marble veins, silver chrome abstract starburst details, and tiny silver pearls/studs."
+  },
+  {
+    "name": "Glazed Lava",
+    "description": "Lustrous glazed coating highlighting intricate, deep-set veins reminiscent of volcanic rock."
+  },
+  {
+    "name": "Lava Eclipse V2",
+    "description": "Captivating dark undertones with striking, luminous veins in a mood-setting palette."
+  },
+  {
+    "name": "Sunlit Starling",
+    "description": "An elegant almond set featuring shimmering pink cat-eye polish and gold-outlined French tips, accented with delicate 3D pink flowers."
+  },
+  {
+    "name": "Chic Eclipse",
+    "description": "Trendy contemporary style featuring striking shadow play."
+  },
+  {
+    "name": "Brushed Flare",
+    "description": "Artisan hand-brushed strokes featuring fiery accent tones."
+  },
+  {
+    "name": "Dreamy Crystal",
+    "description": "Ethereal dreamy palette with crystal-clear sparkle accents."
+  },
+  {
+    "name": "Sterling Blaze",
+    "description": "Cool silver-toned accents in a bold flame-inspired palette."
+  },
+  {
+    "name": "Dreamy Vibe",
+    "description": "Soft romantic aesthetic featuring effortless cool-girl energy."
+  },
+  {
+    "name": "Midnight Crystal",
+    "description": "Rich nocturnal hues with crystal-clear sparkle accents."
+  },
+  {
+    "name": "Midnight Aura",
+    "description": "Dark moody palette with an ethereal glowing effect."
+  },
+  {
+    "name": "Vibrant Halo",
+    "description": "Bright energetic tones with a delicate ring of shimmer."
+  },
+  {
+    "name": "Blue Lava",
+    "description": "An eye-catching stiletto set with a deep blue cat-eye base, overlaid with dramatic 3D silver metallic abstract veins."
+  },
+  {
+    "name": "Mystic Eclipse",
+    "description": "Mysterious deep tones featuring striking shadow play."
+  },
+  {
+    "name": "Gilded Whisper",
+    "description": "Gilded metallic accents with barely-there delicate tones."
+  },
+  {
+    "name": "Luxe Halo",
+    "description": "Indulgent luxury design with a soft glowing halo effect."
+  },
+  {
+    "name": "Elegant Gem",
+    "description": "Refined sophisticated design with gemstone-inspired depth."
+  },
+  {
+    "name": "Luxe Tide",
+    "description": "Lavish high-end finish with wave-like fluid movement."
+  },
+  {
+    "name": "Sparkle Crystal",
+    "description": "Dazzling sparkle accents with prismatic crystal detailing."
+  },
+  {
+    "name": "Elegant Petal",
+    "description": "Graceful timeless style with delicate petal-soft details."
+  },
+  {
+    "name": "Velvet Onyx",
+    "description": "Modern flat-tone surface in deep onyx black tones."
+  },
+  {
+    "name": "Mystic Petal",
+    "description": "Enchanting mystic depth featuring flower-petal textures."
+  },
+  {
+    "name": "Soft Petal",
+    "description": "Gentle pastel palette with delicate petal-soft details."
+  },
+  {
+    "name": "Luxe Charm",
+    "description": "Premium luxe detailing with charming decorative details."
+  },
+  {
+    "name": "Radiant Dawn",
+    "description": "Radiant luminous glow with warm early-morning hues."
+  },
+  {
+    "name": "Dreamy Bloom",
+    "description": "Whimsical pastel blend with floral-inspired artistry."
+  },
+  {
+    "name": "Elegant Vibe",
+    "description": "Deep crimson red gradient fading into a semi-translucent base, featuring soft pink blushes, delicate gold star decals, gold beads, and abstract gold chrome outlines."
+  },
+  {
+    "name": "Sparkle Halo",
+    "description": "Dazzling sparkle accents with a soft glowing halo effect."
+  },
+  {
+    "name": "Chic Quartz",
+    "description": "An elegant, all-red and pink set featuring a mix of solid and translucent nails for a sophisticated, glass-like finish."
+  },
+  {
+    "name": "Sterling Lava",
+    "description": "Refined sterling silver highlights interwoven with unique hand-painted veins."
+  },
+  {
+    "name": "Fierce Bloom",
+    "description": "Dramatic eye-catching style in fresh garden-bloom colours."
+  },
+  {
+    "name": "Fierce Halo",
+    "description": "Dramatic eye-catching style featuring angelic light accents."
+  },
+  {
+    "name": "Lava Eclipse",
+    "description": "Unapologetic standout design featuring striking shadow play and bold, dark marble veins."
+  },
+  {
+    "name": "Opal Prism",
+    "description": "Milky iridescent semi-translucent base featuring light-refracting holographic foil fragments and a high-gloss finish."
+  },
+  {
+    "name": "Radiant Rose",
+    "description": "Soft rosy blush ombré base seamlessly transitioning to milky white, finished with a warm radiant shimmer."
+  },
+  {
+    "name": "Glazed Eclipse",
+    "description": "High-shine glazed surface with bold eclipse-inspired gradients."
+  },
+  {
+    "name": "Regal Ridge",
+    "description": "Sophisticated deep burgundy matte base featuring clean, elevated geometric lines in brilliant gold."
+  },
+  {
+    "name": "Red Lava",
+    "description": "Rich dark red jelly base encased in thick, textured silver chrome borders with delicate red veins."
+  },
+  {
+    "name": "Classic Glow",
+    "description": "Timeless classic design featuring a lit-from-within radiance."
+  },
+  {
+    "name": "Bold Pearl",
+    "description": "Unapologetic sheer white base featuring an array of 3D pearlescent white accents and tiny silver micro-beads."
+  },
+  {
+    "name": "Moonlit Ridge",
+    "description": "Cool-toned pale silver glow base with structured linear metallic detailing mimicking moonlit textures."
+  },
+  {
+    "name": "Glamour Petal",
+    "description": "Soft botanical pink base with glamorous cascading rhinestone accents and delicate hand-painted petal art."
+  },
+  {
+    "name": "Glazed Quartz",
+    "description": "Lustrous glazed coating featuring crystalline quartz accents."
+  },
+  {
+    "name": "Regal Prism",
+    "description": "Dramatic stiletto set featuring a high-shine metallic crimson red chrome base adorned with glossy 3D black dripping molten droplets and liquid glass accents."
+  },
+  {
+    "name": "Glossy Dawn",
+    "description": "A bold square set with bright green French tips over a nude base, elevated by striking 3D metallic silver crosses and abstract details."
+  },
+  {
+    "name": "Glossy Gem",
+    "description": "A vibrant square set featuring bright pink and orange tie-dye French tips, accented with a beautiful 3D pink flower."
+  },
+  {
+    "name": "Sparkle Charm",
+    "description": "An eye-catching square set with a milky nude base, showcasing bold 3D metallic magenta chrome designs including abstract swirls and wavy tips."
+  },
+  {
+    "name": "Velvet Aura",
+    "description": "Translucent black jelly base with white smokey marble veins, silver chrome abstract starburst details, and tiny silver pearls/studs."
+  },
+  {
+    "name": "Sparkling Mist",
+    "description": "Regal ornate detailing featuring hazy translucent layers."
+  },
+  {
+    "name": "Crystalline Mirage",
+    "description": "Ice-like crystalline sheer base featuring an illusion-like depth created with layered mylar flakes and clear 3D gel droplets."
+  },
+  {
+    "name": "Radiant Dusk",
+    "description": "Warm golden-hour amber jelly base featuring a radiant metallic bronze finish and subtle sun-kissed glimmers."
+  },
+  {
+    "name": "Subtle Onyx",
+    "description": "Soft, muted taupe base featuring sleek, minimalist jet-black abstract lines and a flawless matte finish."
+  },
+  {
+    "name": "Lemon Onyx",
+    "description": "Bright and vibrant nails featuring refreshing lemon hues and sleek onyx accents."
+  },
+  {
+    "name": "Sunflower Opal",
+    "description": "A stunning blend of yellow and white ombré French tips, beautifully finished with delicate, hand-painted sunflower details for a bright and cheerful look."
+  },
+  {
+    "name": "Radiant Crystal",
+    "description": "Soft radiant champagne shimmer base heavily encrusted with prismatic crystal detailing and micro-diamonds."
+  },
+  {
+    "name": "Butterfly Cove",
+    "description": "Warm gold-toned highlights in serene coastal tones."
+  },
+  {
+    "name": "Vibrant Aura",
+    "description": "Bright, energetic neon green and yellow aura gradient with an ethereal glowing effect and a sleek glossy finish."
+  },
+  {
+    "name": "Orange Luxe",
+    "description": "Indulgent luxury design in a mood-setting palette."
+  },
+  {
+    "name": "Iridescent Veil",
+    "description": "Rainbow sheen accents with unique hand-painted details."
+  },
+  {
+    "name": "Glossy Petal",
+    "description": "A dramatic extra-long stiletto set featuring an edgy black-and-white gothic design with crosses, stars, and abstract motifs over a nude base."
+  },
+  {
+    "name": "Purple Lava",
+    "description": "Rich nocturnal purple hues accented by glowing, intricate veins in a mood-setting palette."
+  },
+  {
+    "name": "Fierce Eclipse",
+    "description": "Dramatic deep crimson base with bold, eclipse-inspired black airbrushed gradients and a velvet matte finish."
+  },
+  {
+    "name": "Brown Dusk",
+    "description": "Soft romantic aesthetic with dusky sunset undertones."
+  },
+  {
+    "name": "Regal Fern",
+    "description": "Extravagant luxury stiletto set entirely encrusted in dazzling golden champagne crystals, multifaceted geometric cut gemstones, and sparkling pavé jewels."
+  },
+  {
+    "name": "Sterling Iris",
+    "description": "Vibrant violet jelly base featuring refined sterling silver chrome highlights and a smooth, liquid-metal finish."
+  },
+  {
+    "name": "Glamour Bloom",
+    "description": "Elegant nude base with glamorous rhinestone accents and intricate, full-nail floral-inspired artistry."
+  },
+  {
+    "name": "Mystic Aura",
+    "description": "Captivating dark plum base featuring a luminous magenta halo finish and subtle iridescent micro-shimmer."
+  },
+  {
+    "name": "Ocean Bloom",
+    "description": "Beautifully crafted turquoise gradient base featuring fresh, white 3D garden-bloom floral embellishments."
+  },
+  {
+    "name": "Dreamy Aura",
+    "description": "Soft, romantic pastel pink and baby blue aura airbrush design with an ethereal glowing effect and scattered star decals."
+  }
+]
