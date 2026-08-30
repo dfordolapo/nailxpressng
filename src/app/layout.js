@@ -65,7 +65,7 @@ export const metadata = {
   },
   openGraph: {
     title: "Nailexpress — Press-On Perfection",
-    description: "Salon-quality manicures delivered in minutes. Elevate your everyday style with reusable designer sets, custom fit guides, and nationwide doorstep delivery.",
+    description: "Your go-to destination for high-end press-on sets. Elevate your look in minutes with effortless glamour and flawless durability.",
     url: "https://nailexpress.ng",
     siteName: "Nailexpress",
     images: [
@@ -73,7 +73,7 @@ export const metadata = {
         url: "/images/og-preview.jpg",
         width: 1200,
         height: 630,
-        alt: "Nailexpress Luxury Press-On Nails",
+        alt: "Nailexpress — Press-On Perfection",
       },
     ],
     locale: "en_NG",
@@ -82,7 +82,7 @@ export const metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Nailexpress — Press-On Perfection",
-    description: "Salon-quality manicures delivered in minutes. Elevate your everyday style with reusable designer sets and custom fit guides.",
+    description: "Your go-to destination for high-end press-on sets. Elevate your look in minutes with effortless glamour and flawless durability.",
     images: ["/images/og-preview.jpg"],
     creator: "@nailexpressng",
   },
