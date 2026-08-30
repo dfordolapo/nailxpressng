@@ -82,7 +82,8 @@ export default function FooterHero() {
 
         {/* Subtle Copyright & Artisan Sign-off */}
         <div className={styles.footerBottomNote}>
-          <span>Handmade artistry & factory precision • Made with 💖 in Nigeria • © {new Date().getFullYear()} Nailexpress</span>
+          <span className={styles.footerTagline}>Handmade artistry & factory precision • Made with 💖 in Nigeria</span>
+          <span className={styles.footerCopyright}>© {new Date().getFullYear()} Nailexpress. All rights reserved.</span>
         </div>
       </div>
     </section>
