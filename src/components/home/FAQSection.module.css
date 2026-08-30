@@ -28,12 +28,18 @@
   border-radius: var(--radius-xl);
   overflow: hidden;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
-  border: 1.5px solid rgba(122, 64, 61, 0.2); /* Light 7A403D border */
-  transition: border-color var(--transition-base), box-shadow var(--transition-base);
+  border: 1.5px solid rgba(122, 64, 61, 0.2);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .item:hover {
-  border-color: #7A403D; /* Active/Hover 7A403D */
+  border-color: #7A403D;
+}
+
+.item.open {
+  border-color: #7A403D;
+  background-color: #FAF0F1;
+  box-shadow: 0 8px 24px -6px rgba(122, 64, 61, 0.12);
 }
 
 .questionButton {
@@ -58,11 +64,15 @@
 }
 
 .icon {
-  color: #7A403D;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.3s ease;
+  color: #7A403D;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.iconOpen {
+  transform: rotate(180deg);
 }
 
 .open .icon {

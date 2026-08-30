@@ -11,8 +11,33 @@
   font-weight: var(--weight-medium);
   color: var(--color-text);
   margin-top: 0;
-  margin-bottom: calc(var(--space-8) + 10px);
+  margin-bottom: var(--space-3);
   line-height: 1.2;
+}
+
+.indicatorBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--color-text-secondary);
+  border: 1px solid rgba(122, 64, 61, 0.15);
+  padding: 4px 11px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  margin-top: 6px;
+  margin-bottom: var(--space-4);
+  box-shadow: 0 2px 8px rgba(122, 64, 61, 0.05);
+  user-select: none;
+  animation: badgePulse 3.5s ease-in-out infinite;
+}
+
+@keyframes badgePulse {
+  0%, 100% { transform: scale(1); opacity: 0.88; }
+  50% { transform: scale(1.02); opacity: 1; border-color: rgba(122, 64, 61, 0.28); }
 }
 
 .imageWrapper {
@@ -20,13 +45,134 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  /* This creates a smooth fade at the top and bottom edges */
+  cursor: crosshair;
   -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
   mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+  user-select: none;
 }
 
 .image {
   width: 100%;
   height: auto;
   display: block;
+}
+
+/* ── Realistic Magnifying Glass Container ── */
+.magnifierGlassContainer {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 20;
+}
+
+.magnifierLoupe {
+  position: relative;
+  width: 155px;
+  height: 155px;
+  border-radius: 50%;
+  border: 4.5px solid #d4af7a;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35), inset 0 0 16px rgba(0, 0, 0, 0.2);
+  background-repeat: no-repeat;
+  background-size: 270% 270%;
+  overflow: hidden;
+}
+
+.lensReflection {
+  position: absolute;
+  top: 6px;
+  left: 10px;
+  width: 50px;
+  height: 25px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, transparent 80%);
+  transform: rotate(-30deg);
+  pointer-events: none;
+}
+
+.glassHandle {
+  position: absolute;
+  bottom: -44px;
+  right: -24px;
+  width: 14px;
+  height: 60px;
+  background: linear-gradient(135deg, #7a403d 0%, #4a211f 100%);
+  border: 1.5px solid #d4af7a;
+  border-radius: 7px;
+  transform: rotate(-45deg);
+  box-shadow: 4px 6px 14px rgba(0, 0, 0, 0.3);
+}
+
+/* ── Idle Floating Glass Preview ── */
+.idleGlassGuide {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 10;
+  animation: floatIdleGlass 4s ease-in-out infinite;
+}
+
+.idleGlassHead {
+  position: relative;
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  border: 3px solid rgba(212, 175, 122, 0.85);
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(2px);
+  box-shadow: 0 8px 24px rgba(122, 64, 61, 0.25);
+}
+
+.idleGlassGlint {
+  position: absolute;
+  top: 6px;
+  left: 8px;
+  width: 25px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  transform: rotate(-30deg);
+}
+
+.idleGlassHandle {
+  position: absolute;
+  bottom: -18px;
+  right: -10px;
+  width: 8px;
+  height: 28px;
+  background: #7a403d;
+  border: 1px solid #d4af7a;
+  border-radius: 4px;
+  transform: rotate(-45deg);
+}
+
+@keyframes floatIdleGlass {
+  0%, 100% {
+    transform: translate(-50%, -50%) translate(0, 0) scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: translate(-50%, -50%) translate(15px, -15px) scale(1.06);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .magnifierGlassContainer {
+    transform: translate(-50%, -85%);
+  }
+
+  .magnifierLoupe {
+    width: 120px;
+    height: 120px;
+    background-size: 300% 300%;
+  }
+
+  .glassHandle {
+    bottom: -32px;
+    right: -16px;
+    height: 44px;
+    width: 11px;
+  }
 }

@@ -7,6 +7,31 @@
   background: var(--color-bg);
 }
 
+.ambientGlow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 85%;
+  height: 75%;
+  background: radial-gradient(ellipse at center, rgba(211, 159, 153, 0.45) 0%, rgba(245, 227, 229, 0.2) 50%, transparent 80%);
+  filter: blur(50px);
+  pointer-events: none;
+  z-index: 1;
+  animation: ambientBreathe 6s ease-in-out infinite alternate;
+}
+
+@keyframes ambientBreathe {
+  0% {
+    transform: translate(-50%, -50%) scale(0.92);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.08);
+    opacity: 1;
+  }
+}
+
 .videoWrapper {
   position: relative;
   width: 100%;
@@ -16,6 +41,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 2;
 }
 
 .overlay {

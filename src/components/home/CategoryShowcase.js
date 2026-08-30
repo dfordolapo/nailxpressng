@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ShoppingCart } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { NailIcon } from '@/components/ui/NailIcon';
 import styles from './CategoryShowcase.module.css';
 
 const MOODS = [
@@ -15,7 +16,7 @@ const MOODS = [
   { id: 'custom', name: 'Custom Sets', image: '/images/art.png', color: '#7A8C6B', pun: 'Nail art as unique as your fingerprint.' },
 ];
 
-const SCROLL_SPEED = 0.8;
+const SCROLL_SPEED = 1.4;
 const RESUME_DELAY = 2000;
 
 export default function CategoryShowcase({ mini = false, items = null }) {
@@ -241,10 +242,16 @@ export default function CategoryShowcase({ mini = false, items = null }) {
       {!mini && (
         <div>
           <Link href="/collection-hub" className={`${styles.button} ${styles.desktopBtn}`}>
-            Explore all collections
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '9px' }}>
+              <span>Explore all collections</span>
+              <NailIcon size={22} />
+            </span>
           </Link>
           <Link href="/collection-hub" className={`${styles.button} ${styles.mobileBtn}`}>
-            Explore all collections
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '9px' }}>
+              <span>Explore all collections</span>
+              <NailIcon size={22} />
+            </span>
           </Link>
         </div>
       )}

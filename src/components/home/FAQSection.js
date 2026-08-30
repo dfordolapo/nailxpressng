@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import styles from './FAQSection.module.css';
 
 const FAQ_DATA = [
@@ -54,17 +55,28 @@ export default function FAQSection() {
                   aria-expanded={isOpen}
                 >
                   <span className={styles.questionText}>{item.question}</span>
-                  <span className={styles.icon}>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <span className={`${styles.icon} ${isOpen ? styles.iconOpen : ''}`}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
                       <polyline points="6 9 12 15 18 9" />
                     </svg>
                   </span>
                 </button>
-                <div className={styles.answerWrapper} style={{ maxHeight: isOpen ? '200px' : '0' }}>
-                  <div className={styles.answerContent}>
-                    <p className={styles.answerText}>{item.answer}</p>
-                  </div>
-                </div>
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.div 
+                      className={styles.answerWrapper}
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                      style={{ overflow: 'hidden' }}
+                    >
+                      <div className={styles.answerContent}>
+                        <p className={styles.answerText}>{item.answer}</p>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             );
           })}

@@ -11,7 +11,7 @@ export function useModal() {
   return useContext(ModalContext);
 }
 
-export default function ProductModalWrapper({ children, title }) {
+export default function ProductModalWrapper({ children, title, onClose: customCloseProp }) {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -39,11 +39,13 @@ export default function ProductModalWrapper({ children, title }) {
     setTimeout(() => {
       if (typeof customAction === 'function') {
         customAction();
+      } else if (typeof customCloseProp === 'function') {
+        customCloseProp();
       } else {
         window.history.back();
       }
     }, 200); // matches CSS transition duration
-  }, []);
+  }, [customCloseProp]);
 
   // Close on Escape key
   useEffect(() => {

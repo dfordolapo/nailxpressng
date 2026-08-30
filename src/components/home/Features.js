@@ -1,5 +1,8 @@
+'use client';
+
 import React from 'react';
 import Image from 'next/image';
+import { motion } from 'framer-motion';
 import styles from './Features.module.css';
 
 const FEATURES_DATA = [
@@ -41,6 +44,7 @@ export default function Features() {
                   sizes="(max-width: 768px) 100vw, 30vw"
                   className={styles.image}
                 />
+                <div className={styles.glossShine} />
               </div>
             </div>
           ))}

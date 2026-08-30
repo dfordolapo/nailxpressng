@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
-import Link from "next/link";
+import MagneticButton from "@/components/ui/MagneticButton";
+import { NailIcon } from "@/components/ui/NailIcon";
 import styles from "./VideoSection.module.css";
 import btnStyles from "@/styles/components/buttons.module.css";
 
@@ -56,6 +57,9 @@ export default function VideoSection({
 
   return (
     <section className={styles.fullWidthSection} id="video-section">
+      {/* Dynamic Ambient Cinema Glow */}
+      <div className={styles.ambientGlow} aria-hidden="true" />
+
       {/* Top Gradient Overlay */}
       <div className={styles.topGradient} aria-hidden="true" />
       
@@ -82,12 +86,15 @@ export default function VideoSection({
 
       {/* Button overlay — sits on the section so it's full-width, not constrained by video wrapper */}
       <div className={styles.overlay}>
-        <Link
+        <MagneticButton
           href="/shop"
           className={styles.ctaBtn}
         >
-          See What's New
-        </Link>
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '9px' }}>
+            <span>See What's New</span>
+            <NailIcon size={22} />
+          </span>
+        </MagneticButton>
       </div>
 
       {/* Bottom Gradient Overlay */}
