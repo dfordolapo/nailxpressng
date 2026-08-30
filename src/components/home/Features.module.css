@@ -19,12 +19,12 @@
 }
 
 .subtitle {
-  font-size: var(--text-sm);
+  font-size: var(--text-sm, 0.875rem);
   color: var(--color-primary-800);
   font-family: var(--font-body);
   font-weight: var(--weight-medium);
   text-transform: none;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.03em;
 }
 
 .grid {

@@ -28,7 +28,7 @@
 }
 
 .subheadline {
-  font-size: clamp(0.725rem, 3.2vw, 0.9375rem);
+  font-size: var(--text-sm, 0.875rem);
   color: var(--color-primary-800);
   font-family: var(--font-body);
   font-weight: var(--weight-medium, 500);
