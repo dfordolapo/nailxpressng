@@ -78,6 +78,12 @@ export default function Footer() {
             <TelegramIcon />
           </a>
         </div>
+
+        {/* Subtle Copyright & Artisan Sign-off on dedicated lines */}
+        <div className={styles.bottomNote}>
+          <span className={styles.tagline}>Handmade artistry & factory precision • Made with 💖 in Nigeria</span>
+          <span className={styles.copyright}>© {new Date().getFullYear()} Nailexpress. All rights reserved.</span>
+        </div>
       </div>
     </footer>
   );
