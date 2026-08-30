@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { ShoppingCart } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { NailIcon } from '@/components/ui/NailIcon';
+import MagneticButton from '@/components/ui/MagneticButton';
 import styles from './CategoryShowcase.module.css';
 
 const MOODS = [
@@ -222,18 +223,12 @@ export default function CategoryShowcase({ mini = false, items = null }) {
 
       {!mini && (
         <div>
-          <Link href="/collection-hub" className={`${styles.button} ${styles.desktopBtn}`}>
+          <MagneticButton href="/collection-hub" className={styles.button}>
             <span style={{ display: 'inline-flex', alignItems: 'center', gap: '9px' }}>
               <span>Explore all collections</span>
               <NailIcon size={22} />
             </span>
-          </Link>
-          <Link href="/collection-hub" className={`${styles.button} ${styles.mobileBtn}`}>
-            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '9px' }}>
-              <span>Explore all collections</span>
-              <NailIcon size={22} />
-            </span>
-          </Link>
+          </MagneticButton>
         </div>
       )}
     </motion.section>

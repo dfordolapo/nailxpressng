@@ -53,8 +53,10 @@
   letter-spacing: 0.05em;
 }
 
-.button {
-  display: inline-block;
+.whatsappButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background-color: var(--color-primary-800);
   color: var(--color-bg-warm);
   padding: var(--space-3) var(--space-8);
@@ -67,29 +69,42 @@
   transition: background-color var(--transition-base), transform var(--transition-base);
 }
 
-.button:hover {
+.whatsappButton:hover {
   background-color: var(--color-primary-900);
-  transform: translateY(-2px);
 }
 
-/* ── Footer bar on top of hero image ── */
+/* ── Ultra-Luxury Glassmorphism Bottom Pod ── */
 .footerBar {
   position: absolute;
-  bottom: 30px;
+  bottom: 24px;
   left: 50%;
   transform: translateX(-50%);
   width: 90%;
   max-width: 600px;
   z-index: 3;
-  background-color: var(--color-primary-800, #6b3634);
+  background: rgba(107, 54, 52, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   color: #ffffff;
-  padding: var(--space-8) var(--space-6);
+  padding: var(--space-8) var(--space-6) var(--space-4);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--space-4);
   text-align: center;
   border-radius: 50% 50% 45% 55% / 40px 40px 40px 40px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 16px 40px rgba(74, 32, 31, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.footerMain {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
 }
 
 .footerLogoLink {
@@ -100,7 +115,7 @@
 }
 
 .footerLogoImg {
-  height: 38px;
+  height: 34px;
   width: auto;
   object-fit: contain;
   filter: brightness(0) invert(1);
@@ -108,39 +123,91 @@
 
 .footerLinks {
   display: flex;
-  gap: var(--space-6);
+  gap: var(--space-5);
   flex-wrap: wrap;
   justify-content: center;
 }
 
 .footerLink {
   font-family: var(--font-heading);
-  font-size: var(--text-lg);
+  font-size: 0.95rem;
   color: var(--color-bg-warm);
-  transition: color var(--transition-base);
-  letter-spacing: 0.05em;
+  text-decoration: none;
+  transition: color var(--transition-fast), transform var(--transition-fast);
+  letter-spacing: 0.03em;
 }
 
 .footerLink:hover {
   color: #ffffff;
+  transform: translateY(-1px);
 }
 
 .footerSocials {
   display: flex;
-  gap: var(--space-4);
+  gap: 10px;
+  align-items: center;
 }
 
 .footerSocialLink {
-  color: var(--color-bg-warm);
-  transition: transform var(--transition-base), color var(--transition-base);
-  display: flex;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.12);
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  display: inline-flex;
   align-items: center;
   justify-content: center;
+  text-decoration: none;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .footerSocialLink:hover {
-  color: #ffffff;
-  transform: translateY(-2px);
+  background: #ffffff;
+  color: var(--color-primary-800);
+  transform: translateY(-3px) scale(1.08);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2), 0 0 12px rgba(255, 255, 255, 0.4);
+}
+
+.footerBottomNote {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.68rem;
+  color: rgba(245, 227, 229, 0.75);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: var(--space-3);
+  letter-spacing: 0.02em;
+}
+
+@media (max-width: 768px) {
+  .footerBar {
+    bottom: 16px;
+    padding: var(--space-6) var(--space-4) var(--space-3);
+    border-radius: 40% 60% 50% 50% / 25px 25px 25px 25px;
+    width: 88%;
+  }
+
+  .footerMain {
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .footerLinks {
+    gap: var(--space-3);
+  }
+
+  .footerLink {
+    font-size: 0.8rem;
+  }
+
+  .footerBottomNote {
+    flex-direction: column;
+    gap: 4px;
+    font-size: 0.62rem;
+    text-align: center;
+  }
 }
 
 @media (max-width: 1024px) {
@@ -150,47 +217,18 @@
   }
 
   .overlay {
-    padding: 95px var(--space-4) 175px var(--space-4);
+    padding: 85px var(--space-4) 180px var(--space-4);
     justify-content: flex-start;
   }
 
   .title {
     font-size: clamp(1.6rem, 6vw, 2.25rem);
-    margin-bottom: 12px;
+    margin-bottom: 10px;
   }
 
   .subtitle {
-    margin-bottom: 24px;
+    margin-bottom: 20px;
     font-size: var(--text-sm);
-  }
-
-  .footerBar {
-    bottom: 20px;
-    padding: var(--space-4) var(--space-4);
-    gap: var(--space-2);
-    width: 88%;
-    border-radius: 40% 60% 50% 50% / 25px 25px 25px 25px;
-  }
-
-  .footerLogo {
-    font-size: var(--text-lg);
-  }
-
-  .footerLinks {
-    gap: var(--space-3);
-  }
-
-  .footerLink {
-    font-size: var(--text-sm);
-  }
-
-  .footerSocials {
-    gap: var(--space-3);
-  }
-
-  .footerSocialLink svg {
-    width: 16px;
-    height: 16px;
   }
 }
 
@@ -201,22 +239,17 @@
   }
 
   .overlay {
-    padding: 85px 16px 155px 16px;
+    padding: 75px 16px 175px 16px;
   }
 
   .title {
-    font-size: 1.65rem;
+    font-size: 1.55rem;
     line-height: 1.2;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
   }
 
   .subtitle {
-    font-size: 0.88rem;
-    margin-bottom: 20px;
-  }
-
-  .button {
-    padding: 10px 24px;
-    font-size: 0.9rem;
+    font-size: 0.82rem;
+    margin-bottom: 18px;
   }
 }
