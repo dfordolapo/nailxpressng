@@ -53,7 +53,9 @@ export default function CategoryShowcase({ mini = false, items = null }) {
     let initialOffset = 0;
     let dragged = false;
     let resumeTimer = null;
-    const speed = 3.2; // Faster, energetic flow
+    // Product showcases (mini or items list on collection/shop/handmade pages) cruise gently (1.1) so users can read names and admire details;
+    // Landing page mood marquee maintains its brisk, energetic flow (3.2).
+    const speed = mini || items ? 1.1 : 3.2;
 
     const cardWidth = 180;
     const cardGap = 24;
