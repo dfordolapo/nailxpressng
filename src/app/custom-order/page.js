@@ -121,14 +121,22 @@ export default function CustomOrderPage() {
 
   useEffect(() => {
     let animationId;
+    let lastTime = null;
     const scrollContainer = scrollRef.current;
+    const scrollSpeed = 2.2; // Crisper, slightly faster pace
     
-    const autoScroll = () => {
+    const autoScroll = (time) => {
       if (scrollContainer && !isHovered.current && !isScrolling.current && inspirations.length > 0) {
-        scrollContainer.scrollLeft += 1;
+        if (lastTime === null) lastTime = time;
+        const delta = Math.min(time - lastTime, 50);
+        lastTime = time;
+
+        scrollContainer.scrollLeft += scrollSpeed * (delta / 16.67);
         if (scrollContainer.scrollLeft >= scrollContainer.scrollWidth / 2) {
-           scrollContainer.scrollLeft -= scrollContainer.scrollWidth / 2;
+          scrollContainer.scrollLeft -= scrollContainer.scrollWidth / 2;
         }
+      } else {
+        lastTime = null;
       }
       animationId = requestAnimationFrame(autoScroll);
     };
