@@ -1,5 +1,6 @@
 "use client";
 
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -43,6 +44,13 @@ function TelegramIcon() {
 
 export default function Footer() {
   const pathname = usePathname();
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
   if (pathname === "/" || pathname === "/terms" || pathname?.startsWith("/admin")) return null;
 
   return (

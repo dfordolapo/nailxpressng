@@ -12,7 +12,7 @@
 }
 
 .headerContent {
-  max-width: 580px;
+  max-width: 780px;
   margin: 0 auto;
   text-align: center;
   padding: 0 16px;
@@ -20,11 +20,18 @@
 
 .headline {
   font-family: var(--font-heading);
-  font-size: clamp(1.35rem, 4vw, 3rem);
+  font-size: clamp(1.35rem, 3.8vw, 3rem);
   font-weight: var(--weight-medium, 500);
   color: var(--color-text);
   margin-bottom: var(--space-2, 8px);
   line-height: 1.2;
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .headline {
+    white-space: normal;
+  }
 }
 
 .subheadline {
