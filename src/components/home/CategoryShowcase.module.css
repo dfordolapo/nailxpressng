@@ -25,7 +25,6 @@
   -ms-overflow-style: none;
   touch-action: pan-x;
   cursor: grab;
-  transform: rotate(-4deg) scale(1.05);
 }
 
 .gridWrapper::-webkit-scrollbar {
@@ -57,16 +56,16 @@
 }
 
 .card:nth-child(odd) {
-  transform: translateY(-16px) rotate(-1.5deg);
+  transform: translateY(-16px);
 }
 
 .card:nth-child(even) {
-  transform: translateY(16px) rotate(1.5deg);
+  transform: translateY(16px);
 }
 
 @media (min-width: 1025px) {
   .section {
-    padding: calc(var(--space-12) + 60px) 0 60px;
+    padding: calc(var(--space-12) + 40px) 0 60px;
   }
 
   .card {
@@ -74,11 +73,11 @@
   }
   
   .card:nth-child(odd) {
-    transform: translateY(-24px) rotate(-2deg);
+    transform: translateY(-24px);
   }
 
   .card:nth-child(even) {
-    transform: translateY(24px) rotate(2deg);
+    transform: translateY(24px);
   }
 }
 
