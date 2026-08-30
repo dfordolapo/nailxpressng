@@ -3,7 +3,18 @@
 import Link from "next/link";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { useState, Suspense } from "react";
-import { LayoutDashboard, Package, LogOut, ChevronDown, Settings, Menu, X, Image as ImageIcon, Star } from "lucide-react";
+import { 
+  LayoutDashboard, 
+  ShoppingBag, 
+  Sparkles, 
+  Package, 
+  Star, 
+  Settings, 
+  LogOut, 
+  ChevronDown, 
+  Menu, 
+  X 
+} from "lucide-react";
 import styles from "@/styles/admin.module.css";
 
 function SidebarContent() {
@@ -38,7 +49,7 @@ function SidebarContent() {
             Nail Express
           </Link>
           <button className={styles.closeSidebarBtn} onClick={() => setIsMobileOpen(false)}>
-            <X size={20} />
+            <X size={20} strokeWidth={1.5} />
           </button>
         </div>
 
@@ -49,7 +60,7 @@ function SidebarContent() {
               className={`${styles.navItem} ${pathname === "/admin" ? styles.active : ""}`}
               onClick={() => setIsMobileOpen(false)}
             >
-              <LayoutDashboard size={18} />
+              <LayoutDashboard size={18} strokeWidth={1.5} />
               Dashboard
             </Link>
           </div>
@@ -60,7 +71,7 @@ function SidebarContent() {
               className={`${styles.navItem} ${pathname === "/admin/orders" ? styles.active : ""}`}
               onClick={() => setIsMobileOpen(false)}
             >
-              <Package size={18} />
+              <ShoppingBag size={18} strokeWidth={1.5} />
               Orders
             </Link>
           </div>
@@ -71,7 +82,7 @@ function SidebarContent() {
               className={`${styles.navItem} ${pathname.startsWith("/admin/custom-orders") ? styles.active : ""}`}
               onClick={() => setIsMobileOpen(false)}
             >
-              <Package size={18} />
+              <Sparkles size={18} strokeWidth={1.5} />
               Custom Orders
             </Link>
           </div>
@@ -82,8 +93,8 @@ function SidebarContent() {
               className={`${styles.navItem} ${pathname.startsWith("/admin/reviews") ? styles.active : ""}`}
               onClick={() => setIsMobileOpen(false)}
             >
-              <Star size={18} />
-              The Journal (Reviews)
+              <Star size={18} strokeWidth={1.5} />
+              Reviews
             </Link>
           </div>
 
@@ -93,10 +104,11 @@ function SidebarContent() {
               style={{ cursor: "pointer" }}
               onClick={() => setIsProductsOpen(!isProductsOpen)}
             >
-              <Package size={18} />
+              <Package size={18} strokeWidth={1.5} />
               Products
               <ChevronDown 
                 size={16} 
+                strokeWidth={1.5}
                 style={{ 
                   marginLeft: "auto", 
                   transform: isProductsOpen ? "rotate(180deg)" : "rotate(0deg)",
@@ -140,10 +152,11 @@ function SidebarContent() {
               style={{ cursor: "pointer" }}
               onClick={() => setIsSettingsOpen(!isSettingsOpen)}
             >
-              <Settings size={18} />
+              <Settings size={18} strokeWidth={1.5} />
               Settings
               <ChevronDown 
                 size={16} 
+                strokeWidth={1.5}
                 style={{ 
                   marginLeft: "auto", 
                   transform: isSettingsOpen ? "rotate(180deg)" : "rotate(0deg)",
@@ -186,7 +199,7 @@ function SidebarContent() {
             router.refresh();
           }}
         >
-          <LogOut size={18} />
+          <LogOut size={18} strokeWidth={1.5} />
           Logout
         </button>
       </aside>
