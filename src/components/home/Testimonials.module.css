@@ -7,7 +7,7 @@
 
 /* SECTION HEADER (ORIGINAL SPACIOUS TOKENS) */
 .headerContainer {
-  margin-bottom: var(--space-16, 64px);
+  margin-bottom: 72px;
   text-align: center;
 }
 
@@ -132,7 +132,7 @@
   }
 
   .headerContainer {
-    margin-bottom: 44px;
+    margin-bottom: 54px;
   }
   
   .marqueeContainer {

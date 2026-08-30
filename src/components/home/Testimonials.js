@@ -58,7 +58,7 @@ export default function Testimonials() {
               We nail it no matter the occasion
             </h2>
             <p className={styles.subheadline}>
-              You’re in good hands. Over 700+ women served.
+              You’re in good hands. 700+ women served.
             </p>
           </div>
         </div>
