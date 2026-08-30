@@ -16,7 +16,7 @@ const MOODS = [
   { id: 'custom', name: 'Custom Sets', image: '/images/art.png', color: '#7A8C6B', pun: 'Nail art as unique as your fingerprint.' },
 ];
 
-const SCROLL_SPEED = 2.2;
+const SCROLL_SPEED = 2.8;
 const RESUME_DELAY = 2000;
 
 export default function CategoryShowcase({ mini = false, items = null }) {
@@ -31,168 +31,104 @@ export default function CategoryShowcase({ mini = false, items = null }) {
 
   const marqueeItems = [...displayItems, ...displayItems, ...displayItems, ...displayItems];
   const [flippedId, setFlippedId] = useState(null);
+  const [centerCardIdx, setCenterCardIdx] = useState(null);
   const trackRef = useRef(null);
+  const offsetRef = useRef(0);
   const autoScrollRef = useRef(null);
-  const pausedRef = useRef(false);
+  const isDraggingRef = useRef(false);
   const lastTimeRef = useRef(null);
+  const lastCenterCheckRef = useRef(0);
 
   const handleFlip = (e, id) => {
     e.stopPropagation();
-    setFlippedId((prev) => {
-      if (prev === id) {
-        clearTimeout(trackRef.current?._resumeTimer);
-        const half = trackRef.current?.scrollWidth / 2;
-        if (trackRef.current && trackRef.current.scrollLeft >= half) {
-          trackRef.current.scrollLeft -= half;
-        }
-        resumeAutoScroll();
-      }
-      return prev === id ? null : id;
-    });
+    setFlippedId((prev) => (prev === id ? null : id));
   };
-
-  const [centerCardIdx, setCenterCardIdx] = useState(null);
-  const scrollPosRef = useRef(0);
-  const lastCheckTimeRef = useRef(0);
-
-  // Detect card closest to center on mobile (throttled for high frame rate)
-  const checkCenterCard = useCallback(() => {
-    if (typeof window === 'undefined' || window.innerWidth > 768) return;
-    const track = trackRef.current;
-    if (!track) return;
-
-    const cards = track.querySelectorAll(`.${styles.card}`);
-    if (!cards.length) return;
-    
-    const screenCenter = window.innerWidth / 2;
-    let closestIdx = null;
-    let closestDist = Infinity;
-
-    for (let idx = 0; idx < cards.length; idx++) {
-      const card = cards[idx];
-      const rect = card.getBoundingClientRect();
-      const cardCenter = rect.left + rect.width / 2;
-      const dist = Math.abs(screenCenter - cardCenter);
-      if (dist < closestDist && dist < rect.width * 0.8) {
-        closestDist = dist;
-        closestIdx = idx;
-      }
-    }
-
-    setCenterCardIdx((prev) => (prev === closestIdx ? prev : closestIdx));
-  }, []);
-
-  const pauseAutoScroll = useCallback(() => {
-    pausedRef.current = true;
-    if (autoScrollRef.current) {
-      cancelAnimationFrame(autoScrollRef.current);
-      autoScrollRef.current = null;
-    }
-  }, []);
-
-  const resumeAutoScroll = useCallback(() => {
-    pausedRef.current = false;
-    lastTimeRef.current = null;
-
-    const tick = (time) => {
-      if (pausedRef.current) return;
-      const track = trackRef.current;
-      if (!track) return;
-
-      if (lastTimeRef.current === null) {
-        lastTimeRef.current = time;
-        scrollPosRef.current = track.scrollLeft;
-      }
-      
-      const delta = Math.min(time - lastTimeRef.current, 50); // Clamp delta to avoid frame spikes
-      lastTimeRef.current = time;
-
-      scrollPosRef.current += SCROLL_SPEED * (delta / 16.67);
-
-      const half = track.scrollWidth / 2;
-      if (scrollPosRef.current >= half) {
-        scrollPosRef.current -= half;
-      }
-
-      track.scrollLeft = scrollPosRef.current;
-
-      // Throttle center card detection to every ~60ms instead of every frame
-      if (time - lastCheckTimeRef.current > 60) {
-        lastCheckTimeRef.current = time;
-        checkCenterCard();
-      }
-
-      autoScrollRef.current = requestAnimationFrame(tick);
-    };
-
-    autoScrollRef.current = requestAnimationFrame(tick);
-  }, [checkCenterCard]);
 
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
 
-    resumeAutoScroll();
-
-    let isDown = false;
-    let startX;
-    let scrollLeft;
+    let startX = 0;
+    let initialOffset = 0;
     let dragged = false;
+    let resumeTimer = null;
+    const speed = 3.2; // Faster, energetic flow
+
+    const cardWidth = 180;
+    const cardGap = 24;
+    const cardPitch = cardWidth + cardGap; // 204px per card item
+    const screenCenter = typeof window !== 'undefined' ? window.innerWidth / 2 : 200;
+
+    const checkCenter = (now) => {
+      if (typeof window === 'undefined' || window.innerWidth > 768) return;
+      if (now - lastCenterCheckRef.current < 40) return;
+      lastCenterCheckRef.current = now;
+
+      // Pure math calculation without reading DOM rects:
+      // Current track start is offsetRef.current + padding (24px)
+      // Center of card i is: offsetRef.current + 24 + i * 204 + 90
+      // screenCenter = offsetRef.current + 114 + i * 204
+      const approxIdx = Math.round((screenCenter - offsetRef.current - 114) / cardPitch);
+      const safeIdx = Math.max(0, Math.min(approxIdx, marqueeItems.length - 1));
+
+      setCenterCardIdx((prev) => (prev === safeIdx ? prev : safeIdx));
+    };
+
+    const tick = (time) => {
+      if (!isDraggingRef.current && !flippedId) {
+        if (lastTimeRef.current === null) lastTimeRef.current = time;
+        const delta = Math.min(time - lastTimeRef.current, 50);
+        lastTimeRef.current = time;
+
+        offsetRef.current -= speed * (delta / 16.67);
+
+        const half = track.scrollWidth / 2;
+        if (Math.abs(offsetRef.current) >= half) {
+          offsetRef.current += half;
+        }
+
+        track.style.transform = `translate3d(${offsetRef.current}px, 0, 0)`;
+        checkCenter(time);
+      } else {
+        lastTimeRef.current = null;
+      }
+      autoScrollRef.current = requestAnimationFrame(tick);
+    };
+
+    autoScrollRef.current = requestAnimationFrame(tick);
 
     const onPointerDown = (e) => {
-      pauseAutoScroll();
-      if (e.pointerType === 'mouse') {
-        isDown = true;
-        dragged = false;
-        startX = e.pageX - track.offsetLeft;
-        scrollLeft = track.scrollLeft;
-        scrollPosRef.current = track.scrollLeft;
-        track.style.cursor = 'grabbing';
-      }
+      isDraggingRef.current = true;
+      dragged = false;
+      startX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+      initialOffset = offsetRef.current;
+      clearTimeout(resumeTimer);
     };
 
     const onPointerMove = (e) => {
-      if (!isDown) return;
-      e.preventDefault();
-      const x = e.pageX - track.offsetLeft;
-      const walk = (x - startX) * 1.5;
-      track.scrollLeft = scrollLeft - walk;
-      scrollPosRef.current = track.scrollLeft;
-      if (Math.abs(walk) > 5) {
+      if (!isDraggingRef.current) return;
+      const currentX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+      const diff = currentX - startX;
+      if (Math.abs(diff) > 4) {
         dragged = true;
       }
+      offsetRef.current = initialOffset + diff;
+      const half = track.scrollWidth / 2;
+      if (offsetRef.current > 0) {
+        offsetRef.current -= half;
+      } else if (Math.abs(offsetRef.current) >= half) {
+        offsetRef.current += half;
+      }
+      track.style.transform = `translate3d(${offsetRef.current}px, 0, 0)`;
+      checkCenter(performance.now());
     };
 
     const onPointerUp = () => {
-      isDown = false;
-      track.style.cursor = 'grab';
-      clearTimeout(track._resumeTimer);
-      
-      if (!pausedRef.current) return;
-      const half = track.scrollWidth / 2;
-      if (track.scrollLeft >= half) {
-        track.scrollLeft -= half;
-      }
-      scrollPosRef.current = track.scrollLeft;
-      
-      // Add a slight delay before resuming to prevent jumping
-      track._resumeTimer = setTimeout(() => {
-        resumeAutoScroll();
-      }, 500);
-    };
-
-    const onWheel = () => {
-      if (!isDown) {
-        pauseAutoScroll();
-        clearTimeout(track._resumeTimer);
-        track._resumeTimer = setTimeout(() => {
-          if (pausedRef.current) {
-            const half = track.scrollWidth / 2;
-            if (track.scrollLeft >= half) track.scrollLeft -= half;
-            resumeAutoScroll();
-          }
-        }, 1000);
-      }
+      if (!isDraggingRef.current) return;
+      isDraggingRef.current = false;
+      resumeTimer = setTimeout(() => {
+        lastTimeRef.current = null;
+      }, 400);
     };
 
     const onClickCapture = (e) => {
@@ -203,25 +139,23 @@ export default function CategoryShowcase({ mini = false, items = null }) {
       }
     };
 
-    track.addEventListener('pointerdown', onPointerDown);
-    track.addEventListener('pointermove', onPointerMove);
-    track.addEventListener('pointerup', onPointerUp);
-    track.addEventListener('pointerleave', onPointerUp);
-    track.addEventListener('pointercancel', onPointerUp);
-    track.addEventListener('wheel', onWheel, { passive: true });
+    const wrapper = track.parentElement;
+    wrapper.addEventListener('pointerdown', onPointerDown);
+    window.addEventListener('pointermove', onPointerMove);
+    window.addEventListener('pointerup', onPointerUp);
+    window.addEventListener('pointercancel', onPointerUp);
+    wrapper.addEventListener('click', onClickCapture, { capture: true });
 
     return () => {
       cancelAnimationFrame(autoScrollRef.current);
-      track.removeEventListener('pointerdown', onPointerDown);
-      track.removeEventListener('pointermove', onPointerMove);
-      track.removeEventListener('pointerup', onPointerUp);
-      track.removeEventListener('pointerleave', onPointerUp);
-      track.removeEventListener('pointercancel', onPointerUp);
-      track.removeEventListener('wheel', onWheel);
-      track.removeEventListener('click', onClickCapture, { capture: true });
-      clearTimeout(track._resumeTimer);
+      clearTimeout(resumeTimer);
+      wrapper.removeEventListener('pointerdown', onPointerDown);
+      window.removeEventListener('pointermove', onPointerMove);
+      window.removeEventListener('pointerup', onPointerUp);
+      window.removeEventListener('pointercancel', onPointerUp);
+      wrapper.removeEventListener('click', onClickCapture, { capture: true });
     };
-  }, [pauseAutoScroll, resumeAutoScroll]);
+  }, [flippedId]);
 
   return (
     <motion.section 
@@ -237,8 +171,8 @@ export default function CategoryShowcase({ mini = false, items = null }) {
         </h2>
       )}
       
-      <div className={styles.gridWrapper} ref={trackRef} onScroll={checkCenterCard}>
-        <div className={styles.marqueeTrack}>
+      <div className={styles.gridWrapper}>
+        <div className={styles.marqueeTrack} ref={trackRef}>
           {marqueeItems.map((item, i) => (
             <div
               key={`${item.id}-${i}`}
