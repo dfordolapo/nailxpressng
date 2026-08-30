@@ -137,16 +137,20 @@
   border-radius: 2px;
   transition: transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
   will-change: transform;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 .card:hover:not(.flipped) .imageInner,
 .card.centerActive:not(.flipped) .imageInner {
-  transform: scale(1.08);
+  transform: scale(1.08) translateZ(0);
 }
 
 .image {
   object-fit: cover;
   object-position: center;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
 }
 
 .label {

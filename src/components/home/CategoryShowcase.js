@@ -187,7 +187,8 @@ export default function CategoryShowcase({ mini = false, items = null }) {
                         src={item.image}
                         alt={item.name}
                         fill
-                        sizes="(max-width: 768px) 180px, 240px"
+                        quality={90}
+                        sizes="(max-width: 768px) 360px, 480px"
                         className={styles.image}
                       />
                     </div>
