@@ -172,9 +172,10 @@
 .footerBottomNote {
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  font-size: 0.68rem;
+  text-align: center;
+  font-size: 0.7rem;
   color: rgba(245, 227, 229, 0.75);
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding-top: var(--space-3);
@@ -203,10 +204,10 @@
   }
 
   .footerBottomNote {
-    flex-direction: column;
-    gap: 4px;
-    font-size: 0.62rem;
+    font-size: 0.58rem;
+    white-space: nowrap;
     text-align: center;
+    justify-content: center;
   }
 }
 
