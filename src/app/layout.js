@@ -25,14 +25,39 @@ export const viewport = {
 export const metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://nailexpress.ng'),
   title: {
-    default: "Nailexpress — Press-On Perfection",
-    template: "%s | Nailexpress",
+    default: "Nailexpress — Buy Luxury Press-On Nails in Nigeria | Handmade & Factory Made",
+    template: "%s | Nailexpress Nigeria",
   },
-  description: "Press-on perfection — handmade artistry & factory precision. Express yourself, one nail at a time. Shop handmade and factory-made press-on nails in Nigeria.",
-  keywords: ["press-on nails", "handmade nails", "factory nails", "nail art", "Nigeria", "custom nails", "luxury nails"],
+  description: "Shop luxury handmade and factory-made press-on nails in Nigeria. Hand-painted artistry, durable instant fit, custom sets, and wholesale salon delivery across Lagos, Abuja, and nationwide.",
+  keywords: [
+    "press-on nails Nigeria",
+    "buy press on nails Lagos",
+    "handmade press-on nails Nigeria",
+    "luxury press on nails",
+    "custom nail art Nigeria",
+    "press on nails Abuja",
+    "wholesale press-on nails Nigeria",
+    "reusable fake nails Nigeria",
+    "nail extension kit",
+    "salon press ons"
+  ],
   authors: [{ name: "Nailexpress" }],
   creator: "Nailexpress",
   publisher: "Nailexpress",
+  alternates: {
+    canonical: "https://nailexpress.ng",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
   formatDetection: {
     email: false,
     address: false,
