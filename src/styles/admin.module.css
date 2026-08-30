@@ -408,6 +408,16 @@
   text-align: center;
 }
 
+.editModalContent {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 520px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  text-align: left;
+}
+
 .modalTitle {
   font-family: var(--font-heading);
   font-size: 1.5rem;

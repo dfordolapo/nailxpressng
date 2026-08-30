@@ -11,11 +11,11 @@ import {
   ExternalLink, 
   Search, 
   CheckCircle2, 
-  Camera, 
-  Sparkles, 
+  Edit2,
   X, 
   ZoomIn,
-  MessageSquareHeart
+  MessageSquareHeart,
+  BadgeCheck
 } from "lucide-react";
 import styles from "@/styles/admin.module.css";
 
@@ -29,7 +29,11 @@ export default function ReviewsClient({ initialReviews }) {
   const [reviewToDelete, setReviewToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  // Status toggle
+  // Edit Review Modal State
+  const [editingReview, setEditingReview] = useState(null);
+  const [isSavingEdit, setIsSavingEdit] = useState(false);
+
+  // 1-Click Status Toggle (Approve / Hide)
   const toggleStatus = async (id, currentStatus) => {
     const nextStatus = currentStatus === "approved" ? "hidden" : "approved";
     setLoadingId(id);
@@ -48,6 +52,76 @@ export default function ReviewsClient({ initialReviews }) {
       alert("Error updating review status");
     } finally {
       setLoadingId(null);
+    }
+  };
+
+  // 1-Click Verified Buyer Toggle
+  const toggleVerified = async (id, currentVerified) => {
+    const nextVerified = !currentVerified;
+    setLoadingId(id);
+    try {
+      const res = await fetch(`/api/admin/reviews/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ verified_buyer: nextVerified }),
+      });
+      if (!res.ok) throw new Error("Failed to update verified status");
+      setReviews((prev) =>
+        prev.map((r) => (r.id === id ? { ...r, verified_buyer: nextVerified } : r))
+      );
+    } catch (err) {
+      console.error(err);
+      alert("Error updating verified status");
+    } finally {
+      setLoadingId(null);
+    }
+  };
+
+  // Open Edit Modal
+  const openEditModal = (review) => {
+    setEditingReview({
+      id: review.id,
+      customer_name: review.customer_name || "",
+      customer_location: review.customer_location || "",
+      rating: review.rating || 5,
+      review_text: review.review_text || "",
+      verified_buyer: Boolean(review.verified_buyer),
+      status: review.status || "approved",
+    });
+  };
+
+  // Submit Edit Review
+  const handleSaveEdit = async (e) => {
+    e.preventDefault();
+    if (!editingReview) return;
+    setIsSavingEdit(true);
+
+    try {
+      const res = await fetch(`/api/admin/reviews/${editingReview.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          customer_name: editingReview.customer_name,
+          customer_location: editingReview.customer_location,
+          rating: editingReview.rating,
+          review_text: editingReview.review_text,
+          verified_buyer: editingReview.verified_buyer,
+          status: editingReview.status,
+        }),
+      });
+
+      if (!res.ok) throw new Error("Failed to save changes");
+      const data = await res.json();
+
+      setReviews((prev) =>
+        prev.map((r) => (r.id === editingReview.id ? { ...r, ...data.review } : r))
+      );
+      setEditingReview(null);
+    } catch (err) {
+      console.error(err);
+      alert("Error saving review changes");
+    } finally {
+      setIsSavingEdit(false);
     }
   };
 
@@ -120,7 +194,7 @@ export default function ReviewsClient({ initialReviews }) {
         <div>
           <h1 className={styles.pageTitle}>Customer Reviews</h1>
           <p className={styles.pageSubtitle}>
-            Moderate customer ratings, testimonials, and real-hand nail photos.
+            Moderate, verify, edit, and curate real customer reviews and nail photos.
           </p>
         </div>
       </div>
@@ -130,7 +204,7 @@ export default function ReviewsClient({ initialReviews }) {
         <div className={styles.statCard}>
           <div className={styles.statTitle}>Total Reviews</div>
           <div className={styles.statValue}>{totalCount}</div>
-          <div className={styles.statTrend}>{approvedCount} Published</div>
+          <div className={styles.statTrend}>{approvedCount} Approved & Live</div>
         </div>
 
         <div className={styles.statCard}>
@@ -138,14 +212,14 @@ export default function ReviewsClient({ initialReviews }) {
           <div className={styles.statValue} style={{ display: "flex", alignItems: "center", gap: "6px" }}>
             {averageRating} <Star size={22} fill="#F59E0B" color="#F59E0B" style={{ display: "inline" }} />
           </div>
-          <div className={styles.statTrend}>From all ratings</div>
+          <div className={styles.statTrend}>Overall store rating</div>
         </div>
 
         <div className={styles.statCard}>
           <div className={styles.statTitle}>Verified Buyers</div>
           <div className={styles.statValue}>{verifiedCount}</div>
           <div className={styles.statTrend}>
-            {totalCount > 0 ? Math.round((verifiedCount / totalCount) * 100) : 0}% of reviewers
+            {totalCount > 0 ? Math.round((verifiedCount / totalCount) * 100) : 0}% verified customers
           </div>
         </div>
 
@@ -268,9 +342,13 @@ export default function ReviewsClient({ initialReviews }) {
                         {rev.customer_location && (
                           <span className={styles.reviewLocation}>• {rev.customer_location}</span>
                         )}
-                        {rev.verified_buyer && (
+                        {rev.verified_buyer ? (
                           <span className={styles.reviewVerifiedBadge}>
                             <CheckCircle2 size={12} /> Verified Buyer
+                          </span>
+                        ) : (
+                          <span style={{ fontSize: "0.72rem", background: "#f3f4f6", color: "#6b7280", padding: "2px 8px", borderRadius: "12px", fontWeight: 500 }}>
+                            Unverified
                           </span>
                         )}
                         <span
@@ -298,6 +376,19 @@ export default function ReviewsClient({ initialReviews }) {
 
                   {/* Actions */}
                   <div className={styles.reviewControls}>
+                    {/* 1-Click Verify Toggle */}
+                    <button
+                      type="button"
+                      onClick={() => toggleVerified(rev.id, rev.verified_buyer)}
+                      disabled={loadingId === rev.id}
+                      className={styles.reviewControlBtn}
+                      title={rev.verified_buyer ? "Mark as unverified" : "Mark as verified buyer"}
+                    >
+                      <BadgeCheck size={14} color={rev.verified_buyer ? "#10B981" : "#888"} />
+                      {rev.verified_buyer ? "Verified" : "Verify"}
+                    </button>
+
+                    {/* 1-Click Approve / Hide Toggle */}
                     <button
                       type="button"
                       onClick={() => toggleStatus(rev.id, rev.status)}
@@ -311,11 +402,22 @@ export default function ReviewsClient({ initialReviews }) {
                         </>
                       ) : (
                         <>
-                          <Eye size={14} /> Approve
+                          <Eye size={14} color="#10B981" /> Approve
                         </>
                       )}
                     </button>
 
+                    {/* Edit Modal Button */}
+                    <button
+                      type="button"
+                      onClick={() => openEditModal(rev)}
+                      className={styles.reviewControlBtn}
+                      title="Edit review details"
+                    >
+                      <Edit2 size={14} /> Edit
+                    </button>
+
+                    {/* Delete Button */}
                     <button
                       type="button"
                       onClick={() => setReviewToDelete(rev.id)}
@@ -381,6 +483,136 @@ export default function ReviewsClient({ initialReviews }) {
               </div>
             );
           })}
+        </div>
+      )}
+
+      {/* Edit Review Modal */}
+      {editingReview && (
+        <div className={styles.modalOverlay} onClick={() => setEditingReview(null)}>
+          <div className={styles.editModalContent} onClick={(e) => e.stopPropagation()}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
+              <h3 className={styles.modalTitle} style={{ margin: 0, fontSize: "1.35rem" }}>
+                Edit Review
+              </h3>
+              <button
+                type="button"
+                onClick={() => setEditingReview(null)}
+                style={{ background: "none", border: "none", cursor: "pointer", color: "#888" }}
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveEdit}>
+              {/* Customer Name & Location */}
+              <div className={styles.grid2} style={{ marginBottom: "15px" }}>
+                <div>
+                  <label className={styles.label}>Customer Name</label>
+                  <input
+                    type="text"
+                    className={styles.input}
+                    value={editingReview.customer_name}
+                    onChange={(e) => setEditingReview({ ...editingReview, customer_name: e.target.value })}
+                    required
+                  />
+                </div>
+                <div>
+                  <label className={styles.label}>Customer Location</label>
+                  <input
+                    type="text"
+                    className={styles.input}
+                    placeholder="e.g. Lagos, Abuja"
+                    value={editingReview.customer_location}
+                    onChange={(e) => setEditingReview({ ...editingReview, customer_location: e.target.value })}
+                  />
+                </div>
+              </div>
+
+              {/* Rating & Status */}
+              <div className={styles.grid2} style={{ marginBottom: "15px" }}>
+                <div>
+                  <label className={styles.label}>Rating (Stars)</label>
+                  <div style={{ display: "flex", gap: "6px", alignItems: "center", marginTop: "6px" }}>
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <button
+                        key={star}
+                        type="button"
+                        onClick={() => setEditingReview({ ...editingReview, rating: star })}
+                        style={{ background: "none", border: "none", cursor: "pointer", padding: "2px" }}
+                      >
+                        <Star
+                          size={24}
+                          fill={star <= editingReview.rating ? "#F59E0B" : "none"}
+                          color={star <= editingReview.rating ? "#F59E0B" : "#D1D5DB"}
+                        />
+                      </button>
+                    ))}
+                    <span style={{ fontSize: "0.9rem", fontWeight: 600, marginLeft: "6px", color: "var(--color-text)" }}>
+                      {editingReview.rating} / 5
+                    </span>
+                  </div>
+                </div>
+
+                <div>
+                  <label className={styles.label}>Status</label>
+                  <select
+                    className={styles.select}
+                    value={editingReview.status}
+                    onChange={(e) => setEditingReview({ ...editingReview, status: e.target.value })}
+                  >
+                    <option value="approved">Approved (Live)</option>
+                    <option value="hidden">Hidden</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Review Text */}
+              <div style={{ marginBottom: "20px" }}>
+                <label className={styles.label}>Review Content</label>
+                <textarea
+                  className={styles.textarea}
+                  rows={4}
+                  value={editingReview.review_text}
+                  onChange={(e) => setEditingReview({ ...editingReview, review_text: e.target.value })}
+                  required
+                />
+              </div>
+
+              {/* Verified Buyer Checkbox */}
+              <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "25px", cursor: "pointer" }}>
+                <input
+                  type="checkbox"
+                  id="editVerifiedBuyer"
+                  checked={editingReview.verified_buyer}
+                  onChange={(e) => setEditingReview({ ...editingReview, verified_buyer: e.target.checked })}
+                  style={{ width: "18px", height: "18px", accentColor: "var(--color-primary)", cursor: "pointer" }}
+                />
+                <label htmlFor="editVerifiedBuyer" style={{ fontSize: "0.95rem", color: "var(--color-text)", cursor: "pointer", userSelect: "none" }}>
+                  Mark as <strong>Verified Buyer</strong> (verified purchase badge)
+                </label>
+              </div>
+
+              {/* Modal Actions */}
+              <div className={styles.modalActions} style={{ justifyContent: "flex-end" }}>
+                <button
+                  type="button"
+                  className={styles.modalBtnCancel}
+                  onClick={() => setEditingReview(null)}
+                  disabled={isSavingEdit}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className={styles.btnPrimary}
+                  style={{ minWidth: "120px" }}
+                  disabled={isSavingEdit}
+                >
+                  {isSavingEdit ? "Saving..." : "Save Changes"}
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
 

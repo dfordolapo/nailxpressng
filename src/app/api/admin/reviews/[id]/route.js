@@ -6,22 +6,35 @@ const supabaseAdmin = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 );
 
-// PATCH: Update review status (approve, hide, etc.)
+// PATCH: Update review (approve, verify, edit text, rating, name, etc.)
 export async function PATCH(request, { params }) {
   try {
     const { id } = await params;
     const body = await request.json();
-    const { status, verified_buyer } = body;
+    const { 
+      status, 
+      verified_buyer, 
+      customer_name, 
+      customer_location, 
+      rating, 
+      review_text,
+      product_id 
+    } = body;
 
     const updatePayload = {};
     if (status !== undefined) updatePayload.status = status;
-    if (verified_buyer !== undefined) updatePayload.verified_buyer = verified_buyer;
+    if (verified_buyer !== undefined) updatePayload.verified_buyer = Boolean(verified_buyer);
+    if (customer_name !== undefined) updatePayload.customer_name = customer_name;
+    if (customer_location !== undefined) updatePayload.customer_location = customer_location;
+    if (rating !== undefined) updatePayload.rating = Math.min(Math.max(Number(rating) || 5, 1), 5);
+    if (review_text !== undefined) updatePayload.review_text = review_text;
+    if (product_id !== undefined) updatePayload.product_id = product_id || null;
 
     const { data, error } = await supabaseAdmin
       .from('reviews')
       .update(updatePayload)
       .eq('id', id)
-      .select()
+      .select('*, products(name, slug, images)')
       .single();
 
     if (error) throw error;
