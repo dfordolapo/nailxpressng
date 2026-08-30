@@ -51,6 +51,32 @@ export default function CategoryShowcase({ mini = false, items = null }) {
     });
   };
 
+  const [centerCardIdx, setCenterCardIdx] = useState(null);
+
+  // Detect card closest to center on mobile
+  const updateCenterCard = useCallback(() => {
+    if (typeof window === 'undefined' || window.innerWidth > 768) return;
+    const track = trackRef.current;
+    if (!track) return;
+
+    const cards = track.querySelectorAll(`.${styles.card}`);
+    const screenCenter = window.innerWidth / 2;
+    let closestIdx = null;
+    let closestDist = Infinity;
+
+    cards.forEach((card, idx) => {
+      const rect = card.getBoundingClientRect();
+      const cardCenter = rect.left + rect.width / 2;
+      const dist = Math.abs(screenCenter - cardCenter);
+      if (dist < closestDist && dist < rect.width * 0.85) {
+        closestDist = dist;
+        closestIdx = idx;
+      }
+    });
+
+    setCenterCardIdx(closestIdx);
+  }, []);
+
   const pauseAutoScroll = useCallback(() => {
     pausedRef.current = true;
     if (autoScrollRef.current) {
@@ -79,11 +105,13 @@ export default function CategoryShowcase({ mini = false, items = null }) {
         track.scrollLeft -= half;
       }
 
+      updateCenterCard();
+
       autoScrollRef.current = requestAnimationFrame(tick);
     };
 
     autoScrollRef.current = requestAnimationFrame(tick);
-  }, []);
+  }, [updateCenterCard]);
 
   useEffect(() => {
     const track = trackRef.current;
@@ -191,12 +219,12 @@ export default function CategoryShowcase({ mini = false, items = null }) {
         </h2>
       )}
       
-      <div className={styles.gridWrapper} ref={trackRef}>
+      <div className={styles.gridWrapper} ref={trackRef} onScroll={updateCenterCard}>
         <div className={styles.marqueeTrack}>
           {marqueeItems.map((item, i) => (
             <div
               key={`${item.id}-${i}`}
-              className={`${styles.card} ${flippedId === `${item.id}-${i}` ? styles.flipped : ''}`}
+              className={`${styles.card} ${flippedId === `${item.id}-${i}` ? styles.flipped : ''} ${centerCardIdx === i ? styles.centerActive : ''}`}
               onClick={(e) => handleFlip(e, `${item.id}-${i}`)}
             >
               <div className={styles.cardInner}>

@@ -94,18 +94,13 @@
   transform: scale(1.04);
 }
 
-.glossShine {
+.liquidGlint {
   position: absolute;
   inset: 0;
-  background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.4) 50%, transparent 65%);
-  transform: translateX(-120%);
-  transition: transform 0.75s ease;
   pointer-events: none;
   border-radius: var(--radius-xl);
-}
-
-.card:hover .glossShine {
-  transform: translateX(120%);
+  transition: opacity 0.25s ease;
+  z-index: 2;
 }
 
 .swipeHint {

@@ -43,11 +43,25 @@
   border-color: var(--color-border);
 }
 
-/* ── Image ───────────────────────────────────────────────────────────── */
 .imageArea {
   position: relative;
   aspect-ratio: 1.5 / 1;
   overflow: hidden;
+}
+
+.imageArea::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.45) 50%, transparent 70%);
+  transform: translateX(-150%) skewX(-20deg);
+  transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.cardWrapper:hover .imageArea::after {
+  transform: translateX(150%) skewX(-20deg);
 }
 
 .flatLay {
