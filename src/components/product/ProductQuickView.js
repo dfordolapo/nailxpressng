@@ -20,7 +20,7 @@ export default function ProductQuickView({ product }) {
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedShape, setSelectedShape] = useState(product?.nailShape || "Almond");
   const [selectedLength, setSelectedLength] = useState(product?.lengths?.[0] || "Medium");
-  const [selectedSize, setSelectedSize] = useState("M (Most Popular)");
+  const [selectedSize, setSelectedSize] = useState("M");
   const [quantity, setQuantity] = useState(1);
   const [openAccordion, setOpenAccordion] = useState(null);
   const [imgError, setImgError] = useState(false);
@@ -127,7 +127,7 @@ export default function ProductQuickView({ product }) {
                 onChange={(e) => setSelectedSize(e.target.value)}
               >
                 <option value="S">S</option>
-                <option value="M (Most Popular)">M (Most Popular)</option>
+                <option value="M">M</option>
                 <option value="L">L</option>
                 <option value="Custom">Custom</option>
               </select>

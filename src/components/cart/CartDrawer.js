@@ -121,7 +121,7 @@ export default function CartDrawer({ onClose }) {
                         >
                           {["S", "M", "L", "Customize"].map((s) => (
                             <option key={s} value={s}>
-                              {s}
+                              {s === "M" ? "M (Most Popular)" : s}
                             </option>
                           ))}
                         </select>
