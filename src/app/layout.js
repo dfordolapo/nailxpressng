@@ -64,6 +64,9 @@ export const metadata = {
     address: false,
     telephone: false,
   },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || undefined,
+  },
   openGraph: {
     title: "Nailexpress — Premium Press-On Nails in Nigeria",
     description: "Shop premium press-on nails in Nigeria, from handmade artistry to factory precision. Reusable salon-grade sets, instant application & fast nationwide delivery.",
@@ -206,8 +209,54 @@ export const metadata = {
 };
 
 export default function RootLayout({ children, modal }) {
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.nailexpress.ng';
+
+  const orgSchema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": `${baseUrl}/#organization`,
+        "name": "Nailexpress",
+        "url": baseUrl,
+        "logo": {
+          "@type": "ImageObject",
+          "url": `${baseUrl}/images/splash-logo.png`,
+          "width": 512,
+          "height": 512
+        },
+        "description": "Premium press-on nails brand in Nigeria. Handmade artistry, factory precision sets, and custom orders.",
+        "sameAs": [
+          "https://instagram.com/nailexpress.ng",
+          "https://tiktok.com/@nailexpress.ng",
+          "https://t.me/nailexpressng"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${baseUrl}/#website`,
+        "url": baseUrl,
+        "name": "Nailexpress",
+        "publisher": {
+          "@id": `${baseUrl}/#organization`
+        },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": `${baseUrl}/shop?search={search_term_string}`,
+          "query-input": "required name=search_term_string"
+        }
+      }
+    ]
+  };
+
   return (
     <html lang="en" data-scroll-behavior="smooth">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }}
+        />
+      </head>
       <body>
         <CartProvider>
           <WishlistProvider>

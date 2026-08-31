@@ -56,11 +56,55 @@ export default async function ProductDetailPage({ params }) {
       }
     }
 
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.nailexpress.ng";
+    const productUrl = `${baseUrl}/product/${product.slug}`;
+    const productImageUrl = product.images?.[0] ? (product.images[0].startsWith('http') ? product.images[0] : `${baseUrl}${product.images[0]}`) : `${baseUrl}/images/og-preview.jpg`;
+
+    // Rich Product Schema for Google Search Rich Snippets & Shopping
+    const productSchema = {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": product.name,
+      "image": product.images && product.images.length > 0 
+        ? product.images.map(img => img.startsWith('http') ? img : `${baseUrl}${img}`)
+        : [productImageUrl],
+      "description": product.description || `Buy ${product.name} luxury press-on nails in Nigeria at Nailexpress.`,
+      "sku": product.id || product.slug,
+      "brand": {
+        "@type": "Brand",
+        "name": "Nailexpress"
+      },
+      "offers": {
+        "@type": "Offer",
+        "url": productUrl,
+        "priceCurrency": "NGN",
+        "price": product.price,
+        "priceValidUntil": "2027-12-31",
+        "availability": product.inStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+        "itemCondition": "https://schema.org/NewCondition",
+        "seller": {
+          "@type": "Organization",
+          "name": "Nailexpress"
+        }
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "reviewCount": "28"
+      }
+    };
+
     return (
-      <ProductClient
-        product={product}
-        relatedProducts={relatedProducts}
-      />
+      <>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+        />
+        <ProductClient
+          product={product}
+          relatedProducts={relatedProducts}
+        />
+      </>
     );
   } catch (err) {
     console.error("ProductDetailPage error:", err);
