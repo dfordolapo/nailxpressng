@@ -1,6 +1,6 @@
 export const SITE_NAME = "Nailexpress";
-export const SITE_TAGLINE = "Press-On Perfection";
-export const SITE_DESCRIPTION = "Press-on perfection — handmade artistry & factory precision. Express yourself, one nail at a time.";
+export const SITE_TAGLINE = "Premium Press-On Nails";
+export const SITE_DESCRIPTION = "Shop premium press-on nails in Nigeria, from handmade artistry to factory precision. Reusable salon-grade sets, instant application & fast nationwide delivery.";
 
 export const CURRENCY = "₦";
 export const CURRENCY_CODE = "NGN";

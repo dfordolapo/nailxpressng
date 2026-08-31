@@ -25,15 +25,16 @@ export const viewport = {
 export const metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://www.nailexpress.ng'),
   title: {
-    default: "Nailexpress — Buy Luxury Press-On Nails in Nigeria | Handmade & Factory Made",
+    default: "Nailexpress — Buy Premium Press-On Nails in Nigeria | Handmade & Factory Made",
     template: "%s | Nailexpress Nigeria",
   },
-  description: "Shop luxury handmade and factory-made press-on nails in Nigeria. Hand-painted artistry, durable instant fit, custom sets, and wholesale salon delivery across Lagos, Abuja, and nationwide.",
+  description: "Shop premium press-on nails in Nigeria, from handmade artistry to factory precision. Reusable salon-grade sets, instant application & fast nationwide delivery.",
   keywords: [
     "press-on nails Nigeria",
     "buy press on nails Lagos",
     "handmade press-on nails Nigeria",
-    "luxury press on nails",
+    "premium press on nails",
+    "salon-grade press-on nails",
     "custom nail art Nigeria",
     "press on nails Abuja",
     "wholesale press-on nails Nigeria",
@@ -64,8 +65,8 @@ export const metadata = {
     telephone: false,
   },
   openGraph: {
-    title: "Nailexpress — Press-On Perfection",
-    description: "Your go-to destination for high-end press-on sets. Elevate your look in minutes with effortless glamour and flawless durability.",
+    title: "Nailexpress — Premium Press-On Nails in Nigeria",
+    description: "Shop premium press-on nails in Nigeria, from handmade artistry to factory precision. Reusable salon-grade sets, instant application & fast nationwide delivery.",
     url: "https://www.nailexpress.ng",
     siteName: "Nailexpress",
     images: [
@@ -73,7 +74,7 @@ export const metadata = {
         url: "/images/og-preview.jpg",
         width: 1200,
         height: 630,
-        alt: "Nailexpress — Press-On Perfection",
+        alt: "Nailexpress — Premium Press-On Nails",
       },
     ],
     locale: "en_NG",
@@ -81,8 +82,8 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Nailexpress — Press-On Perfection",
-    description: "Your go-to destination for high-end press-on sets. Elevate your look in minutes with effortless glamour and flawless durability.",
+    title: "Nailexpress — Premium Press-On Nails in Nigeria",
+    description: "Shop premium press-on nails in Nigeria, from handmade artistry to factory precision. Reusable salon-grade sets, instant application & fast nationwide delivery.",
     images: ["/images/og-preview.jpg"],
     creator: "@nailexpressng",
   },

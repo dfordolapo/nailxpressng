@@ -10,25 +10,25 @@ import FAQSection from "@/components/home/FAQSection";
 import FooterHero from "@/components/home/FooterHero";
 
 export const metadata = {
-  title: "Nailexpress — Press-On Perfection",
-  description: "Press-on perfection — handmade artistry & factory precision. Express yourself, one nail at a time. Shop luxury press-on nails in Nigeria.",
+  title: "Nailexpress — Premium Press-On Nails in Nigeria",
+  description: "Shop premium press-on nails in Nigeria, from handmade artistry to factory precision. Reusable salon-grade sets, instant application & fast nationwide delivery.",
   openGraph: {
-    title: "Nailexpress — Press-On Perfection",
-    description: "Your go-to destination for high-end press-on sets. Elevate your look in minutes with effortless glamour and flawless durability.",
+    title: "Nailexpress — Premium Press-On Nails in Nigeria",
+    description: "Shop premium press-on nails in Nigeria, from handmade artistry to factory precision. Reusable salon-grade sets, instant application & fast nationwide delivery.",
     images: [
       {
         url: "/images/og-preview.jpg",
         width: 1200,
         height: 630,
-        alt: "Nailexpress — Press-On Perfection",
+        alt: "Nailexpress — Premium Press-On Nails",
       },
     ],
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Nailexpress — Press-On Perfection",
-    description: "Your go-to destination for high-end press-on sets. Elevate your look in minutes with effortless glamour and flawless durability.",
+    title: "Nailexpress — Premium Press-On Nails in Nigeria",
+    description: "Shop premium press-on nails in Nigeria, from handmade artistry to factory precision. Reusable salon-grade sets, instant application & fast nationwide delivery.",
     images: ["/images/og-preview.jpg"],
   },
 };

@@ -4,16 +4,16 @@ import FindYourFitQuiz from "@/components/product/FindYourFitQuiz";
 
 export const metadata = {
   title: "Factory Made Nails — Nailexpress",
-  description: "Precision-crafted press-on nails for flawless consistency and everyday durability in Nigeria.",
+  description: "Affordable, durable, salon-ready press-on nails. Instant 10-minute application, trendy designs, and long-lasting wear. Order your set today.",
   openGraph: {
     title: "Factory Made Nails — Nailexpress",
-    description: "Precision-crafted press-on nails for flawless consistency and everyday durability in Nigeria.",
+    description: "Affordable, durable, salon-ready press-on nails. Instant 10-minute application, trendy designs, and long-lasting wear. Order your set today.",
     images: [{ url: "/images/factory-collection.png", width: 1200, height: 630, alt: "Factory Made Nails Collection" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Factory Made Nails — Nailexpress",
-    description: "Precision-crafted press-on nails for flawless consistency and everyday durability in Nigeria.",
+    description: "Affordable, durable, salon-ready press-on nails. Instant 10-minute application, trendy designs, and long-lasting wear. Order your set today.",
     images: ["/images/factory-collection.png"],
   },
 };
