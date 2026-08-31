@@ -1,7 +1,7 @@
 import { getProducts } from '@/lib/api';
 
 export default async function sitemap() {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nailexpress.ng';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.nailexpress.ng';
 
   // Core Static Routes
   const routes = [

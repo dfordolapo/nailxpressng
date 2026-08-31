@@ -23,7 +23,7 @@ export const viewport = {
 };
 
 export const metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://nailexpress.ng'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://www.nailexpress.ng'),
   title: {
     default: "Nailexpress — Buy Luxury Press-On Nails in Nigeria | Handmade & Factory Made",
     template: "%s | Nailexpress Nigeria",
@@ -45,7 +45,7 @@ export const metadata = {
   creator: "Nailexpress",
   publisher: "Nailexpress",
   alternates: {
-    canonical: "https://nailexpress.ng",
+    canonical: "https://www.nailexpress.ng",
   },
   robots: {
     index: true,
@@ -66,7 +66,7 @@ export const metadata = {
   openGraph: {
     title: "Nailexpress — Press-On Perfection",
     description: "Your go-to destination for high-end press-on sets. Elevate your look in minutes with effortless glamour and flawless durability.",
-    url: "https://nailexpress.ng",
+    url: "https://www.nailexpress.ng",
     siteName: "Nailexpress",
     images: [
       {
