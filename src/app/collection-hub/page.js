@@ -45,7 +45,7 @@ export default function CollectionHub() {
     },
     {
       title: factoryCategory.name,
-      description: "instant glam. zero waiting.",
+      description: "press-on precision. instant glam.",
       href: "/factory",
       image: factoryCategory.image,
       strokeColor: "#FFB6C1", // Light Pink

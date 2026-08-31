@@ -13,7 +13,7 @@ export const categories = [
     slug: "factory",
     description: "Instant favorites for everyday glam, last-minute plans and everything in between.",
     image: "/images/factory-collection.png",
-    tagline: "ready to wear",
+    tagline: "press-on precision • ready to wear",
   },
 ];
 
