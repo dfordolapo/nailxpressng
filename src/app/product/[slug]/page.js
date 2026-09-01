@@ -13,10 +13,24 @@ export async function generateMetadata({ params }) {
     const imageUrl = product.images?.[0] ?? `${baseUrl}/images/og-preview.jpg`;
     return {
       title: `${product.name} — Nailexpress`,
-      description: product.description,
+      description: product.description || `Shop ${product.name} premium press-on nails in Nigeria at Nailexpress.`,
+      alternates: {
+        canonical: `${baseUrl}/product/${product.slug}`,
+      },
+      robots: {
+        index: true,
+        follow: true,
+        googleBot: {
+          index: true,
+          follow: true,
+          'max-video-preview': -1,
+          'max-image-preview': 'large',
+          'max-snippet': -1,
+        },
+      },
       openGraph: {
         title: `${product.name} — Nailexpress`,
-        description: product.description,
+        description: product.description || `Shop ${product.name} premium press-on nails in Nigeria at Nailexpress.`,
         url: `${baseUrl}/product/${product.slug}`,
         siteName: "Nailexpress",
         type: "website",
@@ -25,7 +39,7 @@ export async function generateMetadata({ params }) {
       twitter: {
         card: "summary_large_image",
         title: `${product.name} — Nailexpress`,
-        description: product.description,
+        description: product.description || `Shop ${product.name} premium press-on nails in Nigeria at Nailexpress.`,
         images: [imageUrl],
       },
     };

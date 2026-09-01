@@ -213,7 +213,11 @@ export default function ProductCard({ product, index = 0, viewMode = "grid" }) {
 
           {viewMode === "list" ? (
             <div className={styles.frontInfo}>
-              <h3 className={styles.name}>{product.name}</h3>
+              <h3 className={styles.name}>
+                <Link href={`/product/${product.slug}`} className={styles.productTitleLink} onClick={(e) => e.stopPropagation()}>
+                  {product.name}
+                </Link>
+              </h3>
               <div className={styles.priceRow}>
                 <span className={styles.price}>
                   {formatPrice(product.price)}
@@ -223,7 +227,11 @@ export default function ProductCard({ product, index = 0, viewMode = "grid" }) {
           ) : (
             <>
               <div className={styles.frontInfo}>
-                <h3 className={styles.name}>{product.name}</h3>
+                <h3 className={styles.name}>
+                  <Link href={`/product/${product.slug}`} className={styles.productTitleLink} onClick={(e) => e.stopPropagation()}>
+                    {product.name}
+                  </Link>
+                </h3>
                 <div className={styles.priceRow}>
                   <span className={styles.price}>
                     {formatPrice(product.price)}

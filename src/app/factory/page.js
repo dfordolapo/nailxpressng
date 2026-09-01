@@ -5,9 +5,24 @@ import FindYourFitQuiz from "@/components/product/FindYourFitQuiz";
 export const metadata = {
   title: "Factory Made Nails — Nailexpress",
   description: "Affordable, durable, salon-ready press-on nails. Instant 10-minute application, trendy designs, and long-lasting wear. Order your set today.",
+  alternates: {
+    canonical: "https://www.nailexpress.ng/factory",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
   openGraph: {
     title: "Factory Made Nails — Nailexpress",
     description: "Affordable, durable, salon-ready press-on nails. Instant 10-minute application, trendy designs, and long-lasting wear. Order your set today.",
+    url: "https://www.nailexpress.ng/factory",
     images: [{ url: "/images/factory-collection.png", width: 1200, height: 630, alt: "Factory Made Nails Collection" }],
   },
   twitter: {

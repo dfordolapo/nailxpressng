@@ -245,6 +245,16 @@
   overflow: hidden;
 }
 
+.productTitleLink {
+  color: inherit;
+  text-decoration: none;
+  display: block;
+}
+
+.productTitleLink:hover {
+  color: var(--color-primary);
+}
+
 .shortDescFront {
   font-size: 10px;
   color: var(--color-text-secondary);

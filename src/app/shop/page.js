@@ -5,9 +5,24 @@ import FindYourFitQuiz from "@/components/product/FindYourFitQuiz";
 export const metadata = {
   title: "Shop All Luxury Press-On Nails — Nailexpress",
   description: "Browse our complete collection of press-on nails. From signature hand-painted designs to everyday salon-grade staples. Find your perfect fit and order.",
+  alternates: {
+    canonical: "https://www.nailexpress.ng/shop",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
   openGraph: {
     title: "Shop All Luxury Press-On Nails — Nailexpress",
     description: "Browse our complete collection of press-on nails. From signature hand-painted designs to everyday salon-grade staples. Find your perfect fit and order.",
+    url: "https://www.nailexpress.ng/shop",
     images: [{ url: "/images/og-preview.jpg", width: 1200, height: 630, alt: "Nailexpress Shop" }],
   },
   twitter: {
