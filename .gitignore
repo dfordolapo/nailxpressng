@@ -45,3 +45,5 @@ next-env.d.ts
 src/app/emails/
 scratch/
 scripts/archive/
+storybook-static/
+
