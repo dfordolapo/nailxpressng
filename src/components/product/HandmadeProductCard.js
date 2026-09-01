@@ -60,6 +60,7 @@ function ZoomInIcon() {
 export default function HandmadeProductCard({ product, index = 0, viewMode = "grid" }) {
   const [flipped, setFlipped] = useState(false);
   const [selectedSize, setSelectedSize] = useState(null);
+  const [selectedLength, setSelectedLength] = useState(product?.lengths?.[0] || null);
   const [qty, setQty] = useState(1);
   const [qtyAnim, setQtyAnim] = useState("");
   const [added, setAdded] = useState(false);
@@ -67,6 +68,16 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
   const cardRef = useRef(null);
+
+  const handleSizeSelect = (size, e) => {
+    if (e) e.stopPropagation();
+    setSelectedSize(size);
+  };
+
+  const handleLengthSelect = (length, e) => {
+    if (e) e.stopPropagation();
+    setSelectedLength(length);
+  };
 
   const { addItem } = useCart();
   const { toggleItem, isInWishlist } = useWishlist();
