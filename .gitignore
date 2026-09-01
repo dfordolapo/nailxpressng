@@ -41,5 +41,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# local playground
+# local playground & scratch
 src/app/emails/
+scratch/
+scripts/archive/
