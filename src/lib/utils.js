@@ -4,7 +4,8 @@ import { CURRENCY, FLAT_SHIPPING_RATE } from "./constants";
  * Format price in Naira
  */
 export function formatPrice(amount) {
-  return `${CURRENCY}${amount.toLocaleString("en-NG")}`;
+  const numeric = Number(amount) || 0;
+  return `${CURRENCY}${numeric.toLocaleString("en-NG")}`;
 }
 
 /**
