@@ -148,15 +148,10 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
       return;
     }
 
-    addItem(product, qty, finalSize, null);
+    addItem(product, qty, finalSize, selectedLength);
     setAdded(true);
     setTimeout(() => setAdded(false), 1800);
     showToast(`"${product.name}" added to cart`);
-  };
-
-  const handleSizeSelect = (val, e) => {
-    e.stopPropagation();
-    setSelectedSize(val);
   };
 
   const tiltStyle = !flipped && isHovering
