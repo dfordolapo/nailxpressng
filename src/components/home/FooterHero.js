@@ -25,7 +25,7 @@ export default function FooterHero() {
           <MagneticButton href={whatsappUrl} target="_blank" rel="noopener noreferrer" className={styles.whatsappButton}>
             <span style={{ display: 'inline-flex', alignItems: 'center', gap: '9px' }}>
               <span>Chat on WhatsApp</span>
-              <MessageCircle size={20} fill="#ffffff" color="transparent" />
+              <MessageCircle size={20} fill="#D4AF7A" color="transparent" />
             </span>
           </MagneticButton>
         </div>

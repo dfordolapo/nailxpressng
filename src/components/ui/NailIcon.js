@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-export function NailIcon({ size = 22, className = '', style = {}, color = "currentColor" }) {
+export function NailIcon({ size = 22, className = '', style = {}, color = "#D4AF7A" }) {
   return (
     <svg 
       width={size} 
