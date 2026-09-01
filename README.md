@@ -1,6 +1,6 @@
-# Nailexpress 💅✨
+# Nailexpress
 
-> **Direct-to-Consumer (DTC) Luxury Press-On Nails E-Commerce Progressive Web App (PWA)**  
+> **Direct-to-Consumer (DTC) Premium Press-On Nails E-Commerce Progressive Web App (PWA)**  
 > Live Store: [https://www.nailexpress.ng](https://www.nailexpress.ng)
 
 [![Next.js](https://img.shields.io/badge/Next.js-16.2-black?style=flat-square&logo=next.js)](https://nextjs.org)
@@ -14,42 +14,42 @@
 
 ---
 
-## 🌟 Executive Overview
+## Executive Overview
 
-**Nailexpress** is an agency-grade, full-stack Progressive Web App engineered from the ground up for a luxury press-on nail brand based in Nigeria. The platform combines high-end editorial aesthetics (glassmorphism, custom typography, 60fps micro-animations) with enterprise architecture, real-time inventory management, automated payment verification, AI-assisted copy tools, and deep SEO discoverability.
+**Nailexpress** is a full-stack Progressive Web App engineered from the ground up for a premium press-on nail brand based in Nigeria. The platform combines refined aesthetics (glassmorphism, custom typography, 60fps micro-animations) with enterprise architecture, real-time inventory management, automated payment verification, AI-assisted copy tools, and deep SEO discoverability.
 
 ---
 
-## 🚀 Key Highlights & Features
+## Key Highlights & Features
 
-### 🛍️ Client & Customer Experience
+### Client & Customer Experience
 * **Interactive 3D Cards & Sizing Matrix**: 3D card tilt and front-to-back flip physics with instant size selection (Small, Medium, Large) and on-hand preview loupes.
 * **Interactive Gift Box Loupe**: Cursor and touch-tracking magnifying glass for high-definition packaging inspection.
 * **5-Step Custom Nail Builder**: Interactive custom order funnel with photo upload, Supabase bucket persistence, dynamic price estimation, and automated WhatsApp handoff.
 * **Find Your Fit Quiz**: 3-step interactive recommendation modal matching customer vibe, nail shape, and color mood to live catalog stock.
 * **High-Performance Shopping & Checkout**:
   * Persistent Cart & Wishlist context with sliding bottom drawers.
-  * Seamless **Paystack** inline payment integration (Card, USSD, Bank Transfer in ₦ NGN).
+  * Seamless **Paystack** inline payment integration (Card, USSD, Bank Transfer in NGN).
   * Automated transactional receipts and order alerts dispatched via **Resend API**.
 
-### 💼 Merchant & Admin Suite
+### Merchant & Admin Suite
 * **Full CRUD Product Management**: Manage pricing, compare-at discounts, shape/length tags, inventory counts, and multi-image galleries.
 * **AI-Powered Product Copywriting**: Integrated **Google Gemini AI** in the admin dashboard to generate SEO-rich product descriptions in seconds.
 * **Custom Orders & Order Pipeline**: Real-time status tracking, quote management, and direct WhatsApp customer outreach actions.
 
-### 📱 Progressive Web App (PWA)
+### Progressive Web App (PWA)
 * Service worker caching with offline connectivity banners.
 * Native standalone install capability across mobile and desktop.
 * Multi-device iOS and Android splash screens generated for 20+ viewport dimensions.
 
-### 🔍 Technical SEO & Googlebot Discoverability
+### Technical SEO & Googlebot Discoverability
 * **Semantic SSR Links**: Every product card renders crawlable `<Link href="/product/[slug]">` anchors in the server-rendered HTML.
 * **Schema.org Structured Data (JSON-LD)**: Rich snippet schema for `Product`, `Offer`, `AggregateRating`, `Organization`, and `WebSite`.
 * **Dynamic XML Sitemap**: Edge-cached `sitemap.xml` automatically synchronizing dynamic product slugs from Supabase with `robots.txt` and apex-to-www 301 canonical redirects.
 
 ---
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 | Category | Technologies |
 | :--- | :--- |
@@ -65,7 +65,7 @@
 
 ---
 
-## 📂 Repository Structure
+## Repository Structure
 
 ```
 nailexpress/
@@ -90,7 +90,7 @@ nailexpress/
 
 ---
 
-## 💻 Local Development Setup
+## Local Development Setup
 
 ### 1. Clone the repository
 ```bash
@@ -125,7 +125,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## 🧪 Available Scripts
+## Available Scripts
 
 | Command | Description |
 | :--- | :--- |
@@ -138,5 +138,5 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## 📄 License & Attribution
+## License & Attribution
 Designed and built for **Nailexpress Nigeria** ([https://www.nailexpress.ng](https://www.nailexpress.ng)). All rights reserved.
