@@ -1,4 +1,8 @@
+import React from 'react';
 import type { Preview } from '@storybook/react';
+import { ToastProvider } from '../src/context/ToastContext';
+import { CartProvider } from '../src/context/CartContext';
+import { WishlistProvider } from '../src/context/WishlistContext';
 import '../src/app/globals.css';
 
 const preview: Preview = {
@@ -17,6 +21,18 @@ const preview: Preview = {
       ],
     },
   },
+  decorators: [
+    (Story) => (
+      <ToastProvider>
+        <CartProvider>
+          <WishlistProvider>
+            <Story />
+          </WishlistProvider>
+        </CartProvider>
+      </ToastProvider>
+    ),
+  ],
 };
 
 export default preview;
+
