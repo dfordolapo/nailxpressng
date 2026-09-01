@@ -92,6 +92,15 @@
   font-size: 0.72rem;
   color: rgba(245, 227, 229, 0.85);
   letter-spacing: 0.02em;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.taglineDot {
+  display: inline;
 }
 
 .copyright {
@@ -137,15 +146,29 @@
   }
 
   .bottomNote {
-    gap: 3px;
+    gap: 4px;
     padding-top: var(--space-2);
   }
 
   .tagline {
-    font-size: 0.6rem;
+    font-size: 0.62rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    line-height: 1.35;
+  }
+
+  .taglineDot {
+    display: none;
+  }
+
+  .taglineSub {
+    opacity: 0.9;
   }
 
   .copyright {
     font-size: 0.54rem;
+    margin-top: 2px;
   }
 }

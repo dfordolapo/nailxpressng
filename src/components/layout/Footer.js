@@ -89,7 +89,11 @@ export default function Footer() {
 
         {/* Subtle Copyright & Artisan Sign-off on dedicated lines */}
         <div className={styles.bottomNote}>
-          <span className={styles.tagline}>Handmade artistry & factory precision • Made with 💖 in Nigeria</span>
+          <span className={styles.tagline}>
+            <span>Handmade artistry & factory precision</span>
+            <span className={styles.taglineDot}> • </span>
+            <span className={styles.taglineSub}>Made with 💖 in Nigeria</span>
+          </span>
           <span className={styles.copyright}>© {new Date().getFullYear()} Nailexpress. All rights reserved.</span>
         </div>
       </div>
