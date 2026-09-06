@@ -1,11 +1,10 @@
 "use client";
 
 import { useEffect } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 export default function RouteRestoration() {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   // 1. Save the current full URL whenever the user navigates or page changes
   useEffect(() => {
@@ -16,7 +15,7 @@ export default function RouteRestoration() {
       return;
     }
 
-    const currentUrl = pathname + (searchParams?.toString() ? `?${searchParams.toString()}` : "");
+    const currentUrl = pathname + (window.location.search || "");
     const scrollY = window.scrollY || 0;
 
     try {
@@ -26,7 +25,7 @@ export default function RouteRestoration() {
     } catch (e) {
       // Storage safety
     }
-  }, [pathname, searchParams]);
+  }, [pathname]);
 
   // 2. Track window visibility / background minimization & scroll position
   useEffect(() => {
@@ -34,7 +33,7 @@ export default function RouteRestoration() {
 
     const saveCurrentState = () => {
       if (pathname.startsWith("/admin") || pathname.startsWith("/checkout/success")) return;
-      const currentUrl = pathname + (searchParams?.toString() ? `?${searchParams.toString()}` : "");
+      const currentUrl = pathname + (window.location.search || "");
       try {
         localStorage.setItem("nailexpress_last_route", currentUrl);
         localStorage.setItem("nailexpress_last_scroll", (window.scrollY || 0).toString());
@@ -101,7 +100,7 @@ export default function RouteRestoration() {
       window.removeEventListener("beforeunload", handleBeforeUnload);
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [pathname, searchParams]);
+  }, [pathname]);
 
   return null;
 }
