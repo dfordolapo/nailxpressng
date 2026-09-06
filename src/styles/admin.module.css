@@ -320,6 +320,16 @@
   color: #10B981;
 }
 
+.badge.shipped {
+  background-color: #EFF6FF;
+  color: #2563EB;
+}
+
+.badge.processing {
+  background-color: #FFFBEB;
+  color: #D97706;
+}
+
 .badge.outOfStock {
   background-color: #FEF2F2;
   color: #EF4444;

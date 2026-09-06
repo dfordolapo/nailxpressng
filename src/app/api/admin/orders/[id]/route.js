@@ -34,12 +34,16 @@ export async function PATCH(request, { params }) {
     const updatedOrder = data && data[0] ? data[0] : null;
 
     if (updatedOrder && updatedOrder.customer_email) {
-      if (status === 'shipped') {
-        sendOrderShippedEmail(updatedOrder).catch(e => console.error("Shipped email error:", e));
-      } else if (status === 'delivered') {
-        sendOrderDeliveredEmail(updatedOrder).catch(e => console.error("Delivered email error:", e));
-      } else if (status === 'cancelled') {
-        sendOrderCancellationEmail(updatedOrder, reason, nextSteps).catch(e => console.error("Cancelled email error:", e));
+      try {
+        if (status === 'shipped') {
+          await sendOrderShippedEmail(updatedOrder);
+        } else if (status === 'delivered') {
+          await sendOrderDeliveredEmail(updatedOrder);
+        } else if (status === 'cancelled') {
+          await sendOrderCancellationEmail(updatedOrder, reason, nextSteps);
+        }
+      } catch (emailErr) {
+        console.error("Order status update email sending error:", emailErr);
       }
     }
 

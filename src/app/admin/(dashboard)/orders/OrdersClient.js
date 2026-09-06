@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { formatPrice } from "@/lib/utils";
 import styles from "@/styles/admin.module.css";
-import { MoreVertical, CheckCircle } from "lucide-react";
+import { MoreVertical, CheckCircle, Truck } from "lucide-react";
 
 export default function OrdersClient({ initialOrders }) {
   const [orders, setOrders] = useState(initialOrders);
@@ -17,6 +17,28 @@ export default function OrdersClient({ initialOrders }) {
   
   const handleMenuClick = (id) => {
     setOpenMenuId(openMenuId === id ? null : id);
+  };
+
+  const markAsShipped = async (id) => {
+    setIsUpdating(true);
+    setOpenMenuId(null);
+    try {
+      const res = await fetch(`/api/admin/orders/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'shipped' })
+      });
+      if (!res.ok) throw new Error("Failed to update order");
+      
+      setOrders(orders.map(order => 
+        order.id === id ? { ...order, status: 'shipped' } : order
+      ));
+    } catch (err) {
+      console.error(err);
+      alert("Error marking order as shipped.");
+    } finally {
+      setIsUpdating(false);
+    }
   };
 
   const markAsDone = async (id) => {
@@ -122,7 +144,12 @@ export default function OrdersClient({ initialOrders }) {
                   </td>
                   <td style={{ fontWeight: 500 }}>{formatPrice(order.total_amount)}</td>
                   <td>
-                    <span className={`${styles.badge} ${order.status === 'delivered' ? styles.inStock : (order.status === 'pending' ? styles.outOfStock : (order.status === 'cancelled' ? styles.outOfStock : ''))}`}>
+                    <span className={`${styles.badge} ${
+                      order.status === 'delivered' ? styles.inStock : 
+                      order.status === 'shipped' ? styles.shipped : 
+                      order.status === 'processing' ? styles.processing : 
+                      order.status === 'cancelled' ? styles.outOfStock : styles.outOfStock
+                    }`}>
                       {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
                     </span>
                   </td>
@@ -145,12 +172,21 @@ export default function OrdersClient({ initialOrders }) {
                         >
                           View Details
                         </button>
+                        {order.status !== 'shipped' && order.status !== 'delivered' && order.status !== 'cancelled' && (
+                          <button 
+                            className={styles.kebabItem} 
+                            onClick={() => markAsShipped(order.id)}
+                            style={{ display: "flex", alignItems: "center", gap: "6px", color: "#2563EB" }}
+                          >
+                            <Truck size={14} /> Mark as Shipped
+                          </button>
+                        )}
                         {order.status !== 'delivered' && order.status !== 'cancelled' && (
                           <>
                             <button 
                               className={styles.kebabItem} 
                               onClick={() => markAsDone(order.id)}
-                              style={{ display: "flex", alignItems: "center", gap: "6px" }}
+                              style={{ display: "flex", alignItems: "center", gap: "6px", color: "#10B981" }}
                             >
                               <CheckCircle size={14} /> Mark as Delivered
                             </button>
@@ -216,14 +252,25 @@ export default function OrdersClient({ initialOrders }) {
               <span style={{ fontSize: "1.125rem", fontWeight: 700, color: "var(--color-primary)" }}>{formatPrice(viewOrder.total_amount)}</span>
             </div>
 
-            <div className={styles.modalActions} style={{ marginTop: "var(--space-6)" }}>
+            <div className={styles.modalActions} style={{ marginTop: "var(--space-6)", display: "flex", gap: "10px", flexDirection: "column" }}>
+              {viewOrder.status !== 'shipped' && viewOrder.status !== 'delivered' && viewOrder.status !== 'cancelled' && (
+                <button 
+                  className={styles.btnSecondary} 
+                  style={{ width: "100%", justifyContent: "center", borderColor: "#2563EB", color: "#2563EB", display: "flex", alignItems: "center", gap: "8px" }}
+                  onClick={() => { markAsShipped(viewOrder.id); setViewOrder(null); }}
+                  disabled={isUpdating}
+                >
+                  <Truck size={16} /> Mark as Shipped (Dispatches Shipping Email)
+                </button>
+              )}
               {viewOrder.status !== 'delivered' && viewOrder.status !== 'cancelled' && (
                 <button 
                   className={styles.btnPrimary} 
-                  style={{ width: "100%", justifyContent: "center" }}
+                  style={{ width: "100%", justifyContent: "center", display: "flex", alignItems: "center", gap: "8px" }}
                   onClick={() => { markAsDone(viewOrder.id); setViewOrder(null); }}
+                  disabled={isUpdating}
                 >
-                  Mark as Delivered
+                  <CheckCircle size={16} /> Mark as Delivered (Dispatches Delivered Email)
                 </button>
               )}
             </div>
