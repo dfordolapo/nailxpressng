@@ -99,6 +99,17 @@ function SidebarContent() {
           </div>
 
           <div className={styles.navGroup}>
+            <Link
+              href="/admin/subscribers"
+              className={`${styles.navItem} ${pathname.startsWith("/admin/subscribers") ? styles.active : ""}`}
+              onClick={() => setIsMobileOpen(false)}
+            >
+              <Sparkles size={18} strokeWidth={1.5} />
+              Subscribers & Leads
+            </Link>
+          </div>
+
+          <div className={styles.navGroup}>
             <div 
               className={`${styles.navItem} ${pathname.startsWith("/admin/products") ? styles.active : ""}`} 
               style={{ cursor: "pointer" }}
