@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 import { formatPrice } from "@/lib/utils";
 import styles from "@/styles/admin.module.css";
-import { MoreVertical, CheckCircle, MessageCircle } from "lucide-react";
+import { MoreVertical, CheckCircle, MessageCircle, Sparkles } from "lucide-react";
 import { SOCIAL_LINKS } from "@/lib/constants";
 
 export default function CustomOrdersClient({ initialOrders = [] }) {

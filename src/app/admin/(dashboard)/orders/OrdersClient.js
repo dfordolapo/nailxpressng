@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { formatPrice } from "@/lib/utils";
 import styles from "@/styles/admin.module.css";
-import { MoreVertical, CheckCircle, Truck } from "lucide-react";
+import { MoreVertical, CheckCircle, Truck, Sparkles } from "lucide-react";
 
 export default function OrdersClient({ initialOrders }) {
   const [orders, setOrders] = useState(initialOrders);
