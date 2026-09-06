@@ -7,6 +7,9 @@ import { MoreVertical, CheckCircle, Truck } from "lucide-react";
 
 export default function OrdersClient({ initialOrders }) {
   const [orders, setOrders] = useState(initialOrders);
+  const [openMenuId, setOpenMenuId] = useState(null);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [viewOrder, setViewOrder] = useState(null);
   const [activeStatusFilter, setActiveStatusFilter] = useState("all");
   const [sendingRecoveryId, setSendingRecoveryId] = useState(null);
   const [recoverySuccessMsg, setRecoverySuccessMsg] = useState("");
