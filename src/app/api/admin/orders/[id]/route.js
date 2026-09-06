@@ -38,7 +38,11 @@ export async function PATCH(request, { params }) {
         if (status === 'shipped') {
           await sendOrderShippedEmail(updatedOrder);
         } else if (status === 'delivered') {
-          await sendOrderDeliveredEmail(updatedOrder);
+          const { data: orderItems } = await supabaseAdmin
+            .from('order_items')
+            .select('*')
+            .eq('order_id', id);
+          await sendOrderDeliveredEmail(updatedOrder, orderItems || []);
         } else if (status === 'cancelled') {
           await sendOrderCancellationEmail(updatedOrder, reason, nextSteps);
         }

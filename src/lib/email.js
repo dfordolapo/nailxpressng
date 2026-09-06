@@ -310,9 +310,23 @@ export async function sendOrderShippedEmail(order) {
 }
 
 // 6. Buyer Order Delivered Email
-export async function sendOrderDeliveredEmail(order) {
+export async function sendOrderDeliveredEmail(order, items = []) {
   try {
     const orderNum = order.id ? order.id.split('-')[0] : '';
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nailexpress.ng';
+
+    // Determine target link for reviewing product
+    let targetLink = `${siteUrl}/shop`;
+    let buttonLabel = "Flaunt Your Set in The Journal ↗";
+
+    const firstItem = items && items.length > 0 ? items[0] : null;
+    if (firstItem) {
+      const slug = firstItem.slug || (firstItem.product_name || firstItem.name || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+      if (slug) {
+        targetLink = `${siteUrl}/product/${slug}?review=open#write-review`;
+        buttonLabel = `Review ${firstItem.product_name || firstItem.name || "Your Set"} ↗`;
+      }
+    }
 
     const bodyHtml = `
       <h2 style="color: #7a403d; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 24px; margin-top: 0;">Your Order Has Been Delivered</h2>
@@ -328,9 +342,9 @@ export async function sendOrderDeliveredEmail(order) {
       <div style="text-align: center; margin: 28px 0; padding: 24px 20px; background-color: #fcf6f6; border-radius: 12px; border: 1px solid #f2e2e1;">
         <p style="margin: 0 0 6px 0; font-weight: 600; color: #7a403d; font-size: 17px; font-family: 'Cormorant Garamond', Georgia, serif;">Your nails arrived. Time to show off a little.</p>
         <p style="margin: 0 0 16px 0; font-size: 13px; color: #666; line-height: 1.5;">Drop an entry in The Press-On Journal with a quick photo of your set in real life. No login needed!</p>
-        <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'https://nailexpress.ng'}/shop" 
+        <a href="${targetLink}" 
            style="display: inline-block; padding: 12px 24px; background-color: #7a403d; color: #ffffff; text-decoration: none; border-radius: 24px; font-weight: 600; font-size: 13px;">
-          Flaunt Your Set in The Journal ↗
+          ${buttonLabel}
         </a>
       </div>
     `;
