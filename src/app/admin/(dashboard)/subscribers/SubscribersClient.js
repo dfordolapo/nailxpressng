@@ -82,9 +82,9 @@ export default function SubscribersClient() {
     <div className={styles.adminContainer}>
       <div className={styles.header}>
         <div>
-          <h1 className={styles.title}>Subscribers & Leads</h1>
+          <h1 className={styles.title}>Restock Leads & Alerts</h1>
           <p className={styles.subtitle}>
-            Manage VIP newsletter members and customers waiting for product restocks.
+            Manage and notify customers waiting for sold-out product restocks.
           </p>
         </div>
         <button

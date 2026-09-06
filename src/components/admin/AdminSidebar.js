@@ -105,7 +105,7 @@ function SidebarContent() {
               onClick={() => setIsMobileOpen(false)}
             >
               <Sparkles size={18} strokeWidth={1.5} />
-              Subscribers & Leads
+              Restock Alerts
             </Link>
           </div>
 

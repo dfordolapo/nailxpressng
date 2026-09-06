@@ -6,7 +6,6 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import styles from "@/styles/components/footer.module.css";
 import { SOCIAL_LINKS } from "@/lib/constants";
-import EmailCapture from "@/components/ui/EmailCapture";
 
 function InstagramIcon() {
   return (
@@ -68,13 +67,6 @@ export default function Footer() {
             />
           </Link>
 
-          <div style={{ margin: "4px 0 10px 0", width: "100%", maxWidth: "380px" }}>
-            <p style={{ margin: "0 0 10px 0", fontSize: "0.85rem", color: "rgba(245, 227, 229, 0.95)", fontFamily: "var(--font-heading)", letterSpacing: "1px", textTransform: "uppercase" }}>
-              Join The VIP Inner Circle
-            </p>
-            <EmailCapture type="newsletter" compact={true} />
-          </div>
-          
           <div className={styles.links}>
             <Link href="/terms" className={styles.link}>terms & conditions</Link>
           </div>
