@@ -458,7 +458,7 @@ export async function sendAbandonedCheckoutEmail(order, items = []) {
       from: `Nailexpress <${fromEmail}>`,
       to: [order.customer_email],
       replyTo: adminDefaultEmail,
-      subject: `Did something go wrong with your order? ✨`,
+      subject: `Did something go wrong with your order?`,
       html: wrapEmailTemplate(`Complete Your Nailexpress Order`, bodyHtml),
     });
 

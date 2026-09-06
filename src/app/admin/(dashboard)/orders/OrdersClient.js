@@ -36,7 +36,7 @@ export default function OrdersClient({ initialOrders }) {
   };
 
   const filteredOrders = orders.filter(order => {
-    if (activeStatusFilter === "all") return true;
+    if (activeStatusFilter === "all") return order.status !== "abandoned";
     return order.status === activeStatusFilter;
   });
   

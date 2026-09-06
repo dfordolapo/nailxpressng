@@ -18,16 +18,16 @@ export async function GET(request) {
       // allow internal dev requests or admin execution
     }
 
-    // 30 minutes threshold
-    const thirtyMinsAgo = new Date(Date.now() - 30 * 60 * 1000).toISOString();
+    // 1 hour (60 minutes) threshold to allow Paystack payment window to complete
+    const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
     const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
 
-    // Query abandoned orders between 30 mins and 24 hours old that haven't been emailed yet
+    // Query abandoned orders between 1 hour and 24 hours old that haven't been emailed yet
     const { data: abandonedOrders, error } = await supabaseAdmin
       .from('orders')
       .select('*, order_items(*)')
       .eq('status', 'abandoned')
-      .lte('created_at', thirtyMinsAgo)
+      .lte('created_at', oneHourAgo)
       .gte('created_at', twentyFourHoursAgo)
       .is('cancellation_reason', null); // Use as flag: null means recovery email not yet sent
 
