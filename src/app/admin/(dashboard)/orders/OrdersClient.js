@@ -51,6 +51,28 @@ export default function OrdersClient({ initialOrders }) {
     setOpenMenuId(openMenuId === id ? null : id);
   };
 
+  const markAsProcessing = async (id) => {
+    setIsUpdating(true);
+    setOpenMenuId(null);
+    try {
+      const res = await fetch(`/api/admin/orders/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'processing' })
+      });
+      if (!res.ok) throw new Error("Failed to update order");
+      
+      setOrders(orders.map(order => 
+        order.id === id ? { ...order, status: 'processing' } : order
+      ));
+    } catch (err) {
+      console.error(err);
+      alert("Error marking order as processing.");
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
   const markAsShipped = async (id) => {
     setIsUpdating(true);
     setOpenMenuId(null);
@@ -249,6 +271,15 @@ export default function OrdersClient({ initialOrders }) {
                             style={{ display: "flex", alignItems: "center", gap: "6px", color: "var(--color-primary)" }}
                           >
                             <Sparkles size={14} /> {sendingRecoveryId === order.id ? "Sending..." : order.cancellation_reason === 'abandoned_recovery_sent' ? "Resend Recovery Email" : "Send Recovery Email"}
+                          </button>
+                        )}
+                        {order.status !== 'processing' && order.status !== 'shipped' && order.status !== 'delivered' && order.status !== 'cancelled' && order.status !== 'abandoned' && (
+                          <button 
+                            className={styles.kebabItem} 
+                            onClick={() => markAsProcessing(order.id)}
+                            style={{ display: "flex", alignItems: "center", gap: "6px", color: "#D97706" }}
+                          >
+                            <Sparkles size={14} /> Mark as Processing (Crafting)
                           </button>
                         )}
                         {order.status !== 'shipped' && order.status !== 'delivered' && order.status !== 'cancelled' && order.status !== 'abandoned' && (

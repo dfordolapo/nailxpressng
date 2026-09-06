@@ -28,8 +28,29 @@ export default function CustomOrdersClient({ initialOrders = [] }) {
     }
   };
 
-  const handleMenuClick = (id) => {
-    setOpenMenuId(openMenuId === id ? null : id);
+  const [activeStatusFilter, setActiveStatusFilter] = useState("all");
+
+  const markAsProcessing = async (id) => {
+    setIsUpdating(true);
+    setOpenMenuId(null);
+    try {
+      const res = await fetch(`/api/admin/custom-orders/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'processing' })
+      });
+
+      if (!res.ok) throw new Error("Failed to update status");
+      
+      setOrders(orders.map(order => 
+        order.id === id ? { ...order, status: 'processing' } : order
+      ));
+    } catch (err) {
+      console.error(err);
+      alert("Error marking custom order as processing.");
+    } finally {
+      setIsUpdating(false);
+    }
   };
 
   const markAsDone = async (id) => {
@@ -84,6 +105,34 @@ export default function CustomOrdersClient({ initialOrders = [] }) {
         </div>
       </div>
 
+      {/* Filter Tabs */}
+      <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "16px" }}>
+        {[
+          { id: "all", label: `All Custom (${orders.length})` },
+          { id: "pending", label: `Pending (${orders.filter(o => o.status === 'pending').length})` },
+          { id: "processing", label: `Processing (${orders.filter(o => o.status === 'processing').length})` },
+          { id: "completed", label: `Completed (${orders.filter(o => o.status === 'completed').length})` },
+        ].map(tab => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveStatusFilter(tab.id)}
+            style={{
+              padding: "6px 14px",
+              borderRadius: "20px",
+              border: "none",
+              fontSize: "0.82rem",
+              fontWeight: 600,
+              cursor: "pointer",
+              backgroundColor: activeStatusFilter === tab.id ? "var(--color-primary, #7a403d)" : "#f3ebea",
+              color: activeStatusFilter === tab.id ? "#ffffff" : "#444",
+              transition: "all 0.2s"
+            }}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
       <div className={styles.tableContainer}>
         <table className={styles.table}>
           <thead>
@@ -97,16 +146,16 @@ export default function CustomOrdersClient({ initialOrders = [] }) {
             </tr>
           </thead>
           <tbody>
-            {orders.length === 0 ? (
+            {orders.filter(o => activeStatusFilter === "all" ? true : o.status === activeStatusFilter).length === 0 ? (
               <tr>
                 <td colSpan="6" style={{ textAlign: "center", padding: "60px 20px" }}>
                   <div style={{ fontSize: "2.5rem", marginBottom: "var(--space-4)" }}>💅</div>
-                  <h3 style={{ fontSize: "1.125rem", color: "var(--color-primary-800)", marginBottom: "var(--space-2)", fontFamily: "var(--font-heading)" }}>No custom orders yet</h3>
-                  <p style={{ color: "var(--color-text-secondary)", fontSize: "0.875rem", marginBottom: "var(--space-6)" }}>When customers request custom designs, they will appear here.</p>
+                  <h3 style={{ fontSize: "1.125rem", color: "var(--color-primary-800)", marginBottom: "var(--space-2)", fontFamily: "var(--font-heading)" }}>No custom orders found</h3>
+                  <p style={{ color: "var(--color-text-secondary)", fontSize: "0.875rem", marginBottom: "var(--space-6)" }}>No custom orders match this filter.</p>
                 </td>
               </tr>
             ) : (
-              orders.map((order) => (
+              orders.filter(o => activeStatusFilter === "all" ? true : o.status === activeStatusFilter).map((order) => (
                 <tr key={order.id}>
                   <td style={{ fontFamily: "monospace", fontSize: "0.875rem" }}>
                     #{order.id.split('-')[0]}
@@ -153,13 +202,24 @@ export default function CustomOrdersClient({ initialOrders = [] }) {
                         >
                           <MessageCircle size={14} /> Contact Customer
                         </button>
-                        <button 
-                          className={styles.kebabItem} 
-                          onClick={() => markAsDone(order.id)}
-                          style={{ display: "flex", alignItems: "center", gap: "6px" }}
-                        >
-                          <CheckCircle size={14} /> Mark as Completed
-                        </button>
+                        {order.status !== 'processing' && order.status !== 'completed' && (
+                          <button 
+                            className={styles.kebabItem} 
+                            onClick={() => markAsProcessing(order.id)}
+                            style={{ display: "flex", alignItems: "center", gap: "6px", color: "#D97706" }}
+                          >
+                            <Sparkles size={14} /> Mark as Processing (Crafting)
+                          </button>
+                        )}
+                        {order.status !== 'completed' && (
+                          <button 
+                            className={styles.kebabItem} 
+                            onClick={() => markAsDone(order.id)}
+                            style={{ display: "flex", alignItems: "center", gap: "6px", color: "#10B981" }}
+                          >
+                            <CheckCircle size={14} /> Mark as Completed
+                          </button>
+                        )}
                       </div>
                     )}
                   </td>
