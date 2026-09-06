@@ -13,7 +13,8 @@ import {
   LogOut, 
   ChevronDown, 
   Menu, 
-  X 
+  X,
+  BellRing
 } from "lucide-react";
 import styles from "@/styles/admin.module.css";
 
@@ -104,7 +105,7 @@ function SidebarContent() {
               className={`${styles.navItem} ${pathname.startsWith("/admin/subscribers") ? styles.active : ""}`}
               onClick={() => setIsMobileOpen(false)}
             >
-              <Sparkles size={18} strokeWidth={1.5} />
+              <BellRing size={18} strokeWidth={1.5} />
               Restock Alerts
             </Link>
           </div>
