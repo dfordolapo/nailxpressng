@@ -11,14 +11,17 @@ export default function SplashAnimation() {
 
   useEffect(() => {
     try {
-      if (typeof window !== "undefined" && window.sessionStorage) {
-        const hasSeenSplash = sessionStorage.getItem("hasSeenSplash");
-        if (hasSeenSplash) {
-          setShow(false);
-          setIsSplashComplete(true);
-          return;
+      if (typeof window !== "undefined" && window.localStorage) {
+        const lastSeen = localStorage.getItem("lastSeenSplashTimestamp");
+        if (lastSeen) {
+          const hoursSinceLastSeen = (Date.now() - parseInt(lastSeen, 10)) / (1000 * 60 * 60);
+          if (hoursSinceLastSeen < 24) {
+            setShow(false);
+            setIsSplashComplete(true);
+            return;
+          }
         }
-        sessionStorage.setItem("hasSeenSplash", "true");
+        localStorage.setItem("lastSeenSplashTimestamp", Date.now().toString());
       }
     } catch (e) {
       // Prevent Safari private browsing / storage restrictions from throwing errors
