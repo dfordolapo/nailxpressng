@@ -30,6 +30,7 @@ export async function POST(request) {
           shipping_fee: shippingFee,
           shipping_method: shippingMethodName || shippingMethod,
           delivery_time: deliveryTime || '3-5 days',
+          payment_reference: body.transactionReference || null,
           status: 'pending' // Default status
         }
       ])
@@ -52,6 +53,7 @@ export async function POST(request) {
             shipping_state: formData.state,
             total_amount: total,
             shipping_fee: shippingFee,
+            payment_reference: body.transactionReference || null,
             status: 'pending'
           }
         ])
@@ -103,15 +105,18 @@ export async function POST(request) {
       throw itemsError;
     }
 
-    // 4. Send Confirmation Emails (Non-blocking)
-    // Send to customer (buyer)
-    if (order.customer_email) {
-      sendOrderConfirmationEmail(order, items).catch(e => console.error("Customer email failed:", e));
+    // 4. Send Confirmation Emails
+    try {
+      if (order.customer_email) {
+        const customerResult = await sendOrderConfirmationEmail(order, items);
+        console.log("Customer email result:", customerResult);
+      }
+      const adminEmail = process.env.ADMIN_EMAIL || 'nailxpressng@gmail.com';
+      const adminResult = await sendAdminNewOrderAlert(order, items, adminEmail);
+      console.log("Admin email result:", adminResult);
+    } catch (e) {
+      console.error("Email sending exception:", e);
     }
-    
-    // Send to admin (nailxpressng@gmail.com)
-    const adminEmail = process.env.ADMIN_EMAIL || 'nailxpressng@gmail.com';
-    sendAdminNewOrderAlert(order, items, adminEmail).catch(e => console.error("Admin email failed:", e));
 
     return NextResponse.json({ success: true, orderId: order.id });
     

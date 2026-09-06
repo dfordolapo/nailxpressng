@@ -3,7 +3,7 @@ import { Resend } from 'resend';
 const resend = new Resend(process.env.RESEND_API_KEY || 're_AXGp4Ti4_DwL6PCzXkdsaT7G2DzXwWwKy');
 
 // Default sender address
-const fromEmail = process.env.SENDER_EMAIL || 'onboarding@resend.dev';
+const fromEmail = process.env.SENDER_EMAIL || 'orders@nailexpress.ng';
 const adminDefaultEmail = process.env.ADMIN_EMAIL || 'nailxpressng@gmail.com';
 
 // Common Email Layout Wrapper
@@ -29,7 +29,7 @@ function wrapEmailTemplate(contentTitle, contentHtml) {
         <tr>
           <td align="center" style="background-color: #7a403d; padding: 36px 20px; text-align: center;">
             <h1 style="color: #ffffff; margin: 0; font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-size: 30px; letter-spacing: 4px; text-transform: uppercase; font-weight: 600;">NAILEXPRESS</h1>
-            <p style="color: #eac5c1; margin: 6px 0 0 0; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; font-weight: 500;">Luxury Press-On Nails</p>
+            <p style="color: #eac5c1; margin: 6px 0 0 0; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; font-weight: 500;">Premium Press-On Nails</p>
           </td>
         </tr>
 
