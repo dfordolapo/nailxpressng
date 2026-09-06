@@ -403,3 +403,68 @@ export async function sendOrderCancellationEmail(order, reason, nextSteps) {
     return { success: false, error };
   }
 }
+
+// 8. Abandoned Checkout Recovery Email
+export async function sendAbandonedCheckoutEmail(order, items = []) {
+  try {
+    const firstName = order.customer_first_name || 'there';
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nailexpress.ng';
+    const checkoutRecoveryUrl = `${siteUrl}/checkout?abandonedId=${order.id || ''}`;
+    const whatsappUrl = `${process.env.NEXT_PUBLIC_WHATSAPP_LINK || 'https://wa.me/2348123456789'}?text=${encodeURIComponent(`Hi Nailexpress, I started an order for ${items.map(i => i.product_name || i.name).join(', ') || 'my nails'} and had a question before finishing.`)}`;
+
+    const itemsHtml = items.length > 0 ? `
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin: 20px 0; background-color: #fdf8f8; border-radius: 10px; border: 1px solid #f2e2e1; padding: 14px;">
+        ${items.map(item => `
+          <tr>
+            <td style="padding: 6px 0; font-size: 14px; color: #2d2d2d; font-weight: 600;">
+              ${item.quantity || 1}x ${item.product_name || item.name || 'Press-On Nail Set'}
+            </td>
+            <td align="right" style="padding: 6px 0; font-size: 14px; color: #7a403d; font-weight: 700;">
+              ₦${((item.price || 0) * (item.quantity || 1)).toLocaleString()}
+            </td>
+          </tr>
+        `).join('')}
+      </table>
+    ` : '';
+
+    const bodyHtml = `
+      <h2 style="color: #7a403d; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 24px; margin-top: 0;">Did something go wrong with your order, ${firstName}? ✨</h2>
+      <p style="color: #555; font-size: 15px; line-height: 1.6;">
+        Hi ${firstName}, we noticed you started checkout for your handcrafted nail set but didn't get to finish.
+      </p>
+      
+      ${itemsHtml}
+
+      <p style="color: #555; font-size: 15px; line-height: 1.6;">
+        Was there an issue with payment, sizing, or delivery? We'd love to help make it right for you.
+      </p>
+
+      <!-- CALL TO ACTIONS -->
+      <div style="text-align: center; margin: 32px 0 24px 0;">
+        <a href="${checkoutRecoveryUrl}"
+           style="display: inline-block; padding: 14px 32px; background-color: #7a403d; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 4px 14px rgba(122, 64, 61, 0.25);">
+          Complete My Order ↗
+        </a>
+      </div>
+
+      <div style="text-align: center; margin-bottom: 16px;">
+        <a href="${whatsappUrl}" target="_blank" style="color: #7a403d; font-size: 13px; font-weight: 600; text-decoration: underline;">
+          💬 Reply directly or Chat with us on WhatsApp
+        </a>
+      </div>
+    `;
+
+    const { data, error } = await resend.emails.send({
+      from: `Nailexpress <${fromEmail}>`,
+      to: [order.customer_email],
+      replyTo: adminDefaultEmail,
+      subject: `Did something go wrong with your order? ✨`,
+      html: wrapEmailTemplate(`Complete Your Nailexpress Order`, bodyHtml),
+    });
+
+    return { success: !error, error };
+  } catch (error) {
+    console.error("Abandoned Checkout Email Error:", error);
+    return { success: false, error };
+  }
+}

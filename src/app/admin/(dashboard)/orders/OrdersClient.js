@@ -7,9 +7,38 @@ import { MoreVertical, CheckCircle, Truck } from "lucide-react";
 
 export default function OrdersClient({ initialOrders }) {
   const [orders, setOrders] = useState(initialOrders);
-  const [openMenuId, setOpenMenuId] = useState(null);
-  const [isUpdating, setIsUpdating] = useState(false);
-  const [viewOrder, setViewOrder] = useState(null);
+  const [activeStatusFilter, setActiveStatusFilter] = useState("all");
+  const [sendingRecoveryId, setSendingRecoveryId] = useState(null);
+  const [recoverySuccessMsg, setRecoverySuccessMsg] = useState("");
+
+  const sendRecoveryEmail = async (id) => {
+    setSendingRecoveryId(id);
+    try {
+      const res = await fetch('/api/admin/abandoned-checkouts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId: id })
+      });
+      const data = await res.json();
+      if (data.success) {
+        setRecoverySuccessMsg("✓ Recovery email sent to customer!");
+        setTimeout(() => setRecoverySuccessMsg(""), 3500);
+        setOrders(orders.map(o => o.id === id ? { ...o, cancellation_reason: 'abandoned_recovery_sent' } : o));
+      } else {
+        alert("Failed to send recovery email: " + (data.error || "Unknown error"));
+      }
+    } catch (e) {
+      console.error(e);
+      alert("Error sending recovery email");
+    } finally {
+      setSendingRecoveryId(null);
+    }
+  };
+
+  const filteredOrders = orders.filter(order => {
+    if (activeStatusFilter === "all") return true;
+    return order.status === activeStatusFilter;
+  });
   
   const [cancelOrder, setCancelOrder] = useState(null);
   const [cancelReason, setCancelReason] = useState("");
@@ -100,8 +129,45 @@ export default function OrdersClient({ initialOrders }) {
       <div className={styles.pageHeader}>
         <div>
           <h1 className={styles.pageTitle}>Orders</h1>
-          <p className={styles.pageSubtitle}>Manage customer orders and track fulfillment.</p>
+          <p className={styles.pageSubtitle}>Manage customer orders, fulfillment, and abandoned checkout recovery.</p>
         </div>
+      </div>
+
+      {recoverySuccessMsg && (
+        <div style={{ backgroundColor: "#edf7ed", color: "#1e4620", padding: "10px 16px", borderRadius: "8px", marginBottom: "16px", border: "1px solid #c8e6c9", fontSize: "0.85rem", fontWeight: 600 }}>
+          {recoverySuccessMsg}
+        </div>
+      )}
+
+      {/* Filter Tabs */}
+      <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "16px" }}>
+        {[
+          { id: "all", label: "All Orders" },
+          { id: "pending", label: "Pending" },
+          { id: "processing", label: "Processing" },
+          { id: "shipped", label: "Shipped" },
+          { id: "delivered", label: "Delivered" },
+          { id: "abandoned", label: `Abandoned (${orders.filter(o => o.status === 'abandoned').length})` },
+          { id: "cancelled", label: "Cancelled" },
+        ].map(tab => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveStatusFilter(tab.id)}
+            style={{
+              padding: "6px 14px",
+              borderRadius: "20px",
+              border: "none",
+              fontSize: "0.82rem",
+              fontWeight: 600,
+              cursor: "pointer",
+              backgroundColor: activeStatusFilter === tab.id ? "var(--color-primary, #7a403d)" : "#f3ebea",
+              color: activeStatusFilter === tab.id ? "#ffffff" : "#444",
+              transition: "all 0.2s"
+            }}
+          >
+            {tab.label}
+          </button>
+        ))}
       </div>
 
       <div className={styles.tableContainer}>
@@ -118,16 +184,16 @@ export default function OrdersClient({ initialOrders }) {
             </tr>
           </thead>
           <tbody>
-            {orders.length === 0 ? (
+            {filteredOrders.length === 0 ? (
               <tr>
                 <td colSpan="7" style={{ textAlign: "center", padding: "60px 20px" }}>
                   <div style={{ fontSize: "2.5rem", marginBottom: "var(--space-4)" }}>📦</div>
-                  <h3 style={{ fontSize: "1.125rem", color: "var(--color-primary-800)", marginBottom: "var(--space-2)", fontFamily: "var(--font-heading)" }}>No orders yet</h3>
-                  <p style={{ color: "var(--color-text-secondary)", fontSize: "0.875rem", marginBottom: "var(--space-6)" }}>When customers place orders, they will appear here.</p>
+                  <h3 style={{ fontSize: "1.125rem", color: "var(--color-primary-800)", marginBottom: "var(--space-2)", fontFamily: "var(--font-heading)" }}>No orders found</h3>
+                  <p style={{ color: "var(--color-text-secondary)", fontSize: "0.875rem", marginBottom: "var(--space-6)" }}>No orders match this filter.</p>
                 </td>
               </tr>
             ) : (
-              orders.map((order) => (
+              filteredOrders.map((order) => (
                 <tr key={order.id}>
                   <td style={{ fontFamily: "monospace", fontSize: "0.875rem" }}>
                     #{order.id.split('-')[0]}
@@ -172,7 +238,17 @@ export default function OrdersClient({ initialOrders }) {
                         >
                           View Details
                         </button>
-                        {order.status !== 'shipped' && order.status !== 'delivered' && order.status !== 'cancelled' && (
+                        {order.status === 'abandoned' && (
+                          <button 
+                            className={styles.kebabItem} 
+                            onClick={() => sendRecoveryEmail(order.id)}
+                            disabled={sendingRecoveryId === order.id}
+                            style={{ display: "flex", alignItems: "center", gap: "6px", color: "var(--color-primary)" }}
+                          >
+                            <Sparkles size={14} /> {sendingRecoveryId === order.id ? "Sending..." : order.cancellation_reason === 'abandoned_recovery_sent' ? "Resend Recovery Email" : "Send Recovery Email"}
+                          </button>
+                        )}
+                        {order.status !== 'shipped' && order.status !== 'delivered' && order.status !== 'cancelled' && order.status !== 'abandoned' && (
                           <button 
                             className={styles.kebabItem} 
                             onClick={() => markAsShipped(order.id)}
@@ -181,7 +257,7 @@ export default function OrdersClient({ initialOrders }) {
                             <Truck size={14} /> Mark as Shipped
                           </button>
                         )}
-                        {order.status !== 'delivered' && order.status !== 'cancelled' && (
+                        {order.status !== 'delivered' && order.status !== 'cancelled' && order.status !== 'abandoned' && (
                           <>
                             <button 
                               className={styles.kebabItem} 

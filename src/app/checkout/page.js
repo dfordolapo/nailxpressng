@@ -102,6 +102,30 @@ export default function CheckoutPage() {
       }
     }
     fetchRates();
+
+    // Check if recovery link with ?abandonedId=... was clicked
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      const abandonedId = urlParams.get('abandonedId');
+      if (abandonedId) {
+        fetch(`/api/admin/orders/${abandonedId}`)
+          .then(res => res.json())
+          .then(data => {
+            if (data.order) {
+              setFormData({
+                presetLabel: "Recovered Order",
+                fullName: `${data.order.customer_first_name || ''} ${data.order.customer_last_name || ''}`.trim(),
+                email: data.order.customer_email || '',
+                phone: data.order.customer_phone || '',
+                address: data.order.shipping_address || '',
+                state: data.order.shipping_state || '',
+                city: data.order.shipping_city || '',
+              });
+            }
+          })
+          .catch(e => console.warn("Could not pre-load abandoned order details:", e));
+      }
+    }
   }, []);
 
   const selectedLocation = shippingLocations.find(loc => loc.id === shippingMethod);
@@ -321,6 +345,20 @@ export default function CheckoutPage() {
       const isPaystackKeyValid = paystackKey && paystackKey !== "pk_test_dummy" && paystackKey.trim() !== "";
 
       if (paymentMethod === "paystack" && isPaystackKeyValid) {
+        // 1. Pre-register checkout as 'abandoned' so it can be recovered if the user closes the payment modal
+        let draftOrderId = null;
+        try {
+          const draftRes = await fetch('/api/checkout', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ...orderPayload, status: 'abandoned' }),
+          });
+          const draftData = await draftRes.json();
+          if (draftData.success) draftOrderId = draftData.orderId;
+        } catch (draftErr) {
+          console.warn("Could not pre-record checkout draft:", draftErr);
+        }
+
         const PaystackPop = (await import('@paystack/inline-js')).default;
         const paystack = new PaystackPop();
         
@@ -335,6 +373,17 @@ export default function CheckoutPage() {
           onSuccess: async (transaction) => {
             setIsConfirmingOrder(true);
             try {
+              if (draftOrderId) {
+                // Update draft to pending/paid
+                await fetch(`/api/admin/orders/${draftOrderId}`, {
+                  method: 'PATCH',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ 
+                    status: 'pending', 
+                    payment_reference: transaction.reference 
+                  })
+                }).catch(() => {});
+              }
               await processOrderToBackend(transaction.reference);
             } catch (err) {
               console.error("Order save error after payment:", err);

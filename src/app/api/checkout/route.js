@@ -12,7 +12,9 @@ const supabaseAdmin = createClient(
 export async function POST(request) {
   try {
     const body = await request.json();
-    const { formData, items, shippingMethod, shippingMethodName, deliveryTime, paymentMethod, subtotal, shippingFee, total } = body;
+    const { formData, items, shippingMethod, shippingMethodName, deliveryTime, paymentMethod, subtotal, shippingFee, total, status: orderStatus } = body;
+
+    const initialStatus = orderStatus || 'pending';
 
     // 1. Insert the main Order
     let { data: order, error: orderError } = await supabaseAdmin
@@ -31,7 +33,7 @@ export async function POST(request) {
           shipping_method: shippingMethodName || shippingMethod,
           delivery_time: deliveryTime || '3-5 days',
           payment_reference: body.transactionReference || null,
-          status: 'pending' // Default status
+          status: initialStatus
         }
       ])
       .select()
@@ -54,7 +56,7 @@ export async function POST(request) {
             total_amount: total,
             shipping_fee: shippingFee,
             payment_reference: body.transactionReference || null,
-            status: 'pending'
+            status: initialStatus
           }
         ])
         .select()
@@ -105,15 +107,17 @@ export async function POST(request) {
       throw itemsError;
     }
 
-    // 4. Send Confirmation Emails
+    // 4. Send Confirmation Emails only if not marked as abandoned
     try {
-      if (order.customer_email) {
-        const customerResult = await sendOrderConfirmationEmail(order, items);
-        console.log("Customer email result:", customerResult);
+      if (initialStatus !== 'abandoned') {
+        if (order.customer_email) {
+          const customerResult = await sendOrderConfirmationEmail(order, items);
+          console.log("Customer email result:", customerResult);
+        }
+        const adminEmail = process.env.ADMIN_EMAIL || 'nailxpressng@gmail.com';
+        const adminResult = await sendAdminNewOrderAlert(order, items, adminEmail);
+        console.log("Admin email result:", adminResult);
       }
-      const adminEmail = process.env.ADMIN_EMAIL || 'nailxpressng@gmail.com';
-      const adminResult = await sendAdminNewOrderAlert(order, items, adminEmail);
-      console.log("Admin email result:", adminResult);
     } catch (e) {
       console.error("Email sending exception:", e);
     }
