@@ -14,7 +14,7 @@ import addrStyles from "@/styles/components/checkoutAddresses.module.css";
 import { Home, Building2, Gift, Bookmark, Plus, Check, Trash2, MapPin, Sparkles, Edit2, Clock } from "lucide-react";
 
 export default function CheckoutPage() {
-  const { items, clearCart } = useCart();
+  const { items, clearCart, replaceCartItems } = useCart();
   const router = useRouter();
   const { subtotal, shipping, total } = calculateCartTotals(items);
   const [formData, setFormData] = useState({
@@ -121,6 +121,25 @@ export default function CheckoutPage() {
                 state: data.order.shipping_state || '',
                 city: data.order.shipping_city || '',
               });
+
+              // Restore exact items into the customer's cart
+              if (data.order.order_items && data.order.order_items.length > 0) {
+                const restoredCartItems = data.order.order_items.map((item) => {
+                  const product = item.products || {};
+                  return {
+                    id: item.product_id || item.id,
+                    slug: product.slug || '',
+                    name: item.product_name || product.name || 'Handcrafted Nail Set',
+                    price: item.price || product.price || 0,
+                    image: product.images && product.images.length > 0 ? product.images[0] : null,
+                    category: product.category || 'Luxury Press-ons',
+                    selectedSize: item.selected_size || 'M',
+                    selectedLength: item.selected_length || 'medium',
+                    quantity: item.quantity || 1,
+                  };
+                });
+                replaceCartItems(restoredCartItems);
+              }
             }
           })
           .catch(e => console.warn("Could not pre-load abandoned order details:", e));

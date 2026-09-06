@@ -63,3 +63,39 @@ export async function PATCH(request, { params }) {
   }
 }
 
+export async function GET(request, { params }) {
+  try {
+    const { id } = await params;
+
+    const { data: order, error: orderError } = await supabaseAdmin
+      .from('orders')
+      .select('*')
+      .eq('id', id)
+      .single();
+
+    if (orderError) throw orderError;
+    if (!order) {
+      return NextResponse.json({ success: false, error: "Order not found" }, { status: 404 });
+    }
+
+    const { data: orderItems, error: itemsError } = await supabaseAdmin
+      .from('order_items')
+      .select('*, products(id, name, slug, price, images, category)')
+      .eq('order_id', id);
+
+    if (itemsError) throw itemsError;
+
+    return NextResponse.json({
+      success: true,
+      order: {
+        ...order,
+        order_items: orderItems || []
+      }
+    });
+  } catch (error) {
+    console.error('Fetch Order API Error:', error);
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+  }
+}
+
+

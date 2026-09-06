@@ -139,6 +139,10 @@ function cartReducer(state, action) {
       break;
     }
 
+    case "SET_ITEMS":
+      newState = action.payload || [];
+      break;
+
     case "CLEAR_CART":
       newState = [];
       break;
@@ -181,6 +185,10 @@ export function CartProvider({ children }) {
     dispatch({ type: "CLEAR_CART" });
   };
 
+  const replaceCartItems = (newItems) => {
+    dispatch({ type: "SET_ITEMS", payload: newItems });
+  };
+
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
   const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
@@ -193,6 +201,7 @@ export function CartProvider({ children }) {
         updateQuantity,
         updateItemOptions,
         clearCart,
+        replaceCartItems,
         itemCount,
         subtotal,
       }}
