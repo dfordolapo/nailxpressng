@@ -4,13 +4,13 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Calendar, Package, ArrowUpRight, MoreVertical, Star } from "lucide-react";
+import { Calendar, Package, ArrowUpRight, MoreVertical, Star, TrendingUp, ShoppingBag, Clock, Sparkles, CheckCircle2 } from "lucide-react";
 import styles from "@/styles/admin.module.css";
 import { formatPrice } from "@/lib/utils";
-// Using Supabase Live Data
 
-export default function DashboardClient({ initialProducts }) {
+export default function DashboardClient({ initialProducts, initialOrders = [], initialCustomOrders = [] }) {
   const [productsList, setProductsList] = useState(initialProducts || []);
+  const [ordersList, setOrdersList] = useState(initialOrders || []);
   const [openMenuId, setOpenMenuId] = useState(null);
   const [productToDelete, setProductToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -18,11 +18,20 @@ export default function DashboardClient({ initialProducts }) {
 
   const todayDate = new Date().toISOString().split("T")[0];
   
+  // Real sales & order analytics
+  const paidOrders = ordersList.filter(o => o.status !== 'abandoned' && o.status !== 'cancelled');
+  const abandonedOrders = ordersList.filter(o => o.status === 'abandoned');
+  const totalRevenue = paidOrders.reduce((sum, o) => sum + (Number(o.total_amount) || 0), 0);
+  const processingOrdersCount = ordersList.filter(o => o.status === 'processing' || o.status === 'pending').length;
+  const customOrdersPending = initialCustomOrders.filter(c => c.status === 'pending').length;
+
   const stats = {
-    total: productsList.length,
-    handmade: productsList.filter(p => p.categoryName === 'Handmade').length,
-    factory: productsList.filter(p => p.categoryName === 'Factory Made').length,
-    featured: productsList.filter(p => p.bestseller).length
+    totalProducts: productsList.length,
+    totalRevenue,
+    paidOrdersCount: paidOrders.length,
+    abandonedCount: abandonedOrders.length,
+    processingCount: processingOrdersCount,
+    customPending: customOrdersPending,
   };
 
   const handleMenuClick = (id) => {
@@ -86,25 +95,83 @@ export default function DashboardClient({ initialProducts }) {
 
       <div className={styles.statsGrid}>
         <div className={styles.statCard}>
-          <div className={styles.statTitle}>Products</div>
-          <div className={styles.statValue}>{stats.total}</div>
+          <div className={styles.statTitle}>Total Revenue</div>
+          <div className={styles.statValue} style={{ fontSize: "1.75rem", color: "var(--color-primary-800)" }}>
+            {formatPrice(stats.totalRevenue)}
+          </div>
+          <div className={styles.statTrend} style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <TrendingUp size={13} /> {stats.paidOrdersCount} completed orders
+          </div>
         </div>
         <div className={styles.statCard}>
-          <div className={styles.statTitle}>Handmade</div>
-          <div className={styles.statValue}>{stats.handmade}</div>
+          <div className={styles.statTitle}>Orders to Fulfill</div>
+          <div className={styles.statValue}>{stats.processingCount}</div>
+          <Link href="/admin/orders?status=processing" className={styles.statLink}>
+            View active orders →
+          </Link>
         </div>
         <div className={styles.statCard}>
-          <div className={styles.statTitle}>Factory</div>
-          <div className={styles.statValue}>{stats.factory}</div>
+          <div className={styles.statTitle}>Custom Nail Requests</div>
+          <div className={styles.statValue}>{stats.customPending}</div>
+          <Link href="/admin/custom-orders" className={styles.statLink}>
+            Review requests →
+          </Link>
         </div>
         <div className={styles.statCard}>
-          <div className={styles.statTitle}>Featured</div>
-          <div className={styles.statValue}>{stats.featured}</div>
-          <Link href="/admin/products?featured=true" className={styles.statLink}>
-            View all →
+          <div className={styles.statTitle}>Catalog Products</div>
+          <div className={styles.statValue}>{stats.totalProducts}</div>
+          <Link href="/admin/products" className={styles.statLink}>
+            Manage inventory →
           </Link>
         </div>
       </div>
+
+      {/* Quick Action banner for Abandoned Recoveries if any */}
+      {stats.abandonedCount > 0 && (
+        <div style={{
+          background: "linear-gradient(135deg, rgba(122, 64, 61, 0.06), rgba(122, 64, 61, 0.02))",
+          border: "1px solid rgba(122, 64, 61, 0.15)",
+          borderRadius: "12px",
+          padding: "16px 20px",
+          marginBottom: "30px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          flexWrap: "wrap",
+          gap: "12px"
+        }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            <div style={{
+              width: "36px",
+              height: "36px",
+              borderRadius: "50%",
+              background: "rgba(122, 64, 61, 0.12)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "var(--color-primary)"
+            }}>
+              <Clock size={18} />
+            </div>
+            <div>
+              <h4 style={{ margin: "0 0 2px 0", fontSize: "0.95rem", color: "var(--color-primary-900)", fontWeight: "600" }}>
+                {stats.abandonedCount} Abandoned {stats.abandonedCount === 1 ? "Checkout" : "Checkouts"} Tracked
+              </h4>
+              <p style={{ margin: 0, fontSize: "0.82rem", color: "var(--color-text-secondary)" }}>
+                Automated 1-hour recovery emails are sent with 1-click restore links.
+              </p>
+            </div>
+          </div>
+          <Link 
+            href="/admin/orders" 
+            className={styles.btnPrimary} 
+            style={{ padding: "6px 14px", fontSize: "0.82rem", textDecoration: "none" }}
+          >
+            View in Orders
+          </Link>
+        </div>
+      )}
+
 
       <div className={styles.sectionHeader}>
         <h2 className={styles.sectionTitle}>Recent Products</h2>
