@@ -339,15 +339,15 @@ export default function ProductClient({ product, relatedProducts = [], isModal =
             {/* Restock Notification for Sold Out products */}
             {!product.inStock && (
               <div style={{
-                background: "#fcf6f6",
+                background: "#fdf8f8",
                 border: "1px solid #f2e2e1",
                 borderRadius: "12px",
-                padding: "16px",
+                padding: "14px 16px",
                 marginTop: "12px",
                 textAlign: "center"
               }}>
-                <p style={{ margin: "0 0 10px 0", fontSize: "0.85rem", color: "#7a403d", fontWeight: 600 }}>
-                  This set is currently sold out. Want to know when it restocks?
+                <p style={{ margin: "0 0 8px 0", fontSize: "0.78rem", color: "#7a403d", fontWeight: 600, letterSpacing: "0.01em" }}>
+                  Currently Sold Out • Join Restock List
                 </p>
                 <EmailCapture 
                   type="restock" 

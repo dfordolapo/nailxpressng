@@ -9,6 +9,7 @@ import { useWishlist } from "@/context/WishlistContext";
 import { useToast } from "@/context/ToastContext";
 import ImageZoomModal from "@/components/product/ImageZoomModal";
 import { SOCIAL_LINKS, WHATSAPP_MESSAGES } from "@/lib/constants";
+import EmailCapture from "@/components/ui/EmailCapture";
 import { motion } from "framer-motion";
 import styles from "./handmade-card.module.css";
 
@@ -263,7 +264,7 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
                 </div>
               </div>
               <button className={styles.flipHint} onClick={handleFlip}>
-                Quick add
+                {!product.inStock ? "Notify Me" : "Quick add"}
                 <FlipIcon />
               </button>
             </>
@@ -342,46 +343,60 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
               <span className={styles.backPrice}>{formatPrice(product.price)}</span>
             </div>
 
-            <p className={styles.backDesc}>{product.shortDescription || product.description}</p>
-
-            {product.category === "handmade" && (
-              <div className={styles.selectorGroup}>
-                <span className={styles.selectorLabel}>Size</span>
-                <select
-                  className={styles.sizeDropdown}
-                  value={selectedSize || ""}
-                  onChange={(e) => handleSizeSelect(e.target.value, e)}
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <option value="" disabled>Select Size</option>
-                  {["Small", "Medium", "Large"].map((size) => (
-                    <option key={size} value={size}>{size}</option>
-                  ))}
-                </select>
+            {!product.inStock ? (
+              <div style={{ marginTop: "auto", marginBottom: "auto", width: "100%", textAlign: "center", padding: "0 6px" }} onClick={(e) => e.stopPropagation()}>
+                <p style={{ margin: "0 0 10px 0", fontSize: "0.76rem", color: "var(--color-primary-800, #7a403d)", fontWeight: 600, letterSpacing: "0.01em" }}>
+                  Currently Sold Out • Join Restock List
+                </p>
+                <EmailCapture 
+                  type="restock" 
+                  productId={product.id} 
+                  productName={product.name} 
+                  compact={true} 
+                />
               </div>
-            )}
+            ) : (
+              <>
+                <p className={styles.backDesc}>{product.shortDescription || product.description}</p>
 
-            <div className={styles.qtyRow}>
-              <span className={styles.selectorLabel}>Quantity</span>
-              <div className={styles.qtyControl}>
-                <button className={styles.qtyBtn} onClick={(e) => handleQty(-1, e)} disabled={qty <= 1}>−</button>
-                <div className={styles.qtyValue}>
-                  <span className={`${styles.qtyNumber} ${qtyAnim ? styles[qtyAnim] : ""}`} key={qty}>{qty}</span>
+                {product.category === "handmade" && (
+                  <div className={styles.selectorGroup}>
+                    <span className={styles.selectorLabel}>Size</span>
+                    <select
+                      className={styles.sizeDropdown}
+                      value={selectedSize || ""}
+                      onChange={(e) => handleSizeSelect(e.target.value, e)}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <option value="" disabled>Select Size</option>
+                      {["Small", "Medium", "Large"].map((size) => (
+                        <option key={size} value={size}>{size}</option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+
+                <div className={styles.qtyRow}>
+                  <span className={styles.selectorLabel}>Quantity</span>
+                  <div className={styles.qtyControl}>
+                    <button className={styles.qtyBtn} onClick={(e) => handleQty(-1, e)} disabled={qty <= 1}>−</button>
+                    <div className={styles.qtyValue}>
+                      <span className={`${styles.qtyNumber} ${qtyAnim ? styles[qtyAnim] : ""}`} key={qty}>{qty}</span>
+                    </div>
+                    <button className={styles.qtyBtn} onClick={(e) => handleQty(1, e)} disabled={qty >= 10}>+</button>
+                  </div>
                 </div>
-                <button className={styles.qtyBtn} onClick={(e) => handleQty(1, e)} disabled={qty >= 10}>+</button>
-              </div>
-            </div>
 
-            <button
-                className={`${styles.addBtn} ${added ? styles.added : styles.default}`}
-                onClick={handleAddToCart}
-                disabled={!product.inStock}
-                style={!product.inStock ? { opacity: 0.5, cursor: "not-allowed" } : {}}
-              >
-              <span className={styles.addBtnContent}>
-                {!product.inStock ? "Sold Out" : added ? (<><CheckIcon /> Added to Cart</>) : "Add to Cart"}
-              </span>
-            </button>
+                <button
+                  className={`${styles.addBtn} ${added ? styles.added : styles.default}`}
+                  onClick={handleAddToCart}
+                >
+                  <span className={styles.addBtnContent}>
+                    {added ? (<><CheckIcon /> Added to Cart</>) : "Add to Cart"}
+                  </span>
+                </button>
+              </>
+            )}
 
             <div className={styles.backActions}>
               <Link

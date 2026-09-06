@@ -93,7 +93,7 @@ export async function POST(request) {
       </html>
     `;
 
-    // Send confirmation email
+    // 2. Send confirmation email to customer
     await resend.emails.send({
       from: `Nailexpress <${sender}>`,
       to: [cleanEmail],
@@ -101,6 +101,42 @@ export async function POST(request) {
       subject,
       html
     }).catch(e => console.error("Subscriber email send error:", e));
+
+    // 3. Send instant admin alert when someone signs up for a restock
+    if (type === 'restock') {
+      const adminHtml = `
+        <!DOCTYPE html>
+        <html>
+        <head><meta charset="utf-8"></head>
+        <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #f7f3f2; margin:0; padding: 20px;">
+          <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 550px; background: #ffffff; border-radius: 12px; padding: 24px; border: 1px solid #eae1e0;">
+            <tr>
+              <td>
+                <h2 style="color: #7a403d; margin-top: 0; font-size: 20px;">🔔 New Product Restock Request</h2>
+                <p style="font-size: 14px; color: #444; line-height: 1.5;">
+                  A customer has requested to be notified when <strong>${productName || 'a sold-out set'}</strong> is restocked.
+                </p>
+                <div style="background-color: #fdf8f8; padding: 14px 18px; border-radius: 8px; border: 1px solid #f2e2e1; margin: 16px 0;">
+                  <p style="margin: 0 0 6px 0; font-size: 13px;"><strong>Customer Email:</strong> ${cleanEmail}</p>
+                  <p style="margin: 0; font-size: 13px;"><strong>Requested Product:</strong> ${productName || 'N/A'}</p>
+                </div>
+                <p style="font-size: 13px; color: #666;">
+                  You can view all waiting customers and notify them directly in your <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'https://nailexpress.ng'}/admin/subscribers" style="color: #7a403d; font-weight: 600;">Admin Dashboard</a> once new units are ready.
+                </p>
+              </td>
+            </tr>
+          </table>
+        </body>
+        </html>
+      `;
+
+      await resend.emails.send({
+        from: `Nailexpress <${sender}>`,
+        to: [adminEmail],
+        subject: `🔔 Restock Request: ${productName || 'Sold-out set'} (${cleanEmail})`,
+        html: adminHtml
+      }).catch(e => console.error("Admin restock alert email error:", e));
+    }
 
     return NextResponse.json({ success: true, message: 'Subscribed successfully' });
   } catch (error) {

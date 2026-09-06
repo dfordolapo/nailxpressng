@@ -759,10 +759,10 @@
 
   .glowRing { display: none; }
 
-  .cardBack { padding: var(--space-4) var(--space-2); display: flex; flex-direction: column; gap: 4px; border-color: transparent; }
-  .backHeader { margin-bottom: 4px; padding-bottom: 4px; }
-  .backName { font-size: 13px; }
-  .backPrice { font-size: 12px; }
+  .cardBack { padding: var(--space-3) var(--space-2); display: flex; flex-direction: column; gap: 4px; border-color: transparent; }
+  .backHeader { margin-bottom: 2px; padding-bottom: 2px; }
+  .backName { font-size: 12px; }
+  .backPrice { font-size: 11px; }
   .backDesc { font-size: 10px; line-height: 1.5; margin-bottom: 4px; }
   .selectorGroup { margin-bottom: 4px; }
   .selectorLabel { font-size: 9px; margin-bottom: 4px; }
