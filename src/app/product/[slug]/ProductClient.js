@@ -10,6 +10,7 @@ import { formatPrice, getDiscountPercent } from "@/lib/utils";
 import { SOCIAL_LINKS, WHATSAPP_MESSAGES } from "@/lib/constants";
 import ProductGrid from "@/components/product/ProductGrid";
 import ProductReviews from "@/components/product/ProductReviews";
+import EmailCapture from "@/components/ui/EmailCapture";
 import pageStyles from "@/styles/pages/collection.module.css";
 import btnStyles from "@/styles/components/buttons.module.css";
 
@@ -334,6 +335,28 @@ export default function ProductClient({ product, relatedProducts = [], isModal =
                 <HeartIcon filled={wishlisted} />
               </button>
             </div>
+
+            {/* Restock Notification for Sold Out products */}
+            {!product.inStock && (
+              <div style={{
+                background: "#fcf6f6",
+                border: "1px solid #f2e2e1",
+                borderRadius: "12px",
+                padding: "16px",
+                marginTop: "12px",
+                textAlign: "center"
+              }}>
+                <p style={{ margin: "0 0 10px 0", fontSize: "0.85rem", color: "#7a403d", fontWeight: 600 }}>
+                  This set is currently sold out. Want to know when it restocks?
+                </p>
+                <EmailCapture 
+                  type="restock" 
+                  productId={product.id} 
+                  productName={product.name}
+                  compact={true}
+                />
+              </div>
+            )}
 
             {/* Custom Order Link */}
             <Link

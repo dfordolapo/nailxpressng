@@ -5,6 +5,7 @@ import { Send, MessageCircle } from 'lucide-react';
 import { SOCIAL_LINKS, WHATSAPP_MESSAGES } from '@/lib/constants';
 import MagneticButton from '@/components/ui/MagneticButton';
 import { NailIcon } from '@/components/ui/NailIcon';
+import EmailCapture from '@/components/ui/EmailCapture';
 import styles from './FooterHero.module.css';
 
 export default function FooterHero() {
@@ -21,13 +22,20 @@ export default function FooterHero() {
           We nail it, you retail it
         </p>
 
-        <div>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "24px", width: "100%" }}>
           <MagneticButton href={whatsappUrl} target="_blank" rel="noopener noreferrer" className={styles.whatsappButton}>
             <span style={{ display: 'inline-flex', alignItems: 'center', gap: '9px' }}>
               <span>Chat on WhatsApp</span>
               <MessageCircle size={20} fill="#D4AF7A" color="transparent" />
             </span>
           </MagneticButton>
+
+          <div style={{ maxWidth: "420px", width: "90%", marginTop: "10px" }}>
+            <p style={{ margin: "0 0 10px 0", fontSize: "0.85rem", color: "var(--color-primary-800)", fontWeight: 600, letterSpacing: "1px", textTransform: "uppercase" }}>
+              Join the VIP Inner Circle (10% Off Drops)
+            </p>
+            <EmailCapture type="newsletter" />
+          </div>
         </div>
       </div>
 
