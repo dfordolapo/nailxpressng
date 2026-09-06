@@ -11,6 +11,7 @@ import OfflineBanner from "@/components/ui/OfflineBanner";
 import SplashAnimation from "@/components/ui/SplashAnimation";
 import PullToRefresh from "@/components/ui/PullToRefresh";
 import InstallPrompt from "@/components/layout/InstallPrompt";
+import RouteRestoration from "@/components/layout/RouteRestoration";
 
 export const viewport = {
   themeColor: [
@@ -267,6 +268,7 @@ export default function RootLayout({ children, modal }) {
             <SearchProvider>
               <ToastProvider>
                 <SplashProvider>
+                  <RouteRestoration />
                   <SplashAnimation />
                   <Header />
                   <SearchOverlay />
