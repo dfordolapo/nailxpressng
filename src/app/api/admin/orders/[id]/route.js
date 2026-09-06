@@ -40,9 +40,14 @@ export async function PATCH(request, { params }) {
         } else if (status === 'delivered') {
           const { data: orderItems } = await supabaseAdmin
             .from('order_items')
-            .select('*')
+            .select('*, products(slug)')
             .eq('order_id', id);
-          await sendOrderDeliveredEmail(updatedOrder, orderItems || []);
+          
+          const formattedItems = (orderItems || []).map(item => ({
+            ...item,
+            slug: item.products?.slug || null
+          }));
+          await sendOrderDeliveredEmail(updatedOrder, formattedItems);
         } else if (status === 'cancelled') {
           await sendOrderCancellationEmail(updatedOrder, reason, nextSteps);
         }

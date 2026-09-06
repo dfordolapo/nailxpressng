@@ -89,7 +89,7 @@ export async function getProducts() {
 
 export async function getProductBySlug(slug) {
   const [{ data, error }, discount] = await Promise.all([
-    supabase.from('products').select('*, categories(slug, name)').eq('slug', slug).single(),
+    supabase.from('products').select('*, categories(slug, name)').eq('slug', slug).maybeSingle(),
     getSitewideDiscount(),
   ]);
   if (error || !data) {
