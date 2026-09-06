@@ -13,10 +13,14 @@ export function SplashProvider({ children }) {
   useEffect(() => {
     // Check if user already saw splash within the last 24 hours
     try {
-      if (typeof window !== "undefined" && window.localStorage) {
-        const lastSeen = localStorage.getItem("lastSeenSplashTimestamp");
+      if (typeof window !== "undefined") {
+        const match = document.cookie.match(new RegExp('(^| )hasSeenSplashTimestamp=([^;]+)'));
+        const cookieTime = match ? parseInt(match[2], 10) : null;
+        const localTime = window.localStorage ? parseInt(localStorage.getItem("lastSeenSplashTimestamp") || "0", 10) : null;
+        const lastSeen = cookieTime || localTime;
+
         if (lastSeen) {
-          const hoursSinceLastSeen = (Date.now() - parseInt(lastSeen, 10)) / (1000 * 60 * 60);
+          const hoursSinceLastSeen = (Date.now() - lastSeen) / (1000 * 60 * 60);
           if (hoursSinceLastSeen < 24) {
             setIsSplashComplete(true);
           }

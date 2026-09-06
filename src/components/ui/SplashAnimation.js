@@ -4,27 +4,47 @@ import Image from "next/image";
 import { useSplash } from "@/context/SplashContext";
 
 export default function SplashAnimation() {
-  const [show, setShow] = useState(true);
+  const [show, setShow] = useState(false);
   const [animateOut, setAnimateOut] = useState(false);
 
   const { setIsSplashComplete } = useSplash();
 
   useEffect(() => {
     try {
-      if (typeof window !== "undefined" && window.localStorage) {
-        const lastSeen = localStorage.getItem("lastSeenSplashTimestamp");
+      if (typeof window !== "undefined") {
+        // 1. Check Cookie first (most reliable on mobile Safari PWA)
+        const match = document.cookie.match(new RegExp('(^| )hasSeenSplashTimestamp=([^;]+)'));
+        const cookieTime = match ? parseInt(match[2], 10) : null;
+        
+        // 2. Check localStorage
+        const localTime = window.localStorage ? parseInt(localStorage.getItem("lastSeenSplashTimestamp") || "0", 10) : null;
+        
+        const lastSeen = cookieTime || localTime;
+
         if (lastSeen) {
-          const hoursSinceLastSeen = (Date.now() - parseInt(lastSeen, 10)) / (1000 * 60 * 60);
+          const hoursSinceLastSeen = (Date.now() - lastSeen) / (1000 * 60 * 60);
           if (hoursSinceLastSeen < 24) {
             setShow(false);
             setIsSplashComplete(true);
             return;
           }
         }
-        localStorage.setItem("lastSeenSplashTimestamp", Date.now().toString());
+
+        // Store timestamp in both localStorage and cookie (expires in 24 hours)
+        const now = Date.now().toString();
+        if (window.localStorage) {
+          localStorage.setItem("lastSeenSplashTimestamp", now);
+        }
+        document.cookie = `hasSeenSplashTimestamp=${now}; max-age=${24 * 60 * 60}; path=/; SameSite=Lax`;
+        
+        // Allowed to show splash
+        setShow(true);
       }
     } catch (e) {
-      // Prevent Safari private browsing / storage restrictions from throwing errors
+      // Storage safety
+      setShow(false);
+      setIsSplashComplete(true);
+      return;
     }
 
     let isStandalone = false;
