@@ -90,53 +90,21 @@ nailexpress/
 
 ---
 
-## Local Development Setup
+## Engineering & Architecture Highlights
 
-### 1. Clone the repository
-```bash
-git clone https://github.com/dfordolapo/nailxpressng.git
-cd nailxpressng
-```
-
-### 2. Install dependencies
-```bash
-npm install
-```
-
-### 3. Environment Variables
-Create a `.env.local` file in the root directory:
-```env
-NEXT_PUBLIC_SITE_URL=https://www.nailexpress.ng
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
-NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY=your_paystack_public_key
-PAYSTACK_SECRET_KEY=your_paystack_secret_key
-RESEND_API_KEY=your_resend_key
-ADMIN_EMAIL=your_admin_email
-GEMINI_API_KEY=your_gemini_api_key
-```
-
-### 4. Run the development server
-```bash
-npm run dev
-```
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+* **Server-Side Rendered (SSR) Catalog**: Full SEO discoverability with static and server-rendered HTML payloads, structured JSON-LD schemas, and dynamic XML sitemap generation.
+* **Component-Driven Development**: Scalable UI built with Vanilla CSS Modules and document-driven component testing via Storybook.
+* **Robust Automated Testing**: Unit test coverage across pricing math, shopping cart states, and discount calculation with Vitest and Testing Library.
+* **Continuous Integration**: Strict GitHub Actions pipeline ensuring zero lint regressions, passing unit tests, and production build verification on every push.
 
 ---
 
-## Available Scripts
-
-| Command | Description |
-| :--- | :--- |
-| `npm run dev` | Starts the Next.js local development server |
-| `npm run build` | Compiles the production build with TypeScript checks |
-| `npm test` | Runs the automated **Vitest** unit test suite |
-| `npm run type-check` | Executes TypeScript type validation (`tsc --noEmit`) |
-| `npm run storybook` | Starts the local **Storybook** component sandbox on port `6006` |
-| `npm run build-storybook` | Builds the static Storybook documentation bundle |
+## Project Showcase & Attribution
+* **Client**: Nailexpress Nigeria
+* **Live Store**: [https://www.nailexpress.ng](https://www.nailexpress.ng)
+* **Status**: Production Deployment (Vercel Edge Network)
+* **Author / Engineer**: Dolapo ([dfordolapo](https://github.com/dfordolapo))
 
 ---
 
-## License & Attribution
-Designed and built for **Nailexpress Nigeria** ([https://www.nailexpress.ng](https://www.nailexpress.ng)). All rights reserved.
+*Note: This repository is maintained publicly as an engineering and design portfolio case study. All proprietary brand assets and content belong to Nailexpress.*
