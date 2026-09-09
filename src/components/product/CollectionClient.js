@@ -228,21 +228,23 @@ export default function CollectionClient({ category, allProducts, featuredProduc
                 <p className={filterStyles.mobileSmallText} style={{ color: "var(--color-text-secondary)", fontSize: "0.95rem", maxWidth: "460px", marginBottom: "20px", lineHeight: "1.6" }}>
                   We couldn&apos;t find any ready-made sets with this exact combination of shape, size, and color. Want a set created uniquely for you?
                 </p>
-                <div style={{ display: "flex", gap: "12px", alignItems: "center", justifyContent: "center", flexWrap: "wrap" }}>
+                <div style={{ display: "flex", gap: "12px", alignItems: "center", justifyContent: "center", flexWrap: "wrap", marginTop: "4px" }}>
                   <Link
                     href="/custom-order"
                     style={{
                       display: "inline-flex",
                       alignItems: "center",
+                      justifyContent: "center",
                       gap: "8px",
-                      padding: "10px 22px",
+                      height: "44px",
+                      padding: "0 24px",
                       backgroundColor: "var(--color-primary)",
                       color: "white",
                       borderRadius: "var(--radius-full)",
-                      fontSize: "0.88rem",
-                      fontWeight: 600,
+                      fontSize: "0.9rem",
+                      fontWeight: 500,
                       textDecoration: "none",
-                      boxShadow: "0 4px 14px rgba(122, 64, 61, 0.25)",
+                      boxShadow: "0 4px 14px rgba(122, 64, 61, 0.2)",
                       transition: "all 0.2s ease"
                     }}
                   >
@@ -252,15 +254,19 @@ export default function CollectionClient({ category, allProducts, featuredProduc
                   <button 
                     onClick={() => { setSelectedShapes([]); setSelectedLengths([]); setSelectedColors([]); }}
                     style={{
-                      padding: "10px 22px", 
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      height: "44px",
+                      padding: "0 24px", 
                       backgroundColor: "var(--color-bg)", 
-                      border: "1px solid var(--color-border)",
+                      border: "1.5px solid var(--color-border)",
                       borderRadius: "var(--radius-full)", 
                       color: "var(--color-text)", 
-                      fontSize: "0.88rem", 
+                      fontSize: "0.9rem", 
                       fontWeight: 500,
                       cursor: "pointer", 
-                      transition: "all 0.2s"
+                      transition: "all 0.2s ease"
                     }}
                   >
                     Clear filters
