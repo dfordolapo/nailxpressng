@@ -5,8 +5,10 @@ import ShopTheLookClient from './ShopTheLookClient';
 
 export default async function ShopTheLook() {
   const allProducts = await getProducts();
-  const pick1 = allProducts.find(p => p.name === 'Elegant Quartz') || allProducts[0];
-  const pick2 = allProducts.find(p => p.name === 'Lava Eclipse') || allProducts[1];
+  const fallbackProduct1 = { name: 'Elegant Quartz', price: 16500, slug: 'elegant-quartz' };
+  const fallbackProduct2 = { name: 'Lava Eclipse', price: 16500, slug: 'lava-eclipse' };
+  const pick1 = (allProducts && allProducts.find(p => p.name === 'Elegant Quartz')) || allProducts?.[0] || fallbackProduct1;
+  const pick2 = (allProducts && allProducts.find(p => p.name === 'Lava Eclipse')) || allProducts?.[1] || fallbackProduct2;
 
   const hotspots = [
     {
