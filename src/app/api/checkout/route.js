@@ -110,12 +110,17 @@ export async function POST(request) {
     // 4. Send Confirmation Emails only if not marked as abandoned
     try {
       if (initialStatus !== 'abandoned') {
+        const orderForEmail = {
+          ...order,
+          delivery_time: order?.delivery_time || deliveryTime || '3-5 business days',
+          shipping_method: order?.shipping_method || shippingMethodName || shippingMethod
+        };
         if (order.customer_email) {
-          const customerResult = await sendOrderConfirmationEmail(order, items);
+          const customerResult = await sendOrderConfirmationEmail(orderForEmail, items);
           console.log("Customer email result:", customerResult);
         }
         const adminEmail = process.env.ADMIN_EMAIL || 'nailxpressng@gmail.com';
-        const adminResult = await sendAdminNewOrderAlert(order, items, adminEmail);
+        const adminResult = await sendAdminNewOrderAlert(orderForEmail, items, adminEmail);
         console.log("Admin email result:", adminResult);
       }
     } catch (e) {
