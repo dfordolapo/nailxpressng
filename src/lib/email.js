@@ -490,3 +490,132 @@ export async function sendAbandonedCheckoutEmail(order, items = []) {
     return { success: false, error };
   }
 }
+
+// 9. Buyer Restock Alert Requested Confirmation
+export async function sendRestockRequestConfirmationEmail(email, productName = 'Your Favorite Set', productSlug = null) {
+  try {
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nailexpress.ng';
+    const targetUrl = productSlug ? `${siteUrl}/product/${productSlug}` : `${siteUrl}/shop`;
+
+    const bodyHtml = `
+      <h2 style="color: #7a403d; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 24px; margin-top: 0; margin-bottom: 12px;">We'll let you know when it's back!</h2>
+      <p style="color: #555; font-size: 15px; line-height: 1.6;">
+        We noted your interest in <strong>${productName}</strong>. Our nail artists are actively crafting new batches, and we'll send you an instant email alert the moment new sets are ready.
+      </p>
+
+      <div style="background-color: #faf5f4; border-radius: 12px; padding: 18px 20px; margin: 24px 0;">
+        <p style="margin: 0 0 6px 0; font-size: 11px; font-weight: 700; color: #7a403d; letter-spacing: 1.5px; text-transform: uppercase;">Requested Set</p>
+        <p style="margin: 0; font-weight: 600; color: #2d2d2d; font-size: 15px;">${productName}</p>
+      </div>
+
+      <p style="color: #666; font-size: 14px; line-height: 1.5;">
+        In the meantime, feel free to browse our available ready-to-ship handmade and factory collections.
+      </p>
+
+      <div style="text-align: center; margin: 28px 0 10px 0;">
+        <a href="${targetUrl}"
+           style="display: inline-block; padding: 12px 28px; background-color: #7a403d; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 1px;">
+          Explore Available Sets ↗
+        </a>
+      </div>
+    `;
+
+    const { data, error } = await resend.emails.send({
+      from: `Nailexpress <${fromEmail}>`,
+      to: [email],
+      replyTo: adminDefaultEmail,
+      subject: `Restock Alert Requested: ${productName}`,
+      html: wrapEmailTemplate(`Restock Alert Requested`, bodyHtml),
+    });
+
+    return { success: !error, error };
+  } catch (error) {
+    console.error("Restock Request Email Error:", error);
+    return { success: false, error };
+  }
+}
+
+// 10. Buyer Product Drop / Back in Stock Broadcast Alert
+export async function sendProductDropAlertEmail(email, productName = 'Popular Set', productSlug = null, customMessage = null) {
+  try {
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nailexpress.ng';
+    const targetUrl = productSlug ? `${siteUrl}/product/${productSlug}` : `${siteUrl}/shop`;
+
+    const bodyHtml = `
+      <h2 style="color: #7a403d; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 24px; margin-top: 0; margin-bottom: 12px;">Good news! ${productName} is Back in Stock</h2>
+      <p style="color: #555; font-size: 15px; line-height: 1.6;">
+        ${customMessage || `You asked to be notified when <strong>${productName}</strong> was restocked. Fresh batches have just been handcrafted in our studio and are available now in limited quantities.`}
+      </p>
+
+      <div style="background-color: #faf5f4; border-radius: 12px; padding: 18px 20px; margin: 24px 0; text-align: center;">
+        <p style="margin: 0 0 6px 0; font-size: 11px; font-weight: 700; color: #7a403d; letter-spacing: 1.5px; text-transform: uppercase;">Now Available</p>
+        <p style="margin: 0 0 16px 0; font-weight: 700; color: #2d2d2d; font-size: 17px; font-family: 'Cormorant Garamond', Georgia, serif;">${productName}</p>
+        <a href="${targetUrl}"
+           style="display: inline-block; padding: 13px 30px; background-color: #7a403d; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 4px 12px rgba(122, 64, 61, 0.2);">
+          Shop ${productName} ↗
+        </a>
+      </div>
+
+      <p style="color: #888; font-size: 12px; text-align: center; margin-top: 16px;">
+        Hurry — popular handmade sets sell out quickly due to high demand!
+      </p>
+    `;
+
+    const { data, error } = await resend.emails.send({
+      from: `Nailexpress <${fromEmail}>`,
+      to: [email],
+      replyTo: adminDefaultEmail,
+      subject: `Back in Stock: ${productName}`,
+      html: wrapEmailTemplate(`Back in Stock - ${productName}`, bodyHtml),
+    });
+
+    return { success: !error, error };
+  } catch (error) {
+    console.error("Product Drop Alert Email Error:", error);
+    return { success: false, error };
+  }
+}
+
+// 11. Admin Restock Demand Lead Alert
+export async function sendAdminRestockLeadAlert(subscriberEmail, productName = 'Sold-out set', productSlug = null, adminEmail = null) {
+  try {
+    const adminTarget = adminEmail || adminDefaultEmail;
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nailexpress.ng';
+
+    const bodyHtml = `
+      <div style="background-color: #fcf6f6; border-radius: 12px; padding: 20px; border: 1px solid #f5e6e5; margin-bottom: 24px;">
+        <h2 style="color: #7a403d; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 22px; margin: 0 0 12px 0;">New Restock Request Lead</h2>
+        <p style="margin: 4px 0; font-size: 14px;">A customer has requested to be notified when <strong>${productName}</strong> is restocked.</p>
+        
+        <div style="background-color: #ffffff; padding: 14px 18px; border-radius: 8px; border: 1px solid #eae1e0; margin: 16px 0;">
+          <p style="margin: 0 0 6px 0; font-size: 13px;"><strong>Customer Email:</strong> ${subscriberEmail}</p>
+          <p style="margin: 0; font-size: 13px;"><strong>Requested Set:</strong> ${productName}</p>
+        </div>
+
+        <p style="font-size: 13px; color: #666; margin: 0;">
+          You can view all customer demand leads and broadcast instant stock alerts directly in your Admin Dashboard.
+        </p>
+      </div>
+
+      <div align="center">
+        <a href="${siteUrl}/admin/subscribers" 
+           style="display: inline-block; padding: 13px 26px; background-color: #7a403d; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 13px; letter-spacing: 1px; text-transform: uppercase;">
+          View Restock Leads in Admin
+        </a>
+      </div>
+    `;
+
+    const { data, error } = await resend.emails.send({
+      from: `Nailexpress System <${fromEmail}>`,
+      to: [adminTarget],
+      subject: `Restock Demand Lead: ${productName} (${subscriberEmail})`,
+      html: wrapEmailTemplate(`Restock Lead - ${productName}`, bodyHtml),
+    });
+
+    return { success: !error, error };
+  } catch (error) {
+    console.error("Admin Restock Lead Alert Error:", error);
+    return { success: false, error };
+  }
+}
+
