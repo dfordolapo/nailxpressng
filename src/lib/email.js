@@ -332,48 +332,35 @@ export async function sendOrderShippedEmail(order) {
       <h2 style="color: #7a403d; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 24px; margin-top: 0;">Your Order Has Shipped!</h2>
       <p style="color: #555;">Hi ${order.customer_first_name || 'there'}, guess what? Your fresh set just left our studio and is headed straight to you! We've packed everything with care, so get those nails ready to slay.</p>
       
-      <!-- OUTLINED 3-STEP TRACKING STEPPER GRAPHIC -->
-      <div style="margin: 24px 0; background-color: #fcf6f6; border-radius: 12px; padding: 18px 12px; border: 1px solid #f5e6e5; text-align: center;">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0">
-          <tr>
-            <!-- Step 1: Crafted -->
-            <td align="center" width="33%" style="vertical-align: top;">
-              <table align="center" cellpadding="0" cellspacing="0" border="0" style="margin: 0 auto 6px auto;">
-                <tr>
-                  <td align="center" valign="middle" style="width: 36px; height: 36px; border-radius: 50%; border: 2px solid #7a403d; background-color: transparent; text-align: center; color: #7a403d; font-size: 16px; font-weight: bold; line-height: 36px; mso-line-height-rule: exactly;">
-                    &#10003;
-                  </td>
-                </tr>
-              </table>
-              <div style="font-size: 11px; font-weight: 700; color: #7a403d; text-transform: uppercase; letter-spacing: 0.5px;">Crafted</div>
-            </td>
-
-            <!-- Step 2: Dispatched (Active) -->
-            <td align="center" width="33%" style="vertical-align: top;">
-              <table align="center" cellpadding="0" cellspacing="0" border="0" style="margin: 0 auto 6px auto;">
-                <tr>
-                  <td align="center" valign="middle" style="width: 36px; height: 36px; border-radius: 50%; border: 2px solid #7a403d; background-color: #f7e8e8; text-align: center; color: #7a403d; font-size: 14px; font-weight: bold; line-height: 36px; mso-line-height-rule: exactly;">
-                    &bull;&bull;&bull;
-                  </td>
-                </tr>
-              </table>
-              <div style="font-size: 11px; font-weight: 700; color: #7a403d; text-transform: uppercase; letter-spacing: 0.5px;">Dispatched</div>
-            </td>
-
-            <!-- Step 3: Delivered -->
-            <td align="center" width="33%" style="vertical-align: top;">
-              <table align="center" cellpadding="0" cellspacing="0" border="0" style="margin: 0 auto 6px auto;">
-                <tr>
-                  <td align="center" valign="middle" style="width: 36px; height: 36px; border-radius: 50%; border: 2px dashed #cccccc; background-color: transparent; text-align: center; color: #aaaaaa; font-size: 13px; font-weight: normal; line-height: 36px; mso-line-height-rule: exactly;">
-                    &#9675;
-                  </td>
-                </tr>
-              </table>
-              <div style="font-size: 11px; font-weight: 500; color: #aaaaaa; text-transform: uppercase; letter-spacing: 0.5px;">Delivered</div>
-            </td>
-          </tr>
-        </table>
-      </div>
+      <!-- 3-STEP TRACKING STEPPER GRAPHIC -->
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin: 24px 0; background-color: #fcf6f6; border-radius: 12px; border: 1px solid #f5e6e5;">
+        <tr>
+          <td style="padding: 18px 10px; text-align: center;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td align="center" width="33%" style="vertical-align: top;">
+                  <div style="width: 36px; height: 36px; line-height: 34px; margin: 0 auto 6px auto; border-radius: 50%; border: 2px solid #7a403d; background-color: #7a403d; color: #ffffff; text-align: center; font-size: 15px; font-weight: bold; font-family: -apple-system, sans-serif;">
+                    ✓
+                  </div>
+                  <div style="font-size: 11px; font-weight: 700; color: #7a403d; text-transform: uppercase; letter-spacing: 0.5px;">Crafted</div>
+                </td>
+                <td align="center" width="33%" style="vertical-align: top;">
+                  <div style="width: 36px; height: 36px; line-height: 32px; margin: 0 auto 6px auto; border-radius: 50%; border: 2px solid #7a403d; background-color: #f7e8e8; color: #7a403d; text-align: center; font-size: 12px; font-weight: 800; letter-spacing: 0.5px; font-family: -apple-system, sans-serif;">
+                    ON WAY
+                  </div>
+                  <div style="font-size: 11px; font-weight: 700; color: #7a403d; text-transform: uppercase; letter-spacing: 0.5px;">Dispatched</div>
+                </td>
+                <td align="center" width="33%" style="vertical-align: top;">
+                  <div style="width: 36px; height: 36px; line-height: 32px; margin: 0 auto 6px auto; border-radius: 50%; border: 2px dashed #cccccc; background-color: transparent; color: #aaaaaa; text-align: center; font-size: 11px; font-weight: 600; font-family: -apple-system, sans-serif;">
+                    3
+                  </div>
+                  <div style="font-size: 11px; font-weight: 500; color: #aaaaaa; text-transform: uppercase; letter-spacing: 0.5px;">Delivered</div>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
 
       <div style="background-color: #fcf6f6; border-radius: 12px; padding: 20px; border: 1px solid #f5e6e5; margin: 24px 0;">
         <div style="display: inline-block; background-color: #7a403d; color: #ffffff; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; letter-spacing: 1px; margin-bottom: 12px;">ORDER #${orderNum}</div>
