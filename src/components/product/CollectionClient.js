@@ -226,7 +226,7 @@ export default function CollectionClient({ category, allProducts, featuredProduc
                 <PackageSearch size={44} color="var(--color-primary)" style={{ marginBottom: "16px", opacity: 0.85 }} />
                 <h3 style={{ fontSize: "1.25rem", color: "var(--color-text)", marginBottom: "8px", fontWeight: 600 }}>No exact matches found</h3>
                 <p className={filterStyles.mobileSmallText} style={{ color: "var(--color-text-secondary)", fontSize: "1rem", maxWidth: "480px", marginBottom: "24px", lineHeight: "1.6" }}>
-                  We couldn&apos;t find any sets with this exact combination. Want one created for you?
+                  We couldn&apos;t find any sets with this exact combination. Want one made for you?
                 </p>
                 <div style={{ display: "flex", gap: "14px", alignItems: "center", justifyContent: "center", flexWrap: "wrap" }}>
                   <Link
