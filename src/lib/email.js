@@ -74,18 +74,36 @@ export async function sendOrderConfirmationEmail(order, items) {
       </tr>
     `).join('');
 
+    const deliveryTimeDisplay = order.delivery_time || '3-5 business days';
+
     const bodyHtml = `
       <h2 style="color: #7a403d; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 24px; margin-top: 0; margin-bottom: 8px;">Thanks for your order, ${order.customer_first_name}!</h2>
       <p style="color: #555; margin-top: 0; margin-bottom: 24px;">We've received your order and are crafting it with care.</p>
       
       <!-- ORDER INFO BOX -->
       <div style="background-color: #fcf6f6; border-radius: 12px; padding: 20px; border: 1px solid #f5e6e5; margin-bottom: 24px;">
-        <div style="display: inline-block; background-color: #7a403d; color: #ffffff; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; letter-spacing: 1px; margin-bottom: 12px;">ORDER #${orderNum}</div>
-        <p style="margin: 0 0 6px 0; font-size: 12px; color: #666; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Shipping Address</p>
-        <p style="margin: 0; font-weight: 500; color: #2d2d2d;">
-          ${order.shipping_address}<br/>
-          ${order.shipping_city}, ${order.shipping_state}
-        </p>
+        <div style="display: inline-block; background-color: #7a403d; color: #ffffff; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; letter-spacing: 1px; margin-bottom: 14px;">ORDER #${orderNum}</div>
+        
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td style="vertical-align: top; padding-bottom: 12px;">
+              <p style="margin: 0 0 4px 0; font-size: 11px; color: #7a403d; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Estimated Delivery</p>
+              <p style="margin: 0; font-weight: 700; color: #2d2d2d; font-size: 15px;">
+                ⏱️ ${deliveryTimeDisplay}
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top; border-top: 1px dashed #eac5c1; padding-top: 12px;">
+              <p style="margin: 0 0 4px 0; font-size: 11px; color: #7a403d; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Shipping Address</p>
+              <p style="margin: 0; font-weight: 500; color: #2d2d2d; font-size: 14px; line-height: 1.5;">
+                ${order.shipping_address}<br/>
+                ${order.shipping_city}, ${order.shipping_state}
+              </p>
+              ${order.shipping_method ? `<p style="margin: 4px 0 0 0; font-size: 12px; color: #888;">Method: ${order.shipping_method}</p>` : ''}
+            </td>
+          </tr>
+        </table>
       </div>
 
       <!-- ITEMS TABLE -->
@@ -147,7 +165,9 @@ export async function sendAdminNewOrderAlert(order, items = [], adminEmail) {
         <p style="margin: 4px 0;"><strong>Customer Name:</strong> ${order.customer_first_name} ${order.customer_last_name}</p>
         <p style="margin: 4px 0;"><strong>Email:</strong> ${order.customer_email}</p>
         <p style="margin: 4px 0;"><strong>Phone:</strong> ${order.customer_phone || 'N/A'}</p>
+        <p style="margin: 4px 0;"><strong>Estimated Delivery:</strong> ${order.delivery_time || '3-5 business days'}</p>
         <p style="margin: 4px 0;"><strong>Delivery Address:</strong> ${order.shipping_address}, ${order.shipping_city}, ${order.shipping_state}</p>
+        ${order.shipping_method ? `<p style="margin: 4px 0;"><strong>Shipping Method:</strong> ${order.shipping_method}</p>` : ''}
       </div>
 
       <h3 style="color: #7a403d; font-size: 16px; margin-bottom: 12px; border-bottom: 2px solid #f2e9e8; padding-bottom: 8px;">Order Details</h3>
