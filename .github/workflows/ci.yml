@@ -31,7 +31,7 @@ jobs:
         env:
           NEXT_PUBLIC_SITE_URL: https://www.nailexpress.ng
           NEXT_PUBLIC_SUPABASE_URL: https://ukfwpourkksctwmdgrci.supabase.co
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVrZndwb3Vya2tzY3R3bWRncmNpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQxNTA3NjEsImV4cCI6MjA5OTcyNjc2MX0.AHjuszOA09bqiMPyAmymVer5RXrjiLfbqHkttuDMIRM
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: sb_publishable_XsYdF7KDg7EIb-bngvJM_Q_YgGdHplO
           RESEND_API_KEY: re_dummy_ci_key
           OPENAI_API_KEY: sk-dummy-key-for-ci
           NODE_ENV: production
