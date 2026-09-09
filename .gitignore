@@ -44,7 +44,7 @@ next-env.d.ts
 # local playground & scratch
 src/app/emails/
 scratch/
-scripts/archive/
+scripts/
 storybook-static/
 debug-storybook.log
 
