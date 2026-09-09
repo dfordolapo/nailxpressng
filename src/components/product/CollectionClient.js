@@ -225,31 +225,31 @@ export default function CollectionClient({ category, allProducts, featuredProduc
               }}>
                 <PackageSearch size={44} color="var(--color-primary)" style={{ marginBottom: "16px", opacity: 0.85 }} />
                 <h3 style={{ fontSize: "1.25rem", color: "var(--color-text)", marginBottom: "8px", fontWeight: 600 }}>No exact matches found</h3>
-                <p className={filterStyles.mobileSmallText} style={{ color: "var(--color-text-secondary)", fontSize: "0.95rem", maxWidth: "460px", marginBottom: "20px", lineHeight: "1.6" }}>
-                  We couldn&apos;t find any ready-made sets with this exact combination of shape, size, and color. Want a set created uniquely for you?
+                <p className={filterStyles.mobileSmallText} style={{ color: "var(--color-text-secondary)", fontSize: "1rem", maxWidth: "480px", marginBottom: "24px", lineHeight: "1.6" }}>
+                  We couldn&apos;t find any sets with this exact combination. Want one created for you?
                 </p>
-                <div style={{ display: "flex", gap: "12px", alignItems: "center", justifyContent: "center", flexWrap: "wrap", marginTop: "4px" }}>
+                <div style={{ display: "flex", gap: "14px", alignItems: "center", justifyContent: "center", flexWrap: "wrap" }}>
                   <Link
                     href="/custom-order"
                     style={{
                       display: "inline-flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      gap: "8px",
-                      height: "44px",
-                      padding: "0 24px",
+                      height: "46px",
+                      width: "190px",
                       backgroundColor: "var(--color-primary)",
                       color: "white",
                       borderRadius: "var(--radius-full)",
-                      fontSize: "0.9rem",
-                      fontWeight: 500,
+                      fontFamily: "var(--font-heading)",
+                      fontSize: "1.1rem",
+                      fontWeight: 600,
+                      letterSpacing: "0.02em",
                       textDecoration: "none",
                       boxShadow: "0 4px 14px rgba(122, 64, 61, 0.2)",
                       transition: "all 0.2s ease"
                     }}
                   >
-                    <Sparkles size={16} />
-                    Place a Custom Order
+                    Custom Order
                   </Link>
                   <button 
                     onClick={() => { setSelectedShapes([]); setSelectedLengths([]); setSelectedColors([]); }}
@@ -257,19 +257,21 @@ export default function CollectionClient({ category, allProducts, featuredProduc
                       display: "inline-flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      height: "44px",
-                      padding: "0 24px", 
+                      height: "46px",
+                      width: "190px",
                       backgroundColor: "var(--color-bg)", 
                       border: "1.5px solid var(--color-border)",
                       borderRadius: "var(--radius-full)", 
                       color: "var(--color-text)", 
-                      fontSize: "0.9rem", 
-                      fontWeight: 500,
+                      fontFamily: "var(--font-heading)",
+                      fontSize: "1.1rem", 
+                      fontWeight: 600,
+                      letterSpacing: "0.02em",
                       cursor: "pointer", 
                       transition: "all 0.2s ease"
                     }}
                   >
-                    Clear filters
+                    Clear Filters
                   </button>
                 </div>
               </div>
