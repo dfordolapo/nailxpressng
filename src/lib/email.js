@@ -242,10 +242,14 @@ export async function sendCustomOrderConfirmationEmail(customOrder) {
         ${customOrder.color ? `<p style="margin: 6px 0;"><strong>Color Preference:</strong> ${customOrder.color}</p>` : ''}
         ${customOrder.notes ? `<p style="margin: 6px 0;"><strong>Special Notes:</strong> ${customOrder.notes}</p>` : ''}
         ${(customOrder.image || customOrder.reference_image || customOrder.image_url) ? `
-          <div style="margin-top: 12px; padding-top: 12px; border-top: 1px dashed #eac5c1;">
-            <p style="margin: 0 0 6px 0; color: #7a403d; font-weight: 600;">Reference Image Uploaded:</p>
-            <a href="${customOrder.image || customOrder.reference_image || customOrder.image_url}" target="_blank" style="color: #7a403d; font-size: 13px; word-break: break-all;">
-              View Uploaded Reference Image ↗
+          <div style="margin-top: 14px; padding-top: 12px; border-top: 1px dashed #eac5c1;">
+            <p style="margin: 0 0 8px 0; color: #7a403d; font-weight: 600; font-size: 13px;">Reference Image Uploaded:</p>
+            <a href="${customOrder.image || customOrder.reference_image || customOrder.image_url}" target="_blank" style="display: inline-block;">
+              <img src="${customOrder.image || customOrder.reference_image || customOrder.image_url}" alt="Custom Reference" style="max-width: 160px; max-height: 160px; border-radius: 8px; border: 1px solid #eae1e0; display: block;" />
+            </a>
+            <br/>
+            <a href="${customOrder.image || customOrder.reference_image || customOrder.image_url}" target="_blank" style="color: #7a403d; font-size: 12px; text-decoration: underline; margin-top: 4px; display: inline-block;">
+              Open Full Resolution Image ↗
             </a>
           </div>
         ` : ''}
