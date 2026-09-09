@@ -51,8 +51,17 @@ function wrapEmailTemplate(contentTitle, contentHtml) {
         <!-- FOOTER -->
         <tr>
           <td style="background-color: #fcf6f6; padding: 28px 20px; text-align: center; border-top: 1px solid #f0e6e5;">
-            <p style="margin: 0 0 6px 0; font-size: 14px; color: #7a403d; font-weight: 600;">Follow Us @nailexpress.ng</p>
-            <p style="margin: 0 0 14px 0; font-size: 12px; color: #777;">Have questions? Reply directly to this email or chat with us on WhatsApp.</p>
+            <p style="margin: 0 0 8px 0; font-size: 14px; font-weight: 600;">
+              <a href="https://instagram.com/nailexpress.ng" target="_blank" style="color: #7a403d; text-decoration: none;">
+                Follow Us @nailexpress.ng ↗
+              </a>
+            </p>
+            <p style="margin: 0 0 14px 0; font-size: 12px; color: #777; line-height: 1.5;">
+              Have questions? Reply directly to this email or 
+              <a href="https://wa.me/2349081872514" target="_blank" style="color: #7a403d; font-weight: 600; text-decoration: underline;">
+                chat with us on WhatsApp
+              </a>.
+            </p>
             <p style="margin: 0; font-size: 11px; color: #aaa; letter-spacing: 0.5px;">© ${currentYear} Nailexpress. All rights reserved.</p>
           </td>
         </tr>
