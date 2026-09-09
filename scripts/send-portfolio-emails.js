@@ -19,7 +19,7 @@ import {
   sendAbandonedCheckoutEmail,
 } from '../src/lib/email.js';
 
-const resend = new Resend(process.env.RESEND_API_KEY || 're_AXGp4Ti4_DwL6PCzXkdsaT7G2DzXwWwKy');
+const resend = new Resend(process.env.RESEND_API_KEY || 're_dummy_fallback_for_build');
 const sender = process.env.SENDER_EMAIL || 'orders@nailexpress.ng';
 const targetEmail = 'dfordolapo@gmail.com';
 

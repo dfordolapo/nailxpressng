@@ -1,6 +1,6 @@
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY || 're_AXGp4Ti4_DwL6PCzXkdsaT7G2DzXwWwKy');
+const resend = new Resend(process.env.RESEND_API_KEY || 're_dummy_fallback_for_build');
 
 // Default sender address
 const fromEmail = process.env.SENDER_EMAIL || 'orders@nailexpress.ng';
