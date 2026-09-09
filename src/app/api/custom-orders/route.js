@@ -34,7 +34,7 @@ export async function POST(request) {
       sendCustomOrderConfirmationEmail(order).catch(e => console.error("Custom Order buyer email failed:", e));
     }
     
-    const adminEmail = process.env.ADMIN_EMAIL || 'dfordolapo@gmail.com';
+    const adminEmail = process.env.ADMIN_EMAIL || 'nailxpressng@gmail.com';
     sendAdminCustomOrderAlert(order, adminEmail).catch(e => console.error("Custom Order admin alert failed:", e));
 
     return NextResponse.json({ success: true });
