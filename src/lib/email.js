@@ -333,13 +333,13 @@ export async function sendOrderShippedEmail(order) {
       <p style="color: #555;">Hi ${order.customer_first_name || 'there'}, guess what? Your fresh set just left our studio and is headed straight to you! We've packed everything with care, so get those nails ready to slay.</p>
       
       <!-- OUTLINED 3-STEP TRACKING STEPPER GRAPHIC -->
-      <div style="margin: 24px 0; background: #fcf6f6; border-radius: 12px; padding: 18px 12px; border: 1px solid #f5e6e5; text-align: center;">
+      <div style="margin: 24px 0; background-color: #fcf6f6; border-radius: 12px; padding: 18px 12px; border: 1px solid #f5e6e5; text-align: center;">
         <table width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr>
             <td align="center" width="33%" style="vertical-align: top;">
               <table align="center" cellpadding="0" cellspacing="0" border="0" style="margin: 0 auto 6px auto;">
                 <tr>
-                  <td align="center" valign="middle" style="width: 38px; height: 38px; border-radius: 50%; border: 2px solid #7a403d; background-color: #ffffff; text-align: center;">
+                  <td align="center" valign="middle" style="width: 38px; height: 38px; border-radius: 50%; border: 2px solid #7a403d; background-color: #fcf6f6; text-align: center;">
                     <img src="https://api.iconify.design/lucide:check.svg?color=%237a403d" width="18" height="18" style="display: block; margin: 0 auto;" alt="Crafted" />
                   </td>
                 </tr>
@@ -359,7 +359,7 @@ export async function sendOrderShippedEmail(order) {
             <td align="center" width="33%" style="vertical-align: top;">
               <table align="center" cellpadding="0" cellspacing="0" border="0" style="margin: 0 auto 6px auto;">
                 <tr>
-                  <td align="center" valign="middle" style="width: 38px; height: 38px; border-radius: 50%; border: 2px dashed #cccccc; background-color: #ffffff; text-align: center;">
+                  <td align="center" valign="middle" style="width: 38px; height: 38px; border-radius: 50%; border: 2px dashed #cccccc; background-color: #fcf6f6; text-align: center;">
                     <img src="https://api.iconify.design/lucide:package-check.svg?color=%23aaaaaa" width="18" height="18" style="display: block; margin: 0 auto;" alt="Delivered" />
                   </td>
                 </tr>
