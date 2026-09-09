@@ -6,6 +6,14 @@ const resend = new Resend(process.env.RESEND_API_KEY || 're_dummy_fallback_for_b
 const fromEmail = process.env.SENDER_EMAIL || 'orders@nailexpress.ng';
 const adminDefaultEmail = process.env.ADMIN_EMAIL || 'nailxpressng@gmail.com';
 
+function getAbsoluteImageUrl(img) {
+  if (!img) return null;
+  if (img.startsWith('http://') || img.startsWith('https://')) return img;
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nailexpress.ng';
+  const cleanPath = img.startsWith('/') ? img : `/${img}`;
+  return `${siteUrl}${cleanPath}`;
+}
+
 // Common Email Layout Wrapper
 function wrapEmailTemplate(contentTitle, contentHtml) {
   const currentYear = new Date().getFullYear();
@@ -58,21 +66,30 @@ function wrapEmailTemplate(contentTitle, contentHtml) {
 export async function sendOrderConfirmationEmail(order, items) {
   try {
     const orderNum = order.id ? order.id.split('-')[0] : '';
-    const itemsHtml = items.map(item => `
+    const itemsHtml = items.map(item => {
+      const rawImg = item.image || (Array.isArray(item.images) ? item.images[0] : null) || item.image_url;
+      const imgUrl = getAbsoluteImageUrl(rawImg);
+      return `
       <tr style="border-bottom: 1px solid #f2e9e8;">
+        ${imgUrl ? `
+          <td width="60" style="padding: 10px 12px 10px 0; vertical-align: top;">
+            <img src="${imgUrl}" width="52" height="52" style="border-radius: 8px; object-fit: cover; border: 1px solid #eae1e0; display: block;" alt="${item.name || item.product_name || 'Nails'}" />
+          </td>
+        ` : ''}
         <td style="padding: 10px 0; vertical-align: top;">
           <div style="font-weight: 700; color: #2d2d2d; font-size: 14px;">${item.quantity}x ${item.name || item.product_name}</div>
           <div style="font-size: 11px; color: #7a403d; margin-top: 3px; font-weight: 500; white-space: nowrap;">
-            Size: <span style="background: #f7e8e8; padding: 1px 5px; border-radius: 4px; color: #7a403d;">${item.selectedSize || item.selected_size}</span>
+            Size: <span style="background: #f7e8e8; padding: 1px 5px; border-radius: 4px; color: #7a403d;">${item.selectedSize || item.selected_size || 'M'}</span>
             &nbsp;•&nbsp;
-            Length: <span style="background: #f7e8e8; padding: 1px 5px; border-radius: 4px; color: #7a403d;">${item.selectedLength || item.selected_length}</span>
+            Length: <span style="background: #f7e8e8; padding: 1px 5px; border-radius: 4px; color: #7a403d;">${item.selectedLength || item.selected_length || 'Medium'}</span>
           </div>
         </td>
         <td align="right" style="padding: 10px 0; vertical-align: top; font-weight: 700; color: #7a403d; font-size: 14px; white-space: nowrap;">
           ₦${(item.price * item.quantity).toLocaleString()}
         </td>
       </tr>
-    `).join('');
+      `;
+    }).join('');
 
     const deliveryTimeDisplay = order.delivery_time || '3-5 business days';
 
@@ -148,15 +165,24 @@ export async function sendAdminNewOrderAlert(order, items = [], adminEmail) {
     const orderNum = order.id ? order.id.split('-')[0] : '';
     const adminTarget = adminEmail || adminDefaultEmail;
     
-    const itemsHtml = items.map(item => `
+    const itemsHtml = items.map(item => {
+      const rawImg = item.image || (Array.isArray(item.images) ? item.images[0] : null) || item.image_url;
+      const imgUrl = getAbsoluteImageUrl(rawImg);
+      return `
       <tr style="border-bottom: 1px solid #f2e9e8;">
-        <td style="padding: 10px 0;">
+        ${imgUrl ? `
+          <td width="55" style="padding: 8px 10px 8px 0; vertical-align: top;">
+            <img src="${imgUrl}" width="46" height="46" style="border-radius: 6px; object-fit: cover; border: 1px solid #eae1e0; display: block;" alt="Product" />
+          </td>
+        ` : ''}
+        <td style="padding: 10px 0; vertical-align: top;">
           <strong>${item.quantity}x ${item.name || item.product_name}</strong>
           <div style="font-size: 12px; color: #7a403d;">Size: ${item.selectedSize || item.selected_size} | Length: ${item.selectedLength || item.selected_length}</div>
         </td>
-        <td align="right" style="font-weight: 700; color: #7a403d;">₦${(item.price * item.quantity).toLocaleString()}</td>
+        <td align="right" style="padding: 10px 0; vertical-align: top; font-weight: 700; color: #7a403d;">₦${(item.price * item.quantity).toLocaleString()}</td>
       </tr>
-    `).join('');
+      `;
+    }).join('');
 
     const bodyHtml = `
       <div style="background-color: #fcf6f6; border-radius: 12px; padding: 20px; border: 1px solid #f5e6e5; margin-bottom: 24px;">
@@ -302,6 +328,32 @@ export async function sendOrderShippedEmail(order) {
       <h2 style="color: #7a403d; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 24px; margin-top: 0;">Your Order Has Shipped!</h2>
       <p style="color: #555;">Hi ${order.customer_first_name || 'there'}, guess what? Your fresh set just left our studio and is headed straight to you! We've packed everything with care, so get those nails ready to slay.</p>
       
+      <!-- OUTLINED 3-STEP TRACKING STEPPER GRAPHIC -->
+      <div style="margin: 24px 0; background: #fcf6f6; border-radius: 12px; padding: 18px 12px; border: 1px solid #f5e6e5; text-align: center;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td align="center" width="33%" style="vertical-align: top;">
+              <div style="width: 36px; height: 36px; border-radius: 50%; border: 2px solid #7a403d; display: inline-block; margin-bottom: 6px; line-height: 36px; text-align: center; color: #7a403d; font-weight: bold; font-size: 15px;">
+                ✓
+              </div>
+              <div style="font-size: 11px; font-weight: 700; color: #7a403d; text-transform: uppercase; letter-spacing: 0.5px;">Crafted</div>
+            </td>
+            <td align="center" width="33%" style="vertical-align: top;">
+              <div style="width: 36px; height: 36px; border-radius: 50%; border: 2px solid #7a403d; background-color: #f7e8e8; display: inline-block; margin-bottom: 6px; line-height: 36px; text-align: center; color: #7a403d; font-weight: bold; font-size: 14px;">
+                🚚
+              </div>
+              <div style="font-size: 11px; font-weight: 700; color: #7a403d; text-transform: uppercase; letter-spacing: 0.5px;">Dispatched</div>
+            </td>
+            <td align="center" width="33%" style="vertical-align: top;">
+              <div style="width: 36px; height: 36px; border-radius: 50%; border: 2px dashed #ccc; display: inline-block; margin-bottom: 6px; line-height: 36px; text-align: center; color: #aaa; font-size: 14px;">
+                🎁
+              </div>
+              <div style="font-size: 11px; font-weight: 500; color: #aaa; text-transform: uppercase; letter-spacing: 0.5px;">Delivered</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+
       <div style="background-color: #fcf6f6; border-radius: 12px; padding: 20px; border: 1px solid #f5e6e5; margin: 24px 0;">
         <div style="display: inline-block; background-color: #7a403d; color: #ffffff; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; letter-spacing: 1px; margin-bottom: 12px;">ORDER #${orderNum}</div>
         <p style="margin: 0 0 6px 0; font-size: 13px; color: #666; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Delivery Address</p>
@@ -436,16 +488,25 @@ export async function sendAbandonedCheckoutEmail(order, items = []) {
 
     const itemsHtml = items.length > 0 ? `
       <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin: 20px 0; background-color: #fdf8f8; border-radius: 10px; border: 1px solid #f2e2e1; padding: 14px;">
-        ${items.map(item => `
+        ${items.map(item => {
+          const rawImg = item.image || (Array.isArray(item.images) ? item.images[0] : null) || item.image_url;
+          const imgUrl = getAbsoluteImageUrl(rawImg);
+          return `
           <tr>
-            <td style="padding: 6px 0; font-size: 14px; color: #2d2d2d; font-weight: 600;">
+            ${imgUrl ? `
+              <td width="55" style="padding: 6px 10px 6px 0; vertical-align: middle;">
+                <img src="${imgUrl}" width="46" height="46" style="border-radius: 6px; object-fit: cover; border: 1px solid #eae1e0; display: block;" alt="Product" />
+              </td>
+            ` : ''}
+            <td style="padding: 6px 0; font-size: 14px; color: #2d2d2d; font-weight: 600; vertical-align: middle;">
               ${item.quantity || 1}x ${item.product_name || item.name || 'Press-On Nail Set'}
             </td>
-            <td align="right" style="padding: 6px 0; font-size: 14px; color: #7a403d; font-weight: 700;">
+            <td align="right" style="padding: 6px 0; font-size: 14px; color: #7a403d; font-weight: 700; vertical-align: middle;">
               ₦${((item.price || 0) * (item.quantity || 1)).toLocaleString()}
             </td>
           </tr>
-        `).join('')}
+          `;
+        }).join('')}
       </table>
     ` : '';
 
