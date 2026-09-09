@@ -88,8 +88,8 @@ export async function sendOrderConfirmationEmail(order, items) {
           <tr>
             <td style="vertical-align: top; padding-bottom: 12px;">
               <p style="margin: 0 0 4px 0; font-size: 11px; color: #7a403d; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Estimated Delivery</p>
-              <p style="margin: 0; font-weight: 700; color: #2d2d2d; font-size: 15px;">
-                ⏱️ ${deliveryTimeDisplay}
+              <p style="margin: 0; font-weight: 500; color: #3d3d3d; font-size: 14px; line-height: 1.4;">
+                ${deliveryTimeDisplay}
               </p>
             </td>
           </tr>
