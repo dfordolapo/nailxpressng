@@ -103,7 +103,7 @@ nailexpress/
 * **Client**: Nailexpress Nigeria
 * **Live Store**: [https://www.nailexpress.ng](https://www.nailexpress.ng)
 * **Status**: Production Deployment (Vercel Edge Network)
-* **Author / Engineer**: Dolapo ([dfordolapo](https://github.com/dfordolapo))
+* **Author / Engineer**: Dolapo Oyekanmi ([@dfordolapo](https://github.com/dfordolapo))
 
 ---
 
