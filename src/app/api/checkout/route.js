@@ -119,7 +119,7 @@ export async function POST(request) {
           const customerResult = await sendOrderConfirmationEmail(orderForEmail, items);
           console.log("Customer email result:", customerResult);
         }
-        const adminEmail = process.env.ADMIN_EMAIL || 'nailxpressng@gmail.com';
+        const adminEmail = process.env.ADMIN_EMAIL || 'dfordolapo@gmail.com';
         const adminResult = await sendAdminNewOrderAlert(orderForEmail, items, adminEmail);
         console.log("Admin email result:", adminResult);
       }

@@ -36,7 +36,7 @@ export async function POST(request) {
 
     // 2. Send instant welcome / restock acknowledgement via Resend
     const sender = process.env.SENDER_EMAIL || 'orders@nailexpress.ng';
-    const adminEmail = process.env.ADMIN_EMAIL || 'nailxpressng@gmail.com';
+    const adminEmail = process.env.ADMIN_EMAIL || 'dfordolapo@gmail.com';
 
     let subject = "Welcome to the Nailexpress Inner Circle ✨";
     let title = "You're on the list!";

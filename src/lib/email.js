@@ -4,7 +4,7 @@ const resend = new Resend(process.env.RESEND_API_KEY || 're_dummy_fallback_for_b
 
 // Default sender address
 const fromEmail = process.env.SENDER_EMAIL || 'orders@nailexpress.ng';
-const adminDefaultEmail = process.env.ADMIN_EMAIL || 'nailxpressng@gmail.com';
+const adminDefaultEmail = process.env.ADMIN_EMAIL || 'dfordolapo@gmail.com';
 
 // Common Email Layout Wrapper
 function wrapEmailTemplate(contentTitle, contentHtml) {

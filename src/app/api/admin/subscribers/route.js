@@ -43,7 +43,7 @@ export async function POST(request) {
     if (error || !subs) throw error;
 
     const sender = process.env.SENDER_EMAIL || 'orders@nailexpress.ng';
-    const adminEmail = process.env.ADMIN_EMAIL || 'nailxpressng@gmail.com';
+    const adminEmail = process.env.ADMIN_EMAIL || 'dfordolapo@gmail.com';
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nailexpress.ng';
     const targetUrl = productSlug ? `${siteUrl}/product/${productSlug}` : `${siteUrl}/shop`;
 
