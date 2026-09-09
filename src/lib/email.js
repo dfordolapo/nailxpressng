@@ -450,7 +450,7 @@ export async function sendAbandonedCheckoutEmail(order, items = []) {
     ` : '';
 
     const bodyHtml = `
-      <h2 style="color: #7a403d; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 24px; margin-top: 0;">Did something go wrong with your order, ${firstName}?</h2>
+      <h2 style="color: #7a403d; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 24px; margin-top: 0;">Did something go wrong with your order?</h2>
       <p style="color: #555; font-size: 15px; line-height: 1.6;">
         Hi ${firstName}, we noticed you started checkout for your handcrafted nail set but didn't get to finish.
       </p>
