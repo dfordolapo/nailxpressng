@@ -33,7 +33,7 @@ export default function NotFound() {
         </div>
         <h2 className={styles.title}>Looks like this page chipped off.</h2>
         <p className={styles.message}>
-          We couldn't find what you were looking for. The good news? Our nail sets are much easier to find.
+          We couldn&apos;t find what you were looking for. The good news? Our nail sets are much easier to find.
         </p>
         <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
           <Link href="/" className={styles.button}>
