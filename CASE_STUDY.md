@@ -113,6 +113,18 @@ Working across product design, UX writing, and design engineering:
 * **Why It Matters:** Builds social proof by showing real customer photos directly on product pages.
 * **Implementation:** Built in `ProductReviews.js` with client-side compression and Supabase storage upload.
 
+### 07. Flippable Sold-Out & Restock Waitlist Capture
+* **Problem:** Traditional ecommerce cards disable "Add to Cart" when items run out, presenting dead ends that bounce interested shoppers.
+* **Decision:** Re-architected out-of-stock product cards to flip upon clicking "Notify Me", seamlessly embedding an inline email capture form with zero navigation or modal disruption.
+* **Why It Matters:** Turns out-of-stock friction into high-intent lead generation, automatically queuing customers in Supabase for one-click admin restock broadcast notifications.
+* **Implementation:** Built into `HandmadeProductCard.js` and `EmailCapture.js`, routing through `/api/newsletter` into the Supabase `subscribers` database.
+
+### 08. Complete Lifecycle Transactional Email Architecture
+* **Problem:** Post-purchase anxiety and custom order opacity are high when shopping with independent luxury merchants.
+* **Decision:** Designed and engineered a complete 8+ template transactional email lifecycle—spanning instant buyer confirmations, automated custom nail studio quote acknowledgements, shipping updates, cancellation safeguards, abandoned checkout recovery, and automated restock alerts.
+* **Why It Matters:** Provides end-to-end transparency, keeps buyers informed at every stage, and automates back-office merchant alerts.
+* **Implementation:** Handcrafted responsive HTML templates rendered via Resend API (`src/lib/email.js`, `/api/newsletter`, `/api/admin/subscribers`).
+
 ---
 
 ## 5. The System Behind the Experience
@@ -120,7 +132,7 @@ Working across product design, UX writing, and design engineering:
 * **Frontend Architecture:** Next.js 16 App Router using React Server Components (RSC) for fast initial loads and SEO crawlability, with client boundaries for animations and interactive widgets.
 * **Database & Storage:** Supabase PostgreSQL manages relational data for products, categories, orders, reviews, and custom order quotes with Row-Level Security.
 * **Payment Processing:** Paystack inline checkout modal supports Card, Bank Transfer, and USSD in NGN, backed by server-side verification endpoints.
-* **Transactional Email Engine:** Resend API integration with custom HTML email templates for order confirmations and merchant dispatch alerts.
+* **Transactional Email Engine:** Resend API integration with custom HTML email templates for order confirmations, custom order workflows, abandoned carts, restock alerts, and merchant alerts.
 * **PWA Standalone Mode:** Web App Manifest, offline caching service worker, and multi-device iOS splash screen matrices deliver a native app experience.
 * **SEO & Discoverability:** Automatic Edge XML sitemap, `robots.txt`, and Schema.org JSON-LD structured data for `Product`, `Offer`, and `AggregateRating`.
 
@@ -133,6 +145,7 @@ The back-office suite (`src/app/admin`) was designed to streamline daily operati
 * **Product & Inventory Management:** Full CRUD interface for pricing, compare-at discounts, stock counts, and shape/length tags.
 * **One-Click Gemini AI Copywriter:** Integrated Google Gemini endpoint (`gemini-3.5-flash`) that analyzes uploaded nail photos to generate elegant, two-word luxury titles and concise SEO descriptions.
 * **Custom Order Pipeline:** Centralized dashboard for managing incoming bespoke requests, inspecting uploaded reference images, and tracking customer quotes.
+* **Subscribers & Restock Management:** View restock requests per product and broadcast automated "Back in Stock" notification emails directly to waiting customers.
 * **Delivery Rate Controls:** Real-time configuration of regional delivery fees and dispatch timeline banners without modifying code.
 
 ---
@@ -142,21 +155,21 @@ The back-office suite (`src/app/admin`) was designed to streamline daily operati
 ```
 DESIGNED
 ├── Editorial Warm Luxury Design System (Typography, Colors, Spacing)
-├── 3D Flippable Product Cards with In-Feed Sizing Selectors
+├── 3D Flippable Product Cards with In-Feed Sizing Selectors & "Notify Me" Flip State
 ├── "Find Your Fit" 3-Step Interactive Discovery Quiz
 ├── 5-Step Custom Nail Studio Builder with Cloud Photo Uploads
 ├── Accountless 1-Tap Saved Address Book (`Home`, `Office`, `Gift`)
 ├── High-Definition Loupe & Packaging Inspection Micro-interactions
-└── Styled HTML Transactional Email Templates
+└── Full Lifecycle HTML Transactional Email Suite (Orders, Custom Sets, Abandoned Carts, Restock Alerts)
 
 ENGINEERED
 ├── Next.js 16 (App Router) & React 19 Frontend Architecture
 ├── Vanilla CSS Modules & Framer Motion Animation Physics
 ├── Supabase PostgreSQL Database, Storage Buckets & RLS Policies
 ├── Paystack Payment Gateway Integration & Webhook Handling
-├── Resend Transactional Email Infrastructure
+├── Resend Transactional Email Infrastructure (Customer & Admin Workflows)
 ├── Gemini AI Multimodal Product Copywriting API
-├── Admin Operations Dashboard (Catalog, Orders, Custom Funnel, Rates)
+├── Admin Operations Dashboard (Catalog, Orders, Custom Funnel, Restock Hub, Rates)
 └── PWA Manifest, Service Worker Caching & Dynamic SEO Sitemap
 ```
 

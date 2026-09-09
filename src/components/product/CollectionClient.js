@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { PackageSearch } from "lucide-react";
+import Link from "next/link";
+import { PackageSearch, Sparkles } from "lucide-react";
 import HandmadeProductCard from "@/components/product/HandmadeProductCard";
 import ProductCard from "@/components/product/ProductCard";
 import ShapeFilterBar from "@/components/product/ShapeFilterBar";
@@ -219,24 +220,52 @@ export default function CollectionClient({ category, allProducts, featuredProduc
             ) : filtered.length === 0 ? (
               <div className={filterStyles.noResults} style={{ 
                 display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-                padding: "80px 20px", background: "var(--color-bg-card)", borderRadius: "var(--radius-xl)", 
-                border: "1px dashed var(--color-border)", textAlign: "center", minHeight: "400px"
+                padding: "60px 20px", background: "var(--color-bg-card)", borderRadius: "var(--radius-xl)", 
+                border: "1px dashed var(--color-border)", textAlign: "center", minHeight: "360px"
               }}>
-                <PackageSearch size={48} color="var(--color-primary)" style={{ marginBottom: "20px", opacity: 0.8 }} />
-                <h3 style={{ fontSize: "1.25rem", color: "var(--color-text)", marginBottom: "8px" }}>No exact matches</h3>
-                <p className={filterStyles.mobileSmallText} style={{ color: "var(--color-text-secondary)", fontSize: "0.95rem", maxWidth: "450px", marginBottom: "24px", lineHeight: "1.6" }}>
-                  We couldn't find any nails matching your exact shape and length preferences. Try tweaking your selection.
+                <PackageSearch size={44} color="var(--color-primary)" style={{ marginBottom: "16px", opacity: 0.85 }} />
+                <h3 style={{ fontSize: "1.25rem", color: "var(--color-text)", marginBottom: "8px", fontWeight: 600 }}>No exact matches found</h3>
+                <p className={filterStyles.mobileSmallText} style={{ color: "var(--color-text-secondary)", fontSize: "0.95rem", maxWidth: "460px", marginBottom: "20px", lineHeight: "1.6" }}>
+                  We couldn&apos;t find any ready-made sets with this exact combination of shape, size, and color. Want a set created uniquely for you?
                 </p>
-                <button 
-                  onClick={() => { setSelectedShapes([]); setSelectedLengths([]); setSelectedColors([]); }}
-                  style={{
-                    padding: "10px 24px", backgroundColor: "var(--color-bg)", border: "1px solid var(--color-border)",
-                    borderRadius: "var(--radius-full)", color: "var(--color-text)", fontSize: "0.85rem", fontWeight: 500,
-                    cursor: "pointer", transition: "all 0.2s"
-                  }}
-                >
-                  Clear filters
-                </button>
+                <div style={{ display: "flex", gap: "12px", alignItems: "center", justifyContent: "center", flexWrap: "wrap" }}>
+                  <Link
+                    href="/custom-order"
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "8px",
+                      padding: "10px 22px",
+                      backgroundColor: "var(--color-primary)",
+                      color: "white",
+                      borderRadius: "var(--radius-full)",
+                      fontSize: "0.88rem",
+                      fontWeight: 600,
+                      textDecoration: "none",
+                      boxShadow: "0 4px 14px rgba(122, 64, 61, 0.25)",
+                      transition: "all 0.2s ease"
+                    }}
+                  >
+                    <Sparkles size={16} />
+                    Place a Custom Order
+                  </Link>
+                  <button 
+                    onClick={() => { setSelectedShapes([]); setSelectedLengths([]); setSelectedColors([]); }}
+                    style={{
+                      padding: "10px 22px", 
+                      backgroundColor: "var(--color-bg)", 
+                      border: "1px solid var(--color-border)",
+                      borderRadius: "var(--radius-full)", 
+                      color: "var(--color-text)", 
+                      fontSize: "0.88rem", 
+                      fontWeight: 500,
+                      cursor: "pointer", 
+                      transition: "all 0.2s"
+                    }}
+                  >
+                    Clear filters
+                  </button>
+                </div>
               </div>
             ) : (
               <>

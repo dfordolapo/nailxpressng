@@ -60,12 +60,48 @@ function SearchContent({ allProducts }) {
         </div>
 
         {query.trim() && results.length === 0 ? (
-          <div className={pageStyles.noResults}>
+          <div className={pageStyles.noResults} style={{ textAlign: "center", padding: "60px 20px" }}>
             <div className={pageStyles.noResultsIcon}>🔍</div>
-            <h2 style={{ fontSize: "1.125rem", color: "var(--color-primary-800)", marginBottom: "var(--space-2)", fontFamily: "var(--font-heading)" }}>We drew a blank...</h2>
-            <p className={pageStyles.noResultsText} style={{ maxWidth: "400px", margin: "0 auto", fontSize: "0.875rem" }}>
-              We couldn&apos;t find any styles matching your search. Try adjusting your filters or browsing our bestsellers.
+            <h2 style={{ fontSize: "1.25rem", color: "var(--color-primary-800)", marginBottom: "var(--space-2)", fontFamily: "var(--font-heading)" }}>We drew a blank...</h2>
+            <p className={pageStyles.noResultsText} style={{ maxWidth: "460px", margin: "0 auto var(--space-6)", fontSize: "0.875rem", lineHeight: "1.6" }}>
+              We couldn&apos;t find any styles matching &ldquo;{query}&rdquo;. Have a unique idea in mind? Place a custom order with us.
             </p>
+            <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
+              <a
+                href="/custom-order"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  padding: "10px 24px",
+                  backgroundColor: "var(--color-primary)",
+                  color: "white",
+                  borderRadius: "var(--radius-full)",
+                  fontSize: "0.88rem",
+                  fontWeight: 600,
+                  textDecoration: "none",
+                  boxShadow: "0 4px 14px rgba(122, 64, 61, 0.25)"
+                }}
+              >
+                Place a Custom Order
+              </a>
+              <a
+                href="/shop"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  padding: "10px 24px",
+                  backgroundColor: "var(--color-bg)",
+                  border: "1px solid var(--color-border)",
+                  borderRadius: "var(--radius-full)",
+                  color: "var(--color-text)",
+                  fontSize: "0.88rem",
+                  fontWeight: 500,
+                  textDecoration: "none"
+                }}
+              >
+                Browse All Sets
+              </a>
+            </div>
           </div>
         ) : (
           <>

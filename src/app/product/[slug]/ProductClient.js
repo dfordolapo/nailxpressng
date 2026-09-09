@@ -77,11 +77,24 @@ export default function ProductClient({ product, relatedProducts = [], isModal =
         <div className="container" style={{ textAlign: "center", padding: "var(--space-20) 0" }}>
           <h1 style={{ fontSize: "var(--text-3xl)", marginBottom: "var(--space-4)" }}>Product Not Found</h1>
           <p style={{ color: "var(--color-text-secondary)", marginBottom: "var(--space-8)" }}>
-            The product you&apos;re looking for doesn&apos;t exist or has been removed.
+            The product you&apos;re looking for doesn&apos;t exist or has been removed. Looking for something custom?
           </p>
-          <Link href="/" className={`${btnStyles.btn} ${btnStyles.primary} ${btnStyles.md}`}>
-            Back to Home
-          </Link>
+          <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
+            <Link href="/" className={`${btnStyles.btn} ${btnStyles.primary} ${btnStyles.md}`}>
+              Back to Home
+            </Link>
+            <Link 
+              href="/custom-order" 
+              className={`${btnStyles.btn} ${btnStyles.md}`}
+              style={{
+                backgroundColor: "transparent",
+                border: "1px solid var(--color-border)",
+                color: "var(--color-text)"
+              }}
+            >
+              Custom Order
+            </Link>
+          </div>
         </div>
       </div>
     );

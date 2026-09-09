@@ -35,9 +35,23 @@ export default function NotFound() {
         <p className={styles.message}>
           We couldn't find what you were looking for. The good news? Our nail sets are much easier to find.
         </p>
-        <Link href="/" className={styles.button}>
-          Back to the Salon
-        </Link>
+        <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
+          <Link href="/" className={styles.button}>
+            Back to the Salon
+          </Link>
+          <Link 
+            href="/custom-order" 
+            className={styles.button}
+            style={{ 
+              backgroundColor: 'transparent',
+              color: 'var(--color-primary-800)',
+              border: '1.5px solid var(--color-primary-800)',
+              boxShadow: 'none'
+            }}
+          >
+            Custom Order
+          </Link>
+        </div>
       </div>
     </div>
   );
