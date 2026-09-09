@@ -337,22 +337,34 @@ export async function sendOrderShippedEmail(order) {
         <table width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr>
             <td align="center" width="33%" style="vertical-align: top;">
-              <div style="width: 36px; height: 36px; border-radius: 50%; border: 2px solid #7a403d; display: inline-block; margin-bottom: 6px; line-height: 36px; text-align: center; color: #7a403d; font-weight: bold; font-size: 15px;">
-                ✓
-              </div>
+              <table align="center" cellpadding="0" cellspacing="0" border="0" style="margin: 0 auto 6px auto;">
+                <tr>
+                  <td align="center" valign="middle" style="width: 38px; height: 38px; border-radius: 50%; border: 2px solid #7a403d; background-color: #ffffff; text-align: center;">
+                    <img src="https://api.iconify.design/lucide:check.svg?color=%237a403d" width="18" height="18" style="display: block; margin: 0 auto;" alt="Crafted" />
+                  </td>
+                </tr>
+              </table>
               <div style="font-size: 11px; font-weight: 700; color: #7a403d; text-transform: uppercase; letter-spacing: 0.5px;">Crafted</div>
             </td>
             <td align="center" width="33%" style="vertical-align: top;">
-              <div style="width: 36px; height: 36px; border-radius: 50%; border: 2px solid #7a403d; background-color: #f7e8e8; display: inline-block; margin-bottom: 6px; line-height: 36px; text-align: center; color: #7a403d; font-weight: bold; font-size: 14px;">
-                🚚
-              </div>
+              <table align="center" cellpadding="0" cellspacing="0" border="0" style="margin: 0 auto 6px auto;">
+                <tr>
+                  <td align="center" valign="middle" style="width: 38px; height: 38px; border-radius: 50%; border: 2px solid #7a403d; background-color: #f7e8e8; text-align: center;">
+                    <img src="https://api.iconify.design/lucide:truck.svg?color=%237a403d" width="18" height="18" style="display: block; margin: 0 auto;" alt="Dispatched" />
+                  </td>
+                </tr>
+              </table>
               <div style="font-size: 11px; font-weight: 700; color: #7a403d; text-transform: uppercase; letter-spacing: 0.5px;">Dispatched</div>
             </td>
             <td align="center" width="33%" style="vertical-align: top;">
-              <div style="width: 36px; height: 36px; border-radius: 50%; border: 2px dashed #ccc; display: inline-block; margin-bottom: 6px; line-height: 36px; text-align: center; color: #aaa; font-size: 14px;">
-                🎁
-              </div>
-              <div style="font-size: 11px; font-weight: 500; color: #aaa; text-transform: uppercase; letter-spacing: 0.5px;">Delivered</div>
+              <table align="center" cellpadding="0" cellspacing="0" border="0" style="margin: 0 auto 6px auto;">
+                <tr>
+                  <td align="center" valign="middle" style="width: 38px; height: 38px; border-radius: 50%; border: 2px dashed #cccccc; background-color: #ffffff; text-align: center;">
+                    <img src="https://api.iconify.design/lucide:package-check.svg?color=%23aaaaaa" width="18" height="18" style="display: block; margin: 0 auto;" alt="Delivered" />
+                  </td>
+                </tr>
+              </table>
+              <div style="font-size: 11px; font-weight: 500; color: #aaaaaa; text-transform: uppercase; letter-spacing: 0.5px;">Delivered</div>
             </td>
           </tr>
         </table>
