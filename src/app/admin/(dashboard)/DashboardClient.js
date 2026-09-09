@@ -70,7 +70,7 @@ export default function DashboardClient({ initialProducts, initialOrders = [], i
       <div className={styles.pageHeader}>
         <div>
           <h1 className={styles.pageTitle}>Hi, Funmi,</h1>
-          <p className={styles.pageSubtitle}>Here's what's happening with your store today.</p>
+          <p className={styles.pageSubtitle}>Here&apos;s what&apos;s happening with your store today.</p>
         </div>
         <div className={styles.datePicker} style={{ position: "relative" }}>
           <Calendar size={16} style={{ position: "absolute", left: "10px", pointerEvents: "none" }} />
