@@ -336,31 +336,36 @@ export async function sendOrderShippedEmail(order) {
       <div style="margin: 24px 0; background-color: #fcf6f6; border-radius: 12px; padding: 18px 12px; border: 1px solid #f5e6e5; text-align: center;">
         <table width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr>
+            <!-- Step 1: Crafted -->
             <td align="center" width="33%" style="vertical-align: top;">
               <table align="center" cellpadding="0" cellspacing="0" border="0" style="margin: 0 auto 6px auto;">
                 <tr>
-                  <td align="center" valign="middle" style="width: 38px; height: 38px; border-radius: 50%; border: 2px solid #7a403d; background-color: #fcf6f6; text-align: center;">
-                    <img src="https://api.iconify.design/lucide:check.svg?color=%237a403d" width="18" height="18" style="display: block; margin: 0 auto;" alt="Crafted" />
+                  <td align="center" valign="middle" style="width: 36px; height: 36px; border-radius: 50%; border: 2px solid #7a403d; background-color: transparent; text-align: center; color: #7a403d; font-size: 16px; font-weight: bold; line-height: 36px; mso-line-height-rule: exactly;">
+                    &#10003;
                   </td>
                 </tr>
               </table>
               <div style="font-size: 11px; font-weight: 700; color: #7a403d; text-transform: uppercase; letter-spacing: 0.5px;">Crafted</div>
             </td>
+
+            <!-- Step 2: Dispatched (Active) -->
             <td align="center" width="33%" style="vertical-align: top;">
               <table align="center" cellpadding="0" cellspacing="0" border="0" style="margin: 0 auto 6px auto;">
                 <tr>
-                  <td align="center" valign="middle" style="width: 38px; height: 38px; border-radius: 50%; border: 2px solid #7a403d; background-color: #f7e8e8; text-align: center;">
-                    <img src="https://api.iconify.design/lucide:truck.svg?color=%237a403d" width="18" height="18" style="display: block; margin: 0 auto;" alt="Dispatched" />
+                  <td align="center" valign="middle" style="width: 36px; height: 36px; border-radius: 50%; border: 2px solid #7a403d; background-color: #f7e8e8; text-align: center; color: #7a403d; font-size: 14px; font-weight: bold; line-height: 36px; mso-line-height-rule: exactly;">
+                    &bull;&bull;&bull;
                   </td>
                 </tr>
               </table>
               <div style="font-size: 11px; font-weight: 700; color: #7a403d; text-transform: uppercase; letter-spacing: 0.5px;">Dispatched</div>
             </td>
+
+            <!-- Step 3: Delivered -->
             <td align="center" width="33%" style="vertical-align: top;">
               <table align="center" cellpadding="0" cellspacing="0" border="0" style="margin: 0 auto 6px auto;">
                 <tr>
-                  <td align="center" valign="middle" style="width: 38px; height: 38px; border-radius: 50%; border: 2px dashed #cccccc; background-color: #fcf6f6; text-align: center;">
-                    <img src="https://api.iconify.design/lucide:package-check.svg?color=%23aaaaaa" width="18" height="18" style="display: block; margin: 0 auto;" alt="Delivered" />
+                  <td align="center" valign="middle" style="width: 36px; height: 36px; border-radius: 50%; border: 2px dashed #cccccc; background-color: transparent; text-align: center; color: #aaaaaa; font-size: 13px; font-weight: normal; line-height: 36px; mso-line-height-rule: exactly;">
+                    &#9675;
                   </td>
                 </tr>
               </table>
