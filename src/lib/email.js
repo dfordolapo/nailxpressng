@@ -349,21 +349,23 @@ export async function sendOrderDeliveredEmail(order, items = []) {
     }
 
     const bodyHtml = `
-      <h2 style="color: #7a403d; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 24px; margin-top: 0;">Your Order Has Been Delivered</h2>
-      <p style="color: #555;">Hi ${order.customer_first_name || 'there'}, your order <strong>#${orderNum}</strong> has been successfully delivered. We hope you love your new press-on set!</p>
+      <h2 style="color: #7a403d; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 24px; margin-top: 0; margin-bottom: 8px;">Your Order Has Arrived</h2>
+      <p style="color: #555; margin-top: 0; margin-bottom: 24px; line-height: 1.6;">Hi ${order.customer_first_name || 'there'}, your order <strong>#${orderNum}</strong> has been delivered. We hope you love your fresh handcrafted set!</p>
       
-      <div style="background-color: #fcf6f6; border-left: 4px solid #7a403d; padding: 18px; margin: 24px 0; border-radius: 8px;">
-        <h4 style="margin: 0 0 6px 0; color: #7a403d; font-size: 15px;">Application Tip:</h4>
-        <p style="margin: 0; font-size: 13px; color: #555; line-height: 1.5;">
-          Clean and prep your natural nails with an alcohol pad before applying your adhesive tabs or nail glue for the longest lasting wear.
+      <!-- EDITORIAL APPLICATION TIP -->
+      <div style="margin: 24px 0; padding: 20px 22px; background-color: #faf5f4; border-radius: 12px;">
+        <p style="margin: 0 0 6px 0; font-size: 11px; font-weight: 700; color: #7a403d; letter-spacing: 1.5px; text-transform: uppercase;">Long-Wear Application Tip</p>
+        <p style="margin: 0; font-size: 13.5px; color: #4a4a4a; line-height: 1.6;">
+          For the longest hold, wipe your natural nails clean with an alcohol prep pad and gently buff the nail surface before applying your adhesive tabs or glue.
         </p>
       </div>
 
-      <div style="text-align: center; margin: 28px 0; padding: 24px 20px; background-color: #fcf6f6; border-radius: 12px; border: 1px solid #f2e2e1;">
-        <p style="margin: 0 0 6px 0; font-weight: 600; color: #7a403d; font-size: 17px; font-family: 'Cormorant Garamond', Georgia, serif;">Your nails arrived. Time to show off a little.</p>
-        <p style="margin: 0 0 16px 0; font-size: 13px; color: #666; line-height: 1.5;">Drop an entry in The Press-On Journal with a quick photo of your set in real life. No login needed!</p>
+      <!-- JOURNAL & REVIEW CTA -->
+      <div style="text-align: center; margin: 32px 0 16px 0; padding: 26px 20px; background-color: #ffffff; border-radius: 12px; border: 1px solid #efe4e3;">
+        <h3 style="margin: 0 0 8px 0; font-weight: 600; color: #7a403d; font-size: 19px; font-family: 'Cormorant Garamond', Georgia, serif;">Time to Flaunt Your Set</h3>
+        <p style="margin: 0 0 18px 0; font-size: 13px; color: #666; line-height: 1.5;">Drop an entry in The Press-On Journal with a quick photo of your set in real life. No login needed!</p>
         <a href="${targetLink}" 
-           style="display: inline-block; padding: 12px 24px; background-color: #7a403d; color: #ffffff; text-decoration: none; border-radius: 24px; font-weight: 600; font-size: 13px;">
+           style="display: inline-block; padding: 12px 28px; background-color: #7a403d; color: #ffffff; text-decoration: none; border-radius: 24px; font-weight: 600; font-size: 13px; letter-spacing: 0.5px;">
           ${buttonLabel}
         </a>
       </div>
