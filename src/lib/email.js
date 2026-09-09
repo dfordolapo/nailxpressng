@@ -339,21 +339,33 @@ export async function sendOrderShippedEmail(order) {
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
               <tr>
                 <td align="center" width="33%" style="vertical-align: top;">
-                  <div style="width: 36px; height: 36px; line-height: 34px; margin: 0 auto 6px auto; border-radius: 50%; border: 2px solid #7a403d; background-color: #7a403d; color: #ffffff; text-align: center; font-size: 15px; font-weight: bold; font-family: -apple-system, sans-serif;">
-                    ✓
-                  </div>
+                  <table align="center" cellpadding="0" cellspacing="0" border="0" style="margin: 0 auto 6px auto; width: 36px; height: 36px; border-radius: 50%; border: 2px solid #7a403d; background-color: #7a403d;">
+                    <tr>
+                      <td align="center" valign="middle" style="width: 36px; height: 36px; text-align: center; vertical-align: middle; padding: 0; color: #ffffff; font-size: 16px; font-weight: bold; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1;">
+                        ✓
+                      </td>
+                    </tr>
+                  </table>
                   <div style="font-size: 11px; font-weight: 700; color: #7a403d; text-transform: uppercase; letter-spacing: 0.5px;">Crafted</div>
                 </td>
                 <td align="center" width="33%" style="vertical-align: top;">
-                  <div style="width: 36px; height: 36px; line-height: 34px; margin: 0 auto 6px auto; border-radius: 50%; border: 2px solid #7a403d; background-color: #7a403d; color: #ffffff; text-align: center; font-size: 15px; font-weight: bold; font-family: -apple-system, sans-serif;">
-                    ✓
-                  </div>
+                  <table align="center" cellpadding="0" cellspacing="0" border="0" style="margin: 0 auto 6px auto; width: 36px; height: 36px; border-radius: 50%; border: 2px solid #7a403d; background-color: #7a403d;">
+                    <tr>
+                      <td align="center" valign="middle" style="width: 36px; height: 36px; text-align: center; vertical-align: middle; padding: 0; color: #ffffff; font-size: 16px; font-weight: bold; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1;">
+                        ✓
+                      </td>
+                    </tr>
+                  </table>
                   <div style="font-size: 11px; font-weight: 700; color: #7a403d; text-transform: uppercase; letter-spacing: 0.5px;">Dispatched</div>
                 </td>
                 <td align="center" width="33%" style="vertical-align: top;">
-                  <div style="width: 36px; height: 36px; line-height: 28px; margin: 0 auto 6px auto; border-radius: 50%; border: 2px dashed #cccccc; background-color: transparent; color: #aaaaaa; text-align: center; font-size: 15px; font-weight: 700; font-family: -apple-system, sans-serif; letter-spacing: 1px;">
-                    •••
-                  </div>
+                  <table align="center" cellpadding="0" cellspacing="0" border="0" style="margin: 0 auto 6px auto; width: 36px; height: 36px; border-radius: 50%; border: 2px dashed #cccccc; background-color: transparent;">
+                    <tr>
+                      <td align="center" valign="middle" style="width: 36px; height: 36px; text-align: center; vertical-align: middle; padding: 0; color: #aaaaaa; font-size: 14px; font-weight: 700; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; letter-spacing: 1.5px; line-height: 1;">
+                        •••
+                      </td>
+                    </tr>
+                  </table>
                   <div style="font-size: 11px; font-weight: 500; color: #aaaaaa; text-transform: uppercase; letter-spacing: 0.5px;">Delivered</div>
                 </td>
               </tr>
