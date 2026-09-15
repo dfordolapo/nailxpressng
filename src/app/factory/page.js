@@ -46,7 +46,7 @@ export default async function FactoryPage() {
 
   return (
     <>
-      <FindYourFitQuiz allProducts={fullCatalog} hideBanner={true} />
+      <FindYourFitQuiz allProducts={fullCatalog} hideBanner={true} showFloatingPill={true} />
       <CollectionClient 
         category={category} 
         allProducts={allProducts} 

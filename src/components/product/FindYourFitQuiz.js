@@ -37,7 +37,7 @@ const QUESTIONS = [
   }
 ];
 
-export default function FindYourFitQuiz({ allProducts = [], hideBanner = false }) {
+export default function FindYourFitQuiz({ allProducts = [], hideBanner = false, showFloatingPill = false }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [step, setStep] = useState(0); // 0 = start, 1-3 = questions, 4 = loading, 5 = results
   const [answers, setAnswers] = useState({});
@@ -161,6 +161,20 @@ export default function FindYourFitQuiz({ allProducts = [], hideBanner = false }
             <button className={styles.bannerBtn}>Take Quiz</button>
           </div>
         </div>
+      )}
+
+      {/* Floating Corner Quiz Pill (for Shop, Handmade & Factory Pages) */}
+      {showFloatingPill && (
+        <button 
+          className={styles.floatingPill}
+          onClick={() => setIsModalOpen(true)}
+          title="Find Your Perfect Fit Quiz"
+          aria-label="Find Your Perfect Fit Style Quiz"
+        >
+          <span className={styles.floatingPillIcon}>✨</span>
+          <span className={styles.floatingPillText}>Style Quiz</span>
+          <span className={styles.floatingPillBadge}>30s</span>
+        </button>
       )}
 
       {isModalOpen && (

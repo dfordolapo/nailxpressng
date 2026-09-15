@@ -4,10 +4,12 @@ import Features from "@/components/home/Features";
 import VideoSection from "@/components/home/VideoSection";
 import Testimonials from "@/components/home/Testimonials";
 import ShopTheLook from "@/components/home/ShopTheLook";
+import FindYourFitQuiz from "@/components/product/FindYourFitQuiz";
 import HowToMeasure from "@/components/home/HowToMeasure";
 import GiftBoxBanner from "@/components/home/GiftBoxBanner";
 import FAQSection from "@/components/home/FAQSection";
 import FooterHero from "@/components/home/FooterHero";
+import { getProducts } from "@/lib/api";
 
 export const metadata = {
   title: "Nailexpress — Premium Press-On Nails in Nigeria",
@@ -33,7 +35,9 @@ export const metadata = {
   },
 };
 
-export default function Home() {
+export default async function Home() {
+  const allProducts = await getProducts();
+
   return (
     <div>
       <HeroSection />
@@ -42,6 +46,9 @@ export default function Home() {
       <VideoSection />
       <Testimonials />
       <ShopTheLook />
+      <div style={{ padding: "0 5%", maxWidth: "1200px", margin: "0 auto" }}>
+        <FindYourFitQuiz allProducts={allProducts} hideBanner={false} />
+      </div>
       <HowToMeasure />
       <GiftBoxBanner />
       <FAQSection />
