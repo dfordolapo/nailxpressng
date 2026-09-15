@@ -1370,13 +1370,18 @@ function ProductsContent({ initialProducts = [] }) {
                   <input 
                     type="file" 
                     ref={fileInputRef} 
-                    accept=".xlsx,.xls,.csv,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" 
+                    accept=".xlsx,.xls,.csv" 
                     onChange={handleFileUpload} 
                     style={{ display: "none" }} 
                   />
                   <div 
                     className={styles.bulkDropZone} 
-                    onClick={() => fileInputRef.current?.click()}
+                    onClick={() => {
+                      if (fileInputRef.current) {
+                        fileInputRef.current.value = "";
+                        fileInputRef.current.click();
+                      }
+                    }}
                   >
                     <Upload size={32} color="var(--color-primary)" style={{ marginBottom: "8px" }} />
                     <div style={{ fontWeight: 600, fontSize: "0.9rem", marginBottom: "4px" }}>
