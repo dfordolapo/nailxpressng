@@ -498,7 +498,13 @@ function ProductsContent({ initialProducts = [] }) {
         if (data.products && Array.isArray(data.products)) {
           const mapped = data.products.map(p => {
             const rawP = Number(p.price);
-            const isFactory = rawP > 0 && rawP <= 10000;
+            const catSlug = (p.categories?.slug || defaultCategory || '').toLowerCase();
+            const catName = (p.categories?.name || defaultCategory || '').toLowerCase();
+            let isFactory = false;
+            if (catSlug.includes('factory') || catName.includes('factory')) isFactory = true;
+            else if (catSlug.includes('handmade') || catName.includes('handmade')) isFactory = false;
+            else isFactory = rawP > 0 && rawP <= 10000;
+
             return {
               id: p.id,
               name: p.name,
@@ -552,7 +558,13 @@ function ProductsContent({ initialProducts = [] }) {
         if (data.products && Array.isArray(data.products)) {
           const mapped = data.products.map(p => {
             const rawP = Number(p.price);
-            const isFactory = rawP > 0 && rawP <= 10000;
+            const catSlug = (p.categories?.slug || '').toLowerCase();
+            const catName = (p.categories?.name || '').toLowerCase();
+            let isFactory = false;
+            if (catSlug.includes('factory') || catName.includes('factory')) isFactory = true;
+            else if (catSlug.includes('handmade') || catName.includes('handmade')) isFactory = false;
+            else isFactory = rawP > 0 && rawP <= 10000;
+
             return {
               id: p.id,
               name: p.name,

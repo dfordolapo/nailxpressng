@@ -24,12 +24,23 @@ export async function PUT(request, { params }) {
     const length = formData.get('length');
     const color = formData.get('color');
 
-    // 1. Get Category ID (Price is authoritative: <= ₦10,000 is Factory Made, > ₦10,000 is Handmade)
+    // 1. Get Category ID: Respect user's explicit tag/selection if provided, else fallback to price rule
     let categoryId = null;
-    const targetSlug = (price > 0 && price <= 10000) ? 'factory' : 'handmade';
     const { data: allCategories } = await supabaseAdmin
       .from('categories')
       .select('id, name, slug');
+
+    let targetSlug = null;
+    if (category) {
+      const catLower = String(category).toLowerCase().trim();
+      if (catLower.includes('factory')) targetSlug = 'factory';
+      else if (catLower.includes('handmade')) targetSlug = 'handmade';
+    }
+    
+    // If not explicitly set, determine by price
+    if (!targetSlug) {
+      targetSlug = (price > 0 && price <= 10000) ? 'factory' : 'handmade';
+    }
 
     if (allCategories && allCategories.length > 0) {
       const match = allCategories.find(c => c.slug.toLowerCase() === targetSlug);

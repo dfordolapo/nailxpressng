@@ -24,15 +24,23 @@ export async function POST(request) {
 
     if (mode === 'images_only') {
       const imageFiles = formData.getAll('images');
+      const defaultCategoryName = (formData.get('defaultCategory') || '').toLowerCase().trim();
       const defaultPrice = parseFloat(formData.get('defaultPrice') || '12000');
       const defaultStock = parseInt(formData.get('defaultStock') || '10', 10);
       const defaultShape = formData.get('defaultShape') || 'Square';
 
-      // Price is the authoritative source of truth for categories:
-      // <= 10,000 is Factory Made, > 10,000 is Handmade
-      let targetCatId = (defaultPrice > 0 && defaultPrice <= 10000)
-        ? (factoryCategoryId || defaultCategory)
-        : (handmadeCategoryId || defaultCategory);
+      // 1. If user tagged explicit collection ('Factory Made' or 'Handmade'), respect it:
+      let targetCatId = null;
+      if (defaultCategoryName.includes('factory')) {
+        targetCatId = factoryCategoryId || defaultCategory;
+      } else if (defaultCategoryName.includes('handmade')) {
+        targetCatId = handmadeCategoryId || defaultCategory;
+      } else {
+        // 2. Fallback to price rule
+        targetCatId = (defaultPrice > 0 && defaultPrice <= 10000)
+          ? (factoryCategoryId || defaultCategory)
+          : (handmadeCategoryId || defaultCategory);
+      }
 
       if (!imageFiles || imageFiles.length === 0) {
         return NextResponse.json({ success: false, error: 'No images were uploaded' }, { status: 400 });
@@ -145,10 +153,21 @@ export async function POST(request) {
       const stock = parseInt(p.stockCount ?? p.stock ?? '10', 10);
       const isFeatured = p.featured === true || p.featured === 'true' || p.bestseller === true || p.bestseller === 'true';
 
-      // Price is the authoritative source of truth for categories:
-      let catId = (rawPrice > 0 && rawPrice <= 10000)
-        ? (factoryCategoryId || defaultCategory)
-        : (handmadeCategoryId || defaultCategory);
+      // 1. If explicit category specified in row, honor it:
+      let catId = null;
+      if (p.category) {
+        const catKey = String(p.category).toLowerCase().trim();
+        if (catKey.includes('factory')) catId = factoryCategoryId;
+        else if (catKey.includes('handmade')) catId = handmadeCategoryId;
+        else catId = categoryMap.get(catKey) || null;
+      }
+      
+      // 2. Otherwise fallback to mistake-proof price rule:
+      if (!catId) {
+        catId = (rawPrice > 0 && rawPrice <= 10000)
+          ? (factoryCategoryId || defaultCategory)
+          : (handmadeCategoryId || defaultCategory);
+      }
 
       let imagesArray = [];
       if (Array.isArray(p.images)) {
