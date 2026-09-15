@@ -164,11 +164,11 @@ export default function FindYourFitQuiz({ allProducts = [], hideBanner = false, 
               </div>
 
               <h3 className={styles.bannerTitle}>
-                Can&apos;t pick? Let&apos;s find your <span className={styles.bannerHighlight}>perfect set.</span>
+                Your dream set is <span className={styles.bannerHighlight}>3 taps away.</span>
               </h3>
 
               <p className={styles.bannerSubtitle}>
-                Answer 3 quick vibe checks — we&apos;ll do the rest ✨
+                Custom recommendations matched to your style ✨
               </p>
 
               <div className={styles.bannerCtaRow}>
@@ -206,13 +206,13 @@ export default function FindYourFitQuiz({ allProducts = [], hideBanner = false, 
 
                 <div className={`${styles.visualCard} ${styles.visualCard3}`}>
                   <Image 
-                    src="/images/Handmade/IMG_3174.jpg" 
-                    alt="Classic French Set" 
+                    src="/images/Handmade/IMG_3275.jpg" 
+                    alt="Minimalist Chic Set" 
                     fill 
                     sizes="180px"
                     style={{ objectFit: 'cover' }}
                   />
-                  <div className={styles.cardTag}>Classic</div>
+                  <div className={styles.cardTag}>Minimal</div>
                 </div>
 
                 <div className={styles.floatingQuizBadge}>
