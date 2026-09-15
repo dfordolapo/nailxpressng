@@ -590,7 +590,7 @@ function ProductsContent({ initialProducts = [] }) {
           <h1 className={styles.pageTitle}>Products</h1>
           <p className={styles.pageSubtitle}>Manage all your products, stock, and pricing in real time.</p>
         </div>
-        <div style={{ display: "flex", gap: "10px" }}>
+        <div className={styles.pageHeaderActions}>
           <button 
             type="button"
             className={styles.btnSecondary} 
@@ -599,21 +599,21 @@ function ProductsContent({ initialProducts = [] }) {
               background: "#ffffff",
               border: "1px solid var(--color-border)",
               color: "var(--color-text)",
-              padding: "8px 16px",
+              padding: "8px 14px",
               borderRadius: "8px",
               fontSize: "0.85rem",
               fontWeight: 500,
               display: "inline-flex",
               alignItems: "center",
-              gap: "8px",
+              gap: "6px",
               cursor: "pointer",
             }}
           >
-            <Upload size={16} />
+            <Upload size={15} />
             Bulk Upload
           </button>
-          <Link href="/admin/products/new" className={styles.btnPrimary}>
-            <Plus size={18} />
+          <Link href="/admin/products/new" className={styles.btnPrimary} style={{ padding: "8px 14px", gap: "6px" }}>
+            <Plus size={16} />
             Add New Product
           </Link>
         </div>

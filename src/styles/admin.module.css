@@ -137,6 +137,12 @@
   margin-bottom: 25px;
 }
 
+.pageHeaderActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .pageTitle {
   font-size: 1.5rem;
   font-weight: 600;
@@ -911,12 +917,23 @@
   .pageHeader {
     flex-direction: column;
     align-items: flex-start;
-    gap: 15px;
+    gap: 12px;
   }
 
-  .pageHeader .btnPrimary {
+  .pageHeaderActions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     width: 100%;
+  }
+
+  .pageHeaderActions .btnPrimary,
+  .pageHeaderActions .btnSecondary {
+    flex: 1;
     justify-content: center;
+    white-space: nowrap;
+    padding: 8px 10px;
+    font-size: 0.8rem;
   }
 
   .toolbar {
