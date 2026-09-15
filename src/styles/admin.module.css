@@ -535,7 +535,13 @@
 .searchInput {
   border: none;
   outline: none;
-  font-size: 0.9rem;
+  font-size: 0.82rem;
+  width: 100%;
+}
+
+.searchInput::placeholder {
+  font-size: 0.8rem;
+  color: #8c8c8c;
 }
 
 .filterBtn {

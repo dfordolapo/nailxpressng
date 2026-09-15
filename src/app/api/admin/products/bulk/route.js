@@ -28,6 +28,7 @@ export async function POST(request) {
       const defaultPrice = parseFloat(formData.get('defaultPrice') || '12000');
       const defaultStock = parseInt(formData.get('defaultStock') || '10', 10);
       const defaultShape = formData.get('defaultShape') || 'Square';
+      const defaultLength = formData.get('defaultLength') || 'Medium';
 
       // 1. Map directly from user's chosen collection in the modal
       let targetCatId = handmadeCategoryId || defaultCategory;
@@ -42,26 +43,22 @@ export async function POST(request) {
       }
 
       const timestamp = Date.now();
-      const preparedProducts = [];
+      
+      // Process and upload images concurrently in batches of 5 to avoid connection drops
+      const uploadTasks = imageFiles.map(async (file, i) => {
+        if (!file || file.size === 0) return null;
 
-      for (let i = 0; i < imageFiles.length; i++) {
-        const file = imageFiles[i];
-        if (!file || file.size === 0) continue;
-
-        // Clean file name to create product title
-        // e.g. "Ruby_Velvet_Nails_01.png" -> "Ruby Velvet Nails"
         const rawName = file.name
           .replace(/\.[^/.]+$/, "") // remove extension
           .replace(/[_-]+/g, " ") // replace underscores/dashes with spaces
           .trim();
 
-        // Capitalize words
         const productName = rawName
           .split(' ')
           .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
           .join(' ') || `Nail Set ${i + 1}`;
 
-        const slugBase = productName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+        const slugBase = productName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '') || `nail-set-${i}`;
         const fileExt = file.name.split('.').pop() || 'jpg';
         const fileName = `bulk-${slugBase}-${timestamp}-${i}.${fileExt}`;
         const buffer = await file.arrayBuffer();
@@ -71,19 +68,19 @@ export async function POST(request) {
           .from('product-images')
           .upload(fileName, buffer, {
             contentType: file.type || 'image/jpeg',
-            upsert: false
+            upsert: true
           });
 
         if (uploadError) {
           console.error(`Failed to upload ${fileName}:`, uploadError);
-          continue;
+          return null;
         }
 
         const { data: publicUrlData } = supabaseAdmin.storage
           .from('product-images')
           .getPublicUrl(fileName);
 
-        preparedProducts.push({
+        return {
           name: productName,
           slug: `${slugBase}-${timestamp}-${i}`,
           description: `Handcrafted ${productName} luxury press-on nail set. Ready to wear.`,
@@ -96,10 +93,13 @@ export async function POST(request) {
           images: [publicUrlData.publicUrl],
           bestseller: false,
           stock_count: defaultStock,
-          lengths: ['Short', 'Medium', 'Long'],
+          lengths: defaultLength ? [defaultLength] : ['Short', 'Medium', 'Long'],
           sizes: ['S', 'M', 'L'],
-        });
-      }
+        };
+      });
+
+      const results = await Promise.all(uploadTasks);
+      const preparedProducts = results.filter(Boolean);
 
       if (preparedProducts.length === 0) {
         return NextResponse.json({ success: false, error: 'Failed to process any of the uploaded images.' }, { status: 400 });

@@ -67,6 +67,7 @@ function ProductsContent({ initialProducts = [] }) {
   const [defaultPrice, setDefaultPrice] = useState("12000");
   const [defaultStock, setDefaultStock] = useState("10");
   const [defaultShape, setDefaultShape] = useState("Square");
+  const [defaultLength, setDefaultLength] = useState("Medium");
 
   const [isUploadingBulk, setIsUploadingBulk] = useState(false);
   const [bulkError, setBulkError] = useState(null);
@@ -496,6 +497,7 @@ function ProductsContent({ initialProducts = [] }) {
         formData.append('defaultPrice', defaultPrice);
         formData.append('defaultStock', defaultStock);
         formData.append('defaultShape', defaultShape);
+        formData.append('defaultLength', defaultLength);
 
         // Append each image
         selectedGalleryFiles.forEach((file) => {
@@ -1235,7 +1237,7 @@ function ProductsContent({ initialProducts = [] }) {
               {bulkMode === "gallery" ? (
                 <>
                   {/* Default Attributes Bar */}
-                  <div style={{ background: "#f8f9fa", padding: "14px", borderRadius: "10px", border: "1px solid var(--color-border-light)", display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "10px" }}>
+                  <div style={{ background: "#f8f9fa", padding: "14px", borderRadius: "10px", border: "1px solid var(--color-border-light)", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(110px, 1fr))", gap: "10px" }}>
                     <div>
                       <label style={{ fontSize: "0.75rem", fontWeight: 600, color: "#555", display: "block", marginBottom: "4px" }}>Collection</label>
                       <select 
@@ -1275,11 +1277,25 @@ function ProductsContent({ initialProducts = [] }) {
                         onChange={(e) => setDefaultShape(e.target.value)}
                         style={{ width: "100%", padding: "6px 8px", borderRadius: "6px", border: "1px solid var(--color-border)", fontSize: "0.8rem" }}
                       >
-                        <option value="Square">Square</option>
                         <option value="Almond">Almond</option>
+                        <option value="Square">Square</option>
                         <option value="Coffin">Coffin</option>
                         <option value="Stiletto">Stiletto</option>
                         <option value="Oval">Oval</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label style={{ fontSize: "0.75rem", fontWeight: 600, color: "#555", display: "block", marginBottom: "4px" }}>Nail Length</label>
+                      <select 
+                        value={defaultLength} 
+                        onChange={(e) => setDefaultLength(e.target.value)}
+                        style={{ width: "100%", padding: "6px 8px", borderRadius: "6px", border: "1px solid var(--color-border)", fontSize: "0.8rem" }}
+                      >
+                        <option value="Medium">Medium</option>
+                        <option value="Short">Short</option>
+                        <option value="Long">Long</option>
+                        <option value="Extra Long">Extra Long</option>
                       </select>
                     </div>
                   </div>
