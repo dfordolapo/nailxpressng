@@ -1039,6 +1039,8 @@ function ProductsContent({ initialProducts = [] }) {
                     </div>
                   </div>
                 )}
+              </th>
+
               {/* Actions Column Header */}
               <th style={{ minWidth: "50px", width: "50px", textAlign: "right" }}></th>
             </tr>
