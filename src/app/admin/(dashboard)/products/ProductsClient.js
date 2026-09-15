@@ -1087,15 +1087,14 @@ function ProductsContent({ initialProducts = [] }) {
                             className={styles.kebabMenu}
                             style={{
                               position: "absolute",
-                              left: "100%",
-                              top: index >= visibleProducts.length - 2 ? "auto" : "0",
-                              bottom: index >= visibleProducts.length - 2 ? "0" : "auto",
-                              marginLeft: "8px",
-                              zIndex: 100,
-                              minWidth: "160px",
+                              right: 0,
+                              top: index >= visibleProducts.length - 2 ? "auto" : "calc(100% + 4px)",
+                              bottom: index >= visibleProducts.length - 2 ? "calc(100% + 4px)" : "auto",
+                              zIndex: 1000,
+                              minWidth: "165px",
                               background: "#ffffff",
                               borderRadius: "8px",
-                              boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
+                              boxShadow: "0 8px 24px rgba(0,0,0,0.18)",
                               border: "1px solid var(--color-border)"
                             }}
                           >
