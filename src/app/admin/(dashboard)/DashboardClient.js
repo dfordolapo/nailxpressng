@@ -40,18 +40,29 @@ export default function DashboardClient({ initialProducts = [], initialOrders = 
     availability: [],
   });
   const [sortConfig, setSortConfig] = useState({ key: 'createdAt', direction: 'desc' });
+  const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
 
-  // Close menus on outside click
+  // Close menus on outside click or scroll
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (!e.target.closest(`.${styles.kebabMenu}`) && !e.target.closest(`.${styles.excelPopover}`) && !e.target.closest(`.${styles.excelFilterBtn}`)) {
+      if (!e.target.closest(`.${styles.kebabMenu}`) && !e.target.closest(`.${styles.excelPopover}`) && !e.target.closest(`.${styles.excelFilterBtn}`) && !e.target.closest(`.${styles.kebabTriggerBtn}`)) {
         setOpenMenuId(null);
         setActivePopover(null);
       }
     };
+    const handleScrollOrResize = () => {
+      if (openMenuId) setOpenMenuId(null);
+    };
+
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+    window.addEventListener("scroll", handleScrollOrResize, true);
+    window.addEventListener("resize", handleScrollOrResize);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      window.removeEventListener("scroll", handleScrollOrResize, true);
+      window.removeEventListener("resize", handleScrollOrResize);
+    };
+  }, [openMenuId]);
 
   const todayDate = new Date().toISOString().split("T")[0];
   
@@ -73,7 +84,26 @@ export default function DashboardClient({ initialProducts = [], initialOrders = 
 
   const handleMenuClick = (id, e) => {
     e.stopPropagation();
-    setOpenMenuId(openMenuId === id ? null : id);
+    if (openMenuId === id) {
+      setOpenMenuId(null);
+    } else {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const menuWidth = 175;
+      const menuHeight = 210;
+      
+      let top = rect.bottom + 4;
+      if (top + menuHeight > window.innerHeight && rect.top - menuHeight > 0) {
+        top = rect.top - menuHeight - 4;
+      }
+      
+      let left = rect.left;
+      if (left + menuWidth > window.innerWidth - 10) {
+        left = Math.max(10, window.innerWidth - menuWidth - 10);
+      }
+
+      setMenuPosition({ top, left });
+      setOpenMenuId(id);
+    }
   };
 
   const handleDeleteClick = (id) => {
@@ -488,13 +518,12 @@ export default function DashboardClient({ initialProducts = [], initialOrders = 
               </th>
 
               <th style={{ minWidth: "100px" }}>Added</th>
-              <th style={{ minWidth: "50px", width: "50px", textAlign: "right" }}></th>
             </tr>
           </thead>
           <tbody>
             {filteredRecentProducts.length === 0 ? (
               <tr>
-                <td colSpan="6" style={{ textAlign: "center", padding: "60px 20px" }}>
+                <td colSpan="5" style={{ textAlign: "center", padding: "60px 20px" }}>
                   <div style={{ fontSize: "2.5rem", marginBottom: "var(--space-4)" }}>💅</div>
                   <h3 style={{ fontSize: "1.125rem", color: "var(--color-primary-800)", marginBottom: "var(--space-2)", fontFamily: "var(--font-heading)" }}>No products found</h3>
                   <p style={{ color: "var(--color-text-secondary)", fontSize: "0.875rem", marginBottom: "var(--space-6)" }}>No products matched your filters.</p>
@@ -515,16 +544,39 @@ export default function DashboardClient({ initialProducts = [], initialOrders = 
                   <tr key={product.id}>
                     {/* Product cell */}
                     <td>
-                      <div className={styles.productCell} style={{ display: "flex", alignItems: "center", gap: "12px", minWidth: 0 }}>
-                        <Image 
-                          src={product.images?.[0] || '/images/hero.png'} 
-                          alt={product.name} 
-                          className={styles.productImg} 
-                          width={44} 
-                          height={44} 
-                          style={{ objectFit: 'cover', borderRadius: '6px', flexShrink: 0 }} 
-                        />
-                        <span className={styles.productName} style={{ wordBreak: "break-word" }}>{product.name}</span>
+                      <div className={styles.productCell} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px", minWidth: 0 }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "12px", minWidth: 0, flex: 1 }}>
+                          <Image 
+                            src={product.images?.[0] || '/images/hero.png'} 
+                            alt={product.name} 
+                            className={styles.productImg} 
+                            width={44} 
+                            height={44} 
+                            style={{ objectFit: 'cover', borderRadius: '6px', flexShrink: 0 }} 
+                          />
+                          <span className={styles.productName} style={{ wordBreak: "break-word" }}>{product.name}</span>
+                        </div>
+
+                        {/* 3-dots Action button beside product name */}
+                        <button 
+                          className={styles.kebabTriggerBtn}
+                          onClick={(e) => handleMenuClick(product.id, e)}
+                          title="Product Actions"
+                          style={{ 
+                            background: openMenuId === product.id ? "rgba(0,0,0,0.06)" : "none", 
+                            border: "1px solid var(--color-border-light)", 
+                            borderRadius: "6px",
+                            cursor: "pointer", 
+                            color: "#666", 
+                            padding: "4px 6px",
+                            display: "inline-flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            flexShrink: 0
+                          }}
+                        >
+                          <MoreVertical size={16} />
+                        </button>
                       </div>
                     </td>
 
@@ -543,63 +595,6 @@ export default function DashboardClient({ initialProducts = [], initialOrders = 
                     <td style={{ color: "#666", fontSize: "0.82rem" }}>
                       {product.createdAt ? new Date(product.createdAt).toLocaleDateString() : "Recent"}
                     </td>
-
-                    {/* Actions Column */}
-                    <td style={{ textAlign: "right", position: "relative" }}>
-                      <button 
-                        onClick={(e) => handleMenuClick(product.id, e)}
-                        title="Product Actions"
-                        style={{ 
-                          background: openMenuId === product.id ? "rgba(0,0,0,0.06)" : "none", 
-                          border: "1px solid var(--color-border-light)", 
-                          borderRadius: "6px",
-                          cursor: "pointer", 
-                          color: "#666", 
-                          padding: "4px 6px",
-                          display: "inline-flex",
-                          alignItems: "center",
-                          justifyContent: "center"
-                        }}
-                      >
-                        <MoreVertical size={16} />
-                      </button>
-
-                      {openMenuId === product.id && (
-                        <div 
-                          className={styles.kebabMenu}
-                          style={{
-                            position: "absolute",
-                            right: 0,
-                            top: index >= arr.length - 2 ? "auto" : "calc(100% + 4px)",
-                            bottom: index >= arr.length - 2 ? "calc(100% + 4px)" : "auto",
-                            zIndex: 1000,
-                            minWidth: "165px",
-                            background: "#ffffff",
-                            borderRadius: "8px",
-                            boxShadow: "0 8px 24px rgba(0,0,0,0.18)",
-                            border: "1px solid var(--color-border)"
-                          }}
-                        >
-                          <button 
-                            className={styles.kebabItem} 
-                            onClick={() => handleToggleStock(product.id)}
-                            style={{ 
-                              fontWeight: 600,
-                              color: isCurrentlyInStock ? "#DC2626" : "#16A34A",
-                              borderBottom: "1px solid var(--color-border-light)"
-                            }}
-                          >
-                            {isCurrentlyInStock ? "Mark Out of Stock" : "Mark In Stock"}
-                          </button>
-                          <button className={styles.kebabItem} onClick={() => handleEdit(product.id)}>Edit Details</button>
-                          <button className={styles.kebabItem} onClick={() => handleDuplicate(product.id)}>Duplicate</button>
-                          <button className={styles.kebabItem} onClick={() => handleToggleFeature(product.id)}>
-                            {product.bestseller ? "Unmark Featured" : "Mark Featured"}
-                          </button>
-                          <button className={`${styles.kebabItem} ${styles.kebabDelete}`} onClick={() => handleDeleteClick(product.id)}>Delete Product</button>
-                        </div>
-                      )}
-                    </td>
                   </tr>
                 );
               })
@@ -607,6 +602,48 @@ export default function DashboardClient({ initialProducts = [], initialOrders = 
           </tbody>
         </table>
       </div>
+
+      {/* Floating Kebab Action Menu (Rendered outside table container so it escapes overflow clipping) */}
+      {openMenuId && (() => {
+        const activeProduct = productsList.find(p => p.id === openMenuId);
+        if (!activeProduct) return null;
+        const isCurrentlyInStock = activeProduct.stockCount > 0 && activeProduct.inStock;
+
+        return (
+          <div 
+            className={styles.kebabMenu}
+            style={{
+              position: "fixed",
+              top: `${menuPosition.top}px`,
+              left: `${menuPosition.left}px`,
+              zIndex: 99999,
+              minWidth: "175px",
+              background: "#ffffff",
+              borderRadius: "8px",
+              boxShadow: "0 10px 30px rgba(0,0,0,0.22)",
+              border: "1px solid var(--color-border)"
+            }}
+          >
+            <button 
+              className={styles.kebabItem} 
+              onClick={() => handleToggleStock(activeProduct.id)}
+              style={{ 
+                fontWeight: 600,
+                color: isCurrentlyInStock ? "#DC2626" : "#16A34A",
+                borderBottom: "1px solid var(--color-border-light)"
+              }}
+            >
+              {isCurrentlyInStock ? "Mark Out of Stock" : "Mark In Stock"}
+            </button>
+            <button className={styles.kebabItem} onClick={() => handleEdit(activeProduct.id)}>Edit Details</button>
+            <button className={styles.kebabItem} onClick={() => handleDuplicate(activeProduct.id)}>Duplicate</button>
+            <button className={styles.kebabItem} onClick={() => handleToggleFeature(activeProduct.id)}>
+              {activeProduct.bestseller ? "Unmark Featured" : "Mark Featured"}
+            </button>
+            <button className={`${styles.kebabItem} ${styles.kebabDelete}`} onClick={() => handleDeleteClick(activeProduct.id)}>Delete Product</button>
+          </div>
+        );
+      })()}
 
       {productToDelete && (
         <div className={styles.modalOverlay} onClick={() => setProductToDelete(null)}>

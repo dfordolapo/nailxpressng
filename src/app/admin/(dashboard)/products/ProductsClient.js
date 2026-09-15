@@ -34,6 +34,7 @@ function ProductsContent({ initialProducts = [] }) {
   const [productsList, setProductsList] = useState(initialProducts);
   const [searchQuery, setSearchQuery] = useState("");
   const [openMenuId, setOpenMenuId] = useState(null);
+  const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
   const [productToDelete, setProductToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [updatingStockId, setUpdatingStockId] = useState(null);
@@ -114,17 +115,27 @@ function ProductsContent({ initialProducts = [] }) {
     setGalleryPreviews(prev => prev.map((item, i) => i === index ? { ...item, name: newName } : item));
   };
 
-  // Close menus when clicking outside
+  // Close menus when clicking outside or scrolling
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (!e.target.closest(`.${styles.kebabMenu}`) && !e.target.closest(`.${styles.excelPopover}`) && !e.target.closest(`.${styles.excelFilterBtn}`)) {
+      if (!e.target.closest(`.${styles.kebabMenu}`) && !e.target.closest(`.${styles.excelPopover}`) && !e.target.closest(`.${styles.excelFilterBtn}`) && !e.target.closest(`.${styles.kebabTriggerBtn}`)) {
         setOpenMenuId(null);
         setActivePopover(null);
       }
     };
+    const handleScrollOrResize = () => {
+      if (openMenuId) setOpenMenuId(null);
+    };
+
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+    window.addEventListener("scroll", handleScrollOrResize, true);
+    window.addEventListener("resize", handleScrollOrResize);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      window.removeEventListener("scroll", handleScrollOrResize, true);
+      window.removeEventListener("resize", handleScrollOrResize);
+    };
+  }, [openMenuId]);
 
   // Continuous scrolling observer
   useEffect(() => {
@@ -149,7 +160,28 @@ function ProductsContent({ initialProducts = [] }) {
 
   const handleMenuClick = (id, e) => {
     e.stopPropagation();
-    setOpenMenuId(openMenuId === id ? null : id);
+    if (openMenuId === id) {
+      setOpenMenuId(null);
+    } else {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const menuWidth = 175;
+      const menuHeight = 210;
+      
+      // Calculate top position (open downwards if space, else upwards)
+      let top = rect.bottom + 4;
+      if (top + menuHeight > window.innerHeight && rect.top - menuHeight > 0) {
+        top = rect.top - menuHeight - 4;
+      }
+      
+      // Calculate left position (prefer aligning to trigger left, keep within screen)
+      let left = rect.left;
+      if (left + menuWidth > window.innerWidth - 10) {
+        left = Math.max(10, window.innerWidth - menuWidth - 10);
+      }
+
+      setMenuPosition({ top, left });
+      setOpenMenuId(id);
+    }
   };
 
   const handleDeleteClick = (id) => {
@@ -1040,9 +1072,6 @@ function ProductsContent({ initialProducts = [] }) {
                   </div>
                 )}
               </th>
-
-              {/* Actions Column Header */}
-              <th style={{ minWidth: "50px", width: "50px", textAlign: "right" }}></th>
             </tr>
           </thead>
           <tbody>
@@ -1052,16 +1081,39 @@ function ProductsContent({ initialProducts = [] }) {
                 <tr key={product.id}>
                   {/* Product Cell */}
                   <td>
-                    <div className={styles.productCell} style={{ display: "flex", alignItems: "center", gap: "12px", minWidth: 0 }}>
-                      <Image 
-                        src={product.images?.[0] || '/images/hero.png'} 
-                        alt={product.name} 
-                        className={styles.productImg} 
-                        width={44} 
-                        height={44} 
-                        style={{ objectFit: 'cover', borderRadius: '6px', flexShrink: 0 }} 
-                      />
-                      <span className={styles.productName} style={{ wordBreak: "break-word" }}>{product.name}</span>
+                    <div className={styles.productCell} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px", minWidth: 0 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "12px", minWidth: 0, flex: 1 }}>
+                        <Image 
+                          src={product.images?.[0] || '/images/hero.png'} 
+                          alt={product.name} 
+                          className={styles.productImg} 
+                          width={44} 
+                          height={44} 
+                          style={{ objectFit: 'cover', borderRadius: '6px', flexShrink: 0 }} 
+                        />
+                        <span className={styles.productName} style={{ wordBreak: "break-word" }}>{product.name}</span>
+                      </div>
+
+                      {/* 3-dots Action button beside product name */}
+                      <button 
+                        className={styles.kebabTriggerBtn}
+                        onClick={(e) => handleMenuClick(product.id, e)}
+                        title="Product Actions"
+                        style={{ 
+                          background: openMenuId === product.id ? "rgba(0,0,0,0.06)" : "none", 
+                          border: "1px solid var(--color-border-light)", 
+                          borderRadius: "6px",
+                          cursor: "pointer", 
+                          color: "#666", 
+                          padding: "4px 6px",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          flexShrink: 0
+                        }}
+                      >
+                        <MoreVertical size={16} />
+                      </button>
                     </div>
                   </td>
 
@@ -1109,71 +1161,13 @@ function ProductsContent({ initialProducts = [] }) {
                       />
                     </button>
                   </td>
-
-                  {/* Actions Column */}
-                  <td style={{ textAlign: "right", position: "relative" }}>
-                    <button 
-                      onClick={(e) => handleMenuClick(product.id, e)}
-                      title="Product Actions"
-                      style={{ 
-                        background: openMenuId === product.id ? "rgba(0,0,0,0.06)" : "none", 
-                        border: "1px solid var(--color-border-light)", 
-                        borderRadius: "6px",
-                        cursor: "pointer", 
-                        color: "#666", 
-                        padding: "4px 6px",
-                        display: "inline-flex",
-                        alignItems: "center",
-                        justifyContent: "center"
-                      }}
-                    >
-                      <MoreVertical size={16} />
-                    </button>
-
-                    {openMenuId === product.id && (
-                      <div 
-                        className={styles.kebabMenu}
-                        style={{
-                          position: "absolute",
-                          right: 0,
-                          top: index >= visibleProducts.length - 2 ? "auto" : "calc(100% + 4px)",
-                          bottom: index >= visibleProducts.length - 2 ? "calc(100% + 4px)" : "auto",
-                          zIndex: 1000,
-                          minWidth: "165px",
-                          background: "#ffffff",
-                          borderRadius: "8px",
-                          boxShadow: "0 8px 24px rgba(0,0,0,0.18)",
-                          border: "1px solid var(--color-border)"
-                        }}
-                      >
-                        {/* In Stock / Out of Stock Instant Toggle */}
-                        <button 
-                          className={styles.kebabItem} 
-                          onClick={() => handleToggleStock(product.id)}
-                          style={{ 
-                            fontWeight: 600,
-                            color: isCurrentlyInStock ? "#DC2626" : "#16A34A",
-                            borderBottom: "1px solid var(--color-border-light)"
-                          }}
-                        >
-                          {isCurrentlyInStock ? "Mark Out of Stock" : "Mark In Stock"}
-                        </button>
-                        <button className={styles.kebabItem} onClick={() => handleEdit(product.id)}>Edit Details</button>
-                        <button className={styles.kebabItem} onClick={() => handleDuplicate(product.id)}>Duplicate</button>
-                        <button className={styles.kebabItem} onClick={() => handleToggleFeature(product.id)}>
-                          {product.bestseller ? "Unmark Featured" : "Mark Featured"}
-                        </button>
-                        <button className={`${styles.kebabItem} ${styles.kebabDelete}`} onClick={() => handleDeleteClick(product.id)}>Delete Product</button>
-                      </div>
-                    )}
-                  </td>
                 </tr>
               );
             })}
 
             {filteredAndSortedProducts.length === 0 && (
               <tr>
-                <td colSpan="7" style={{ textAlign: "center", padding: "60px 20px" }}>
+                <td colSpan="6" style={{ textAlign: "center", padding: "60px 20px" }}>
                   <div style={{ fontSize: "2.5rem", marginBottom: "var(--space-4)" }}>🔍</div>
                   <h3 style={{ fontSize: "1.125rem", color: "var(--color-primary-800)", marginBottom: "var(--space-2)" }}>No products found</h3>
                   <p style={{ color: "var(--color-text-secondary)", fontSize: "0.875rem", marginBottom: "var(--space-6)" }}>
@@ -1192,6 +1186,49 @@ function ProductsContent({ initialProducts = [] }) {
           </tbody>
         </table>
       </div>
+
+      {/* Floating Kebab Action Menu (Rendered outside table container so it escapes overflow clipping) */}
+      {openMenuId && (() => {
+        const activeProduct = productsList.find(p => p.id === openMenuId);
+        if (!activeProduct) return null;
+        const isCurrentlyInStock = activeProduct.stockCount > 0 && activeProduct.inStock;
+
+        return (
+          <div 
+            className={styles.kebabMenu}
+            style={{
+              position: "fixed",
+              top: `${menuPosition.top}px`,
+              left: `${menuPosition.left}px`,
+              zIndex: 99999,
+              minWidth: "175px",
+              background: "#ffffff",
+              borderRadius: "8px",
+              boxShadow: "0 10px 30px rgba(0,0,0,0.22)",
+              border: "1px solid var(--color-border)"
+            }}
+          >
+            {/* In Stock / Out of Stock Instant Toggle */}
+            <button 
+              className={styles.kebabItem} 
+              onClick={() => handleToggleStock(activeProduct.id)}
+              style={{ 
+                fontWeight: 600,
+                color: isCurrentlyInStock ? "#DC2626" : "#16A34A",
+                borderBottom: "1px solid var(--color-border-light)"
+              }}
+            >
+              {isCurrentlyInStock ? "Mark Out of Stock" : "Mark In Stock"}
+            </button>
+            <button className={styles.kebabItem} onClick={() => handleEdit(activeProduct.id)}>Edit Details</button>
+            <button className={styles.kebabItem} onClick={() => handleDuplicate(activeProduct.id)}>Duplicate</button>
+            <button className={styles.kebabItem} onClick={() => handleToggleFeature(activeProduct.id)}>
+              {activeProduct.bestseller ? "Unmark Featured" : "Mark Featured"}
+            </button>
+            <button className={`${styles.kebabItem} ${styles.kebabDelete}`} onClick={() => handleDeleteClick(activeProduct.id)}>Delete Product</button>
+          </div>
+        );
+      })()}
 
       {/* Continuous scrolling sentinel & indicator */}
       <div 
