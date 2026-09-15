@@ -14,8 +14,6 @@ import styles from "@/styles/components/header.module.css";
 
 export default function Header() {
   const pathname = usePathname();
-  if (pathname?.startsWith("/admin")) return null;
-  
   const { itemCount } = useCart();
   const { itemCount: wishlistCount } = useWishlist();
   const { openSearch } = useSearch();
@@ -24,27 +22,32 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   
   const isHome = pathname === "/";
+  const isAdmin = pathname?.startsWith("/admin");
 
   useEffect(() => {
+    if (isAdmin) return;
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [isAdmin]);
 
   useEffect(() => {
     setMobileOpen(false);
   }, [pathname]);
 
   useEffect(() => {
+    if (isAdmin) return;
     if (mobileOpen || cartOpen) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
     }
     return () => { document.body.style.overflow = ""; };
-  }, [mobileOpen, cartOpen]);
+  }, [mobileOpen, cartOpen, isAdmin]);
+
+  if (isAdmin) return null;
 
   return (
     <>
