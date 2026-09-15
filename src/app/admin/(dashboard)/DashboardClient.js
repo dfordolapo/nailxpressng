@@ -488,12 +488,13 @@ export default function DashboardClient({ initialProducts = [], initialOrders = 
               </th>
 
               <th style={{ minWidth: "100px" }}>Added</th>
+              <th style={{ minWidth: "50px", width: "50px", textAlign: "right" }}></th>
             </tr>
           </thead>
           <tbody>
             {filteredRecentProducts.length === 0 ? (
               <tr>
-                <td colSpan="5" style={{ textAlign: "center", padding: "60px 20px" }}>
+                <td colSpan="6" style={{ textAlign: "center", padding: "60px 20px" }}>
                   <div style={{ fontSize: "2.5rem", marginBottom: "var(--space-4)" }}>💅</div>
                   <h3 style={{ fontSize: "1.125rem", color: "var(--color-primary-800)", marginBottom: "var(--space-2)", fontFamily: "var(--font-heading)" }}>No products found</h3>
                   <p style={{ color: "var(--color-text-secondary)", fontSize: "0.875rem", marginBottom: "var(--space-6)" }}>No products matched your filters.</p>
@@ -512,78 +513,18 @@ export default function DashboardClient({ initialProducts = [], initialOrders = 
                 const isCurrentlyInStock = product.stockCount > 0 && product.inStock;
                 return (
                   <tr key={product.id}>
-                    {/* Product cell with INLINE ACTIONS */}
+                    {/* Product cell */}
                     <td>
-                      <div className={styles.productCell} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px" }}>
-                        <div style={{ display: "flex", alignItems: "center", gap: "12px", minWidth: 0 }}>
-                          <Image 
-                            src={product.images?.[0] || '/images/hero.png'} 
-                            alt={product.name} 
-                            className={styles.productImg} 
-                            width={44} 
-                            height={44} 
-                            style={{ objectFit: 'cover', borderRadius: '6px', flexShrink: 0 }} 
-                          />
-                          <span className={styles.productName} style={{ wordBreak: "break-word" }}>{product.name}</span>
-                        </div>
-
-                        {/* Inline Action Trigger Beside Product Name */}
-                        <div style={{ position: "relative", flexShrink: 0 }}>
-                          <button 
-                            onClick={(e) => handleMenuClick(product.id, e)}
-                            title="Product Actions"
-                            style={{ 
-                              background: openMenuId === product.id ? "rgba(0,0,0,0.06)" : "none", 
-                              border: "1px solid var(--color-border-light)", 
-                              borderRadius: "6px",
-                              cursor: "pointer", 
-                              color: "#666", 
-                              padding: "4px 6px",
-                              display: "inline-flex",
-                              alignItems: "center",
-                              justifyContent: "center"
-                            }}
-                          >
-                            <MoreVertical size={16} />
-                          </button>
-
-                          {openMenuId === product.id && (
-                            <div 
-                              className={styles.kebabMenu}
-                              style={{
-                                position: "absolute",
-                                left: "100%",
-                                top: index >= arr.length - 2 ? "auto" : "0",
-                                bottom: index >= arr.length - 2 ? "0" : "auto",
-                                marginLeft: "8px",
-                                zIndex: 100,
-                                minWidth: "160px",
-                                background: "#ffffff",
-                                borderRadius: "8px",
-                                boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
-                                border: "1px solid var(--color-border)"
-                              }}
-                            >
-                              <button 
-                                className={styles.kebabItem} 
-                                onClick={() => handleToggleStock(product.id)}
-                                style={{ 
-                                  fontWeight: 600,
-                                  color: isCurrentlyInStock ? "#DC2626" : "#16A34A",
-                                  borderBottom: "1px solid var(--color-border-light)"
-                                }}
-                              >
-                                {isCurrentlyInStock ? "Mark Out of Stock" : "Mark In Stock"}
-                              </button>
-                              <button className={styles.kebabItem} onClick={() => handleEdit(product.id)}>Edit Details</button>
-                              <button className={styles.kebabItem} onClick={() => handleDuplicate(product.id)}>Duplicate</button>
-                              <button className={styles.kebabItem} onClick={() => handleToggleFeature(product.id)}>
-                                {product.bestseller ? "Unmark Featured" : "Mark Featured"}
-                              </button>
-                              <button className={`${styles.kebabItem} ${styles.kebabDelete}`} onClick={() => handleDeleteClick(product.id)}>Delete Product</button>
-                            </div>
-                          )}
-                        </div>
+                      <div className={styles.productCell} style={{ display: "flex", alignItems: "center", gap: "12px", minWidth: 0 }}>
+                        <Image 
+                          src={product.images?.[0] || '/images/hero.png'} 
+                          alt={product.name} 
+                          className={styles.productImg} 
+                          width={44} 
+                          height={44} 
+                          style={{ objectFit: 'cover', borderRadius: '6px', flexShrink: 0 }} 
+                        />
+                        <span className={styles.productName} style={{ wordBreak: "break-word" }}>{product.name}</span>
                       </div>
                     </td>
 
@@ -601,6 +542,63 @@ export default function DashboardClient({ initialProducts = [], initialOrders = 
                     </td>
                     <td style={{ color: "#666", fontSize: "0.82rem" }}>
                       {product.createdAt ? new Date(product.createdAt).toLocaleDateString() : "Recent"}
+                    </td>
+
+                    {/* Actions Column */}
+                    <td style={{ textAlign: "right", position: "relative" }}>
+                      <button 
+                        onClick={(e) => handleMenuClick(product.id, e)}
+                        title="Product Actions"
+                        style={{ 
+                          background: openMenuId === product.id ? "rgba(0,0,0,0.06)" : "none", 
+                          border: "1px solid var(--color-border-light)", 
+                          borderRadius: "6px",
+                          cursor: "pointer", 
+                          color: "#666", 
+                          padding: "4px 6px",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          justifyContent: "center"
+                        }}
+                      >
+                        <MoreVertical size={16} />
+                      </button>
+
+                      {openMenuId === product.id && (
+                        <div 
+                          className={styles.kebabMenu}
+                          style={{
+                            position: "absolute",
+                            right: 0,
+                            top: index >= arr.length - 2 ? "auto" : "calc(100% + 4px)",
+                            bottom: index >= arr.length - 2 ? "calc(100% + 4px)" : "auto",
+                            zIndex: 1000,
+                            minWidth: "165px",
+                            background: "#ffffff",
+                            borderRadius: "8px",
+                            boxShadow: "0 8px 24px rgba(0,0,0,0.18)",
+                            border: "1px solid var(--color-border)"
+                          }}
+                        >
+                          <button 
+                            className={styles.kebabItem} 
+                            onClick={() => handleToggleStock(product.id)}
+                            style={{ 
+                              fontWeight: 600,
+                              color: isCurrentlyInStock ? "#DC2626" : "#16A34A",
+                              borderBottom: "1px solid var(--color-border-light)"
+                            }}
+                          >
+                            {isCurrentlyInStock ? "Mark Out of Stock" : "Mark In Stock"}
+                          </button>
+                          <button className={styles.kebabItem} onClick={() => handleEdit(product.id)}>Edit Details</button>
+                          <button className={styles.kebabItem} onClick={() => handleDuplicate(product.id)}>Duplicate</button>
+                          <button className={styles.kebabItem} onClick={() => handleToggleFeature(product.id)}>
+                            {product.bestseller ? "Unmark Featured" : "Mark Featured"}
+                          </button>
+                          <button className={`${styles.kebabItem} ${styles.kebabDelete}`} onClick={() => handleDeleteClick(product.id)}>Delete Product</button>
+                        </div>
+                      )}
                     </td>
                   </tr>
                 );
