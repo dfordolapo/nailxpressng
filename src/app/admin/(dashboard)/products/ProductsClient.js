@@ -491,30 +491,77 @@ function ProductsContent({ initialProducts = [] }) {
           throw new Error("Please select at least one image from your gallery.");
         }
 
-        const formData = new FormData();
-        formData.append('mode', 'images_only');
-        formData.append('defaultCategory', defaultCategory);
-        formData.append('defaultPrice', defaultPrice);
-        formData.append('defaultStock', defaultStock);
-        formData.append('defaultShape', defaultShape);
-        formData.append('defaultLength', defaultLength);
+        // Upload images in parallel directly to Supabase Storage from browser
+        // This avoids Vercel / serverless 4.5MB request payload limits ("Request Entity Too Large" / 413)
+        const timestamp = Date.now();
+        const uploadedProducts = [];
 
-        // Append each image
-        selectedGalleryFiles.forEach((file) => {
-          formData.append('images', file);
-        });
+        // Upload in batches of 4 to prevent browser connection saturation
+        for (let i = 0; i < selectedGalleryFiles.length; i += 4) {
+          const batch = selectedGalleryFiles.slice(i, i + 4);
+          const batchResults = await Promise.all(
+            batch.map(async (file, batchIndex) => {
+              const globalIndex = i + batchIndex;
+              const previewItem = galleryPreviews[globalIndex];
+              const productName = previewItem?.name?.trim() || file.name.replace(/\.[^/.]+$/, "").replace(/[_-]+/g, " ").trim() || `Nail Set ${globalIndex + 1}`;
+              const slugBase = productName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '') || `nail-set-${globalIndex}`;
+              const fileExt = file.name.split('.').pop() || 'jpg';
+              const fileName = `bulk-${slugBase}-${timestamp}-${globalIndex}.${fileExt}`;
+
+              const { data: uploadData, error: uploadErr } = await supabase.storage
+                .from('product-images')
+                .upload(fileName, file, {
+                  cacheControl: '3600',
+                  upsert: true
+                });
+
+              if (uploadErr) {
+                console.error("Storage upload error for", fileName, uploadErr);
+                throw new Error(`Failed to upload photo "${file.name}": ${uploadErr.message}`);
+              }
+
+              const { data: publicUrlData } = supabase.storage
+                .from('product-images')
+                .getPublicUrl(fileName);
+
+              return {
+                name: productName,
+                category: defaultCategory,
+                price: parseFloat(defaultPrice) || 12000,
+                stock: parseInt(defaultStock, 10) || 10,
+                nailShape: defaultShape,
+                length: defaultLength,
+                images: [publicUrlData.publicUrl],
+                description: `Handcrafted ${productName} luxury press-on nail set. Ready to wear.`,
+              };
+            })
+          );
+          uploadedProducts.push(...batchResults);
+        }
+
+        // Send created product records to backend in JSON mode (lightweight JSON payload)
+        const formData = new FormData();
+        formData.append('mode', 'json');
+        formData.append('products', JSON.stringify(uploadedProducts));
 
         const res = await fetch('/api/admin/products/bulk', {
           method: 'POST',
           body: formData
         });
 
-        const data = await res.json();
-        if (!res.ok || !data.success) {
-          throw new Error(data.error || "Failed to upload gallery images");
+        let data;
+        const resText = await res.text();
+        try {
+          data = JSON.parse(resText);
+        } catch {
+          throw new Error(res.status === 413 ? "File batch exceeds server payload limit." : `Server returned: ${resText.slice(0, 120)}`);
         }
 
-        setBulkSuccess(`Successfully created ${data.count || selectedGalleryFiles.length} products from your images!`);
+        if (!res.ok || !data.success) {
+          throw new Error(data.error || "Failed to create products");
+        }
+
+        setBulkSuccess(`Successfully created ${data.count || uploadedProducts.length} products!`);
         if (data.products && Array.isArray(data.products)) {
           const mapped = data.products.map(p => {
             const rawP = Number(p.price);
@@ -566,7 +613,14 @@ function ProductsContent({ initialProducts = [] }) {
           body: formData
         });
 
-        const data = await res.json();
+        let data;
+        const resText = await res.text();
+        try {
+          data = JSON.parse(resText);
+        } catch {
+          throw new Error(res.status === 413 ? "File batch exceeds server payload limit." : `Server returned: ${resText.slice(0, 120)}`);
+        }
+
         if (!res.ok || !data.success) {
           throw new Error(data.error || "Failed to upload products");
         }
