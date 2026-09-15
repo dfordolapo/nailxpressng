@@ -1237,45 +1237,25 @@ function ProductsContent({ initialProducts = [] }) {
               {bulkMode === "gallery" ? (
                 <>
                   {/* Default Attributes Bar */}
-                  <div style={{ background: "#f8f9fa", padding: "14px", borderRadius: "10px", border: "1px solid var(--color-border-light)", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(110px, 1fr))", gap: "10px" }}>
-                    <div>
-                      <label style={{ fontSize: "0.75rem", fontWeight: 600, color: "#555", display: "block", marginBottom: "4px" }}>Collection</label>
+                  <div className={styles.bulkUploadGrid}>
+                    <div className={styles.bulkGridItem}>
+                      <label className={styles.bulkGridLabel}>Collection</label>
                       <select 
                         value={defaultCategory} 
                         onChange={(e) => setDefaultCategory(e.target.value)}
-                        style={{ width: "100%", padding: "6px 8px", borderRadius: "6px", border: "1px solid var(--color-border)", fontSize: "0.8rem" }}
+                        className={styles.bulkGridSelect}
                       >
                         <option value="Handmade">Handmade</option>
-                        <option value="Factory Made">Factory Made</option>
+                        <option value="Factory Made">Factory</option>
                       </select>
                     </div>
 
-                    <div>
-                      <label style={{ fontSize: "0.75rem", fontWeight: 600, color: "#555", display: "block", marginBottom: "4px" }}>Default Price (₦)</label>
-                      <input 
-                        type="number" 
-                        value={defaultPrice} 
-                        onChange={(e) => setDefaultPrice(e.target.value)}
-                        style={{ width: "100%", padding: "6px 8px", borderRadius: "6px", border: "1px solid var(--color-border)", fontSize: "0.8rem" }}
-                      />
-                    </div>
-
-                    <div>
-                      <label style={{ fontSize: "0.75rem", fontWeight: 600, color: "#555", display: "block", marginBottom: "4px" }}>Default Stock</label>
-                      <input 
-                        type="number" 
-                        value={defaultStock} 
-                        onChange={(e) => setDefaultStock(e.target.value)}
-                        style={{ width: "100%", padding: "6px 8px", borderRadius: "6px", border: "1px solid var(--color-border)", fontSize: "0.8rem" }}
-                      />
-                    </div>
-
-                    <div>
-                      <label style={{ fontSize: "0.75rem", fontWeight: 600, color: "#555", display: "block", marginBottom: "4px" }}>Nail Shape</label>
+                    <div className={styles.bulkGridItem}>
+                      <label className={styles.bulkGridLabel}>Shape</label>
                       <select 
                         value={defaultShape} 
                         onChange={(e) => setDefaultShape(e.target.value)}
-                        style={{ width: "100%", padding: "6px 8px", borderRadius: "6px", border: "1px solid var(--color-border)", fontSize: "0.8rem" }}
+                        className={styles.bulkGridSelect}
                       >
                         <option value="Almond">Almond</option>
                         <option value="Square">Square</option>
@@ -1285,18 +1265,38 @@ function ProductsContent({ initialProducts = [] }) {
                       </select>
                     </div>
 
-                    <div>
-                      <label style={{ fontSize: "0.75rem", fontWeight: 600, color: "#555", display: "block", marginBottom: "4px" }}>Nail Length</label>
+                    <div className={styles.bulkGridItem}>
+                      <label className={styles.bulkGridLabel}>Length</label>
                       <select 
                         value={defaultLength} 
                         onChange={(e) => setDefaultLength(e.target.value)}
-                        style={{ width: "100%", padding: "6px 8px", borderRadius: "6px", border: "1px solid var(--color-border)", fontSize: "0.8rem" }}
+                        className={styles.bulkGridSelect}
                       >
                         <option value="Medium">Medium</option>
                         <option value="Short">Short</option>
                         <option value="Long">Long</option>
-                        <option value="Extra Long">Extra Long</option>
+                        <option value="Extra Long">XL</option>
                       </select>
+                    </div>
+
+                    <div className={styles.bulkGridItem}>
+                      <label className={styles.bulkGridLabel}>Price (₦)</label>
+                      <input 
+                        type="number" 
+                        value={defaultPrice} 
+                        onChange={(e) => setDefaultPrice(e.target.value)}
+                        className={styles.bulkGridInput}
+                      />
+                    </div>
+
+                    <div className={styles.bulkGridItem}>
+                      <label className={styles.bulkGridLabel}>Stock</label>
+                      <input 
+                        type="number" 
+                        value={defaultStock} 
+                        onChange={(e) => setDefaultStock(e.target.value)}
+                        className={styles.bulkGridInput}
+                      />
                     </div>
                   </div>
 

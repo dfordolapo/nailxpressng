@@ -1537,3 +1537,72 @@
   font-weight: 600;
 }
 
+.bulkUploadGrid {
+  background: #f8f9fa;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--color-border-light);
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.bulkGridItem {
+  min-width: 0;
+}
+
+.bulkGridLabel {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #555;
+  display: block;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bulkGridInput,
+.bulkGridSelect {
+  width: 100%;
+  padding: 6px 4px;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  font-size: 0.78rem;
+  background: #ffffff;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .bulkUploadModal {
+    padding: 10px;
+  }
+  .bulkUploadBox {
+    max-height: 95vh;
+  }
+  .bulkUploadHeader {
+    padding: 14px 16px;
+  }
+  .bulkUploadBody {
+    padding: 14px;
+    gap: 12px;
+  }
+  .bulkUploadGrid {
+    padding: 8px 6px;
+    gap: 4px;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+  .bulkGridLabel {
+    font-size: 0.65rem;
+    margin-bottom: 2px;
+    text-align: center;
+  }
+  .bulkGridInput,
+  .bulkGridSelect {
+    padding: 4px 2px;
+    font-size: 0.72rem;
+    text-align: center;
+  }
+}
+
