@@ -21,27 +21,16 @@ export async function POST(request) {
     const videoFile = formData.get('video');
     const tags = formData.get('tags');
     
-    // 1. Get Category ID (Robust matching for 'Factory Made', 'factory', 'Handmade', etc.)
+    // 1. Get Category ID (Price is authoritative: <= ₦10,000 is Factory Made, > ₦10,000 is Handmade)
     let categoryId = null;
-    if (category) {
-      const cleanSlug = category.toLowerCase().trim().replace(/\s+/g, '-');
-      const { data: allCategories } = await supabaseAdmin
-        .from('categories')
-        .select('id, name, slug');
+    const targetSlug = (price > 0 && price <= 10000) ? 'factory' : 'handmade';
+    const { data: allCategories } = await supabaseAdmin
+      .from('categories')
+      .select('id, name, slug');
 
-      if (allCategories && allCategories.length > 0) {
-        const match = allCategories.find(c => 
-          c.slug.toLowerCase() === cleanSlug || 
-          c.slug.toLowerCase() === cleanSlug.replace('-made', '') ||
-          c.name.toLowerCase() === category.toLowerCase().trim()
-        );
-        if (match) {
-          categoryId = match.id;
-        } else {
-          // fallback to first matching or default
-          categoryId = allCategories[0].id;
-        }
-      }
+    if (allCategories && allCategories.length > 0) {
+      const match = allCategories.find(c => c.slug.toLowerCase() === targetSlug);
+      categoryId = match ? match.id : allCategories[0].id;
     }
 
     // 2. Generate slug

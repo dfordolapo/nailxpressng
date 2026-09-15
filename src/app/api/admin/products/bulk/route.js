@@ -18,23 +18,21 @@ export async function POST(request) {
 
     if (catError) throw catError;
 
-    const defaultCategory = categories?.find(c => c.slug === 'handmade')?.id || categories?.[0]?.id || null;
+    const factoryCategoryId = categories?.find(c => c.slug === 'factory')?.id || null;
+    const handmadeCategoryId = categories?.find(c => c.slug === 'handmade')?.id || null;
+    const defaultCategory = handmadeCategoryId || categories?.[0]?.id || null;
 
     if (mode === 'images_only') {
       const imageFiles = formData.getAll('images');
-      const defaultCategoryName = formData.get('defaultCategory') || 'Handmade';
       const defaultPrice = parseFloat(formData.get('defaultPrice') || '12000');
       const defaultStock = parseInt(formData.get('defaultStock') || '10', 10);
       const defaultShape = formData.get('defaultShape') || 'Square';
 
-      let targetCatId = defaultCategory;
-      if (defaultCategoryName) {
-        const found = categories?.find(c => 
-          c.name.toLowerCase() === defaultCategoryName.toLowerCase() || 
-          c.slug.toLowerCase() === defaultCategoryName.toLowerCase()
-        );
-        if (found) targetCatId = found.id;
-      }
+      // Price is the authoritative source of truth for categories:
+      // <= 10,000 is Factory Made, > 10,000 is Handmade
+      let targetCatId = (defaultPrice > 0 && defaultPrice <= 10000)
+        ? (factoryCategoryId || defaultCategory)
+        : (handmadeCategoryId || defaultCategory);
 
       if (!imageFiles || imageFiles.length === 0) {
         return NextResponse.json({ success: false, error: 'No images were uploaded' }, { status: 400 });
@@ -142,17 +140,15 @@ export async function POST(request) {
       const slugBase = String(p.name).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
       const uniqueSlug = `${slugBase}-${timestamp}-${i}`;
 
-      let catId = null;
-      if (p.category) {
-        const key = String(p.category).toLowerCase().trim();
-        catId = categoryMap.get(key) || categoryMap.get(key.replace(/\s+/g, '-')) || null;
-      }
-      if (!catId) catId = defaultCategory;
-
       const rawPrice = parseFloat(p.price) || 0;
       const rawCompare = p.compareAtPrice ? parseFloat(p.compareAtPrice) : null;
       const stock = parseInt(p.stockCount ?? p.stock ?? '10', 10);
       const isFeatured = p.featured === true || p.featured === 'true' || p.bestseller === true || p.bestseller === 'true';
+
+      // Price is the authoritative source of truth for categories:
+      let catId = (rawPrice > 0 && rawPrice <= 10000)
+        ? (factoryCategoryId || defaultCategory)
+        : (handmadeCategoryId || defaultCategory);
 
       let imagesArray = [];
       if (Array.isArray(p.images)) {

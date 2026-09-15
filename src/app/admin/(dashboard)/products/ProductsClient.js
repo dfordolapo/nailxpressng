@@ -496,25 +496,29 @@ function ProductsContent({ initialProducts = [] }) {
 
         setBulkSuccess(`Successfully created ${data.count || selectedGalleryFiles.length} products from your images!`);
         if (data.products && Array.isArray(data.products)) {
-          const mapped = data.products.map(p => ({
-            id: p.id,
-            name: p.name,
-            slug: p.slug,
-            description: p.description,
-            price: Number(p.price),
-            compareAtPrice: p.compare_at_price ? Number(p.compare_at_price) : null,
-            category: p.categories?.slug || null,
-            categoryName: p.categories?.name || (p.category_id ? defaultCategory : null),
-            nailShape: p.nail_shape,
-            style: p.style,
-            lengths: p.lengths || [],
-            sizes: ["S", "M", "L"],
-            images: p.images || [],
-            image: p.images?.[0] || null,
-            bestseller: p.bestseller,
-            inStock: p.stock_count > 0,
-            stockCount: p.stock_count,
-          }));
+          const mapped = data.products.map(p => {
+            const rawP = Number(p.price);
+            const isFactory = rawP > 0 && rawP <= 10000;
+            return {
+              id: p.id,
+              name: p.name,
+              slug: p.slug,
+              description: p.description,
+              price: rawP,
+              compareAtPrice: p.compare_at_price ? Number(p.compare_at_price) : null,
+              category: isFactory ? 'factory' : 'handmade',
+              categoryName: isFactory ? 'Factory Made' : 'Handmade',
+              nailShape: p.nail_shape,
+              style: p.style,
+              lengths: p.lengths || [],
+              sizes: isFactory ? [] : ["S", "M", "L"],
+              images: p.images || [],
+              image: p.images?.[0] || null,
+              bestseller: p.bestseller,
+              inStock: p.stock_count > 0,
+              stockCount: p.stock_count,
+            };
+          });
           setProductsList(prev => [...mapped, ...prev]);
         }
 
@@ -546,25 +550,29 @@ function ProductsContent({ initialProducts = [] }) {
 
         setBulkSuccess(`Successfully added ${data.count || bulkPreview.length} products!`);
         if (data.products && Array.isArray(data.products)) {
-          const mapped = data.products.map(p => ({
-            id: p.id,
-            name: p.name,
-            slug: p.slug,
-            description: p.description,
-            price: Number(p.price),
-            compareAtPrice: p.compare_at_price ? Number(p.compare_at_price) : null,
-            category: p.categories?.slug || null,
-            categoryName: p.categories?.name || (p.category_id ? "Handmade" : null),
-            nailShape: p.nail_shape,
-            style: p.style,
-            lengths: p.lengths || [],
-            sizes: ["S", "M", "L"],
-            images: p.images || [],
-            image: p.images?.[0] || null,
-            bestseller: p.bestseller,
-            inStock: p.stock_count > 0,
-            stockCount: p.stock_count,
-          }));
+          const mapped = data.products.map(p => {
+            const rawP = Number(p.price);
+            const isFactory = rawP > 0 && rawP <= 10000;
+            return {
+              id: p.id,
+              name: p.name,
+              slug: p.slug,
+              description: p.description,
+              price: rawP,
+              compareAtPrice: p.compare_at_price ? Number(p.compare_at_price) : null,
+              category: isFactory ? 'factory' : 'handmade',
+              categoryName: isFactory ? 'Factory Made' : 'Handmade',
+              nailShape: p.nail_shape,
+              style: p.style,
+              lengths: p.lengths || [],
+              sizes: isFactory ? [] : ["S", "M", "L"],
+              images: p.images || [],
+              image: p.images?.[0] || null,
+              bestseller: p.bestseller,
+              inStock: p.stock_count > 0,
+              stockCount: p.stock_count,
+            };
+          });
           setProductsList(prev => [...mapped, ...prev]);
         }
         setTimeout(() => {

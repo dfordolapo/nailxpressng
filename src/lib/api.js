@@ -34,11 +34,11 @@ const mapProduct = (p, discount = 0) => {
     compareAtPrice = rawPrice; // always show original as strikethrough
   }
 
-  // If category is not explicitly linked, infer from price structure:
+  // Mistake-proof Category Classification: Price is the definitive source of truth across the catalog:
   // Factory Made sets are priced <= ₦10,000 (e.g. ₦6,500 - ₦8,000), while Handmade sets are priced >= ₦11,000 (e.g. ₦12,000 - ₦25,000)
-  const inferredByPrice = rawPrice <= 10000 ? 'factory' : 'handmade';
-  const resolvedCategory = p.categories?.slug || inferredByPrice;
-  const resolvedCategoryName = p.categories?.name || (resolvedCategory === 'factory' ? 'Factory Made' : 'Handmade');
+  const isFactoryByPrice = rawPrice > 0 && rawPrice <= 10000;
+  const resolvedCategory = isFactoryByPrice ? 'factory' : 'handmade';
+  const resolvedCategoryName = isFactoryByPrice ? 'Factory Made' : 'Handmade';
 
   return {
     id: p.id,
@@ -52,7 +52,7 @@ const mapProduct = (p, discount = 0) => {
     nailShape: p.nail_shape,
     style: p.style,
     lengths: Array.isArray(p.lengths) ? p.lengths : [],
-    sizes: p.categories?.slug === 'handmade' ? ["S", "M", "L"] : [],
+    sizes: resolvedCategory === 'handmade' ? ["S", "M", "L"] : [],
     images: p.images,
     image: p.images?.[0] || null,
     videoUrl: p.video_url || null,
@@ -106,20 +106,15 @@ export async function getProductBySlug(slug) {
 }
 
 export async function getProductsByCategory(categorySlug) {
-  const { data: category } = await supabase
-    .from('categories')
-    .select('id')
-    .eq('slug', categorySlug)
-    .single();
-
-  if (!category) return [];
-
   const [{ data, error }, discount] = await Promise.all([
-    supabase.from('products').select('*, categories(slug, name)').eq('category_id', category.id),
+    supabase.from('products').select('*, categories(slug, name)'),
     getSitewideDiscount(),
   ]);
-  if (error) return [];
-  return shuffleArray(data.map((p) => mapProduct(p, discount)));
+  if (error || !data) return [];
+  
+  const mapped = data.map((p) => mapProduct(p, discount));
+  const filtered = mapped.filter((p) => p.category === categorySlug);
+  return shuffleArray(filtered);
 }
 
 export async function getProductsByIds(ids) {
