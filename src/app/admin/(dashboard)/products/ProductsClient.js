@@ -23,6 +23,7 @@ import {
 import styles from "@/styles/admin.module.css";
 import { formatPrice } from "@/lib/utils";
 import * as XLSX from "xlsx";
+import { supabase } from "@/lib/supabase";
 
 function ProductsContent({ initialProducts = [] }) {
   const router = useRouter();
