@@ -55,12 +55,20 @@ export default function FindYourFitQuiz({ allProducts = [], hideBanner = false }
     };
   }, [isModalOpen]);
 
-  // Auto-show modal after 60 seconds
+  // Auto-show modal after 60 seconds (once per 24 hours)
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (!sessionStorage.getItem('quizSeen')) {
-        setIsModalOpen(true);
-        sessionStorage.setItem('quizSeen', 'true');
+      try {
+        const lastSeen = localStorage.getItem('quizLastSeen');
+        const now = Date.now();
+        const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+
+        if (!lastSeen || now - Number(lastSeen) > ONE_DAY_MS) {
+          setIsModalOpen(true);
+          localStorage.setItem('quizLastSeen', String(now));
+        }
+      } catch (e) {
+        console.error("Storage error in quiz:", e);
       }
     }, 60000); // 60 seconds
 
