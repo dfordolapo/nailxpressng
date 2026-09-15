@@ -492,12 +492,13 @@ function ProductsContent({ initialProducts = [] }) {
           throw new Error("Please select at least one image from your gallery.");
         }
 
-        // Upload images in parallel directly to Supabase Storage from browser
-        // This avoids Vercel / serverless 4.5MB request payload limits ("Request Entity Too Large" / 413)
+        // Upload images individually via server endpoint (/api/admin/products/upload-image)
+        // 1. Avoids Vercel 4.5MB total request body limit by uploading 1 photo per request
+        // 2. Avoids Supabase Storage RLS (Row-Level Security) by using the Service Role on the server
         const timestamp = Date.now();
         const uploadedProducts = [];
 
-        // Upload in batches of 4 to prevent browser connection saturation
+        // Upload photos concurrently in chunks of 4
         for (let i = 0; i < selectedGalleryFiles.length; i += 4) {
           const batch = selectedGalleryFiles.slice(i, i + 4);
           const batchResults = await Promise.all(
@@ -509,21 +510,19 @@ function ProductsContent({ initialProducts = [] }) {
               const fileExt = file.name.split('.').pop() || 'jpg';
               const fileName = `bulk-${slugBase}-${timestamp}-${globalIndex}.${fileExt}`;
 
-              const { data: uploadData, error: uploadErr } = await supabase.storage
-                .from('product-images')
-                .upload(fileName, file, {
-                  cacheControl: '3600',
-                  upsert: true
-                });
+              const imgFormData = new FormData();
+              imgFormData.append('file', file);
+              imgFormData.append('fileName', fileName);
 
-              if (uploadErr) {
-                console.error("Storage upload error for", fileName, uploadErr);
-                throw new Error(`Failed to upload photo "${file.name}": ${uploadErr.message}`);
+              const uploadRes = await fetch('/api/admin/products/upload-image', {
+                method: 'POST',
+                body: imgFormData
+              });
+
+              const uploadData = await uploadRes.json();
+              if (!uploadRes.ok || !uploadData.success) {
+                throw new Error(`Failed to upload photo "${file.name}": ${uploadData.error || 'Upload failed'}`);
               }
-
-              const { data: publicUrlData } = supabase.storage
-                .from('product-images')
-                .getPublicUrl(fileName);
 
               return {
                 name: productName,
@@ -532,7 +531,7 @@ function ProductsContent({ initialProducts = [] }) {
                 stock: parseInt(defaultStock, 10) || 10,
                 nailShape: defaultShape,
                 length: defaultLength,
-                images: [publicUrlData.publicUrl],
+                images: [uploadData.url],
                 description: `Handcrafted ${productName} luxury press-on nail set. Ready to wear.`,
               };
             })
