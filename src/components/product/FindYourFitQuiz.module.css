@@ -13,23 +13,23 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--space-8);
-  background: radial-gradient(circle at 85% 50%, rgba(212, 175, 122, 0.18) 0%, transparent 60%),
-              radial-gradient(circle at 10% 20%, rgba(122, 64, 61, 0.35) 0%, transparent 50%),
-              linear-gradient(135deg, #1f100a 0%, #120906 100%);
-  border: 1px solid rgba(212, 175, 122, 0.35);
+  background: radial-gradient(circle at 85% 50%, rgba(211, 159, 153, 0.22) 0%, transparent 60%),
+              radial-gradient(circle at 10% 20%, rgba(148, 83, 80, 0.45) 0%, transparent 50%),
+              linear-gradient(135deg, var(--color-primary-dark, #5c2c2a) 0%, var(--color-primary, #7a403d) 60%, var(--color-primary-dark, #5c2c2a) 100%);
+  border: 1px solid rgba(211, 159, 153, 0.35);
   padding: 44px 50px;
   border-radius: 24px;
   cursor: pointer;
   width: 100%;
   max-width: 1100px;
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 24px rgba(92, 44, 42, 0.12), 0 2px 6px rgba(92, 44, 42, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 .banner:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.14), 0 0 24px rgba(212, 175, 122, 0.15);
-  border-color: var(--color-accent, #d4af7a);
+  box-shadow: 0 12px 30px rgba(92, 44, 42, 0.18), 0 0 24px rgba(211, 159, 153, 0.25);
+  border-color: var(--color-accent, #d39f99);
 }
 
 .bannerGlow1 {
@@ -39,7 +39,7 @@
   width: 320px;
   height: 320px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(212, 175, 122, 0.22) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(211, 159, 153, 0.25) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -50,15 +50,15 @@
   width: 300px;
   height: 300px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(122, 64, 61, 0.35) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(148, 83, 80, 0.4) 0%, transparent 70%);
   pointer-events: none;
 }
 
 .bannerGridMesh {
   position: absolute;
   inset: 0;
-  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
   background-size: 32px 32px;
   pointer-events: none;
 }
@@ -76,9 +76,9 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: rgba(212, 175, 122, 0.16);
-  border: 1px solid rgba(212, 175, 122, 0.45);
-  color: var(--color-accent, #d4af7a);
+  background: rgba(211, 159, 153, 0.2);
+  border: 1px solid rgba(211, 159, 153, 0.5);
+  color: #fff;
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -89,28 +89,28 @@
 }
 
 .bannerBadgeIcon {
-  color: var(--color-accent, #d4af7a);
+  color: var(--color-accent-light, #eac5c1);
 }
 
 .bannerTitle {
   color: #ffffff;
-  font-family: var(--font-heading, 'Playfair Display', serif);
-  font-size: 2.1rem;
+  font-family: var(--font-heading, 'Cormorant Upright', Georgia, serif);
+  font-size: 2.3rem;
   font-weight: 600;
-  line-height: 1.18;
+  line-height: 1.15;
   margin: 0;
   letter-spacing: -0.015em;
 }
 
 .bannerHighlight {
-  background: linear-gradient(135deg, #faebd7 0%, #dfb77d 60%, #b89255 100%);
+  background: linear-gradient(135deg, #ffffff 0%, var(--color-accent-light, #eac5c1) 50%, var(--color-accent, #d39f99) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-style: italic;
 }
 
 .bannerSubtitle {
-  color: rgba(255, 255, 255, 0.82);
+  color: rgba(255, 255, 255, 0.9);
   font-size: 0.96rem;
   line-height: 1.6;
   margin: 0;
@@ -128,8 +128,8 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  background: linear-gradient(135deg, #e3c494 0%, var(--color-accent, #d4af7a) 50%, #b89255 100%);
-  color: #160b07;
+  background: #ffffff;
+  color: var(--color-primary-dark, #5c2c2a);
   border: none;
   padding: 14px 30px;
   border-radius: 999px;
@@ -139,13 +139,13 @@
   text-transform: uppercase;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 8px 24px rgba(212, 175, 122, 0.4);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
 }
 
 .banner:hover .bannerBtn {
-  background: linear-gradient(135deg, #faebd7 0%, #e3c494 60%, var(--color-accent, #d4af7a) 100%);
-  transform: translateY(-2px) scale(1.04);
-  box-shadow: 0 12px 30px rgba(212, 175, 122, 0.55);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+  background: var(--color-bg, #fdf6f7);
 }
 
 .bannerTimeEstimate {
@@ -222,8 +222,8 @@
   top: 0;
   transform: rotate(0deg) scale(1.06);
   z-index: 3;
-  border-color: var(--color-accent, #d4af7a);
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(212, 175, 122, 0.3);
+  border-color: var(--color-accent-light, #eac5c1);
+  box-shadow: 0 14px 30px rgba(92, 44, 42, 0.4), 0 0 16px rgba(211, 159, 153, 0.3);
 }
 
 .banner:hover .visualCard1 {
@@ -248,14 +248,14 @@
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  background: rgba(26, 14, 10, 0.95);
-  border: 1px solid var(--color-accent, #d4af7a);
-  color: var(--color-accent, #d4af7a);
+  background: var(--color-primary-dark, #5c2c2a);
+  border: 1px solid var(--color-accent, #d39f99);
+  color: var(--color-accent-light, #eac5c1);
   font-size: 0.68rem;
   font-weight: 700;
   padding: 4px 10px;
   border-radius: 999px;
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 8px 18px rgba(92, 44, 42, 0.4);
   white-space: nowrap;
   z-index: 4;
 }
