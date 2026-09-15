@@ -416,27 +416,45 @@ function ProductsContent({ initialProducts = [] }) {
 
         const item = {};
         headers.forEach((h, index) => {
-          const val = row[index] != null ? String(row[index]).trim() : '';
-          if (h.includes('name') || h === 'title') item.name = val;
-          else if (h.includes('price') && !h.includes('compare')) item.price = parseFloat(val) || 0;
-          else if (h.includes('compare') || h.includes('original')) item.compareAtPrice = parseFloat(val) || null;
-          else if (h.includes('cat') || h.includes('collection')) item.category = val;
-          else if (h.includes('stock') || h.includes('qty') || h.includes('quantity')) item.stockCount = parseInt(val, 10) || 10;
-          else if (h.includes('desc')) item.description = val;
-          else if (h.includes('image') || h.includes('photo')) item.images = val;
-          else if (h.includes('shape')) item.nailShape = val;
-          else if (h.includes('color')) item.color = val;
-          else if (h.includes('tag') || h.includes('style')) item.tags = val;
-          else if (h.includes('feat') || h.includes('bestseller')) item.featured = val.toLowerCase() === 'true' || val === '1';
+          const rawVal = row[index] != null ? String(row[index]).trim() : '';
+          // Strip currency symbols (₦, $, £, €) and formatting commas for price
+          const cleanNumStr = rawVal.replace(/[₦$£€,\s]/g, '');
+
+          if (h.includes('name') || h === 'title') {
+            item.name = rawVal;
+          } else if (h.includes('price') && !h.includes('compare')) {
+            const parsedNum = parseFloat(cleanNumStr);
+            item.price = isNaN(parsedNum) ? 0 : parsedNum;
+          } else if (h.includes('compare') || h.includes('original')) {
+            const parsedNum = parseFloat(cleanNumStr);
+            item.compareAtPrice = isNaN(parsedNum) ? null : parsedNum;
+          } else if (h.includes('cat') || h.includes('collection')) {
+            item.category = rawVal;
+          } else if (h.includes('stock') || h.includes('qty') || h.includes('quantity')) {
+            const parsedStock = parseInt(cleanNumStr, 10);
+            item.stockCount = isNaN(parsedStock) ? 10 : parsedStock;
+          } else if (h.includes('desc')) {
+            item.description = rawVal;
+          } else if (h.includes('image') || h.includes('photo')) {
+            item.images = rawVal;
+          } else if (h.includes('shape')) {
+            item.nailShape = rawVal;
+          } else if (h.includes('color')) {
+            item.color = rawVal;
+          } else if (h.includes('tag') || h.includes('style')) {
+            item.tags = rawVal;
+          } else if (h.includes('feat') || h.includes('bestseller')) {
+            item.featured = rawVal.toLowerCase() === 'true' || rawVal === '1';
+          }
         });
 
-        if (item.name && item.price) {
+        if (item.name && (item.price || item.price === 0)) {
           parsed.push(item);
         }
       }
 
       if (parsed.length === 0) {
-        throw new Error("No valid products found. Ensure 'Name' and 'Price' columns exist.");
+        throw new Error("No valid products found. Ensure 'Name' and 'Price' columns exist and are populated.");
       }
 
       setBulkPreview(parsed);
