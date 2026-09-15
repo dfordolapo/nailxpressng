@@ -151,32 +151,76 @@ export default function FindYourFitQuiz({ allProducts = [], hideBanner = false, 
       {!hideBanner && (
         <div className={styles.bannerWrapper}>
           <div className={styles.banner} onClick={() => setIsModalOpen(true)}>
-            <div className={styles.bannerDecorCircle1}></div>
-            <div className={styles.bannerDecorCircle2}></div>
+            {/* Ambient Background Glows */}
+            <div className={styles.bannerGlow1}></div>
+            <div className={styles.bannerGlow2}></div>
+            <div className={styles.bannerGridMesh}></div>
             
+            {/* Left Content Area */}
             <div className={styles.bannerLeft}>
               <div className={styles.bannerBadge}>
                 <Compass size={13} className={styles.bannerBadgeIcon} />
                 <span>Style Matchmaker</span>
               </div>
+
               <h3 className={styles.bannerTitle}>
-                Find Your Signature <span className={styles.bannerHighlight}>Press-On Fit</span>
+                What&apos;s your true <span className={styles.bannerHighlight}>press-on aesthetic?</span>
               </h3>
+
               <p className={styles.bannerSubtitle}>
-                Take our 30-second aesthetic quiz to get personalized recommendations curated for your style, length & shape.
+                Tell us your length, shape, and vibe — our algorithm pairs you with your holy-grail salon set in under a minute.
               </p>
-              <div className={styles.bannerFeatures}>
-                <span className={styles.featureItem}><CheckCircle2 size={13} color="var(--color-accent, #d4af7a)" /> 3 Simple Questions</span>
-                <span className={styles.featureItem}><CheckCircle2 size={13} color="var(--color-accent, #d4af7a)" /> Instant Matches</span>
-                <span className={styles.featureItem}><CheckCircle2 size={13} color="var(--color-accent, #d4af7a)" /> 100% Free</span>
+
+              <div className={styles.bannerCtaRow}>
+                <button className={styles.bannerBtn} aria-label="Start Quiz">
+                  <span>Take Style Quiz</span>
+                  <ArrowRight size={16} />
+                </button>
+                <span className={styles.bannerTimeEstimate}>⏱️ 3 quick questions</span>
               </div>
             </div>
 
-            <div className={styles.bannerRight}>
-              <button className={styles.bannerBtn} aria-label="Start Quiz">
-                <span>Take Style Quiz</span>
-                <ArrowRight size={16} />
-              </button>
+            {/* Right Interactive Visual (Overlapping Luxury Nail Set Fan Cards) */}
+            <div className={styles.bannerVisual}>
+              <div className={styles.visualStack}>
+                <div className={`${styles.visualCard} ${styles.visualCard1}`}>
+                  <Image 
+                    src="/images/Handmade/IMG_3267.jpg" 
+                    alt="Artistic Nail Set" 
+                    fill 
+                    sizes="180px"
+                    style={{ objectFit: 'cover' }}
+                  />
+                  <div className={styles.cardTag}>Artistic</div>
+                </div>
+
+                <div className={`${styles.visualCard} ${styles.visualCard2}`}>
+                  <Image 
+                    src="/images/factory-made/EA05CA92-2DFF-4F43-8D58-A0E01BA15CBF.jpg" 
+                    alt="Glam Nail Set" 
+                    fill 
+                    sizes="180px"
+                    style={{ objectFit: 'cover' }}
+                  />
+                  <div className={styles.cardTag}>Glam</div>
+                </div>
+
+                <div className={`${styles.visualCard} ${styles.visualCard3}`}>
+                  <Image 
+                    src="/images/Handmade/IMG_3174.jpg" 
+                    alt="Classic French Set" 
+                    fill 
+                    sizes="180px"
+                    style={{ objectFit: 'cover' }}
+                  />
+                  <div className={styles.cardTag}>Classic</div>
+                </div>
+
+                <div className={styles.floatingQuizBadge}>
+                  <Sparkles size={14} color="var(--color-accent, #d4af7a)" />
+                  <span>Curated for You</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -194,7 +238,6 @@ export default function FindYourFitQuiz({ allProducts = [], hideBanner = false, 
             <HelpCircle size={16} color="var(--color-accent, #d4af7a)" />
           </span>
           <span className={styles.floatingPillText}>Take Quiz</span>
-          <span className={styles.floatingPillBadge}>30s</span>
         </button>
       )}
 
