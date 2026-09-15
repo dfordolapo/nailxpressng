@@ -34,26 +34,18 @@ const mapProduct = (p, discount = 0) => {
     compareAtPrice = rawPrice; // always show original as strikethrough
   }
 
-  // Category Classification:
-  // 1. If explicit category / tag exists in categories relation or p.category / p.category_name, respect it:
-  //    - 'factory' / 'Factory Made' stays Factory Made
-  //    - 'handmade' / 'Handmade' stays Handmade
-  // 2. If untagged or unassigned, mistake-proof fallback by price:
-  //    < ₦10,000 (₦6,500 - ₦8,000) -> Factory Made
-  //    >= ₦10,000 (₦10,000, ₦12,000 - ₦25,000) -> Handmade
-  let resolvedCategory = null;
+  // Relational Category Mapping (Foolproof & Independent of Prices):
   const rawCatSlug = (p.categories?.slug || p.category || '').toLowerCase().trim();
   const rawCatName = (p.categories?.name || p.category_name || '').toLowerCase().trim();
   const rawTags = (p.style || p.tags || '').toLowerCase();
 
+  let resolvedCategory = 'handmade';
   if (rawCatSlug.includes('factory') || rawCatName.includes('factory') || rawTags.includes('factory')) {
     resolvedCategory = 'factory';
   } else if (rawCatSlug.includes('handmade') || rawCatName.includes('handmade') || rawTags.includes('handmade')) {
     resolvedCategory = 'handmade';
-  } else if (rawPrice > 0) {
-    resolvedCategory = rawPrice < 10000 ? 'factory' : 'handmade';
-  } else {
-    resolvedCategory = 'handmade';
+  } else if (p.categories?.slug) {
+    resolvedCategory = p.categories.slug;
   }
 
   const resolvedCategoryName = resolvedCategory === 'factory' ? 'Factory Made' : 'Handmade';

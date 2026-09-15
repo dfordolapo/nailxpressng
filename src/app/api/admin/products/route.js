@@ -21,22 +21,17 @@ export async function POST(request) {
     const videoFile = formData.get('video');
     const tags = formData.get('tags');
     
-    // 1. Get Category ID: Respect user's explicit tag/selection if provided, else fallback to price rule
+    // 1. Get Category ID directly from user selection
     let categoryId = null;
     const { data: allCategories } = await supabaseAdmin
       .from('categories')
       .select('id, name, slug');
 
-    let targetSlug = null;
+    let targetSlug = 'handmade';
     if (category) {
       const catLower = String(category).toLowerCase().trim();
       if (catLower.includes('factory')) targetSlug = 'factory';
       else if (catLower.includes('handmade')) targetSlug = 'handmade';
-    }
-    
-    // If not explicitly set, determine by price (< 10000 is factory, >= 10000 is handmade)
-    if (!targetSlug) {
-      targetSlug = (price > 0 && price < 10000) ? 'factory' : 'handmade';
     }
 
     if (allCategories && allCategories.length > 0) {

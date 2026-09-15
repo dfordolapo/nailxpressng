@@ -29,17 +29,12 @@ export async function POST(request) {
       const defaultStock = parseInt(formData.get('defaultStock') || '10', 10);
       const defaultShape = formData.get('defaultShape') || 'Square';
 
-      // 1. If user tagged explicit collection ('Factory Made' or 'Handmade'), respect it:
-      let targetCatId = null;
+      // 1. Map directly from user's chosen collection in the modal
+      let targetCatId = handmadeCategoryId || defaultCategory;
       if (defaultCategoryName.includes('factory')) {
         targetCatId = factoryCategoryId || defaultCategory;
       } else if (defaultCategoryName.includes('handmade')) {
         targetCatId = handmadeCategoryId || defaultCategory;
-      } else {
-        // 2. Fallback to price rule
-        targetCatId = (defaultPrice > 0 && defaultPrice < 10000)
-          ? (factoryCategoryId || defaultCategory)
-          : (handmadeCategoryId || defaultCategory);
       }
 
       if (!imageFiles || imageFiles.length === 0) {
@@ -153,20 +148,13 @@ export async function POST(request) {
       const stock = parseInt(p.stockCount ?? p.stock ?? '10', 10);
       const isFeatured = p.featured === true || p.featured === 'true' || p.bestseller === true || p.bestseller === 'true';
 
-      // 1. If explicit category specified in row, honor it:
-      let catId = null;
+      // 1. Map directly from row's category column
+      let catId = handmadeCategoryId || defaultCategory;
       if (p.category) {
         const catKey = String(p.category).toLowerCase().trim();
         if (catKey.includes('factory')) catId = factoryCategoryId;
         else if (catKey.includes('handmade')) catId = handmadeCategoryId;
-        else catId = categoryMap.get(catKey) || null;
-      }
-      
-      // 2. Otherwise fallback to mistake-proof price rule (< 10000 is factory, >= 10000 is handmade):
-      if (!catId) {
-        catId = (rawPrice > 0 && rawPrice < 10000)
-          ? (factoryCategoryId || defaultCategory)
-          : (handmadeCategoryId || defaultCategory);
+        else catId = categoryMap.get(catKey) || catId;
       }
 
       let imagesArray = [];

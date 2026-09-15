@@ -500,10 +500,7 @@ function ProductsContent({ initialProducts = [] }) {
             const rawP = Number(p.price);
             const catSlug = (p.categories?.slug || defaultCategory || '').toLowerCase();
             const catName = (p.categories?.name || defaultCategory || '').toLowerCase();
-            let isFactory = false;
-            if (catSlug.includes('factory') || catName.includes('factory')) isFactory = true;
-            else if (catSlug.includes('handmade') || catName.includes('handmade')) isFactory = false;
-            else isFactory = rawP > 0 && rawP < 10000;
+            const isFactory = catSlug.includes('factory') || catName.includes('factory');
 
             return {
               id: p.id,
@@ -560,10 +557,7 @@ function ProductsContent({ initialProducts = [] }) {
             const rawP = Number(p.price);
             const catSlug = (p.categories?.slug || '').toLowerCase();
             const catName = (p.categories?.name || '').toLowerCase();
-            let isFactory = false;
-            if (catSlug.includes('factory') || catName.includes('factory')) isFactory = true;
-            else if (catSlug.includes('handmade') || catName.includes('handmade')) isFactory = false;
-            else isFactory = rawP > 0 && rawP < 10000;
+            const isFactory = catSlug.includes('factory') || catName.includes('factory');
 
             return {
               id: p.id,
