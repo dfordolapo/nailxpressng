@@ -376,10 +376,10 @@ export default function DashboardClient({ initialProducts = [], initialOrders = 
                 <div className={styles.filterHeaderCell} onClick={() => setActivePopover(activePopover === 'name' ? null : 'name')}>
                   <span>Product</span>
                   <div style={{ display: "flex", alignItems: "center", gap: "2px" }}>
-                    {sortConfig.key === 'name' && (
+                    {(sortConfig.key === 'name' || sortConfig.key === 'createdAt') && (
                       sortConfig.direction === 'asc' ? <ArrowUp size={14} color="var(--color-primary)" /> : <ArrowDown size={14} color="var(--color-primary)" />
                     )}
-                    <button className={`${styles.excelFilterBtn} ${sortConfig.key === 'name' ? styles.activeFilter : ''}`} type="button">
+                    <button className={`${styles.excelFilterBtn} ${sortConfig.key === 'name' || sortConfig.key === 'createdAt' ? styles.activeFilter : ''}`} type="button">
                       <Filter size={13} />
                     </button>
                   </div>
@@ -393,16 +393,28 @@ export default function DashboardClient({ initialProducts = [], initialOrders = 
                     </div>
                     <div className={styles.excelSortOptions}>
                       <button 
+                        className={`${styles.excelSortBtn} ${sortConfig.key === 'createdAt' && sortConfig.direction === 'desc' ? styles.activeSort : ''}`}
+                        onClick={() => handleSort('createdAt', 'desc')}
+                      >
+                        <Calendar size={13} /> Date: Newest First
+                      </button>
+                      <button 
+                        className={`${styles.excelSortBtn} ${sortConfig.key === 'createdAt' && sortConfig.direction === 'asc' ? styles.activeSort : ''}`}
+                        onClick={() => handleSort('createdAt', 'asc')}
+                      >
+                        <Calendar size={13} /> Date: Oldest First
+                      </button>
+                      <button 
                         className={`${styles.excelSortBtn} ${sortConfig.key === 'name' && sortConfig.direction === 'asc' ? styles.activeSort : ''}`}
                         onClick={() => handleSort('name', 'asc')}
                       >
-                        <ArrowUp size={13} /> Sort A to Z
+                        <ArrowUp size={13} /> Name: A to Z
                       </button>
                       <button 
                         className={`${styles.excelSortBtn} ${sortConfig.key === 'name' && sortConfig.direction === 'desc' ? styles.activeSort : ''}`}
                         onClick={() => handleSort('name', 'desc')}
                       >
-                        <ArrowDown size={13} /> Sort Z to A
+                        <ArrowDown size={13} /> Name: Z to A
                       </button>
                     </div>
                   </div>
@@ -517,7 +529,43 @@ export default function DashboardClient({ initialProducts = [], initialOrders = 
                 )}
               </th>
 
-              <th style={{ minWidth: "100px" }}>Added</th>
+              {/* Added / Date Header */}
+              <th style={{ minWidth: "120px", position: "relative" }}>
+                <div className={styles.filterHeaderCell} onClick={() => setActivePopover(activePopover === 'added' ? null : 'added')}>
+                  <span>Added</span>
+                  <div style={{ display: "flex", alignItems: "center", gap: "2px" }}>
+                    {sortConfig.key === 'createdAt' && (
+                      sortConfig.direction === 'asc' ? <ArrowUp size={14} color="var(--color-primary)" /> : <ArrowDown size={14} color="var(--color-primary)" />
+                    )}
+                    <button className={`${styles.excelFilterBtn} ${sortConfig.key === 'createdAt' ? styles.activeFilter : ''}`} type="button">
+                      <ArrowUpDown size={13} />
+                    </button>
+                  </div>
+                </div>
+
+                {activePopover === 'added' && (
+                  <div className={styles.excelPopover} onClick={(e) => e.stopPropagation()}>
+                    <div className={styles.excelPopoverHeader}>
+                      <span>Sort by Date</span>
+                      <X size={14} style={{ cursor: "pointer" }} onClick={() => setActivePopover(null)} />
+                    </div>
+                    <div className={styles.excelSortOptions}>
+                      <button 
+                        className={`${styles.excelSortBtn} ${sortConfig.key === 'createdAt' && sortConfig.direction === 'desc' ? styles.activeSort : ''}`}
+                        onClick={() => handleSort('createdAt', 'desc')}
+                      >
+                        <ArrowDown size={13} /> Newest to Oldest
+                      </button>
+                      <button 
+                        className={`${styles.excelSortBtn} ${sortConfig.key === 'createdAt' && sortConfig.direction === 'asc' ? styles.activeSort : ''}`}
+                        onClick={() => handleSort('createdAt', 'asc')}
+                      >
+                        <ArrowUp size={13} /> Oldest to Newest
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </th>
             </tr>
           </thead>
           <tbody>

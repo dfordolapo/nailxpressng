@@ -18,7 +18,8 @@ import {
   ArrowUp, 
   ArrowDown, 
   Package, 
-  AlertCircle 
+  AlertCircle,
+  Calendar
 } from "lucide-react";
 import styles from "@/styles/admin.module.css";
 import { formatPrice } from "@/lib/utils";
@@ -357,7 +358,10 @@ function ProductsContent({ initialProducts = [] }) {
       let valA = a[sortConfig.key];
       let valB = b[sortConfig.key];
 
-      if (sortConfig.key === 'name') {
+      if (sortConfig.key === 'createdAt') {
+        valA = new Date(valA || 0).getTime();
+        valB = new Date(valB || 0).getTime();
+      } else if (sortConfig.key === 'name') {
         valA = (valA || '').toLowerCase();
         valB = (valB || '').toLowerCase();
       } else if (sortConfig.key === 'price' || sortConfig.key === 'stockCount') {
@@ -834,11 +838,11 @@ function ProductsContent({ initialProducts = [] }) {
                 <div className={styles.filterHeaderCell} onClick={() => setActivePopover(activePopover === 'name' ? null : 'name')}>
                   <span>Product</span>
                   <div style={{ display: "flex", alignItems: "center", gap: "2px" }}>
-                    {sortConfig.key === 'name' && (
+                    {(sortConfig.key === 'name' || sortConfig.key === 'createdAt') && (
                       sortConfig.direction === 'asc' ? <ArrowUp size={14} color="var(--color-primary)" /> : <ArrowDown size={14} color="var(--color-primary)" />
                     )}
                     <button 
-                      className={`${styles.excelFilterBtn} ${sortConfig.key === 'name' ? styles.activeFilter : ''}`}
+                      className={`${styles.excelFilterBtn} ${sortConfig.key === 'name' || sortConfig.key === 'createdAt' ? styles.activeFilter : ''}`}
                       type="button"
                     >
                       <Filter size={13} />
@@ -855,16 +859,28 @@ function ProductsContent({ initialProducts = [] }) {
                     </div>
                     <div className={styles.excelSortOptions}>
                       <button 
+                        className={`${styles.excelSortBtn} ${sortConfig.key === 'createdAt' && sortConfig.direction === 'desc' ? styles.activeSort : ''}`}
+                        onClick={() => handleSort('createdAt', 'desc')}
+                      >
+                        <Calendar size={13} /> Date: Newest First
+                      </button>
+                      <button 
+                        className={`${styles.excelSortBtn} ${sortConfig.key === 'createdAt' && sortConfig.direction === 'asc' ? styles.activeSort : ''}`}
+                        onClick={() => handleSort('createdAt', 'asc')}
+                      >
+                        <Calendar size={13} /> Date: Oldest First
+                      </button>
+                      <button 
                         className={`${styles.excelSortBtn} ${sortConfig.key === 'name' && sortConfig.direction === 'asc' ? styles.activeSort : ''}`}
                         onClick={() => handleSort('name', 'asc')}
                       >
-                        <ArrowUp size={13} /> Sort A to Z
+                        <ArrowUp size={13} /> Name: A to Z
                       </button>
                       <button 
                         className={`${styles.excelSortBtn} ${sortConfig.key === 'name' && sortConfig.direction === 'desc' ? styles.activeSort : ''}`}
                         onClick={() => handleSort('name', 'desc')}
                       >
-                        <ArrowDown size={13} /> Sort Z to A
+                        <ArrowDown size={13} /> Name: Z to A
                       </button>
                     </div>
                   </div>
