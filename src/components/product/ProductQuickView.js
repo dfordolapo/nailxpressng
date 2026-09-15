@@ -9,6 +9,7 @@ import { formatPrice } from "@/lib/utils";
 import { useModal } from "@/components/ui/ProductModalWrapper";
 import { ChevronRight, Package, Truck, Star } from "lucide-react";
 import ProductReviews from "@/components/product/ProductReviews";
+import EmailCapture from "@/components/ui/EmailCapture";
 import styles from "@/styles/components/quick-view.module.css";
 
 export default function ProductQuickView({ product }) {
@@ -135,15 +136,39 @@ export default function ProductQuickView({ product }) {
           )}
         </div>
 
-        {/* Quantity */}
-        <div className={styles.quantityRow}>
-          <span className={styles.label}>Quantity</span>
-          <div className={styles.quantityAdjuster}>
-            <button className={styles.qtyBtn} onClick={() => setQuantity(Math.max(1, quantity - 1))}>−</button>
-            <div className={styles.qtyValue}>{quantity}</div>
-            <button className={styles.qtyBtn} onClick={() => setQuantity(quantity + 1)}>+</button>
+        {/* Quantity (Hidden if out of stock) */}
+        {product.inStock && (
+          <div className={styles.quantityRow}>
+            <span className={styles.label}>Quantity</span>
+            <div className={styles.quantityAdjuster}>
+              <button className={styles.qtyBtn} onClick={() => setQuantity(Math.max(1, quantity - 1))}>−</button>
+              <div className={styles.qtyValue}>{quantity}</div>
+              <button className={styles.qtyBtn} onClick={() => setQuantity(quantity + 1)}>+</button>
+            </div>
           </div>
-        </div>
+        )}
+
+        {/* Sold out restock notice */}
+        {!product.inStock && (
+          <div style={{
+            background: "#fdf8f8",
+            border: "1px solid #f2e2e1",
+            borderRadius: "12px",
+            padding: "14px 16px",
+            marginBottom: "var(--space-4)",
+            textAlign: "center"
+          }}>
+            <p style={{ margin: "0 0 8px 0", fontSize: "0.8rem", color: "#7a403d", fontWeight: 600 }}>
+              Currently Sold Out • Join Restock List
+            </p>
+            <EmailCapture 
+              type="restock" 
+              productId={product.id} 
+              productName={product.name} 
+              compact={true} 
+            />
+          </div>
+        )}
 
         {/* Accordions */}
         <div className={styles.accordions}>
@@ -207,12 +232,19 @@ export default function ProductQuickView({ product }) {
 
       {/* Bottom Bar */}
       <div className={styles.bottomBar}>
-        <button className={styles.btnPrimary} onClick={handleAddToCart}>
-          Add to Cart
+        <button 
+          className={styles.btnPrimary} 
+          onClick={handleAddToCart}
+          disabled={!product.inStock}
+          style={!product.inStock ? { opacity: 0.5, cursor: "not-allowed", background: "#888" } : {}}
+        >
+          {!product.inStock ? "Sold Out" : "Add to Cart"}
         </button>
-        <button className={styles.btnSecondary} onClick={handleBuyNow}>
-          Buy Now
-        </button>
+        {product.inStock && (
+          <button className={styles.btnSecondary} onClick={handleBuyNow}>
+            Buy Now
+          </button>
+        )}
       </div>
     </div>
   );

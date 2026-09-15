@@ -275,61 +275,75 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
         {viewMode === "list" ? (
           <div className={`${styles.cardBack} ${!flipped ? styles.hidden : ""}`} onClick={handleFlip}>
             <div className={styles.backContent} onClick={(e) => e.stopPropagation()}>
-              {product.category === "handmade" && (
-                <div className={styles.selectorGroup}>
-                  <span className={styles.selectorLabel}>Size</span>
-                  <select
-                    className={styles.sizeDropdown}
-                    value={selectedSize || ""}
-                    onChange={(e) => handleSizeSelect(e.target.value, e)}
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <option value="" disabled>Select Size</option>
-                    {product.sizes?.map((size) => (
-                      <option key={size} value={size}>{size}</option>
-                    ))}
-                  </select>
+              {!product.inStock ? (
+                <div style={{ width: "100%", textAlign: "center", padding: "4px 0" }}>
+                  <p style={{ margin: "0 0 8px 0", fontSize: "0.75rem", color: "var(--color-primary-800, #7a403d)", fontWeight: 600 }}>
+                    Sold Out • Join Restock List
+                  </p>
+                  <EmailCapture 
+                    type="restock" 
+                    productId={product.id} 
+                    productName={product.name} 
+                    compact={true} 
+                  />
                 </div>
-              )}
+              ) : (
+                <>
+                  {product.category === "handmade" && (
+                    <div className={styles.selectorGroup}>
+                      <span className={styles.selectorLabel}>Size</span>
+                      <select
+                        className={styles.sizeDropdown}
+                        value={selectedSize || ""}
+                        onChange={(e) => handleSizeSelect(e.target.value, e)}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <option value="" disabled>Select Size</option>
+                        {product.sizes?.map((size) => (
+                          <option key={size} value={size}>{size}</option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
 
-              {product.category === "handmade" && product.lengths && product.lengths.length > 0 && (
-                <div className={styles.selectorGroup}>
-                  <span className={styles.selectorLabel}>Length</span>
-                  <select
-                    className={styles.sizeDropdown}
-                    value={selectedLength || ""}
-                    onChange={(e) => handleLengthSelect(e.target.value, e)}
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <option value="" disabled>Select Length</option>
-                    {product.lengths.map((length) => (
-                      <option key={length} value={length}>{length}</option>
-                    ))}
-                  </select>
-                </div>
-              )}
+                  {product.category === "handmade" && product.lengths && product.lengths.length > 0 && (
+                    <div className={styles.selectorGroup}>
+                      <span className={styles.selectorLabel}>Length</span>
+                      <select
+                        className={styles.sizeDropdown}
+                        value={selectedLength || ""}
+                        onChange={(e) => handleLengthSelect(e.target.value, e)}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <option value="" disabled>Select Length</option>
+                        {product.lengths.map((length) => (
+                          <option key={length} value={length}>{length}</option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
 
-              <div className={styles.qtyRow}>
-                <span className={styles.selectorLabel}>Quantity</span>
-                <div className={styles.qtyControl}>
-                  <button className={styles.qtyBtn} onClick={(e) => handleQty(-1, e)} disabled={qty <= 1}>−</button>
-                  <div className={styles.qtyValue}>
-                    <span className={`${styles.qtyNumber} ${qtyAnim ? styles[qtyAnim] : ""}`} key={qty}>{qty}</span>
+                  <div className={styles.qtyRow}>
+                    <span className={styles.selectorLabel}>Quantity</span>
+                    <div className={styles.qtyControl}>
+                      <button className={styles.qtyBtn} onClick={(e) => handleQty(-1, e)} disabled={qty <= 1}>−</button>
+                      <div className={styles.qtyValue}>
+                        <span className={`${styles.qtyNumber} ${qtyAnim ? styles[qtyAnim] : ""}`} key={qty}>{qty}</span>
+                      </div>
+                      <button className={styles.qtyBtn} onClick={(e) => handleQty(1, e)} disabled={qty >= 10}>+</button>
+                    </div>
                   </div>
-                  <button className={styles.qtyBtn} onClick={(e) => handleQty(1, e)} disabled={qty >= 10}>+</button>
-                </div>
-              </div>
 
-              <button
-                className={`${styles.addBtn} ${added ? styles.added : styles.default}`}
-                onClick={handleAddToCart}
-                disabled={!product.inStock}
-                style={!product.inStock ? { opacity: 0.5, cursor: "not-allowed" } : {}}
-              >
-                <span className={styles.addBtnContent}>
-                  {!product.inStock ? "Sold Out" : added ? (<><CheckIcon /> Added to Cart</>) : "Add to Cart"}
-                </span>
-              </button>
+                  <button
+                    className={`${styles.addBtn} ${added ? styles.added : styles.default}`}
+                    onClick={handleAddToCart}
+                  >
+                    <span className={styles.addBtnContent}>
+                      {added ? (<><CheckIcon /> Added to Cart</>) : "Add to Cart"}
+                    </span>
+                  </button>
+                </>
+              )}
             </div>
           </div>
         ) : (

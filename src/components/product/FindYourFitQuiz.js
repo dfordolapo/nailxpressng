@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { RotateCcw } from "lucide-react";
+import { RotateCcw, HelpCircle, Compass, Sparkles, CheckCircle2, ArrowRight } from "lucide-react";
 import styles from "./FindYourFitQuiz.module.css";
 import ProductCard from "@/components/product/ProductCard";
 import HandmadeProductCard from "@/components/product/HandmadeProductCard";
@@ -151,14 +151,33 @@ export default function FindYourFitQuiz({ allProducts = [], hideBanner = false, 
       {!hideBanner && (
         <div className={styles.bannerWrapper}>
           <div className={styles.banner} onClick={() => setIsModalOpen(true)}>
-            <div className={styles.bannerContent}>
-              <span className={styles.bannerIcon}>✨</span>
-              <div className={styles.bannerText}>
-                <h3 className={styles.bannerTitle}>Find Your Perfect Fit</h3>
-                <p className={styles.bannerSubtitle}>Not sure what to pick? Take our 30-second Style Quiz</p>
+            <div className={styles.bannerDecorCircle1}></div>
+            <div className={styles.bannerDecorCircle2}></div>
+            
+            <div className={styles.bannerLeft}>
+              <div className={styles.bannerBadge}>
+                <Compass size={13} className={styles.bannerBadgeIcon} />
+                <span>Style Matchmaker</span>
+              </div>
+              <h3 className={styles.bannerTitle}>
+                Find Your Signature <span className={styles.bannerHighlight}>Press-On Fit</span>
+              </h3>
+              <p className={styles.bannerSubtitle}>
+                Take our 30-second aesthetic quiz to get personalized recommendations curated for your style, length & shape.
+              </p>
+              <div className={styles.bannerFeatures}>
+                <span className={styles.featureItem}><CheckCircle2 size={13} color="var(--color-accent, #d4af7a)" /> 3 Simple Questions</span>
+                <span className={styles.featureItem}><CheckCircle2 size={13} color="var(--color-accent, #d4af7a)" /> Instant Matches</span>
+                <span className={styles.featureItem}><CheckCircle2 size={13} color="var(--color-accent, #d4af7a)" /> 100% Free</span>
               </div>
             </div>
-            <button className={styles.bannerBtn}>Take Quiz</button>
+
+            <div className={styles.bannerRight}>
+              <button className={styles.bannerBtn} aria-label="Start Quiz">
+                <span>Take Style Quiz</span>
+                <ArrowRight size={16} />
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -171,8 +190,10 @@ export default function FindYourFitQuiz({ allProducts = [], hideBanner = false, 
           title="Find Your Perfect Fit Quiz"
           aria-label="Find Your Perfect Fit Style Quiz"
         >
-          <span className={styles.floatingPillIcon}>✨</span>
-          <span className={styles.floatingPillText}>Style Quiz</span>
+          <span className={styles.floatingPillIcon}>
+            <HelpCircle size={16} color="var(--color-accent, #d4af7a)" />
+          </span>
+          <span className={styles.floatingPillText}>Take Quiz</span>
           <span className={styles.floatingPillBadge}>30s</span>
         </button>
       )}

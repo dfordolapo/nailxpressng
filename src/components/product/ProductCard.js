@@ -251,28 +251,41 @@ export default function ProductCard({ product, index = 0, viewMode = "grid" }) {
         {viewMode === "list" ? (
           <div className={`${styles.cardBack} ${!flipped ? styles.hidden : ""}`} onClick={handleFlip}>
             <div className={styles.backContent} onClick={(e) => e.stopPropagation()}>
-              
-              <div className={styles.qtyRow}>
-                <span className={styles.selectorLabel}>Quantity</span>
-                <div className={styles.qtyControl}>
-                  <button className={styles.qtyBtn} onClick={(e) => handleQty(-1, e)} disabled={qty <= 1}>−</button>
-                  <div className={styles.qtyValue}>
-                    <span className={`${styles.qtyNumber} ${qtyAnim ? styles[qtyAnim] : ""}`} key={qty}>{qty}</span>
-                  </div>
-                  <button className={styles.qtyBtn} onClick={(e) => handleQty(1, e)} disabled={qty >= 10}>+</button>
+              {!product.inStock ? (
+                <div style={{ width: "100%", textAlign: "center", padding: "4px 0" }}>
+                  <p style={{ margin: "0 0 8px 0", fontSize: "0.75rem", color: "var(--color-primary-800, #7a403d)", fontWeight: 600 }}>
+                    Sold Out • Join Restock List
+                  </p>
+                  <EmailCapture 
+                    type="restock" 
+                    productId={product.id} 
+                    productName={product.name} 
+                    compact={true} 
+                  />
                 </div>
-              </div>
+              ) : (
+                <>
+                  <div className={styles.qtyRow}>
+                    <span className={styles.selectorLabel}>Quantity</span>
+                    <div className={styles.qtyControl}>
+                      <button className={styles.qtyBtn} onClick={(e) => handleQty(-1, e)} disabled={qty <= 1}>−</button>
+                      <div className={styles.qtyValue}>
+                        <span className={`${styles.qtyNumber} ${qtyAnim ? styles[qtyAnim] : ""}`} key={qty}>{qty}</span>
+                      </div>
+                      <button className={styles.qtyBtn} onClick={(e) => handleQty(1, e)} disabled={qty >= 10}>+</button>
+                    </div>
+                  </div>
 
-              <button
-                className={`${styles.addBtn} ${added ? styles.added : styles.default}`}
-                onClick={handleAddToCart}
-                disabled={!product.inStock}
-                style={!product.inStock ? { opacity: 0.5, cursor: "not-allowed" } : {}}
-              >
-                <span className={styles.addBtnContent}>
-                  {!product.inStock ? "Sold Out" : added ? (<><CheckIcon /> Added to Cart</>) : "Add to Cart"}
-                </span>
-              </button>
+                  <button
+                    className={`${styles.addBtn} ${added ? styles.added : styles.default}`}
+                    onClick={handleAddToCart}
+                  >
+                    <span className={styles.addBtnContent}>
+                      {added ? (<><CheckIcon /> Added to Cart</>) : "Add to Cart"}
+                    </span>
+                  </button>
+                </>
+              )}
             </div>
           </div>
         ) : (
