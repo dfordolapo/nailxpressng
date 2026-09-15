@@ -23,12 +23,12 @@
   width: 100%;
   max-width: 1100px;
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
 .banner:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 30px 65px rgba(0, 0, 0, 0.48), 0 0 40px rgba(212, 175, 122, 0.25);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.14), 0 0 24px rgba(212, 175, 122, 0.15);
   border-color: var(--color-accent, #d4af7a);
 }
 
