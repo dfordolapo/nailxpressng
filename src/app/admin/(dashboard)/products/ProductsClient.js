@@ -624,16 +624,17 @@ function ProductsContent({ initialProducts = [] }) {
         </div>
         <div className={styles.pageHeaderActions}>
           <button 
-            type="button"
+            type="button" 
             className={styles.btnSecondary} 
             onClick={() => setIsBulkOpen(true)}
             style={{
               background: "#ffffff",
               border: "1px solid var(--color-border)",
               color: "var(--color-text)",
-              padding: "8px 14px",
+              padding: "8px 16px",
               borderRadius: "8px",
-              fontSize: "0.85rem",
+              fontFamily: "'Cormorant Upright', Georgia, serif",
+              fontSize: "1.1rem",
               fontWeight: 500,
               display: "inline-flex",
               alignItems: "center",
@@ -641,10 +642,22 @@ function ProductsContent({ initialProducts = [] }) {
               cursor: "pointer",
             }}
           >
-            <Upload size={15} />
+            <Upload size={16} />
             Bulk Upload
           </button>
-          <Link href="/admin/products/new" className={styles.btnPrimary} style={{ padding: "8px 14px", gap: "6px" }}>
+          <Link 
+            href="/admin/products/new" 
+            className={styles.btnPrimary} 
+            style={{ 
+              padding: "8px 16px", 
+              gap: "6px",
+              fontFamily: "'Cormorant Upright', Georgia, serif",
+              fontSize: "1.1rem",
+              fontWeight: 500,
+              display: "inline-flex",
+              alignItems: "center",
+            }}
+          >
             <Plus size={16} />
             Add New Product
           </Link>
