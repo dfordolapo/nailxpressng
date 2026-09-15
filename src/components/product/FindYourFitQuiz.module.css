@@ -57,8 +57,8 @@
 .bannerGridMesh {
   position: absolute;
   inset: 0;
-  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-                    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-image: linear-gradient(to right, rgba(212, 175, 122, 0.12) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(212, 175, 122, 0.12) 1px, transparent 1px);
   background-size: 32px 32px;
   pointer-events: none;
 }
@@ -129,9 +129,9 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  background: var(--color-btn-gradient, linear-gradient(90deg, #ffa8b6, #ff7e95));
-  color: #ffffff;
-  border: none;
+  background: var(--color-bg-warm, #F5E3E5);
+  color: var(--color-primary-dark, #5c2c2a);
+  border: 1px solid var(--color-accent-light, #eac5c1);
   padding: 14px 30px;
   border-radius: 999px;
   font-weight: 700;
@@ -140,13 +140,14 @@
   text-transform: uppercase;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 8px 24px rgba(255, 126, 149, 0.35);
+  box-shadow: 0 8px 24px rgba(92, 44, 42, 0.2);
 }
 
 .banner:hover .bannerBtn {
   transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 12px 28px rgba(255, 126, 149, 0.5);
-  background: linear-gradient(90deg, #ff94a5, #f86580);
+  box-shadow: 0 12px 28px rgba(92, 44, 42, 0.3);
+  background: var(--color-bg, #fdf6f7);
+  border-color: var(--color-accent, #d39f99);
 }
 
 .bannerTimeEstimate {
