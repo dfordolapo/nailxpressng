@@ -159,7 +159,6 @@ export default function FindYourFitQuiz({ allProducts = [], hideBanner = false, 
             {/* Left Content Area */}
             <div className={styles.bannerLeft}>
               <div className={styles.bannerBadge}>
-                <Sparkles size={13} className={styles.bannerBadgeIcon} />
                 <span>Nail Matchmaker</span>
               </div>
 
@@ -168,7 +167,7 @@ export default function FindYourFitQuiz({ allProducts = [], hideBanner = false, 
               </h3>
 
               <p className={styles.bannerSubtitle}>
-                Custom recommendations matched to your style ✨
+                Custom recommendations matched to your style
               </p>
 
               <div className={styles.bannerCtaRow}>
@@ -195,17 +194,6 @@ export default function FindYourFitQuiz({ allProducts = [], hideBanner = false, 
 
                 <div className={`${styles.visualCard} ${styles.visualCard2}`}>
                   <Image 
-                    src="/images/factory-made/EA05CA92-2DFF-4F43-8D58-A0E01BA15CBF.jpg" 
-                    alt="Glam Nail Set" 
-                    fill 
-                    sizes="180px"
-                    style={{ objectFit: 'cover' }}
-                  />
-                  <div className={styles.cardTag}>Glam</div>
-                </div>
-
-                <div className={`${styles.visualCard} ${styles.visualCard3}`}>
-                  <Image 
                     src="/images/Handmade/IMG_3275.jpg" 
                     alt="Minimalist Chic Set" 
                     fill 
@@ -215,8 +203,18 @@ export default function FindYourFitQuiz({ allProducts = [], hideBanner = false, 
                   <div className={styles.cardTag}>Minimal</div>
                 </div>
 
+                <div className={`${styles.visualCard} ${styles.visualCard3}`}>
+                  <Image 
+                    src="/images/Handmade/IMG_3174.jpg" 
+                    alt="Classic French Set" 
+                    fill 
+                    sizes="180px"
+                    style={{ objectFit: 'cover' }}
+                  />
+                  <div className={styles.cardTag}>Classic</div>
+                </div>
+
                 <div className={styles.floatingQuizBadge}>
-                  <Sparkles size={14} color="var(--color-accent, #d4af7a)" />
                   <span>Curated for You</span>
                 </div>
               </div>
