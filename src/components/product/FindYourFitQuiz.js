@@ -159,24 +159,23 @@ export default function FindYourFitQuiz({ allProducts = [], hideBanner = false, 
             {/* Left Content Area */}
             <div className={styles.bannerLeft}>
               <div className={styles.bannerBadge}>
-                <Compass size={13} className={styles.bannerBadgeIcon} />
-                <span>Style Matchmaker</span>
+                <Sparkles size={13} className={styles.bannerBadgeIcon} />
+                <span>Nail Matchmaker</span>
               </div>
 
               <h3 className={styles.bannerTitle}>
-                What&apos;s your true <span className={styles.bannerHighlight}>press-on aesthetic?</span>
+                Can&apos;t pick? Let&apos;s find your <span className={styles.bannerHighlight}>perfect set.</span>
               </h3>
 
               <p className={styles.bannerSubtitle}>
-                Tell us your length, shape, and vibe — our algorithm pairs you with your holy-grail salon set in under a minute.
+                Answer 3 quick vibe checks — we&apos;ll do the rest ✨
               </p>
 
               <div className={styles.bannerCtaRow}>
                 <button className={styles.bannerBtn} aria-label="Start Quiz">
-                  <span>Take Style Quiz</span>
+                  <span>Find My Match</span>
                   <ArrowRight size={16} />
                 </button>
-                <span className={styles.bannerTimeEstimate}>⏱️ 3 quick questions</span>
               </div>
             </div>
 
