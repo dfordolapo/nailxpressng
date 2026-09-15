@@ -503,7 +503,7 @@ function ProductsContent({ initialProducts = [] }) {
             let isFactory = false;
             if (catSlug.includes('factory') || catName.includes('factory')) isFactory = true;
             else if (catSlug.includes('handmade') || catName.includes('handmade')) isFactory = false;
-            else isFactory = rawP > 0 && rawP <= 10000;
+            else isFactory = rawP > 0 && rawP < 10000;
 
             return {
               id: p.id,
@@ -563,7 +563,7 @@ function ProductsContent({ initialProducts = [] }) {
             let isFactory = false;
             if (catSlug.includes('factory') || catName.includes('factory')) isFactory = true;
             else if (catSlug.includes('handmade') || catName.includes('handmade')) isFactory = false;
-            else isFactory = rawP > 0 && rawP <= 10000;
+            else isFactory = rawP > 0 && rawP < 10000;
 
             return {
               id: p.id,

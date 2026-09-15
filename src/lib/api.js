@@ -39,7 +39,8 @@ const mapProduct = (p, discount = 0) => {
   //    - 'factory' / 'Factory Made' stays Factory Made
   //    - 'handmade' / 'Handmade' stays Handmade
   // 2. If untagged or unassigned, mistake-proof fallback by price:
-  //    <= ₦10,000 -> Factory Made, > ₦10,000 -> Handmade
+  //    < ₦10,000 (₦6,500 - ₦8,000) -> Factory Made
+  //    >= ₦10,000 (₦10,000, ₦12,000 - ₦25,000) -> Handmade
   let resolvedCategory = null;
   const rawCatSlug = (p.categories?.slug || p.category || '').toLowerCase().trim();
   const rawCatName = (p.categories?.name || p.category_name || '').toLowerCase().trim();
@@ -50,7 +51,7 @@ const mapProduct = (p, discount = 0) => {
   } else if (rawCatSlug.includes('handmade') || rawCatName.includes('handmade') || rawTags.includes('handmade')) {
     resolvedCategory = 'handmade';
   } else if (rawPrice > 0) {
-    resolvedCategory = rawPrice <= 10000 ? 'factory' : 'handmade';
+    resolvedCategory = rawPrice < 10000 ? 'factory' : 'handmade';
   } else {
     resolvedCategory = 'handmade';
   }

@@ -37,7 +37,7 @@ export async function POST(request) {
         targetCatId = handmadeCategoryId || defaultCategory;
       } else {
         // 2. Fallback to price rule
-        targetCatId = (defaultPrice > 0 && defaultPrice <= 10000)
+        targetCatId = (defaultPrice > 0 && defaultPrice < 10000)
           ? (factoryCategoryId || defaultCategory)
           : (handmadeCategoryId || defaultCategory);
       }
@@ -162,9 +162,9 @@ export async function POST(request) {
         else catId = categoryMap.get(catKey) || null;
       }
       
-      // 2. Otherwise fallback to mistake-proof price rule:
+      // 2. Otherwise fallback to mistake-proof price rule (< 10000 is factory, >= 10000 is handmade):
       if (!catId) {
-        catId = (rawPrice > 0 && rawPrice <= 10000)
+        catId = (rawPrice > 0 && rawPrice < 10000)
           ? (factoryCategoryId || defaultCategory)
           : (handmadeCategoryId || defaultCategory);
       }

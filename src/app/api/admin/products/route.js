@@ -34,9 +34,9 @@ export async function POST(request) {
       else if (catLower.includes('handmade')) targetSlug = 'handmade';
     }
     
-    // If not explicitly set, determine by price
+    // If not explicitly set, determine by price (< 10000 is factory, >= 10000 is handmade)
     if (!targetSlug) {
-      targetSlug = (price > 0 && price <= 10000) ? 'factory' : 'handmade';
+      targetSlug = (price > 0 && price < 10000) ? 'factory' : 'handmade';
     }
 
     if (allCategories && allCategories.length > 0) {
