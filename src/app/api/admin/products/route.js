@@ -21,16 +21,27 @@ export async function POST(request) {
     const videoFile = formData.get('video');
     const tags = formData.get('tags');
     
-    // 1. Get Category ID
+    // 1. Get Category ID (Robust matching for 'Factory Made', 'factory', 'Handmade', etc.)
     let categoryId = null;
     if (category) {
-      const { data: categoryData } = await supabaseAdmin
+      const cleanSlug = category.toLowerCase().trim().replace(/\s+/g, '-');
+      const { data: allCategories } = await supabaseAdmin
         .from('categories')
-        .select('id')
-        .eq('slug', category.toLowerCase().replace(/\s+/g, '-'))
-        .maybeSingle();
-      
-      if (categoryData) categoryId = categoryData.id;
+        .select('id, name, slug');
+
+      if (allCategories && allCategories.length > 0) {
+        const match = allCategories.find(c => 
+          c.slug.toLowerCase() === cleanSlug || 
+          c.slug.toLowerCase() === cleanSlug.replace('-made', '') ||
+          c.name.toLowerCase() === category.toLowerCase().trim()
+        );
+        if (match) {
+          categoryId = match.id;
+        } else {
+          // fallback to first matching or default
+          categoryId = allCategories[0].id;
+        }
+      }
     }
 
     // 2. Generate slug

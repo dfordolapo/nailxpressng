@@ -216,7 +216,7 @@ export default function DashboardClient({ initialProducts, initialOrders = [], i
                       <span className={styles.productName}>{product.name}</span>
                     </div>
                   </td>
-                  <td>{product.categoryName}</td>
+                  <td>{product.categoryName || "Handmade"}</td>
                   <td style={{ fontWeight: 500 }}>{formatPrice(product.price)}</td>
                   <td>
                     <span className={`${styles.badge} ${product.inStock ? styles.inStock : styles.outOfStock}`}>

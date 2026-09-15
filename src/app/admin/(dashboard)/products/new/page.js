@@ -548,7 +548,15 @@ function NewProductContent() {
                   <select 
                     className={styles.select}
                     value={availability}
-                    onChange={(e) => setAvailability(e.target.value)}
+                    onChange={(e) => {
+                      const newAvail = e.target.value;
+                      setAvailability(newAvail);
+                      if (newAvail === "Out of Stock") {
+                        setStockQuantity(0);
+                      } else if (newAvail === "In Stock" && (stockQuantity === 0 || stockQuantity === "" || stockQuantity === "0")) {
+                        setStockQuantity(10);
+                      }
+                    }}
                   >
                     <option value="In Stock">In Stock</option>
                     <option value="Out of Stock">Out of Stock</option>

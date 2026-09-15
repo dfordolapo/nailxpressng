@@ -24,16 +24,26 @@ export async function PUT(request, { params }) {
     const length = formData.get('length');
     const color = formData.get('color');
 
-    // 1. Get Category ID
+    // 1. Get Category ID (Robust matching for 'Factory Made', 'factory', 'Handmade', etc.)
     let categoryId = null;
     if (category) {
-      const { data: categoryData } = await supabaseAdmin
+      const cleanSlug = category.toLowerCase().trim().replace(/\s+/g, '-');
+      const { data: allCategories } = await supabaseAdmin
         .from('categories')
-        .select('id')
-        .eq('slug', category.toLowerCase().replace(/\s+/g, '-'))
-        .maybeSingle();
-      
-      if (categoryData) categoryId = categoryData.id;
+        .select('id, name, slug');
+
+      if (allCategories && allCategories.length > 0) {
+        const match = allCategories.find(c => 
+          c.slug.toLowerCase() === cleanSlug || 
+          c.slug.toLowerCase() === cleanSlug.replace('-made', '') ||
+          c.name.toLowerCase() === category.toLowerCase().trim()
+        );
+        if (match) {
+          categoryId = match.id;
+        } else {
+          categoryId = allCategories[0].id;
+        }
+      }
     }
 
     // Generate a safe slug base for new files
@@ -149,10 +159,54 @@ export async function PUT(request, { params }) {
   }
 }
 
+export async function PATCH(request, { params }) {
+  try {
+    const { id } = await params;
+    const body = await request.json();
+
+    const updateData = {};
+    if (typeof body.stock_count !== 'undefined') {
+      updateData.stock_count = body.stock_count;
+    }
+    if (typeof body.bestseller !== 'undefined') {
+      updateData.bestseller = body.bestseller;
+    }
+
+    const { data: product, error } = await supabaseAdmin
+      .from('products')
+      .update(updateData)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    return NextResponse.json({ success: true, product });
+  } catch (error) {
+    console.error('Patch Product API Error:', error);
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+  }
+}
+
 export async function DELETE(request, { params }) {
   try {
     const { id } = await params;
 
+    // 1. Remove references in reviews to prevent foreign key errors if cascade isn't set in DB
+    try {
+      await supabaseAdmin.from('reviews').delete().eq('product_id', id);
+    } catch (err) {
+      console.warn('Could not clean up reviews:', err);
+    }
+
+    // 2. Set product_id to null or delete dependent order_items if needed
+    try {
+      await supabaseAdmin.from('order_items').update({ product_id: null }).eq('product_id', id);
+    } catch (err) {
+      console.warn('Could not nullify order_items product_id:', err);
+    }
+
+    // 3. Delete the product
     const { error } = await supabaseAdmin
       .from('products')
       .delete()

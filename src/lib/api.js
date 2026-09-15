@@ -34,6 +34,12 @@ const mapProduct = (p, discount = 0) => {
     compareAtPrice = rawPrice; // always show original as strikethrough
   }
 
+  // If category is not explicitly linked, infer from price structure:
+  // Factory Made sets are priced <= ₦10,000 (e.g. ₦6,500 - ₦8,000), while Handmade sets are priced >= ₦11,000 (e.g. ₦12,000 - ₦25,000)
+  const inferredByPrice = rawPrice <= 10000 ? 'factory' : 'handmade';
+  const resolvedCategory = p.categories?.slug || inferredByPrice;
+  const resolvedCategoryName = p.categories?.name || (resolvedCategory === 'factory' ? 'Factory Made' : 'Handmade');
+
   return {
     id: p.id,
     name: p.name,
@@ -41,8 +47,8 @@ const mapProduct = (p, discount = 0) => {
     description: p.description,
     price,
     compareAtPrice,
-    category: p.categories?.slug || null,
-    categoryName: p.categories?.name || null,
+    category: resolvedCategory,
+    categoryName: resolvedCategoryName,
     nailShape: p.nail_shape,
     style: p.style,
     lengths: Array.isArray(p.lengths) ? p.lengths : [],

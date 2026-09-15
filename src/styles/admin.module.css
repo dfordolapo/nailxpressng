@@ -1267,3 +1267,250 @@
   background: rgba(255, 255, 255, 0.4);
 }
 
+/* Excel-Style Table Header Filters & Controls */
+.filterHeaderCell {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  cursor: pointer;
+  user-select: none;
+  padding: 2px 0;
+}
+
+.filterHeaderCell:hover {
+  color: var(--color-primary);
+}
+
+.excelFilterBtn {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  padding: 2px 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #888;
+  transition: all 0.15s ease;
+}
+
+.excelFilterBtn:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--color-primary);
+}
+
+.excelFilterBtn.activeFilter {
+  background: var(--color-primary-100);
+  border-color: var(--color-primary-300);
+  color: var(--color-primary);
+}
+
+.excelPopover {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 6px;
+  background: #ffffff;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+  width: 230px;
+  padding: 12px;
+  z-index: 100;
+  text-align: left;
+  color: var(--color-text);
+  font-weight: normal;
+}
+
+.excelPopoverHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.excelSortOptions {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.excelSortBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  padding: 5px 8px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  color: var(--color-text);
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s;
+}
+
+.excelSortBtn:hover {
+  background: var(--color-bg);
+  color: var(--color-primary);
+}
+
+.excelSortBtn.activeSort {
+  background: var(--color-primary-100);
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.excelSearchInput {
+  width: 100%;
+  padding: 6px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  font-size: 0.8rem;
+  margin-bottom: 8px;
+  outline: none;
+}
+
+.excelSearchInput:focus {
+  border-color: var(--color-primary);
+}
+
+.excelValuesList {
+  max-height: 140px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-right: 4px;
+}
+
+.excelValueItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.excelValueItem input[type="checkbox"] {
+  cursor: pointer;
+  accent-color: var(--color-primary);
+}
+
+.excelPopoverFooter {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid var(--color-border-light);
+}
+
+.excelClearBtn {
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 0.78rem;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.excelClearBtn:hover {
+  color: #ef4444;
+  text-decoration: underline;
+}
+
+.excelApplyBtn {
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 4px 10px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* Bulk Upload Modal */
+.bulkUploadModal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.bulkUploadBox {
+  background: #ffffff;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 700px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+.bulkUploadHeader {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--color-border-light);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bulkUploadBody {
+  padding: 24px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.bulkDropZone {
+  border: 2px dashed var(--color-border);
+  border-radius: 12px;
+  padding: 30px 20px;
+  text-align: center;
+  background: #fafafa;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.bulkDropZone:hover {
+  border-color: var(--color-primary);
+  background: rgba(139, 44, 61, 0.03);
+}
+
+.bulkPreviewTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+  margin-top: 10px;
+}
+
+.bulkPreviewTable th,
+.bulkPreviewTable td {
+  padding: 8px 10px;
+  border: 1px solid var(--color-border-light);
+  text-align: left;
+}
+
+.bulkPreviewTable th {
+  background: #f8f8f8;
+  font-weight: 600;
+}
+
