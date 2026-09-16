@@ -58,7 +58,7 @@ function wrapEmailTemplate(contentTitle, contentHtml) {
             </p>
             <p style="margin: 0 0 14px 0; font-size: 12px; color: #777; line-height: 1.5;">
               Have questions? Reply directly to this email or 
-              <a href="https://wa.me/2349081872514" target="_blank" style="color: #7a403d; font-weight: 600; text-decoration: underline;">
+              <a href="https://wa.me/2348145069864" target="_blank" style="color: #7a403d; font-weight: 600; text-decoration: underline;">
                 chat with us on WhatsApp
               </a>.
             </p>
@@ -513,7 +513,7 @@ export async function sendAbandonedCheckoutEmail(order, items = []) {
     const firstName = order.customer_first_name || 'there';
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nailexpress.ng';
     const checkoutRecoveryUrl = `${siteUrl}/checkout?abandonedId=${order.id || ''}`;
-    const whatsappUrl = `${process.env.NEXT_PUBLIC_WHATSAPP_LINK || 'https://wa.me/2348123456789'}?text=${encodeURIComponent(`Hi Nailexpress, I started an order for ${items.map(i => i.product_name || i.name).join(', ') || 'my nails'} and had a question before finishing.`)}`;
+    const whatsappUrl = `${process.env.NEXT_PUBLIC_WHATSAPP_LINK || 'https://wa.me/2348145069864'}?text=${encodeURIComponent(`Hi Nailexpress, I started an order for ${items.map(i => i.product_name || i.name).join(', ') || 'my nails'} and had a question before finishing.`)}`;
 
     const itemsHtml = items.length > 0 ? `
       <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin: 20px 0; background-color: #fdf8f8; border-radius: 10px; border: 1px solid #f2e2e1; padding: 14px;">

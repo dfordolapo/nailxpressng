@@ -11,7 +11,7 @@ export const SOCIAL_LINKS = {
   instagram: "https://instagram.com/nailexpress.ng",
   tiktok: "https://tiktok.com/@nailexpress.ng",
   telegram: "https://t.me/nailexpressng",
-  whatsapp: "https://wa.me/2349081872514",
+  whatsapp: "https://wa.me/2348145069864",
 };
 
 export const WHATSAPP_MESSAGES = {
