@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { RotateCcw, HelpCircle, Compass, Sparkles, CheckCircle2, ArrowRight } from "lucide-react";
+import { RotateCcw, HelpCircle, Sparkles, ArrowRight, Check } from "lucide-react";
 import styles from "./FindYourFitQuiz.module.css";
 import ProductCard from "@/components/product/ProductCard";
 import HandmadeProductCard from "@/components/product/HandmadeProductCard";
@@ -70,7 +70,7 @@ export default function FindYourFitQuiz({ allProducts = [], hideBanner = false, 
       } catch (e) {
         console.error("Storage error in quiz:", e);
       }
-    }, 60000); // 60 seconds
+    }, 60000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -96,7 +96,6 @@ export default function FindYourFitQuiz({ allProducts = [], hideBanner = false, 
         let score = 0;
         const textToSearch = `${product.name} ${product.description} ${product.category} ${product.tags?.join(' ')} ${product.colors?.join(' ')}`.toLowerCase();
         const lengths = (product.lengths || []).map(l => l.toLowerCase());
-        const shape = (product.nailShape || '').toLowerCase();
         
         // Vibe Scoring
         if (finalAnswers.vibe === 'vibe_minimalist' && (textToSearch.includes('minimal') || textToSearch.includes('everyday') || textToSearch.includes('simple') || textToSearch.includes('nude') || textToSearch.includes('clear'))) score += 2;
@@ -106,7 +105,7 @@ export default function FindYourFitQuiz({ allProducts = [], hideBanner = false, 
         // Shape/Length Scoring
         if (finalAnswers.shape === 'shape_short') {
             if (lengths.includes('short') || textToSearch.includes('short')) score += 2;
-            if (product.category === 'factory') score += 1; // Factory sets generally skew shorter
+            if (product.category === 'factory') score += 1;
         }
         if (finalAnswers.shape === 'shape_medium' && (lengths.includes('medium') || textToSearch.includes('medium'))) score += 2;
         if (finalAnswers.shape === 'shape_long' && (lengths.includes('long') || lengths.includes('extra long') || lengths.includes('xl') || textToSearch.includes('long') || textToSearch.includes('xl'))) score += 2;
@@ -132,7 +131,7 @@ export default function FindYourFitQuiz({ allProducts = [], hideBanner = false, 
       const selected = scoredProducts.slice(0, 3);
       setRecommendations(selected);
       setStep(QUESTIONS.length + 2); // Results state
-    }, 1500);
+    }, 1200);
   };
 
   const handleRetake = () => {
@@ -143,7 +142,6 @@ export default function FindYourFitQuiz({ allProducts = [], hideBanner = false, 
   
   const handleClose = () => {
     setIsModalOpen(false);
-    // Optionally reset step if they close it, or keep progress
   };
 
   return (
@@ -151,7 +149,7 @@ export default function FindYourFitQuiz({ allProducts = [], hideBanner = false, 
       {!hideBanner && (
         <div className={styles.bannerWrapper}>
           <div className={styles.banner} onClick={() => setIsModalOpen(true)}>
-            {/* Ambient Background Glows */}
+            {/* Ambient Background Lighting */}
             <div className={styles.bannerGlow1}></div>
             <div className={styles.bannerGlow2}></div>
             <div className={styles.bannerGridMesh}></div>
@@ -159,6 +157,7 @@ export default function FindYourFitQuiz({ allProducts = [], hideBanner = false, 
             {/* Left Content Area */}
             <div className={styles.bannerLeft}>
               <div className={styles.bannerBadge}>
+                <Sparkles size={14} className={styles.bannerBadgeSparkle} />
                 <span>Nail Matchmaker</span>
               </div>
 
@@ -170,15 +169,24 @@ export default function FindYourFitQuiz({ allProducts = [], hideBanner = false, 
                 Custom recommendations matched to your style
               </p>
 
+              {/* 3 Steps Indicator */}
+              <div className={styles.stepChipsRow}>
+                <span className={styles.stepChip}>1. Vibe</span>
+                <span className={styles.stepChipArrow}>→</span>
+                <span className={styles.stepChip}>2. Length</span>
+                <span className={styles.stepChipArrow}>→</span>
+                <span className={styles.stepChip}>3. Color</span>
+              </div>
+
               <div className={styles.bannerCtaRow}>
                 <button className={styles.bannerBtn} aria-label="Start Quiz">
                   <span>Find My Match</span>
-                  <ArrowRight size={16} />
+                  <ArrowRight size={16} className={styles.bannerBtnArrow} />
                 </button>
               </div>
             </div>
 
-            {/* Right Interactive Visual (Overlapping Luxury Nail Set Fan Cards) */}
+            {/* Right Interactive Visual */}
             <div className={styles.bannerVisual}>
               <div className={styles.visualStack}>
                 <div className={`${styles.visualCard} ${styles.visualCard1}`}>
@@ -187,6 +195,7 @@ export default function FindYourFitQuiz({ allProducts = [], hideBanner = false, 
                     alt="Artistic Nail Set" 
                     fill 
                     sizes="180px"
+                    className={styles.optionImage}
                     style={{ objectFit: 'cover' }}
                   />
                   <div className={styles.cardTag}>Artistic</div>
@@ -198,6 +207,7 @@ export default function FindYourFitQuiz({ allProducts = [], hideBanner = false, 
                     alt="Minimalist Chic Set" 
                     fill 
                     sizes="180px"
+                    className={styles.optionImage}
                     style={{ objectFit: 'cover' }}
                   />
                   <div className={styles.cardTag}>Minimal</div>
@@ -209,13 +219,15 @@ export default function FindYourFitQuiz({ allProducts = [], hideBanner = false, 
                     alt="Classic French Set" 
                     fill 
                     sizes="180px"
+                    className={styles.optionImage}
                     style={{ objectFit: 'cover' }}
                   />
                   <div className={styles.cardTag}>Classic</div>
                 </div>
 
-                <div className={styles.floatingQuizBadge}>
-                  <span>Curated for You</span>
+                <div className={styles.floatingMatchBadge}>
+                  <Sparkles size={12} />
+                  <span>98% Match</span>
                 </div>
               </div>
             </div>
@@ -223,21 +235,22 @@ export default function FindYourFitQuiz({ allProducts = [], hideBanner = false, 
         </div>
       )}
 
-      {/* Floating Corner Quiz Pill (for Shop, Handmade & Factory Pages) */}
+      {/* Floating Corner Quiz Pill */}
       {showFloatingPill && (
         <button 
           className={styles.floatingPill}
           onClick={() => setIsModalOpen(true)}
-          title="Find Your Perfect Fit Quiz"
-          aria-label="Find Your Perfect Fit Style Quiz"
+          title="Nail Matchmaker Quiz"
+          aria-label="Nail Matchmaker Quiz"
         >
           <span className={styles.floatingPillIcon}>
-            <HelpCircle size={16} color="var(--color-accent, #d4af7a)" />
+            <Sparkles size={16} color="#e1afa8" />
           </span>
-          <span className={styles.floatingPillText}>Take Quiz</span>
+          <span className={styles.floatingPillText}>Nail Matchmaker</span>
         </button>
       )}
 
+      {/* Quiz Modal */}
       {isModalOpen && (
         <div className={styles.modalOverlay} onClick={handleClose}>
           <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
@@ -248,12 +261,12 @@ export default function FindYourFitQuiz({ allProducts = [], hideBanner = false, 
             <div className={styles.quizContainer}>
               {step === 0 && (
                 <div className={styles.startScreen}>
-                  <h2 className={styles.title}>The Style Quiz</h2>
+                  <h2 className={styles.title}>Nail Matchmaker</h2>
                   <p className={styles.subtitle}>
-                    Not sure what to pick? Answer 3 quick questions to get recommendations.
+                    Your dream set is 3 taps away. Custom recommendations matched to your style.
                   </p>
                   <button className={styles.startBtn} onClick={handleStart}>
-                    Begin the Experience
+                    Find My Match
                   </button>
                 </div>
               )}
@@ -267,7 +280,7 @@ export default function FindYourFitQuiz({ allProducts = [], hideBanner = false, 
                         style={{ width: `${(step / QUESTIONS.length) * 100}%` }}
                       />
                     </div>
-                    <span className={styles.progressText}>{step} / {QUESTIONS.length}</span>
+                    <span className={styles.progressText}>Step {step} of {QUESTIONS.length}</span>
                   </div>
 
                   <h3 className={styles.questionTitle}>{QUESTIONS[step - 1].question}</h3>
@@ -279,7 +292,23 @@ export default function FindYourFitQuiz({ allProducts = [], hideBanner = false, 
                         className={styles.optionCard}
                         onClick={() => handleAnswer(QUESTIONS[step - 1].id, option.id)}
                       >
-                        <div className={styles.optionText}>{option.text}</div>
+                        <div className={styles.optionImageWrapper}>
+                          <Image 
+                            src={option.image} 
+                            alt={option.text} 
+                            fill 
+                            sizes="260px"
+                            className={styles.optionImage}
+                            style={{ objectFit: 'cover' }}
+                          />
+                        </div>
+                        <div className={styles.optionOverlay} />
+                        <div className={styles.optionContent}>
+                          <span className={styles.optionText}>{option.text}</span>
+                          <span className={styles.optionCheckCircle}>
+                            <Check size={14} strokeWidth={2.5} />
+                          </span>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -289,16 +318,16 @@ export default function FindYourFitQuiz({ allProducts = [], hideBanner = false, 
               {step === QUESTIONS.length + 1 && (
                 <div className={styles.loadingScreen}>
                   <div className={styles.spinner}></div>
-                  <p className={styles.loadingText}>Curating your aesthetic...</p>
+                  <p className={styles.loadingText}>Curating your dream set...</p>
                 </div>
               )}
 
               {step === QUESTIONS.length + 2 && (
                 <div className={styles.resultsScreen}>
                   <div className={styles.resultsHeader}>
-                    <h2 className={styles.title}>Your Curated Picks</h2>
+                    <h2 className={styles.title}>Your Curated Matches</h2>
                     <p className={styles.subtitle}>
-                      We analyzed your vibe. These sets are calling your name.
+                      Hand-selected based on your style, length & color preferences.
                     </p>
                   </div>
 
@@ -315,7 +344,7 @@ export default function FindYourFitQuiz({ allProducts = [], hideBanner = false, 
                   </div>
 
                   <button className={styles.retakeBtn} onClick={handleRetake}>
-                    <RotateCcw size={16} /> Retake Quiz
+                    <RotateCcw size={15} style={{ display: 'inline', verticalAlign: 'middle', marginRight: '6px' }} /> Retake Quiz
                   </button>
                 </div>
               )}
