@@ -113,6 +113,20 @@ export async function PUT(request, { params }) {
       videoUrl = publicUrlData.publicUrl;
     }
 
+    const rawSizes = formData.get('sizes');
+    let sizesArray = [];
+    if (targetSlug === 'handmade') {
+      if (rawSizes) {
+        try {
+          sizesArray = JSON.parse(rawSizes);
+        } catch {
+          sizesArray = rawSizes.split(',').map(s => s.trim()).filter(Boolean);
+        }
+      } else {
+        sizesArray = ['S', 'M', 'L'];
+      }
+    }
+
     const productData = {
       name,
       slug,
@@ -120,12 +134,14 @@ export async function PUT(request, { params }) {
       price,
       compare_at_price: compareAtPrice,
       category_id: categoryId,
+      nail_shape: formData.get('shape') || existingProduct.nail_shape || 'Square',
       style: tags || 'Solid',
       color: color || null,
       images: imageUrls,
       bestseller: featured,
       stock_count: stockCount,
       lengths: length ? [length] : [],
+      sizes: sizesArray,
       video_url: videoUrl,
     };
 

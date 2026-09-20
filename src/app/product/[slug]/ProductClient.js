@@ -28,8 +28,14 @@ export default function ProductClient({ product, relatedProducts = [], isModal =
   const { showToast } = useToast();
 
   const [selectedImage, setSelectedImage] = useState(0);
-  const [selectedSize, setSelectedSize] = useState("M");
+  const [selectedSize, setSelectedSize] = useState(product?.sizes?.[0] || "M");
   const [selectedLength, setSelectedLength] = useState(product?.lengths?.[0] || "Medium");
+
+  useEffect(() => {
+    if (product?.sizes && product.sizes.length > 0 && !product.sizes.includes(selectedSize)) {
+      setSelectedSize(product.sizes[0]);
+    }
+  }, [product]);
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
   const [zoomOrigin, setZoomOrigin] = useState("50% 50%");

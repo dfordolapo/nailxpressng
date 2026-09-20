@@ -95,6 +95,19 @@ export async function POST(request) {
     const lengthsArray = length ? [length] : [];
     
     const color = formData.get('color');
+    const rawSizes = formData.get('sizes');
+    let sizesArray = [];
+    if (targetSlug === 'handmade') {
+      if (rawSizes) {
+        try {
+          sizesArray = JSON.parse(rawSizes);
+        } catch {
+          sizesArray = rawSizes.split(',').map(s => s.trim()).filter(Boolean);
+        }
+      } else {
+        sizesArray = ['S', 'M', 'L'];
+      }
+    }
 
     const productData = {
       name,
@@ -103,13 +116,14 @@ export async function POST(request) {
       price,
       compare_at_price: compareAtPrice,
       category_id: categoryId,
-      nail_shape: 'Square',
+      nail_shape: formData.get('shape') || 'Square',
       style: tags || 'Solid',
       color: color || null,
       images: imageUrls,
       bestseller: featured,
       stock_count: stockCount,
       lengths: lengthsArray,
+      sizes: sizesArray,
       video_url: videoUrl,
     };
 

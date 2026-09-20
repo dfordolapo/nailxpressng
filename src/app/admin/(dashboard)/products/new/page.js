@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft, UploadCloud, X, Heart } from "lucide-react";
+import { ArrowLeft, UploadCloud, X, Heart, Check, Plus } from "lucide-react";
 import styles from "@/styles/admin.module.css";
 import { nailShapes, nailLengths, styles as nailStyles, categories as nailCategories } from "@/data/categories";
 import HandmadeProductCard from "@/components/product/HandmadeProductCard";
@@ -9,6 +9,25 @@ import ProductCard from "@/components/product/ProductCard";
 import { useState, useRef, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { supabase } from "@/lib/supabase";
+
+const STANDARD_SIZES = ["XS", "S", "M", "L", "Custom"];
+
+const COLOR_OPTIONS = [
+  { name: "Red", hex: "#ef4444" },
+  { name: "Pink", hex: "#f472b6" },
+  { name: "Nude", hex: "#f5d0b5" },
+  { name: "Brown", hex: "#78350f" },
+  { name: "Black", hex: "#171717" },
+  { name: "White", hex: "#ffffff", border: "#cbd5e1" },
+  { name: "Green", hex: "#166534" },
+  { name: "Blue", hex: "#1e3a8a" },
+  { name: "Purple", hex: "#7e22ce" },
+  { name: "Yellow", hex: "#facc15" },
+  { name: "Orange", hex: "#f97316" },
+  { name: "Silver", hex: "linear-gradient(135deg, #e2e8f0, #94a3b8)" },
+  { name: "Gold", hex: "linear-gradient(135deg, #fef08a, #ca8a04)" },
+  { name: "Multi", hex: "conic-gradient(from 180deg at 50% 50%, #ff0000, #ff8000, #ffff00, #00ff00, #0000ff, #8000ff, #ff00ff, #ff0000)" },
+];
 
 function NewProductContent() {
   const router = useRouter();
@@ -34,7 +53,10 @@ function NewProductContent() {
   const [nailShape, setNailShape] = useState("Square");
   const [nailLength, setNailLength] = useState('medium');
   const [nailStyle, setNailStyle] = useState("Solid");
-  const [color, setColor] = useState("");
+  const [availableSizes, setAvailableSizes] = useState(["S", "M", "L"]);
+  const [customSizeInput, setCustomSizeInput] = useState("");
+  const [selectedColors, setSelectedColors] = useState([]);
+  const [customColorInput, setCustomColorInput] = useState("");
   
   const [price, setPrice] = useState("");
   const [salePrice, setSalePrice] = useState("");
@@ -58,12 +80,30 @@ function NewProductContent() {
           if (error) throw error;
           
           setName(data.name || "");
-          setCollection(data.categories?.name === "Handmade" ? "Handmade" : data.categories?.name || "Factory");
+          const isHandmade = data.categories?.name === "Handmade" || data.category_id?.toLowerCase()?.includes('handmade');
+          setCollection(isHandmade ? "Handmade" : data.categories?.name || "Factory");
           setTags(data.style ? data.style.split(',').map(s => s.trim()) : []);
           setDescription(data.description || "");
           setNailShape(data.nail_shape || "Square");
           setNailLength(data.lengths && data.lengths.length > 0 ? data.lengths[0] : "medium");
-          setColor(data.color || "");
+          
+          // Load Sizes
+          if (data.sizes && Array.isArray(data.sizes) && data.sizes.length > 0) {
+            setAvailableSizes(data.sizes);
+          } else if (isHandmade) {
+            setAvailableSizes(["S", "M", "L"]);
+          } else {
+            setAvailableSizes([]);
+          }
+
+          // Load Colors
+          if (data.color) {
+            const splitColors = data.color.split(',').map(c => c.trim()).filter(Boolean);
+            setSelectedColors(splitColors);
+          } else {
+            setSelectedColors([]);
+          }
+
           setPrice(data.price?.toString() || "");
           setSalePrice(data.compare_at_price ? data.price?.toString() : "");
           if (data.compare_at_price) setPrice(data.compare_at_price?.toString()); // if sale, compare_at is original
@@ -188,6 +228,56 @@ function NewProductContent() {
     }
   };
 
+  const toggleSize = (size) => {
+    setAvailableSizes(prev => {
+      if (prev.includes(size)) {
+        return prev.filter(s => s !== size);
+      } else {
+        return [...prev, size];
+      }
+    });
+  };
+
+  const handleAddCustomSize = (e) => {
+    if (e.key === 'Enter' || e.type === 'click') {
+      e.preventDefault();
+      const val = customSizeInput.trim();
+      if (val && !availableSizes.includes(val)) {
+        setAvailableSizes([...availableSizes, val]);
+      }
+      setCustomSizeInput("");
+    }
+  };
+
+  const removeCustomSize = (sizeToRemove) => {
+    setAvailableSizes(prev => prev.filter(s => s !== sizeToRemove));
+  };
+
+  const toggleColor = (colorName) => {
+    setSelectedColors(prev => {
+      if (prev.includes(colorName)) {
+        return prev.filter(c => c !== colorName);
+      } else {
+        return [...prev, colorName];
+      }
+    });
+  };
+
+  const handleAddCustomColor = (e) => {
+    if (e.key === 'Enter' || e.type === 'click') {
+      e.preventDefault();
+      const val = customColorInput.trim();
+      if (val && !selectedColors.includes(val)) {
+        setSelectedColors([...selectedColors, val]);
+      }
+      setCustomColorInput("");
+    }
+  };
+
+  const removeColor = (colorToRemove) => {
+    setSelectedColors(prev => prev.filter(c => c !== colorToRemove));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!name || !price) {
@@ -206,12 +296,24 @@ function NewProductContent() {
       const onSale = sale !== null && sale > 0 && sale < normalPrice;
       formData.append('price', onSale ? sale : normalPrice);
       if (onSale) formData.append('compareAtPrice', normalPrice);
+      formData.append('shape', nailShape);
       formData.append('length', nailLength); // Add selected length
       formData.append('category', collection); // Map collection to category
       formData.append('stockCount', stockQuantity || '0');
       formData.append('featured', isBestseller); // Or isFeatured depending on preference
       formData.append('tags', tags.join(','));
-      if (color) formData.append('color', color);
+      
+      // Multi-colors
+      if (selectedColors.length > 0) {
+        formData.append('color', selectedColors.join(', '));
+      }
+
+      // Sizes for handmade
+      if (collection.toLowerCase().includes('handmade')) {
+        formData.append('sizes', JSON.stringify(availableSizes));
+      } else {
+        formData.append('sizes', JSON.stringify([]));
+      }
       
       if (imageFile) {
         formData.append('image', imageFile);
@@ -285,7 +387,6 @@ function NewProductContent() {
 
         {/* Main Form Area */}
         <div className={styles.formMain}>
-          <form onSubmit={handleSubmit}>
           {activeTab === "basic" && (
             <div className={styles.formSection}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
@@ -413,10 +514,13 @@ function NewProductContent() {
                             category: collection.toLowerCase().replace(' ', '-'),
                             image: imagePreview || "https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&q=80&w=300",
                             shortDescription: description || "Product description goes here.",
-                            sizes: ["XS", "S", "M", "L"],
-                            lengths: ["Short", "Medium", "Long"],
+                            sizes: availableSizes.length > 0 ? availableSizes : ["S", "M", "L"],
+                            lengths: [nailLength],
+                            color: selectedColors.join(', '),
+                            colors: selectedColors,
                             bestseller: isBestseller,
-                            newArrival: true
+                            newArrival: true,
+                            inStock: true
                           }} 
                           viewMode="grid" 
                         />
@@ -430,7 +534,8 @@ function NewProductContent() {
                             image: imagePreview || "https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&q=80&w=300",
                             shortDescription: description || "Product description goes here.",
                             bestseller: isBestseller,
-                            newArrival: true
+                            newArrival: true,
+                            inStock: true
                           }} 
                         />
                       )}
@@ -476,26 +581,258 @@ function NewProductContent() {
                   </select>
                   <Link href="/admin/settings/attributes" style={{ fontSize: "0.8rem", color: "var(--color-primary)", marginTop: "8px", display: "inline-block", textDecoration: "underline" }}>Manage Styles</Link>
                 </div>
-                
-                <div className={styles.formGroup}>
-                  <label className={styles.label}>Primary Color</label>
-                  <select className={styles.select} value={color} onChange={e => setColor(e.target.value)}>
-                    <option value="">None / Mixed</option>
-                    <option value="Red">Red</option>
-                    <option value="Pink">Pink</option>
-                    <option value="Nude">Nude</option>
-                    <option value="Brown">Brown</option>
-                    <option value="Black">Black</option>
-                    <option value="White">White</option>
-                    <option value="Green">Green</option>
-                    <option value="Blue">Blue</option>
-                    <option value="Purple">Purple</option>
-                    <option value="Yellow">Yellow</option>
-                    <option value="Orange">Orange</option>
-                    <option value="Silver">Silver</option>
-                    <option value="Gold">Gold</option>
-                    <option value="Multi">Multi-color</option>
-                  </select>
+              </div>
+
+              {/* Handmade Available Sizes Configuration */}
+              {collection.toLowerCase().includes('handmade') && (
+                <div className={styles.formGroup} style={{ marginTop: "10px", padding: "16px", background: "var(--color-surface, #fafafa)", borderRadius: "10px", border: "1px solid var(--color-border-light, #f0e6e6)" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px", flexWrap: "wrap", gap: "8px" }}>
+                    <div>
+                      <label className={styles.label} style={{ marginBottom: "2px", display: "flex", alignItems: "center", gap: "6px", fontWeight: 600 }}>
+                        <span>Handmade Available Sizes</span>
+                        <span style={{ fontSize: "0.75rem", background: "var(--color-primary-100)", color: "var(--color-primary-800)", padding: "2px 6px", borderRadius: "4px", fontWeight: 500 }}>Handmade Only</span>
+                      </label>
+                      <p style={{ fontSize: "0.78rem", color: "#666", margin: 0 }}>
+                        Select the sizes available for this handmade set. Customers will only be able to order the chosen sizes.
+                      </p>
+                    </div>
+                    <div style={{ display: "flex", gap: "6px" }}>
+                      <button
+                        type="button"
+                        onClick={() => setAvailableSizes([...STANDARD_SIZES])}
+                        style={{ fontSize: "0.75rem", background: "#fff", border: "1px solid #ddd", borderRadius: "4px", padding: "3px 8px", cursor: "pointer", color: "#555" }}
+                      >
+                        Select All
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setAvailableSizes(["S", "M", "L"])}
+                        style={{ fontSize: "0.75rem", background: "#fff", border: "1px solid #ddd", borderRadius: "4px", padding: "3px 8px", cursor: "pointer", color: "#555" }}
+                      >
+                        Standard (S, M, L)
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setAvailableSizes([])}
+                        style={{ fontSize: "0.75rem", background: "#fff", border: "1px solid #ddd", borderRadius: "4px", padding: "3px 8px", cursor: "pointer", color: "#888" }}
+                      >
+                        Clear
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Standard Size Buttons */}
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginTop: "12px" }}>
+                    {STANDARD_SIZES.map(size => {
+                      const isSelected = availableSizes.includes(size);
+                      return (
+                        <button
+                          key={size}
+                          type="button"
+                          onClick={() => toggleSize(size)}
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "6px",
+                            padding: "8px 14px",
+                            borderRadius: "8px",
+                            fontSize: "0.85rem",
+                            fontWeight: isSelected ? 600 : 500,
+                            border: isSelected ? "1.5px solid var(--color-primary)" : "1px solid #ddd",
+                            background: isSelected ? "var(--color-primary-100)" : "#fff",
+                            color: isSelected ? "var(--color-primary-800)" : "#444",
+                            cursor: "pointer",
+                            transition: "all 0.15s ease",
+                            boxShadow: isSelected ? "0 1px 3px rgba(139, 44, 61, 0.12)" : "none"
+                          }}
+                        >
+                          <span style={{ width: "16px", height: "16px", borderRadius: "4px", border: isSelected ? "1px solid var(--color-primary)" : "1px solid #ccc", background: isSelected ? "var(--color-primary)" : "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
+                            {isSelected && <Check size={12} color="#fff" strokeWidth={3} />}
+                          </span>
+                          <span>{size}</span>
+                        </button>
+                      );
+                    })}
+
+                    {/* Custom Sizes Added by Admin */}
+                    {availableSizes.filter(s => !STANDARD_SIZES.includes(s)).map(customSize => (
+                      <span
+                        key={customSize}
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "6px",
+                          padding: "8px 12px",
+                          borderRadius: "8px",
+                          fontSize: "0.85rem",
+                          fontWeight: 600,
+                          border: "1.5px solid var(--color-primary)",
+                          background: "var(--color-primary-100)",
+                          color: "var(--color-primary-800)",
+                        }}
+                      >
+                        <Check size={14} color="var(--color-primary)" strokeWidth={2.5} />
+                        <span>{customSize}</span>
+                        <button
+                          type="button"
+                          onClick={() => removeCustomSize(customSize)}
+                          style={{ border: "none", background: "none", cursor: "pointer", color: "var(--color-primary)", padding: 0, marginLeft: "4px" }}
+                        >
+                          &times;
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Add Custom Size Input */}
+                  <div style={{ display: "flex", gap: "8px", marginTop: "12px", maxWidth: "320px" }}>
+                    <input
+                      type="text"
+                      className={styles.input}
+                      style={{ padding: "6px 10px", fontSize: "0.8rem", height: "34px" }}
+                      placeholder="Add custom size (e.g. XL)..."
+                      value={customSizeInput}
+                      onChange={e => setCustomSizeInput(e.target.value)}
+                      onKeyDown={handleAddCustomSize}
+                    />
+                    <button
+                      type="button"
+                      onClick={handleAddCustomSize}
+                      style={{ padding: "6px 12px", fontSize: "0.8rem", background: "#f0f0f0", border: "1px solid #ddd", borderRadius: "6px", cursor: "pointer", fontWeight: 500, whiteSpace: "nowrap" }}
+                    >
+                      + Add Size
+                    </button>
+                  </div>
+
+                  {availableSizes.length === 0 && (
+                    <div style={{ marginTop: "8px", fontSize: "0.78rem", color: "#b91c1c", fontWeight: 500 }}>
+                      ⚠️ Please select at least one available size for handmade nail orders.
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Multi-Color Categorization */}
+              <div className={styles.formGroup} style={{ marginTop: "15px", padding: "16px", background: "var(--color-surface, #fafafa)", borderRadius: "10px", border: "1px solid var(--color-border-light, #f0e6e6)" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px", flexWrap: "wrap", gap: "8px" }}>
+                  <div>
+                    <label className={styles.label} style={{ marginBottom: "2px", fontWeight: 600 }}>
+                      Colors Categorization
+                    </label>
+                    <p style={{ fontSize: "0.78rem", color: "#666", margin: 0 }}>
+                      Select all colors that describe this set. Customers filtering or searching for any of these colors will find this product.
+                    </p>
+                  </div>
+                  {selectedColors.length > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => setSelectedColors([])}
+                      style={{ fontSize: "0.75rem", background: "#fff", border: "1px solid #ddd", borderRadius: "4px", padding: "3px 8px", cursor: "pointer", color: "#888" }}
+                    >
+                      Clear All
+                    </button>
+                  )}
+                </div>
+
+                {/* Color Swatch Grid */}
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(115px, 1fr))", gap: "8px", marginTop: "12px" }}>
+                  {COLOR_OPTIONS.map(c => {
+                    const isSelected = selectedColors.some(sc => sc.toLowerCase() === c.name.toLowerCase());
+                    return (
+                      <button
+                        key={c.name}
+                        type="button"
+                        onClick={() => toggleColor(c.name)}
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "8px",
+                          padding: "7px 10px",
+                          borderRadius: "8px",
+                          fontSize: "0.82rem",
+                          fontWeight: isSelected ? 600 : 500,
+                          border: isSelected ? "1.5px solid var(--color-primary)" : "1px solid #e2e8f0",
+                          background: isSelected ? "var(--color-primary-100)" : "#ffffff",
+                          color: isSelected ? "var(--color-primary-800)" : "#333333",
+                          cursor: "pointer",
+                          transition: "all 0.15s ease",
+                          textAlign: "left"
+                        }}
+                      >
+                        <span 
+                          style={{
+                            width: "18px",
+                            height: "18px",
+                            borderRadius: "50%",
+                            background: c.hex,
+                            border: c.border ? `1px solid ${c.border}` : "1px solid rgba(0,0,0,0.1)",
+                            display: "inline-flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            flexShrink: 0
+                          }}
+                        >
+                          {isSelected && (c.name === "White" || c.name === "Yellow" || c.name === "Nude" ? (
+                            <Check size={11} color="#000" strokeWidth={3} />
+                          ) : (
+                            <Check size={11} color="#fff" strokeWidth={3} />
+                          ))}
+                        </span>
+                        <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{c.name}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Custom Color Badges and Add Input */}
+                {selectedColors.filter(sc => !COLOR_OPTIONS.some(co => co.name.toLowerCase() === sc.toLowerCase())).length > 0 && (
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginTop: "12px" }}>
+                    <span style={{ fontSize: "0.75rem", color: "#666", alignSelf: "center", marginRight: "4px" }}>Custom:</span>
+                    {selectedColors.filter(sc => !COLOR_OPTIONS.some(co => co.name.toLowerCase() === sc.toLowerCase())).map(customColor => (
+                      <span
+                        key={customColor}
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "4px",
+                          padding: "3px 8px",
+                          borderRadius: "4px",
+                          fontSize: "0.8rem",
+                          background: "var(--color-primary-100)",
+                          color: "var(--color-primary-800)",
+                          fontWeight: 500
+                        }}
+                      >
+                        {customColor}
+                        <button
+                          type="button"
+                          onClick={() => removeColor(customColor)}
+                          style={{ border: "none", background: "none", cursor: "pointer", color: "var(--color-primary)", padding: 0 }}
+                        >
+                          &times;
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                )}
+
+                <div style={{ display: "flex", gap: "8px", marginTop: "12px", maxWidth: "320px" }}>
+                  <input
+                    type="text"
+                    className={styles.input}
+                    style={{ padding: "6px 10px", fontSize: "0.8rem", height: "34px" }}
+                    placeholder="Add custom color (e.g. Lavender)..."
+                    value={customColorInput}
+                    onChange={e => setCustomColorInput(e.target.value)}
+                    onKeyDown={handleAddCustomColor}
+                  />
+                  <button
+                    type="button"
+                    onClick={handleAddCustomColor}
+                    style={{ padding: "6px 12px", fontSize: "0.8rem", background: "#f0f0f0", border: "1px solid #ddd", borderRadius: "6px", cursor: "pointer", fontWeight: 500, whiteSpace: "nowrap" }}
+                  >
+                    + Add Color
+                  </button>
                 </div>
               </div>
 
@@ -589,13 +926,12 @@ function NewProductContent() {
 
               <div className={styles.formActions}>
                  <button type="button" className={styles.btnSecondary} onClick={() => setActiveTab("details")}>Back</button>
-                 <button type="submit" className={styles.btnPrimary} disabled={isSubmitting}>
+                 <button type="button" className={styles.btnPrimary} onClick={handleSubmit} disabled={isSubmitting}>
                    {isSubmitting ? "Saving..." : "Save Product"}
                  </button>
                </div>
             </div>
           )}
-          </form>
         </div>
 
         {/* Tips Sidebar */}

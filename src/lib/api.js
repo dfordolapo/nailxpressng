@@ -62,7 +62,9 @@ const mapProduct = (p, discount = 0) => {
     nailShape: p.nail_shape,
     style: p.style,
     lengths: Array.isArray(p.lengths) ? p.lengths : [],
-    sizes: resolvedCategory === 'handmade' ? ["S", "M", "L"] : [],
+    sizes: resolvedCategory === 'handmade' 
+      ? (Array.isArray(p.sizes) && p.sizes.length > 0 ? p.sizes : ["S", "M", "L"]) 
+      : [],
     images: p.images,
     image: p.images?.[0] || null,
     videoUrl: p.video_url || null,
@@ -75,7 +77,7 @@ const mapProduct = (p, discount = 0) => {
     color: p.color ? p.color.split(',')[0].trim() : null,
     colors: (() => {
       if (!p.color) return [];
-      return p.color.split(',').map(c => c.trim());
+      return p.color.split(',').map(c => c.trim()).filter(Boolean);
     })(),
     discountPercent: discount > 0 ? discount : null,
   };

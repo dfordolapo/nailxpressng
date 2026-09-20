@@ -383,7 +383,7 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
                       onClick={(e) => e.stopPropagation()}
                     >
                       <option value="" disabled>Select Size</option>
-                      {["Small", "Medium", "Large"].map((size) => (
+                      {(product.sizes && product.sizes.length > 0 ? product.sizes : ["S", "M", "L"]).map((size) => (
                         <option key={size} value={size}>{size}</option>
                       ))}
                     </select>
