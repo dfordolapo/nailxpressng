@@ -27,15 +27,18 @@ export default function ProductClient({ product, relatedProducts = [], isModal =
   const { toggleItem, isInWishlist } = useWishlist();
   const { showToast } = useToast();
 
+  const availableSizes = Array.isArray(product?.sizes) && product.sizes.length > 0 ? product.sizes : ["S", "M", "L"];
+  const initialSize = availableSizes.includes("M") ? "M" : (availableSizes[0] || "M");
+
   const [selectedImage, setSelectedImage] = useState(0);
-  const [selectedSize, setSelectedSize] = useState(product?.sizes?.[0] || "M");
+  const [selectedSize, setSelectedSize] = useState(initialSize);
   const [selectedLength, setSelectedLength] = useState(product?.lengths?.[0] || "Medium");
 
   useEffect(() => {
     if (product?.sizes && product.sizes.length > 0 && !product.sizes.includes(selectedSize)) {
       setSelectedSize(product.sizes[0]);
     }
-  }, [product]);
+  }, [product, selectedSize]);
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
   const [zoomOrigin, setZoomOrigin] = useState("50% 50%");
@@ -280,15 +283,24 @@ export default function ProductClient({ product, relatedProducts = [], isModal =
               <div className={pageStyles.selectorGroup}>
                 <span className={pageStyles.selectorLabel}>Size: {selectedSize}</span>
                 <div className={pageStyles.selectorOptions}>
-                  {(product.sizes ?? []).map((size) => (
-                    <button
-                      key={size}
-                      className={`${pageStyles.selectorOption} ${selectedSize === size ? pageStyles.selected : ""}`}
-                      onClick={() => setSelectedSize(size)}
-                    >
-                      {size}
-                    </button>
-                  ))}
+                  {Array.from(new Set([...["XS", "S", "M", "L", "Custom"], ...(product.sizes || [])])).map((size) => {
+                    const isAvailable = product.sizes && product.sizes.length > 0
+                      ? product.sizes.includes(size)
+                      : ["S", "M", "L"].includes(size);
+                    const isSelected = selectedSize === size;
+                    return (
+                      <button
+                        key={size}
+                        type="button"
+                        disabled={!isAvailable}
+                        className={`${pageStyles.selectorOption} ${isSelected ? pageStyles.selected : ""} ${!isAvailable ? pageStyles.disabledOption : ""}`}
+                        onClick={() => isAvailable && setSelectedSize(size)}
+                        title={!isAvailable ? `${size} is unavailable for this set` : size}
+                      >
+                        {size}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             )}

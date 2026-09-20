@@ -299,9 +299,16 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
                         onClick={(e) => e.stopPropagation()}
                       >
                         <option value="" disabled>Select Size</option>
-                        {product.sizes?.map((size) => (
-                          <option key={size} value={size}>{size}</option>
-                        ))}
+                        {Array.from(new Set([...["XS", "S", "M", "L", "Custom"], ...(product.sizes || [])])).map((size) => {
+                          const isAvailable = product.sizes && product.sizes.length > 0
+                            ? product.sizes.includes(size)
+                            : ["S", "M", "L"].includes(size);
+                          return (
+                            <option key={size} value={size} disabled={!isAvailable}>
+                              {size}{!isAvailable ? " (Unavailable)" : ""}
+                            </option>
+                          );
+                        })}
                       </select>
                     </div>
                   )}
@@ -383,9 +390,16 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
                       onClick={(e) => e.stopPropagation()}
                     >
                       <option value="" disabled>Select Size</option>
-                      {(product.sizes && product.sizes.length > 0 ? product.sizes : ["S", "M", "L"]).map((size) => (
-                        <option key={size} value={size}>{size}</option>
-                      ))}
+                      {Array.from(new Set([...["XS", "S", "M", "L", "Custom"], ...(product.sizes || [])])).map((size) => {
+                        const isAvailable = product.sizes && product.sizes.length > 0
+                          ? product.sizes.includes(size)
+                          : ["S", "M", "L"].includes(size);
+                        return (
+                          <option key={size} value={size} disabled={!isAvailable}>
+                            {size}{!isAvailable ? " (Unavailable)" : ""}
+                          </option>
+                        );
+                      })}
                     </select>
                   </div>
                 )}

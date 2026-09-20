@@ -73,11 +73,19 @@ const mapProduct = (p, discount = 0) => {
     inStock: p.stock_count > 0,
     stockCount: p.stock_count,
     createdAt: p.created_at,
-    tags: [],
-    color: p.color ? p.color.split(',')[0].trim() : null,
+    color: (() => {
+      if (Array.isArray(p.color) && p.color.length > 0) return String(p.color[0]).trim();
+      if (typeof p.color === 'string' && p.color.trim()) return p.color.split(',')[0].trim();
+      if (Array.isArray(p.colors) && p.colors.length > 0) return String(p.colors[0]).trim();
+      return null;
+    })(),
     colors: (() => {
-      if (!p.color) return [];
-      return p.color.split(',').map(c => c.trim()).filter(Boolean);
+      const list = [];
+      if (Array.isArray(p.color)) list.push(...p.color);
+      else if (typeof p.color === 'string' && p.color.trim()) list.push(...p.color.split(','));
+      if (Array.isArray(p.colors)) list.push(...p.colors);
+      else if (typeof p.colors === 'string' && p.colors.trim()) list.push(...p.colors.split(','));
+      return Array.from(new Set(list.map(c => String(c).trim()).filter(Boolean)));
     })(),
     discountPercent: discount > 0 ? discount : null,
   };

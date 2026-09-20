@@ -136,7 +136,7 @@ export async function PUT(request, { params }) {
       category_id: categoryId,
       nail_shape: formData.get('shape') || existingProduct.nail_shape || 'Square',
       style: tags || 'Solid',
-      color: color || null,
+      color: color && color.trim() ? color.trim() : null,
       images: imageUrls,
       bestseller: featured,
       stock_count: stockCount,

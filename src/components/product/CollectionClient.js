@@ -30,12 +30,16 @@ function filterProductsList(productList, filters) {
     }
     if (filters.colors && filters.colors.length > 0) {
       filtered = filtered.filter((p) => {
-        const prodColors = (p.colors && p.colors.length > 0)
-          ? p.colors 
-          : (p.color ? p.color.split(',').map(c => c.trim()).filter(Boolean) : []);
-        return prodColors.some((productColor) => 
-          filters.colors.some((filterColor) => productColor.toLowerCase() === filterColor.toLowerCase())
-        );
+        const prodColorList = [
+          ...(Array.isArray(p.colors) ? p.colors : []),
+          ...(p.color ? (Array.isArray(p.color) ? p.color : p.color.split(',')) : []),
+          ...(Array.isArray(p.tags) ? p.tags : (p.tags ? p.tags.split(',') : [])),
+        ].map(c => String(c).toLowerCase().trim()).filter(Boolean);
+
+        return filters.colors.some((filterColor) => {
+          const fc = filterColor.toLowerCase().trim();
+          return prodColorList.some(pc => pc === fc || pc.includes(fc) || fc.includes(pc));
+        });
       });
     }
     return filtered;

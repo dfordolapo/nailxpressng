@@ -41,8 +41,17 @@ export default async function FactoryPage() {
   // Fetch full catalog for the quiz
   const fullCatalog = await getProducts();
 
-  const allFeatured = await getFeaturedProducts();
-  const featuredProducts = allFeatured.filter(p => p.category === "factory");
+  // Specifically select 7 featured designs for the factory marquee (matching handmade's 7 items)
+  const marqueeNames = [
+    "Bridal Bows", "Rose Pearl", "Cherry Bomb", 
+    "Sunset Drops", "Gilded Waves", "Classic French", "Blush Petal"
+  ];
+  let featuredProducts = allProducts.filter(p => marqueeNames.includes(p.name));
+  if (featuredProducts.length < 7) {
+    const existingIds = new Set(featuredProducts.map(p => p.id));
+    const fallback = allProducts.filter(p => !existingIds.has(p.id));
+    featuredProducts = [...featuredProducts, ...fallback].slice(0, 7);
+  }
 
   return (
     <>

@@ -129,6 +129,9 @@ export default function ShapeFilterBar({
     { id: "Blue", hex: "#1e3a8a" },
     { id: "Purple", hex: "#7e22ce" },
     { id: "Yellow", hex: "#facc15" },
+    { id: "Orange", hex: "#f97316" },
+    { id: "Silver", hex: "linear-gradient(135deg, #e2e8f0, #94a3b8)" },
+    { id: "Gold", hex: "linear-gradient(135deg, #fef08a, #ca8a04)" },
     { id: "Multi", hex: "conic-gradient(from 180deg at 50% 50%, #ff0000, #ff8000, #ffff00, #00ff00, #0000ff, #8000ff, #ff00ff, #ff0000)" }
   ];
   return (

@@ -127,9 +127,16 @@ export default function ProductQuickView({ product }) {
                 value={selectedSize}
                 onChange={(e) => setSelectedSize(e.target.value)}
               >
-                {(product.sizes && product.sizes.length > 0 ? product.sizes : ["S", "M", "L", "Custom"]).map((s) => (
-                  <option key={s} value={s}>{s}</option>
-                ))}
+                {Array.from(new Set([...["XS", "S", "M", "L", "Custom"], ...(product.sizes || [])])).map((s) => {
+                  const isAvailable = product.sizes && product.sizes.length > 0 
+                    ? product.sizes.includes(s) 
+                    : ["S", "M", "L"].includes(s);
+                  return (
+                    <option key={s} value={s} disabled={!isAvailable}>
+                      {s}{!isAvailable ? " (Unavailable)" : ""}
+                    </option>
+                  );
+                })}
               </select>
             </div>
           )}

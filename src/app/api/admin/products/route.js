@@ -118,7 +118,7 @@ export async function POST(request) {
       category_id: categoryId,
       nail_shape: formData.get('shape') || 'Square',
       style: tags || 'Solid',
-      color: color || null,
+      color: color && color.trim() ? color.trim() : null,
       images: imageUrls,
       bestseller: featured,
       stock_count: stockCount,

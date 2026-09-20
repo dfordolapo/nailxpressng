@@ -38,9 +38,145 @@ const QUESTIONS = [
   }
 ];
 
+function MatchmakerBanner({ onOpenQuiz }) {
+  const bannerRef = useRef(null);
+  const [mousePos, setMousePos] = useState({ x: 0.5, y: 0.5 });
+  const [isHovered, setIsHovered] = useState(false);
+
+  const { scrollYProgress } = useScroll({
+    target: bannerRef,
+    offset: ["start end", "end start"]
+  });
+  const bgY = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
+  const bgScale = useTransform(scrollYProgress, [0, 0.5, 1], [1.08, 1, 1.08]);
+
+  const handleMouseMove = (e) => {
+    if (!bannerRef.current) return;
+    const rect = bannerRef.current.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width;
+    const y = (e.clientY - rect.top) / rect.height;
+    setMousePos({ x, y });
+  };
+
+  const handleMouseEnter = () => setIsHovered(true);
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    setMousePos({ x: 0.5, y: 0.5 });
+  };
+
+  // 3D tilt angles calculated from cursor position (-8deg to +8deg)
+  const rotateX = isHovered ? (mousePos.y - 0.5) * -12 : 0;
+  const rotateY = isHovered ? (mousePos.x - 0.5) * 14 : 0;
+
+  return (
+    <div 
+      className={styles.bannerWrapper} 
+      ref={bannerRef}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      style={{ perspective: 1200 }}
+    >
+      <motion.div 
+        className={styles.banner} 
+        onClick={onOpenQuiz}
+        initial={{ opacity: 0, y: 40, scale: 0.95 }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+        animate={{
+          rotateX,
+          rotateY,
+          transformStyle: "preserve-3d"
+        }}
+      >
+        {/* Dynamic Spotlight Sheen that follows the user's cursor */}
+        <div 
+          className={styles.cursorSpotlight}
+          style={{
+            background: isHovered 
+              ? `radial-gradient(550px circle at ${mousePos.x * 100}% ${mousePos.y * 100}%, rgba(247, 222, 218, 0.18), transparent 65%)`
+              : 'none'
+          }}
+        />
+
+        {/* Background Hero Image with parallax & 3D depth */}
+        <div className={styles.bannerBgImageWrapper}>
+          <motion.div style={{ y: bgY, scale: bgScale, position: 'relative', width: '100%', height: '116%', top: '-8%' }}>
+            <Image 
+              src="/images/matchmaker-hero.png" 
+              alt="Nail Matchmaker luxury set" 
+              fill 
+              sizes="(max-width: 1200px) 100vw, 1140px"
+              className={styles.heroImage}
+              priority={true}
+            />
+          </motion.div>
+          <div className={styles.imageBlendOverlay} />
+        </div>
+
+        {/* Overlaid Content Area with elevated 3D depth */}
+        <div className={styles.bannerContent} style={{ transform: 'translateZ(30px)' }}>
+          <motion.span 
+            className={styles.eyebrow}
+            initial={{ opacity: 0, y: 14, scale: 0.9 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+            whileHover={{ scale: 1.05 }}
+          >
+            <span className={styles.eyebrowDot} />
+            Nail Matchmaker
+          </motion.span>
+
+          <motion.h2 
+            className={styles.bannerTitle}
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+          >
+            Your dream set is
+            <span className={styles.bannerScript}>3 taps away.</span>
+          </motion.h2>
+
+          <motion.div 
+            className={styles.bannerCtaRow}
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <motion.button 
+              className={styles.bannerBtn} 
+              aria-label="Find My Match"
+              whileHover={{ scale: 1.06 }}
+              whileTap={{ scale: 0.95 }}
+              initial={{ scale: 0.95 }}
+              whileInView={{ scale: [0.95, 1.05, 1] }}
+              viewport={{ once: false, amount: 0.6 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+            >
+              <span className={styles.btnShimmer} />
+              <span>Find My Match</span>
+              <motion.span
+                animate={{ x: [0, 4, 0] }}
+                transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}
+                style={{ display: 'inline-flex', alignItems: 'center' }}
+              >
+                <ArrowRight size={18} className={styles.bannerBtnArrow} />
+              </motion.span>
+            </motion.button>
+          </motion.div>
+        </div>
+      </motion.div>
+    </div>
+  );
+}
+
 export default function FindYourFitQuiz({ allProducts = [], hideBanner = false, showFloatingPill = false }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [step, setStep] = useState(0); // 0 = start, 1-3 = questions, 4 = loading, 5 = results
+  const [step, setStep] = useState(1); // 1-3 = questions, 4 = loading, 5 = results
   const [answers, setAnswers] = useState({});
   const [recommendations, setRecommendations] = useState([]);
 
@@ -65,6 +201,9 @@ export default function FindYourFitQuiz({ allProducts = [], hideBanner = false, 
         const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 
         if (!lastSeen || now - Number(lastSeen) > ONE_DAY_MS) {
+          setAnswers({});
+          setRecommendations([]);
+          setStep(1);
           setIsModalOpen(true);
           localStorage.setItem('quizLastSeen', String(now));
         }
@@ -75,6 +214,13 @@ export default function FindYourFitQuiz({ allProducts = [], hideBanner = false, 
 
     return () => clearTimeout(timer);
   }, []);
+
+  const handleOpenQuiz = () => {
+    setAnswers({});
+    setRecommendations([]);
+    setStep(1);
+    setIsModalOpen(true);
+  };
 
   const handleStart = () => setStep(1);
 
@@ -145,147 +291,15 @@ export default function FindYourFitQuiz({ allProducts = [], hideBanner = false, 
     setIsModalOpen(false);
   };
 
-  const bannerRef = useRef(null);
-  const [mousePos, setMousePos] = useState({ x: 0.5, y: 0.5 });
-  const [isHovered, setIsHovered] = useState(false);
-
-  const { scrollYProgress } = useScroll({
-    target: bannerRef,
-    offset: ["start end", "end start"]
-  });
-  const bgY = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
-  const bgScale = useTransform(scrollYProgress, [0, 0.5, 1], [1.08, 1, 1.08]);
-
-  const handleMouseMove = (e) => {
-    if (!bannerRef.current) return;
-    const rect = bannerRef.current.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width;
-    const y = (e.clientY - rect.top) / rect.height;
-    setMousePos({ x, y });
-  };
-
-  const handleMouseEnter = () => setIsHovered(true);
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-    setMousePos({ x: 0.5, y: 0.5 });
-  };
-
-  // 3D tilt angles calculated from cursor position (-8deg to +8deg)
-  const rotateX = isHovered ? (mousePos.y - 0.5) * -12 : 0;
-  const rotateY = isHovered ? (mousePos.x - 0.5) * 14 : 0;
-
   return (
     <>
-      {!hideBanner && (
-        <div 
-          className={styles.bannerWrapper} 
-          ref={bannerRef}
-          onMouseMove={handleMouseMove}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          style={{ perspective: 1200 }}
-        >
-          <motion.div 
-            className={styles.banner} 
-            onClick={() => setIsModalOpen(true)}
-            initial={{ opacity: 0, y: 40, scale: 0.95 }}
-            whileInView={{ opacity: 1, y: 0, scale: 1 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-            animate={{
-              rotateX,
-              rotateY,
-              transformStyle: "preserve-3d"
-            }}
-          >
-            {/* Dynamic Spotlight Sheen that follows the user's cursor */}
-            <div 
-              className={styles.cursorSpotlight}
-              style={{
-                background: isHovered 
-                  ? `radial-gradient(550px circle at ${mousePos.x * 100}% ${mousePos.y * 100}%, rgba(247, 222, 218, 0.18), transparent 65%)`
-                  : 'none'
-              }}
-            />
-
-            {/* Background Hero Image with parallax & 3D depth */}
-            <div className={styles.bannerBgImageWrapper}>
-              <motion.div style={{ y: bgY, scale: bgScale, position: 'relative', width: '100%', height: '116%', top: '-8%' }}>
-                <Image 
-                  src="/images/matchmaker-hero.png" 
-                  alt="Nail Matchmaker luxury set" 
-                  fill 
-                  sizes="(max-width: 1200px) 100vw, 1140px"
-                  className={styles.heroImage}
-                  priority={true}
-                />
-              </motion.div>
-              <div className={styles.imageBlendOverlay} />
-            </div>
-
-            {/* Overlaid Content Area with elevated 3D depth */}
-            <div className={styles.bannerContent} style={{ transform: 'translateZ(30px)' }}>
-              <motion.span 
-                className={styles.eyebrow}
-                initial={{ opacity: 0, y: 14, scale: 0.9 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-                whileHover={{ scale: 1.05 }}
-              >
-                <span className={styles.eyebrowDot} />
-                Nail Matchmaker
-              </motion.span>
-
-              <motion.h2 
-                className={styles.bannerTitle}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.7, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-              >
-                Your dream set is
-                <span className={styles.bannerScript}>3 taps away.</span>
-              </motion.h2>
-
-              <motion.div 
-                className={styles.bannerCtaRow}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.7, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
-              >
-                <motion.button 
-                  className={styles.bannerBtn} 
-                  aria-label="Find My Match"
-                  whileHover={{ scale: 1.06 }}
-                  whileTap={{ scale: 0.95 }}
-                  initial={{ scale: 0.95 }}
-                  whileInView={{ scale: [0.95, 1.05, 1] }}
-                  viewport={{ once: false, amount: 0.6 }}
-                  transition={{ duration: 0.8, delay: 0.4 }}
-                >
-                  <span className={styles.btnShimmer} />
-                  <span>Find My Match</span>
-                  <motion.span
-                    animate={{ x: [0, 4, 0] }}
-                    transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}
-                    style={{ display: 'inline-flex', alignItems: 'center' }}
-                  >
-                    <ArrowRight size={18} className={styles.bannerBtnArrow} />
-                  </motion.span>
-                </motion.button>
-              </motion.div>
-            </div>
-          </motion.div>
-        </div>
-      )}
+      {!hideBanner && <MatchmakerBanner onOpenQuiz={handleOpenQuiz} />}
 
       {/* Floating Corner Quiz Pill */}
       {showFloatingPill && (
         <button 
           className={styles.floatingPill}
-          onClick={() => setIsModalOpen(true)}
+          onClick={handleOpenQuiz}
           title="Nail Matchmaker Quiz"
           aria-label="Nail Matchmaker Quiz"
         >
@@ -371,10 +385,7 @@ export default function FindYourFitQuiz({ allProducts = [], hideBanner = false, 
               {step === QUESTIONS.length + 2 && (
                 <div className={styles.resultsScreen}>
                   <div className={styles.resultsHeader}>
-                    <h2 className={styles.title}>Your Curated Matches</h2>
-                    <p className={styles.subtitle}>
-                      Hand-selected based on your style, length & color preferences.
-                    </p>
+                    <h2 className={styles.title}>Your Matches</h2>
                   </div>
 
                   <div className={styles.resultsGrid}>

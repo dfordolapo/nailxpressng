@@ -304,9 +304,7 @@ function NewProductContent() {
       formData.append('tags', tags.join(','));
       
       // Multi-colors
-      if (selectedColors.length > 0) {
-        formData.append('color', selectedColors.join(', '));
-      }
+      formData.append('color', selectedColors.join(', '));
 
       // Sizes for handmade
       if (collection.toLowerCase().includes('handmade')) {
