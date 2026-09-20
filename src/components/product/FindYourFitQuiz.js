@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { RotateCcw, HelpCircle, Sparkles, ArrowRight, Check } from "lucide-react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { RotateCcw, HelpCircle, ArrowRight, Check } from "lucide-react";
 import styles from "./FindYourFitQuiz.module.css";
 import ProductCard from "@/components/product/ProductCard";
 import HandmadeProductCard from "@/components/product/HandmadeProductCard";
@@ -144,94 +145,139 @@ export default function FindYourFitQuiz({ allProducts = [], hideBanner = false, 
     setIsModalOpen(false);
   };
 
+  const bannerRef = useRef(null);
+  const [mousePos, setMousePos] = useState({ x: 0.5, y: 0.5 });
+  const [isHovered, setIsHovered] = useState(false);
+
+  const { scrollYProgress } = useScroll({
+    target: bannerRef,
+    offset: ["start end", "end start"]
+  });
+  const bgY = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
+  const bgScale = useTransform(scrollYProgress, [0, 0.5, 1], [1.08, 1, 1.08]);
+
+  const handleMouseMove = (e) => {
+    if (!bannerRef.current) return;
+    const rect = bannerRef.current.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width;
+    const y = (e.clientY - rect.top) / rect.height;
+    setMousePos({ x, y });
+  };
+
+  const handleMouseEnter = () => setIsHovered(true);
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    setMousePos({ x: 0.5, y: 0.5 });
+  };
+
+  // 3D tilt angles calculated from cursor position (-8deg to +8deg)
+  const rotateX = isHovered ? (mousePos.y - 0.5) * -12 : 0;
+  const rotateY = isHovered ? (mousePos.x - 0.5) * 14 : 0;
+
   return (
     <>
       {!hideBanner && (
-        <div className={styles.bannerWrapper}>
-          <div className={styles.banner} onClick={() => setIsModalOpen(true)}>
-            {/* Ambient Background Lighting */}
-            <div className={styles.bannerGlow1}></div>
-            <div className={styles.bannerGlow2}></div>
-            <div className={styles.bannerGridMesh}></div>
-            
-            {/* Left Content Area */}
-            <div className={styles.bannerLeft}>
-              <div className={styles.bannerBadge}>
-                <Sparkles size={14} className={styles.bannerBadgeSparkle} />
-                <span>Nail Matchmaker</span>
-              </div>
+        <div 
+          className={styles.bannerWrapper} 
+          ref={bannerRef}
+          onMouseMove={handleMouseMove}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          style={{ perspective: 1200 }}
+        >
+          <motion.div 
+            className={styles.banner} 
+            onClick={() => setIsModalOpen(true)}
+            initial={{ opacity: 0, y: 40, scale: 0.95 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+            animate={{
+              rotateX,
+              rotateY,
+              transformStyle: "preserve-3d"
+            }}
+          >
+            {/* Dynamic Spotlight Sheen that follows the user's cursor */}
+            <div 
+              className={styles.cursorSpotlight}
+              style={{
+                background: isHovered 
+                  ? `radial-gradient(550px circle at ${mousePos.x * 100}% ${mousePos.y * 100}%, rgba(247, 222, 218, 0.18), transparent 65%)`
+                  : 'none'
+              }}
+            />
 
-              <h3 className={styles.bannerTitle}>
-                Your dream set is <span className={styles.bannerHighlight}>3 taps away.</span>
-              </h3>
+            {/* Background Hero Image with parallax & 3D depth */}
+            <div className={styles.bannerBgImageWrapper}>
+              <motion.div style={{ y: bgY, scale: bgScale, position: 'relative', width: '100%', height: '116%', top: '-8%' }}>
+                <Image 
+                  src="/images/matchmaker-hero.png" 
+                  alt="Nail Matchmaker luxury set" 
+                  fill 
+                  sizes="(max-width: 1200px) 100vw, 1140px"
+                  className={styles.heroImage}
+                  priority={true}
+                />
+              </motion.div>
+              <div className={styles.imageBlendOverlay} />
+            </div>
 
-              <p className={styles.bannerSubtitle}>
-                Custom recommendations matched to your style
-              </p>
+            {/* Overlaid Content Area with elevated 3D depth */}
+            <div className={styles.bannerContent} style={{ transform: 'translateZ(30px)' }}>
+              <motion.span 
+                className={styles.eyebrow}
+                initial={{ opacity: 0, y: 14, scale: 0.9 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+                whileHover={{ scale: 1.05 }}
+              >
+                <span className={styles.eyebrowDot} />
+                Nail Matchmaker
+              </motion.span>
 
-              {/* 3 Steps Indicator */}
-              <div className={styles.stepChipsRow}>
-                <span className={styles.stepChip}>1. Vibe</span>
-                <span className={styles.stepChipArrow}>→</span>
-                <span className={styles.stepChip}>2. Length</span>
-                <span className={styles.stepChipArrow}>→</span>
-                <span className={styles.stepChip}>3. Color</span>
-              </div>
+              <motion.h2 
+                className={styles.bannerTitle}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.7, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+              >
+                Your dream set is
+                <span className={styles.bannerScript}>3 taps away.</span>
+              </motion.h2>
 
-              <div className={styles.bannerCtaRow}>
-                <button className={styles.bannerBtn} aria-label="Start Quiz">
+              <motion.div 
+                className={styles.bannerCtaRow}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.7, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <motion.button 
+                  className={styles.bannerBtn} 
+                  aria-label="Find My Match"
+                  whileHover={{ scale: 1.06 }}
+                  whileTap={{ scale: 0.95 }}
+                  initial={{ scale: 0.95 }}
+                  whileInView={{ scale: [0.95, 1.05, 1] }}
+                  viewport={{ once: false, amount: 0.6 }}
+                  transition={{ duration: 0.8, delay: 0.4 }}
+                >
+                  <span className={styles.btnShimmer} />
                   <span>Find My Match</span>
-                  <ArrowRight size={16} className={styles.bannerBtnArrow} />
-                </button>
-              </div>
+                  <motion.span
+                    animate={{ x: [0, 4, 0] }}
+                    transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}
+                    style={{ display: 'inline-flex', alignItems: 'center' }}
+                  >
+                    <ArrowRight size={18} className={styles.bannerBtnArrow} />
+                  </motion.span>
+                </motion.button>
+              </motion.div>
             </div>
-
-            {/* Right Interactive Visual */}
-            <div className={styles.bannerVisual}>
-              <div className={styles.visualStack}>
-                <div className={`${styles.visualCard} ${styles.visualCard1}`}>
-                  <Image 
-                    src="/images/Handmade/IMG_3267.jpg" 
-                    alt="Artistic Nail Set" 
-                    fill 
-                    sizes="180px"
-                    className={styles.optionImage}
-                    style={{ objectFit: 'cover' }}
-                  />
-                  <div className={styles.cardTag}>Artistic</div>
-                </div>
-
-                <div className={`${styles.visualCard} ${styles.visualCard2}`}>
-                  <Image 
-                    src="/images/Handmade/IMG_3275.jpg" 
-                    alt="Minimalist Chic Set" 
-                    fill 
-                    sizes="180px"
-                    className={styles.optionImage}
-                    style={{ objectFit: 'cover' }}
-                  />
-                  <div className={styles.cardTag}>Minimal</div>
-                </div>
-
-                <div className={`${styles.visualCard} ${styles.visualCard3}`}>
-                  <Image 
-                    src="/images/Handmade/IMG_3174.jpg" 
-                    alt="Classic French Set" 
-                    fill 
-                    sizes="180px"
-                    className={styles.optionImage}
-                    style={{ objectFit: 'cover' }}
-                  />
-                  <div className={styles.cardTag}>Classic</div>
-                </div>
-
-                <div className={styles.floatingMatchBadge}>
-                  <Sparkles size={12} />
-                  <span>98% Match</span>
-                </div>
-              </div>
-            </div>
-          </div>
+          </motion.div>
         </div>
       )}
 
@@ -244,7 +290,7 @@ export default function FindYourFitQuiz({ allProducts = [], hideBanner = false, 
           aria-label="Nail Matchmaker Quiz"
         >
           <span className={styles.floatingPillIcon}>
-            <Sparkles size={16} color="#e1afa8" />
+            <HelpCircle size={16} color="#eccbc6" />
           </span>
           <span className={styles.floatingPillText}>Nail Matchmaker</span>
         </button>
