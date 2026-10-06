@@ -228,7 +228,7 @@ export default function OrdersClient({ initialOrders }) {
                     <div style={{ fontSize: "0.75rem", color: "#666" }}>{order.customer_email}</div>
                   </td>
                   <td>
-                    {order.order_items?.length || 0} items
+                    {order.order_items?.length === 1 ? "1 item" : `${order.order_items?.length || 0} items`}
                     <div style={{ fontSize: "0.75rem", color: "#666", maxWidth: "200px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                       {order.order_items?.map(i => i.product_name).join(", ")}
                     </div>
