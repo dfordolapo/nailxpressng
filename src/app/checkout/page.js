@@ -913,7 +913,7 @@ export default function CheckoutPage() {
             
             <div style={{ background: "white", border: "1px solid var(--color-border-light)", borderRadius: "var(--radius-lg)", padding: "var(--space-4)" }}>
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "var(--space-2)", fontSize: "0.875rem" }}>
-                <span style={{ color: "var(--color-text-secondary)" }}>Subtotal ({items.length} items)</span>
+                <span style={{ color: "var(--color-text-secondary)" }}>Subtotal ({items.length === 1 ? "1 item" : `${items.length} items`})</span>
                 <span style={{ fontWeight: 600 }}>{formatPrice(subtotal)}</span>
               </div>
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "var(--space-4)", fontSize: "0.875rem" }}>
