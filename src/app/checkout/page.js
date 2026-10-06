@@ -87,12 +87,12 @@ export default function CheckoutPage() {
           
           // Use specific Lagos delivery zones as requested
           const customLocations = [
-            { id: "mainland-1", name: "Lagos - Mainland 1", fee: 4000 },
-            { id: "mainland-2", name: "Lagos - Mainland 2", fee: 5500 },
-            { id: "island", name: "Lagos - Island", fee: 6000 },
-            { id: "outskirts", name: "Lagos - Outskirts", fee: 8000 },
-            { id: "outside-sw", name: "Outside Lagos (South West) GUO Pickup Only", fee: 8000 },
-            { id: "outside-other", name: "Outside Lagos (Other Regions) GUO Pickup Only", fee: 10000 }
+            { id: "mainland-1", name: "Mainland 1 - Lagos", fee: 4000 },
+            { id: "mainland-2", name: "Mainland 2 - Lagos", fee: 5500 },
+            { id: "island", name: "Island - Lagos", fee: 6000 },
+            { id: "outskirts", name: "Outskirts - Lagos", fee: 8000 },
+            { id: "outside-sw", name: "South West - Outside Lagos (GUO Pickup Only)", fee: 8000 },
+            { id: "outside-other", name: "Other Regions - Outside Lagos (GUO Pickup Only)", fee: 10000 }
           ];
           setShippingLocations(customLocations);
           
