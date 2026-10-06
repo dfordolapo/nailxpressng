@@ -84,13 +84,18 @@ export default function CheckoutPage() {
         const res = await fetch("/api/settings");
         if (res.ok) {
           const data = await res.json();
-          if (data.delivery_locations && data.delivery_locations.length > 0) {
-            setShippingLocations(data.delivery_locations);
-          } else {
-            // Fallback
-            const fallback = [{ id: "standard", name: "Standard Delivery", fee: data.shipping_standard || 2500 }];
-            setShippingLocations(fallback);
-          }
+          
+          // Use specific Lagos delivery zones as requested
+          const customLocations = [
+            { id: "mainland-1", name: "Lagos - Mainland 1", fee: 4000 },
+            { id: "mainland-2", name: "Lagos - Mainland 2", fee: 5500 },
+            { id: "island", name: "Lagos - Island", fee: 6000 },
+            { id: "outskirts", name: "Lagos - Outskirts", fee: 8000 },
+            { id: "outside-sw", name: "Outside Lagos (South West) GUO Pickup Only", fee: 8000 },
+            { id: "outside-other", name: "Outside Lagos (Other Regions) GUO Pickup Only", fee: 10000 }
+          ];
+          setShippingLocations(customLocations);
+          
           if (data.delivery_presets) {
             setDeliveryPresets(data.delivery_presets);
           }
@@ -147,6 +152,47 @@ export default function CheckoutPage() {
     }
   }, []);
 
+  useEffect(() => {
+    if (shippingLocations.length > 0 && formData.state) {
+      const state = formData.state;
+      const city = formData.city;
+      
+      if (state.toLowerCase() !== "lagos") {
+        const southWestStates = ["ekiti", "ogun", "ondo", "osun", "oyo"];
+        if (southWestStates.includes(state.toLowerCase())) {
+          const swLocation = shippingLocations.find(loc => loc.id === "outside-sw");
+          if (swLocation) setShippingMethod(swLocation.id);
+        } else {
+          const otherLocation = shippingLocations.find(loc => loc.id === "outside-other");
+          if (otherLocation) setShippingMethod(otherLocation.id);
+        }
+      } else if (state.toLowerCase() === "lagos" && city) {
+        
+        const MAINLAND_1 = ["Isolo", "Ejigbo", "Odi-Olowo/Ojuwoye", "Onigbongbo", "Ojodu", "Bariga", "Itire-Ikate", "Coker-Aguda", "Agboyi-Ketu", "Ikosi-Isheri"];
+        const MAINLAND_2 = ["Yaba", "Oriade", "Ifelodun", "Apapa-Iganmu", "Orile-Agege", "Ojokoro", "Agbado-Oke Odo", "Mosan-Okunola", "Egbe-Idimu", "Ayobo-Ipaja", "Igando-Ikotun"];
+        const ISLAND = ["Lagos Island East", "Ikoyi-Obalende", "Iru/Victoria Island", "Lekki", "Eti-Osa East", "Iba", "Oto-Awori", "Eti-Osa", "Lagos-Island", "Apapa"];
+        const OUTSKIRTS = ["Ikorodu West", "Ikorodu North", "Igbogbo-Baiyeku", "Ijede", "Imota", "Eredo", "Ikosi-Ejirin", "Olorunda", "Badagry West", "Badagry", "Epe", "Ikorodu", "Ibeju-Lekki"];
+        
+        // Helper to check array
+        const match = (arr) => arr.some(a => a.toLowerCase() === city.toLowerCase());
+
+        let targetId = "mainland-1"; // Default fallback for Lagos
+        
+        if (match(ISLAND)) targetId = "island";
+        else if (match(OUTSKIRTS)) targetId = "outskirts";
+        else if (match(MAINLAND_2)) targetId = "mainland-2";
+        else if (match(MAINLAND_1)) targetId = "mainland-1";
+        else {
+          // If it's a standard LGA not listed specifically, map it generally
+          const standardIsland = ["lagos-island", "eti-osa", "ibeju-lekki"];
+          targetId = standardIsland.includes(city.toLowerCase()) ? "island" : "mainland-1";
+        }
+        
+        setShippingMethod(targetId);
+      }
+    }
+  }, [formData.state, formData.city, shippingLocations]);
+
   const selectedLocation = shippingLocations.find(loc => loc.id === shippingMethod);
   const shippingFeeAmount = selectedLocation ? selectedLocation.fee : 0;
   const finalTotal = subtotal + shippingFeeAmount;
@@ -160,6 +206,10 @@ export default function CheckoutPage() {
         return next;
       });
     }
+    
+    let newState = formData.state;
+    let newCity = formData.city;
+    
     if (name === "state") {
       setFormData({ ...formData, state: value, city: "" }); // Reset city when state changes
       if (errors.city) {
@@ -806,33 +856,37 @@ export default function CheckoutPage() {
           {/* Step 2: Delivery Location */}
           <div id="checkout-step-2" style={{ marginBottom: "var(--space-8)", scrollMarginTop: "160px" }}>
             <h3 style={{ fontSize: "1rem", fontWeight: 600, marginBottom: "var(--space-3)" }}>Delivery Location</h3>
+            <p style={{ fontSize: "0.85rem", color: "var(--color-text-secondary)", marginBottom: "var(--space-3)" }}>
+              📍 Delivery fees are auto-calculated based on your State and City, but may increase for remote areas or special requests.
+            </p>
             
             <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-3)" }}>
               {isLoadingRates ? (
                 <div style={{ padding: "var(--space-4)", textAlign: "center", color: "var(--color-text-secondary)" }}>Loading delivery locations...</div>
               ) : shippingLocations.map((loc) => {
                 const details = getDeliveryDetails(loc.name);
+                const isSelected = shippingMethod === loc.id;
+                
                 return (
                   <div 
                     key={loc.id}
-                    onClick={() => setShippingMethod(loc.id)}
                     style={{ 
-                      background: shippingMethod === loc.id ? "var(--color-primary-50)" : "white", 
-                      border: `1px solid ${shippingMethod === loc.id ? "var(--color-primary)" : "var(--color-border-light)"}`, 
+                      background: isSelected ? "var(--color-primary-50)" : "var(--color-background-alt)", 
+                      border: `1px solid ${isSelected ? "var(--color-primary)" : "var(--color-border-light)"}`, 
                       borderRadius: "var(--radius-xl)", 
                       padding: "var(--space-4)", 
                       display: "flex", 
                       flexDirection: "column", 
                       gap: "var(--space-2)", 
-                      cursor: "pointer",
+                      opacity: isSelected ? 1 : 0.5,
                       transition: "all 0.2s ease",
-                      boxShadow: shippingMethod === loc.id ? "var(--shadow-sm)" : "none",
+                      boxShadow: isSelected ? "var(--shadow-sm)" : "none",
                     }}
                   >
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                       <div style={{ display: "flex", alignItems: "center", gap: "var(--space-3)" }}>
-                        <div style={{ width: 18, height: 18, borderRadius: "50%", border: `2px solid ${shippingMethod === loc.id ? "var(--color-primary)" : "var(--color-border)"}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                          {shippingMethod === loc.id && <div style={{ width: 10, height: 10, borderRadius: "50%", background: "var(--color-primary)" }}></div>}
+                        <div style={{ width: 18, height: 18, borderRadius: "50%", border: `2px solid ${isSelected ? "var(--color-primary)" : "var(--color-border)"}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                          {isSelected && <div style={{ width: 10, height: 10, borderRadius: "50%", background: "var(--color-primary)" }}></div>}
                         </div>
                         <div style={{ display: "flex", flexDirection: "column" }}>
                           {loc.name.includes(" - ") ? (
@@ -847,12 +901,9 @@ export default function CheckoutPage() {
                       </div>
                       <span style={{ fontWeight: 700, color: "var(--color-primary)", fontSize: "0.95rem" }}>{formatPrice(loc.fee)}</span>
                     </div>
-                    </div>
+                  </div>
                 );
               })}
-              <div style={{ fontSize: "0.75rem", color: "var(--color-text-secondary)", marginTop: "4px", padding: "0 4px" }}>
-                * For packages above 1kg (Outside Lagos), final shipping price will be communicated.
-              </div>
             </div>
           </div>
           
