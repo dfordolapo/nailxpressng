@@ -1,9 +1,9 @@
 .section {
   background-color: var(--color-bg-warm);
   position: relative;
-  min-height: 100dvh;
   min-height: 100vh;
-  min-height: 850px;
+  min-height: -webkit-fill-available;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -253,8 +253,9 @@
 
 @media (max-width: 1024px) {
   .section {
-    min-height: 85vh;
-    min-height: 640px;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    min-height: 100dvh;
   }
 
   .overlay {
@@ -275,8 +276,9 @@
 
 @media (max-width: 480px) {
   .section {
-    min-height: 88vh;
-    min-height: 600px;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    min-height: 100dvh;
   }
 
   .overlay {

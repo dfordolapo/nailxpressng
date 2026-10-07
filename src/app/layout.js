@@ -14,10 +14,7 @@ import InstallPrompt from "@/components/layout/InstallPrompt";
 import RouteRestoration from "@/components/layout/RouteRestoration";
 
 export const viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#F5E3E5" },
-    { media: "(prefers-color-scheme: dark)", color: "#F5E3E5" },
-  ],
+  themeColor: "#F5E3E5",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
@@ -103,7 +100,7 @@ export const metadata = {
   },
   appleWebApp: {
     capable: true,
-    statusBarStyle: "default",
+    statusBarStyle: "black-translucent",
     title: "Nailexpress",
     startupImage: [
       { url: "/splash/apple-splash-2064-2752.jpg", media: "(device-width: 1032px) and (device-height: 1376px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait) and (prefers-color-scheme: light)" },
@@ -254,6 +251,8 @@ export default function RootLayout({ children, modal }) {
   return (
     <html lang="en" data-scroll-behavior="smooth">
       <head>
+        <meta name="theme-color" content="#F5E3E5" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png" />
         <link rel="apple-touch-icon" href="/splash/apple-icon-180.png" />

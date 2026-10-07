@@ -146,6 +146,10 @@ html {
   touch-action: pan-y;
   background-color: var(--color-bg-warm);
   overscroll-behavior-y: none;
+  min-height: 100%;
+  min-height: -webkit-fill-available;
+  margin: 0;
+  padding: 0;
 }
 
 /* Enforce thin stroke for all Lucide icons globally */
@@ -154,6 +158,8 @@ html {
 }
 
 body {
+  margin: 0;
+  padding: 0;
   font-family: var(--font-body);
   font-weight: var(--weight-light);
   color: var(--color-text);
@@ -162,8 +168,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overscroll-behavior-y: none;
-  min-height: 100dvh;
   min-height: 100vh;
+  min-height: -webkit-fill-available;
+  min-height: 100dvh;
   max-width: 100%;
   overflow-x: hidden;
   touch-action: pan-y;
