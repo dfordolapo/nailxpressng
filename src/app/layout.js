@@ -1,34 +1,17 @@
-import { Cormorant_Upright, Epilogue } from "next/font/google";
 import "./globals.css";
-
-const cormorant = Cormorant_Upright({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-heading",
-  display: "swap",
-});
-
-const epilogue = Epilogue({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700", "800"],
-  variable: "--font-body",
-  display: "swap",
-});
 import { CartProvider } from "@/context/CartContext";
 import { WishlistProvider } from "@/context/WishlistContext";
 import { SearchProvider } from "@/context/SearchContext";
 import { ToastProvider } from "@/context/ToastContext";
 import { SplashProvider } from "@/context/SplashContext";
-import dynamic from "next/dynamic";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import SearchOverlay from "@/components/ui/SearchOverlay";
+import OfflineBanner from "@/components/ui/OfflineBanner";
 import SplashAnimation from "@/components/ui/SplashAnimation";
 import PullToRefresh from "@/components/ui/PullToRefresh";
+import InstallPrompt from "@/components/layout/InstallPrompt";
 import RouteRestoration from "@/components/layout/RouteRestoration";
-
-const SearchOverlay = dynamic(() => import("@/components/ui/SearchOverlay"));
-const OfflineBanner = dynamic(() => import("@/components/ui/OfflineBanner"));
-const InstallPrompt = dynamic(() => import("@/components/layout/InstallPrompt"));
 
 export const viewport = {
   themeColor: [
@@ -38,7 +21,6 @@ export const viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
-  viewportFit: "cover",
 };
 
 export const metadata = {
@@ -269,7 +251,7 @@ export default function RootLayout({ children, modal }) {
   };
 
   return (
-    <html lang="en" data-scroll-behavior="smooth" className={`${cormorant.variable} ${epilogue.variable}`}>
+    <html lang="en" data-scroll-behavior="smooth">
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png" />
