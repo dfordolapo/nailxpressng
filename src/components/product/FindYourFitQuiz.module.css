@@ -1,7 +1,27 @@
-/* ── Nail Matchmaker Banner (Luxury Espresso & Blush Mockup Design) ── */
+/* ── Full-Bleed Quiz Section Wrapper with Section Gradient ── */
+.quizSection {
+  width: 100%;
+  position: relative;
+  background: linear-gradient(
+    to bottom,
+    var(--color-bg) 0%,
+    var(--color-bg-warm) 35%,
+    var(--color-bg-warm) 65%,
+    var(--color-bg) 100%
+  );
+  padding: var(--space-8) 0;
+  overflow: hidden;
+}
+
+.quizContainer {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 5%;
+}
 
 .bannerWrapper {
-  margin: var(--space-12) 0;
+  margin: 0;
   display: flex;
   justify-content: center;
   width: 100%;

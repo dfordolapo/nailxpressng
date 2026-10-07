@@ -46,9 +46,7 @@ export default async function Home() {
       <VideoSection />
       <Testimonials />
       <ShopTheLook />
-      <div style={{ padding: "0 5%", maxWidth: "1200px", margin: "0 auto" }}>
-        <FindYourFitQuiz allProducts={allProducts} hideBanner={false} />
-      </div>
+      <FindYourFitQuiz allProducts={allProducts} hideBanner={false} />
       <HowToMeasure />
       <GiftBoxBanner />
       <FAQSection />

@@ -293,7 +293,13 @@ export default function FindYourFitQuiz({ allProducts = [], hideBanner = false, 
 
   return (
     <>
-      {!hideBanner && <MatchmakerBanner onOpenQuiz={handleOpenQuiz} />}
+      {!hideBanner && (
+        <section className={styles.quizSection} id="quiz-section">
+          <div className={styles.quizContainer}>
+            <MatchmakerBanner onOpenQuiz={handleOpenQuiz} />
+          </div>
+        </section>
+      )}
 
       {/* Floating Corner Quiz Pill */}
       {showFloatingPill && (
