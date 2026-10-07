@@ -51,7 +51,8 @@ export default function Footer() {
   }, []);
 
   if (!mounted) return null;
-  if (pathname === "/" || pathname === "/terms" || pathname?.startsWith("/admin")) return null;
+  const isHome = !pathname || pathname === "/" || pathname === "" || pathname === "/#";
+  if (isHome || pathname === "/terms" || pathname?.startsWith("/admin")) return null;
 
   return (
     <footer className={styles.footer} id="site-footer">

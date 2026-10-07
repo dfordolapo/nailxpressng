@@ -4,12 +4,14 @@
   grid-template-columns: 1fr;
   background-color: var(--color-bg-warm);
   z-index: 10;
-  min-height: 100vh; /* full height */
+  min-height: 100dvh;
+  min-height: 100vh; /* full height fallback */
 }
 
 @media (min-width: 1025px) {
   .hero {
     grid-template-columns: 1fr 1fr;
+    min-height: 100dvh;
     min-height: 100vh;
     max-height: 900px;
   }

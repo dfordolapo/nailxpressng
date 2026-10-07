@@ -145,6 +145,7 @@ html {
   max-width: 100%;
   touch-action: pan-y;
   background-color: var(--color-bg-warm);
+  overscroll-behavior-y: none;
 }
 
 /* Enforce thin stroke for all Lucide icons globally */
@@ -156,11 +157,12 @@ body {
   font-family: var(--font-body);
   font-weight: var(--weight-light);
   color: var(--color-text);
-  background-color: var(--color-bg);
+  background-color: var(--color-bg-warm);
   line-height: var(--leading-normal);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overscroll-behavior-y: none;
+  min-height: 100dvh;
   min-height: 100vh;
   max-width: 100%;
   overflow-x: hidden;

@@ -27,7 +27,7 @@
 
 .header {
   position: fixed; /* Fixed so it never scrolls up */
-  top: var(--space-4);
+  top: calc(var(--space-4) + env(safe-area-inset-top, 0px));
   left: 0;
   right: 0;
   z-index: var(--z-sticky);
