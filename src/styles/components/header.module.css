@@ -26,13 +26,13 @@
 
 /* ── Header ───────────────────────────────────────────────────────── */
 .headerSpacer {
-  height: calc(var(--header-height) + var(--space-4));
+  height: calc(var(--header-height) + var(--space-4) + env(safe-area-inset-top));
   width: 100%;
 }
 
 .header {
   position: fixed; /* Fixed so it never scrolls up */
-  top: var(--space-4);
+  top: calc(var(--space-4) + env(safe-area-inset-top));
   left: 0;
   right: 0;
   z-index: var(--z-sticky);
