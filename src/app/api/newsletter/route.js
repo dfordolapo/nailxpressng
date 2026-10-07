@@ -4,8 +4,8 @@ import { Resend } from 'resend';
 import { sendRestockRequestConfirmationEmail, sendAdminRestockLeadAlert } from '@/lib/email';
 
 const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder-url.supabase.co",
+  process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "dummy-key"
 );
 
 const resend = new Resend(process.env.RESEND_API_KEY || 're_dummy_fallback_for_build');

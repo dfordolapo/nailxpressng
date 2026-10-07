@@ -2002,7 +2002,8 @@ export const products = [
       "pattern",
       "mixed"
     ]
-  },
+  }
+,
   {
       "id": 143,
       "slug": "velvet-gem-144",
