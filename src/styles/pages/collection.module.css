@@ -1,6 +1,6 @@
 /* ── Collection Page ───────────────────────────────────────────────── */
 .collectionPage {
-  padding: var(--space-6) 0 var(--space-12);
+  padding: calc(var(--header-height) + var(--space-8)) 0 var(--space-12);
 }
 
 .collectionHeader {
@@ -26,7 +26,7 @@
 
 /* ── Product Detail Page ──────────────────────────────────────────── */
 .productPage {
-  padding: var(--space-6) 0 100px;
+  padding: calc(var(--header-height) + var(--space-8)) 0 100px;
 }
 
 .productLayout {
@@ -418,7 +418,7 @@
 }
 
 .checkoutPage {
-  padding: 0 0 var(--space-12);
+  padding: calc(var(--header-height) + var(--space-8)) 0 var(--space-12);
   padding-bottom: 95px !important;
 }
 
@@ -495,7 +495,7 @@
 
 /* ── Wishlist Page ────────────────────────────────────────────────── */
 .wishlistPage {
-  padding: 0 0 var(--space-12);
+  padding: calc(var(--header-height) + var(--space-8)) 0 var(--space-12);
   min-height: 50vh;
 }
 
@@ -516,7 +516,7 @@
 
 /* ── Search Page ──────────────────────────────────────────────────── */
 .searchPage {
-  padding: var(--space-6) 0 var(--space-12);
+  padding: calc(var(--header-height) + var(--space-8)) 0 var(--space-12);
   min-height: 60vh;
 }
 
@@ -624,7 +624,7 @@
 /* ── Responsive ───────────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .collectionPage {
-    padding: var(--space-8) 0;
+    padding: calc(var(--header-height) + var(--space-6)) 0 var(--space-8);
   }
 
   .collectionHeader {
