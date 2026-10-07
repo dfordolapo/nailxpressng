@@ -1,6 +1,6 @@
 /* ── Collection Page ───────────────────────────────────────────────── */
 .collectionPage {
-  padding: var(--space-12) 0;
+  padding: var(--space-6) 0 var(--space-12);
 }
 
 .collectionHeader {
@@ -26,7 +26,7 @@
 
 /* ── Product Detail Page ──────────────────────────────────────────── */
 .productPage {
-  padding: var(--space-12) 0 100px;
+  padding: var(--space-6) 0 100px;
 }
 
 .productLayout {
@@ -418,7 +418,7 @@
 }
 
 .checkoutPage {
-  padding: var(--space-6) 0 var(--space-12);
+  padding: 0 0 var(--space-12);
   padding-bottom: 95px !important;
 }
 
@@ -495,7 +495,7 @@
 
 /* ── Wishlist Page ────────────────────────────────────────────────── */
 .wishlistPage {
-  padding: var(--space-6) 0 var(--space-12);
+  padding: 0 0 var(--space-12);
   min-height: 50vh;
 }
 
@@ -516,7 +516,7 @@
 
 /* ── Search Page ──────────────────────────────────────────────────── */
 .searchPage {
-  padding: var(--space-12) 0;
+  padding: var(--space-6) 0 var(--space-12);
   min-height: 60vh;
 }
 
