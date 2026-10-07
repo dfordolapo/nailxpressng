@@ -15,13 +15,12 @@ import RouteRestoration from "@/components/layout/RouteRestoration";
 
 export const viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#FAF8F5" },
-    { media: "(prefers-color-scheme: dark)", color: "#FAF8F5" },
+    { media: "(prefers-color-scheme: light)", color: "#F5E3E5" },
+    { media: "(prefers-color-scheme: dark)", color: "#F5E3E5" },
   ],
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
-  viewportFit: "cover",
 };
 
 export const metadata = {

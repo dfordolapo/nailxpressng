@@ -40,9 +40,6 @@ export default async function Home() {
 
   return (
     <div>
-      <style dangerouslySetInnerHTML={{ __html: `
-        main { padding-top: 0 !important; }
-      `}} />
       <HeroSection />
       <CategoryShowcase />
       <Features />
