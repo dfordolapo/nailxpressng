@@ -33,6 +33,8 @@ export const metadata = {
   },
 };
 
+export const revalidate = 3600; // Cache the page for 1 hour for instant load times
+
 export default async function ShopPage() {
   const category = { slug: "shop", name: "Shop All", description: "Browse our entire collection of press-on nails." };
   

@@ -1,7 +1,7 @@
 /* Admin Dashboard Styles matching screenshot */
 .adminLayout {
   display: flex;
-  min-height: 100vh;
+  min-height: 100dvh;
   background-color: var(--color-bg); /* Soft cream background */
   font-family: var(--font-primary), sans-serif;
   color: var(--color-text);
@@ -14,7 +14,7 @@
   flex-direction: column;
   position: sticky;
   top: 0;
-  height: 100vh;
+  height: 100dvh;
   padding: 30px 20px;
 }
 
@@ -807,7 +807,7 @@
     top: 0;
     left: -280px;
     width: 280px;
-    height: 100vh;
+    height: 100dvh;
     z-index: 1000;
     transition: left 0.3s ease;
     box-shadow: 5px 0 25px rgba(0,0,0,0.1);

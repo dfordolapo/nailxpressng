@@ -48,17 +48,21 @@ export default function SplashAnimation() {
     }
 
     let isStandalone = false;
+    let isInAppBrowser = false;
     try {
       if (typeof window !== "undefined") {
         isStandalone =
           (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) ||
           (window.navigator && Boolean(window.navigator.standalone));
+          
+        const ua = window.navigator.userAgent || window.navigator.vendor || window.opera;
+        isInAppBrowser = /Instagram|FBAV|FBAN|TikTok|Snapchat|Twitter|LinkedInApp/i.test(ua);
       }
     } catch (e) {
       // Ignore WebKit matchMedia errors
     }
 
-    const holdTime = isStandalone ? 2400 : 3200; // Hold long enough to showcase full 3D metallic logo effect
+    const holdTime = isInAppBrowser ? 0 : (isStandalone ? 800 : 1200); // Drastically reduced for faster perceived load time
 
     const timer1 = setTimeout(() => {
       setAnimateOut(true);

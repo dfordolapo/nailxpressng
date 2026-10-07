@@ -1,14 +1,16 @@
+import dynamic from "next/dynamic";
 import HeroSection from "@/components/home/HeroSection";
 import CategoryShowcase from "@/components/home/CategoryShowcase";
 import Features from "@/components/home/Features";
-import VideoSection from "@/components/home/VideoSection";
-import Testimonials from "@/components/home/Testimonials";
-import ShopTheLook from "@/components/home/ShopTheLook";
-import FindYourFitQuiz from "@/components/product/FindYourFitQuiz";
-import HowToMeasure from "@/components/home/HowToMeasure";
-import GiftBoxBanner from "@/components/home/GiftBoxBanner";
-import FAQSection from "@/components/home/FAQSection";
-import FooterHero from "@/components/home/FooterHero";
+
+const VideoSection = dynamic(() => import("@/components/home/VideoSection"));
+const Testimonials = dynamic(() => import("@/components/home/Testimonials"));
+const ShopTheLook = dynamic(() => import("@/components/home/ShopTheLook"));
+const FindYourFitQuiz = dynamic(() => import("@/components/product/FindYourFitQuiz"));
+const HowToMeasure = dynamic(() => import("@/components/home/HowToMeasure"));
+const GiftBoxBanner = dynamic(() => import("@/components/home/GiftBoxBanner"));
+const FAQSection = dynamic(() => import("@/components/home/FAQSection"));
+const FooterHero = dynamic(() => import("@/components/home/FooterHero"));
 import { getProducts } from "@/lib/api";
 
 export const metadata = {
@@ -34,6 +36,8 @@ export const metadata = {
     images: ["/images/og-preview.jpg"],
   },
 };
+
+export const revalidate = 3600; // Cache the page for 1 hour for instant load times
 
 export default async function Home() {
   const allProducts = await getProducts();

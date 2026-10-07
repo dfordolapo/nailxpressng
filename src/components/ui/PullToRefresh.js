@@ -157,6 +157,7 @@ export default function PullToRefresh({ children }) {
           transform: pullDistance > 0 ? `translateY(${pullDistance}px)` : 'none',
           transition: isPulling.current ? 'none' : 'transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)',
           width: '100%',
+          minHeight: '100vh',
         }}
       >
         {children}

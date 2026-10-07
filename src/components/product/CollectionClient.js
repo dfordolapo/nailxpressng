@@ -145,23 +145,7 @@ export default function CollectionClient({ category, allProducts, featuredProduc
   return (
     <div className={pageStyles.collectionPage} id={`${category?.slug}-collection`}>
       <div className="container">
-        <div className={pageStyles.collectionHeader} style={{ position: "relative" }}>
-          <div style={{ position: "relative", display: "inline-block" }}>
-            <h1 className={pageStyles.collectionTitle}>{category?.name || "Collection"} Nails</h1>
-            <span style={{
-              position: "absolute",
-              bottom: "2px",
-              left: "50%",
-              transform: "translateX(-50%) rotate(-1deg)",
-              width: "60%",
-              height: "8px",
-              background: "linear-gradient(90deg, transparent, var(--color-accent), transparent)",
-              borderRadius: "var(--radius-full)",
-              opacity: 0.6,
-              pointerEvents: "none",
-            }} />
-          </div>
-        </div>
+
 
         <ShapeFilterBar 
           selectedShapes={selectedShapes} 

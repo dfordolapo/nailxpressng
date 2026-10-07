@@ -33,6 +33,8 @@ export const metadata = {
   },
 };
 
+export const revalidate = 3600; // Cache the page for 1 hour for instant load times
+
 export default async function FactoryPage() {
   const category = { slug: "factory", name: "Factory Made", description: "Precision-crafted nails for perfect consistency and durability." };
   
