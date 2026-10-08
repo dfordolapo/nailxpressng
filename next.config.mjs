@@ -27,7 +27,7 @@ const nextConfig = {
         headers: [
           {
             key: 'Content-Security-Policy',
-            value: "frame-ancestors 'self' http://localhost:* https://*.vercel.app https://dolapo.design https://*.dolapo.design;",
+            value: "frame-ancestors 'self' http://localhost:* https://*.vercel.app https://dolapo.design https://*.dolapo.design https://designwithdolapo.pro https://*.designwithdolapo.pro;",
           },
         ],
       },
