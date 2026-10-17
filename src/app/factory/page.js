@@ -43,17 +43,21 @@ export default async function FactoryPage() {
   // Fetch full catalog for the quiz
   const fullCatalog = await getProducts();
 
-  // Specifically select 7 featured designs for the factory marquee (matching handmade's 7 items)
+  // Dynamically select products marked featured/bestseller in admin first,
+  // supplemented by curated marquee designs so the marquee is always vibrant
   const marqueeNames = [
     "Bridal Bows", "Rose Pearl", "Cherry Bomb", 
     "Sunset Drops", "Gilded Waves", "Classic French", "Blush Petal"
   ];
-  let featuredProducts = allProducts.filter(p => marqueeNames.includes(p.name));
-  if (featuredProducts.length < 7) {
-    const existingIds = new Set(featuredProducts.map(p => p.id));
-    const fallback = allProducts.filter(p => !existingIds.has(p.id));
-    featuredProducts = [...featuredProducts, ...fallback].slice(0, 7);
-  }
+  const dynamicallyFeatured = allProducts.filter(p => p.featured || p.bestseller);
+  const curatedFallback = allProducts.filter(p => marqueeNames.includes(p.name));
+
+  const featuredMap = new Map();
+  dynamicallyFeatured.forEach(p => featuredMap.set(p.id, p));
+  curatedFallback.forEach(p => { if (!featuredMap.has(p.id)) featuredMap.set(p.id, p); });
+  allProducts.forEach(p => { if (!featuredMap.has(p.id) && featuredMap.size < 7) featuredMap.set(p.id, p); });
+
+  const featuredProducts = Array.from(featuredMap.values()).slice(0, Math.max(7, dynamicallyFeatured.length));
 
   return (
     <>

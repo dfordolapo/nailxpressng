@@ -40,6 +40,7 @@ function NewProductContent() {
   // Form State
   const [name, setName] = useState("");
   const [collection, setCollection] = useState("Handmade");
+  const [availableCollections, setAvailableCollections] = useState(nailCategories);
   const [tags, setTags] = useState([]);
   const [tagInput, setTagInput] = useState("");
   const [description, setDescription] = useState("");
@@ -71,6 +72,21 @@ function NewProductContent() {
   const videoInputRef = useRef(null);
   
   const [isLoading, setIsLoading] = useState(isEditMode);
+
+  useEffect(() => {
+    async function fetchCollections() {
+      try {
+        const res = await fetch("/api/admin/collections");
+        const data = await res.json();
+        if (data.collections && data.collections.length > 0) {
+          setAvailableCollections(data.collections);
+        }
+      } catch (err) {
+        console.error("Failed to fetch admin collections:", err);
+      }
+    }
+    fetchCollections();
+  }, []);
 
   useEffect(() => {
     if (isEditMode) {
@@ -408,8 +424,9 @@ function NewProductContent() {
                 <div className={styles.formGroup}>
                   <label className={styles.label}>Collection</label>
                   <select className={styles.select} value={collection} onChange={e => setCollection(e.target.value)}>
-                    {nailCategories.map(c => <option key={c.id} value={c.name}>{c.name}</option>)}
+                    {availableCollections.map(c => <option key={c.id || c.slug} value={c.name}>{c.name}</option>)}
                   </select>
+                  <Link href="/admin/collections" style={{ fontSize: "0.8rem", color: "var(--color-primary)", marginTop: "8px", display: "inline-block", textDecoration: "underline" }}>Manage Collections</Link>
                 </div>
                 <div className={styles.formGroup}>
                   <label className={styles.label}>Category / Tags</label>

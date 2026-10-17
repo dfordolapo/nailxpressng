@@ -29,12 +29,27 @@ export async function POST(request) {
 
     let targetSlug = 'handmade';
     if (category) {
-      const catLower = String(category).toLowerCase().trim();
-      if (catLower.includes('factory')) targetSlug = 'factory';
-      else if (catLower.includes('handmade')) targetSlug = 'handmade';
+      const catTrim = String(category).trim();
+      const catLower = catTrim.toLowerCase();
+      if (allCategories && allCategories.length > 0) {
+        const found = allCategories.find(c => 
+          c.id === catTrim || 
+          c.slug.toLowerCase() === catLower || 
+          c.name.toLowerCase() === catLower
+        );
+        if (found) {
+          targetSlug = found.slug;
+          categoryId = found.id;
+        }
+      }
+      if (!categoryId) {
+        if (catLower.includes('factory')) targetSlug = 'factory';
+        else if (catLower.includes('handmade')) targetSlug = 'handmade';
+        else targetSlug = catLower;
+      }
     }
 
-    if (allCategories && allCategories.length > 0) {
+    if (!categoryId && allCategories && allCategories.length > 0) {
       const match = allCategories.find(c => c.slug.toLowerCase() === targetSlug);
       categoryId = match ? match.id : allCategories[0].id;
     }

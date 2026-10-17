@@ -48,7 +48,7 @@ const mapProduct = (p, discount = 0) => {
     resolvedCategory = p.categories.slug;
   }
 
-  const resolvedCategoryName = resolvedCategory === 'factory' ? 'Factory Made' : 'Handmade';
+  const resolvedCategoryName = p.categories?.name || (resolvedCategory === 'factory' ? 'Factory Made' : (resolvedCategory === 'handmade' ? 'Handmade' : (p.category_name || resolvedCategory)));
 
   return {
     id: p.id,
@@ -70,6 +70,7 @@ const mapProduct = (p, discount = 0) => {
     videoUrl: p.video_url || null,
     newArrival: p.new_arrival,
     bestseller: p.bestseller,
+    featured: Boolean(p.featured || p.bestseller),
     inStock: p.stock_count > 0,
     stockCount: p.stock_count,
     createdAt: p.created_at,
@@ -176,9 +177,36 @@ export async function searchProducts(query) {
 }
 
 export async function getCategories() {
-  const { data, error } = await supabase
-    .from('categories')
-    .select('*');
-  if (error) return [];
-  return data;
+  try {
+    const isPlaceholder = !process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL.includes("placeholder");
+    if (isPlaceholder) {
+      const { getLocalCollections } = await import('./collectionsStore');
+      return getLocalCollections();
+    }
+    const { data, error } = await supabase
+      .from('categories')
+      .select('*')
+      .order('display_order', { ascending: true, nullsFirst: false })
+      .order('created_at', { ascending: true });
+    if (error || !data || data.length === 0) {
+      const { getLocalCollections } = await import('./collectionsStore');
+      return getLocalCollections();
+    }
+    return data;
+  } catch {
+    const { getLocalCollections } = await import('./collectionsStore');
+    return getLocalCollections();
+  }
+}
+
+export async function getPublishedCategories() {
+  const all = await getCategories();
+  return all.filter((c) => c.is_published !== false);
+}
+
+export async function getCategoryBySlug(slug) {
+  if (!slug) return null;
+  const categories = await getCategories();
+  const match = categories.find((c) => c.slug.toLowerCase() === slug.toLowerCase());
+  return match || null;
 }

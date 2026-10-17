@@ -314,6 +314,175 @@
   color: var(--color-text);
 }
 
+/* ── Mobile Collections Dropdown / Submenu ── */
+.mobileAccordionBtn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  font-size: 0.95rem;
+  font-family: var(--font-heading), serif !important;
+  font-weight: var(--weight-medium);
+  color: var(--color-text);
+  padding: 8px 0;
+  border: none;
+  background: none;
+  border-bottom: 1px solid var(--color-border-light);
+  cursor: pointer;
+  text-align: left;
+  transition: color var(--transition-fast);
+}
+
+.mobileAccordionBtn:hover,
+.mobileAccordionBtn.active {
+  color: var(--color-primary);
+}
+
+.mobileChevron {
+  transition: transform 0.25s ease;
+  color: var(--color-text-secondary);
+}
+
+.mobileChevronOpen {
+  transform: rotate(180deg);
+  color: var(--color-primary);
+}
+
+.mobileSubList {
+  display: flex;
+  flex-direction: column;
+  padding: 6px 0 6px 12px;
+  gap: 4px;
+  border-bottom: 1px solid var(--color-border-light);
+  background: rgba(139, 44, 61, 0.02);
+  border-radius: 6px;
+  margin: 4px 0;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.mobileSubLink {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.88rem;
+  font-family: var(--font-primary), sans-serif;
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  padding: 6px 8px;
+  border-radius: var(--radius-sm, 6px);
+  transition: all var(--transition-fast);
+}
+
+.mobileSubLink:hover,
+.mobileSubLink.active {
+  color: var(--color-primary);
+  background: rgba(139, 44, 61, 0.06);
+  font-weight: var(--weight-medium);
+}
+
+.mobileSubLinkAll {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  text-decoration: none;
+  padding: 6px 8px;
+  margin-top: 2px;
+  border-top: 1px dashed var(--color-border-light);
+}
+
+.mobileSubLinkAll:hover {
+  text-decoration: underline;
+}
+
+.collectionCountBadge {
+  font-size: 10px;
+  font-weight: 600;
+  background: var(--color-primary-100, #fcecee);
+  color: var(--color-primary);
+  padding: 1px 6px;
+  border-radius: var(--radius-full);
+}
+
+/* ── Desktop Collections Dropdown ── */
+.desktopDropdown {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.desktopDropdownTrigger {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: rgba(255, 255, 255, 0.8);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: var(--space-2) 0;
+  transition: color var(--transition-fast);
+}
+
+.desktopDropdownTrigger:hover,
+.desktopDropdownTrigger.active {
+  color: #ffffff;
+}
+
+.desktopMenu {
+  position: absolute;
+  top: 100%;
+  left: -12px;
+  min-width: 200px;
+  background: rgba(30, 20, 22, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-lg, 12px);
+  padding: 8px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  z-index: 100;
+  animation: fadeIn 0.18s ease-out;
+}
+
+.desktopMenuItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.85rem;
+  text-decoration: none;
+  border-radius: var(--radius-sm, 6px);
+  transition: all var(--transition-fast);
+}
+
+.desktopMenuItem:hover,
+.desktopMenuItem.active {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.desktopMenuDivider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 4px 0;
+}
+
+.desktopMenuAll {
+  color: var(--color-accent-light, #ffd1dc);
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
 /* ── Responsive ───────────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .desktopNav {

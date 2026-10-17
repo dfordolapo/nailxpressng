@@ -14,7 +14,8 @@ import {
   ChevronDown, 
   Menu, 
   X,
-  BellRing
+  BellRing,
+  Layers
 } from "lucide-react";
 import styles from "@/styles/admin.module.css";
 
@@ -107,6 +108,17 @@ function SidebarContent() {
             >
               <BellRing size={18} strokeWidth={1.5} />
               Restock Alerts
+            </Link>
+          </div>
+
+          <div className={styles.navGroup}>
+            <Link
+              href="/admin/collections"
+              className={`${styles.navItem} ${pathname.startsWith("/admin/collections") ? styles.active : ""}`}
+              onClick={() => setIsMobileOpen(false)}
+            >
+              <Layers size={18} strokeWidth={1.5} />
+              Collections
             </Link>
           </div>
 

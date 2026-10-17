@@ -21,7 +21,7 @@ const SCROLL_SPEED = 2.8;
 const RESUME_DELAY = 2000;
 
 export default function CategoryShowcase({ mini = false, items = null }) {
-  const displayItems = items ? items.map((p, i) => ({
+  const displayItems = (items && items.length > 0) ? items.map((p, i) => ({
     id: p.id,
     name: p.name,
     image: p.image || (p.images && p.images[0]) || MOODS[i % MOODS.length].image,

@@ -30,7 +30,12 @@ function ProductsContent({ initialProducts = [] }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const collectionParam = searchParams.get("collection");
-  const activeTab = collectionParam === "handmade" ? "Handmade" : collectionParam === "factory" ? "Factory Made" : "All";
+  const [customCollections, setCustomCollections] = useState([]);
+  const activeTab = collectionParam === "handmade" 
+    ? "Handmade" 
+    : collectionParam === "factory" 
+    ? "Factory Made" 
+    : (collectionParam || "All");
   
   const [productsList, setProductsList] = useState(initialProducts);
   const [searchQuery, setSearchQuery] = useState("");
@@ -59,6 +64,21 @@ function ProductsContent({ initialProducts = [] }) {
 
   // Bulk Upload Modal State
   const [isBulkOpen, setIsBulkOpen] = useState(false);
+
+  useEffect(() => {
+    async function loadCollections() {
+      try {
+        const res = await fetch("/api/admin/collections");
+        const data = await res.json();
+        if (data.collections) {
+          setCustomCollections(data.collections.filter(c => c.slug !== "handmade" && c.slug !== "factory"));
+        }
+      } catch (e) {
+        console.error("Error loading collections:", e);
+      }
+    }
+    loadCollections();
+  }, []);
   const [bulkMode, setBulkMode] = useState("gallery"); // "gallery" | "spreadsheet"
   const [bulkFile, setBulkFile] = useState(null);
   const [bulkPreview, setBulkPreview] = useState([]);
@@ -83,11 +103,12 @@ function ProductsContent({ initialProducts = [] }) {
     const files = Array.from(e.target.files || []);
     if (files.length === 0) return;
 
-    setSelectedGalleryFiles(files);
+    const validFiles = files.filter(f => f && (f instanceof Blob || f instanceof File));
+    setSelectedGalleryFiles(validFiles);
     setBulkError(null);
     setBulkSuccess(null);
 
-    const previews = files.map(file => {
+    const previews = validFiles.map(file => {
       const rawName = file.name
         .replace(/\.[^/.]+$/, "")
         .replace(/[_-]+/g, " ")
@@ -97,9 +118,16 @@ function ProductsContent({ initialProducts = [] }) {
         .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
         .join(' ');
 
+      let previewUrl = "";
+      try {
+        previewUrl = URL.createObjectURL(file);
+      } catch {
+        previewUrl = "";
+      }
+
       return {
         file,
-        previewUrl: URL.createObjectURL(file),
+        previewUrl,
         name: title || "New Nail Set",
       };
     });
@@ -323,7 +351,13 @@ function ProductsContent({ initialProducts = [] }) {
   const filteredAndSortedProducts = useMemo(() => {
     return productsList.filter(product => {
       // Tab Filter
-      if (activeTab !== "All" && product.categoryName !== activeTab) return false;
+      if (activeTab !== "All") {
+        const matchesCategory = 
+          product.categoryName?.toLowerCase() === activeTab.toLowerCase() ||
+          product.category?.toLowerCase() === activeTab.toLowerCase() ||
+          product.category?.toLowerCase() === collectionParam?.toLowerCase();
+        if (!matchesCategory) return false;
+      }
       
       // Global Search
       if (searchQuery) {
@@ -555,9 +589,16 @@ function ProductsContent({ initialProducts = [] }) {
                 body: imgFormData
               });
 
-              const uploadData = await uploadRes.json();
+              let uploadData;
+              const resText = await uploadRes.text();
+              try {
+                uploadData = JSON.parse(resText);
+              } catch {
+                throw new Error(`Upload server error (${uploadRes.status}): ${resText.slice(0, 100)}`);
+              }
+
               if (!uploadRes.ok || !uploadData.success) {
-                throw new Error(`Failed to upload photo "${file.name}": ${uploadData.error || 'Upload failed'}`);
+                throw new Error(`Failed to upload photo "${file.name}": ${uploadData?.error || 'Upload failed'}`);
               }
 
               return {
@@ -798,6 +839,15 @@ function ProductsContent({ initialProducts = [] }) {
           >
             Factory Made ({productsList.filter(p => p.categoryName === "Factory Made").length})
           </button>
+          {customCollections.map((cc) => (
+            <button
+              key={cc.id || cc.slug}
+              className={`${styles.tab} ${activeTab === cc.name || activeTab === cc.slug ? styles.active : ""}`}
+              onClick={() => handleTabClick(cc.name, cc.slug)}
+            >
+              {cc.name} ({productsList.filter(p => p.category === cc.slug || p.categoryName?.toLowerCase() === cc.name?.toLowerCase()).length})
+            </button>
+          ))}
         </div>
         
         <div className={styles.filters}>

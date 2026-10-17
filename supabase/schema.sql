@@ -1,10 +1,13 @@
--- Categories Table
+-- Categories Table (Collections)
 CREATE TABLE categories (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   name TEXT NOT NULL,
   slug TEXT UNIQUE NOT NULL,
   description TEXT,
   tagline TEXT,
+  image TEXT,
+  is_published BOOLEAN DEFAULT TRUE,
+  display_order INTEGER DEFAULT 0,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 

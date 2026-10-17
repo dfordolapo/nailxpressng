@@ -3,14 +3,18 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Search, Heart, ShoppingBag, Menu, X } from "lucide-react";
+import { Search, Heart, ShoppingBag, Menu, X, ChevronDown, ChevronRight } from "lucide-react";
 import Image from "next/image";
-import { NAV_LINKS } from "@/lib/constants";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { useSearch } from "@/context/SearchContext";
 import CartDrawer from "@/components/cart/CartDrawer";
 import styles from "@/styles/components/header.module.css";
+
+const DEFAULT_COLLECTIONS = [
+  { id: "handmade", name: "Handmade", slug: "handmade", is_published: true },
+  { id: "factory", name: "Factory Made", slug: "factory", is_published: true },
+];
 
 export default function Header() {
   const pathname = usePathname();
@@ -20,9 +24,35 @@ export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+
+  // Collections state for dynamic hamburger menu & navigation
+  const [collections, setCollections] = useState(DEFAULT_COLLECTIONS);
+  const [mobileCollectionsOpen, setMobileCollectionsOpen] = useState(true);
+  const [desktopDropdownOpen, setDesktopDropdownOpen] = useState(false);
   
-  const isHome = !pathname || pathname === "/" || pathname === "";
   const isAdmin = pathname?.startsWith("/admin");
+
+  const [prevPathname, setPrevPathname] = useState(pathname);
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname);
+    setMobileOpen(false);
+    setDesktopDropdownOpen(false);
+  }
+
+  useEffect(() => {
+    async function fetchPublishedCollections() {
+      try {
+        const res = await fetch("/api/collections");
+        const data = await res.json();
+        if (data.collections && Array.isArray(data.collections) && data.collections.length > 0) {
+          setCollections(data.collections);
+        }
+      } catch (err) {
+        console.error("Failed to load header collections:", err);
+      }
+    }
+    fetchPublishedCollections();
+  }, [pathname]);
 
   useEffect(() => {
     if (isAdmin) return;
@@ -32,10 +62,6 @@ export default function Header() {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isAdmin]);
-
-  useEffect(() => {
-    setMobileOpen(false);
-  }, [pathname]);
 
   useEffect(() => {
     if (isAdmin) return;
@@ -48,6 +74,17 @@ export default function Header() {
   }, [mobileOpen, cartOpen, isAdmin]);
 
   if (isAdmin) return null;
+
+  const getCollectionHref = (slug) => {
+    if (slug === "handmade") return "/handmade";
+    if (slug === "factory") return "/factory";
+    return `/collection/${slug}`;
+  };
+
+  const isCollectionsActive = 
+    pathname?.startsWith("/handmade") || 
+    pathname?.startsWith("/factory") || 
+    pathname?.startsWith("/collection");
 
   return (
     <>
@@ -67,15 +104,60 @@ export default function Header() {
 
           {/* Desktop Navigation */}
           <nav className={styles.desktopNav} id="desktop-nav">
-            {NAV_LINKS.map((link) => (
+            <Link
+              href="/"
+              className={`${styles.navLink} ${pathname === "/" ? styles.active : ""}`}
+            >
+              Home
+            </Link>
+
+            {/* Collections Dropdown for Desktop */}
+            <div 
+              className={styles.desktopDropdown}
+              onMouseEnter={() => setDesktopDropdownOpen(true)}
+              onMouseLeave={() => setDesktopDropdownOpen(false)}
+            >
               <Link
-                key={link.href}
-                href={link.href}
-                className={`${styles.navLink} ${pathname === link.href ? styles.active : ""}`}
+                href="/collection-hub"
+                className={`${styles.desktopDropdownTrigger} ${isCollectionsActive ? styles.active : ""}`}
               >
-                {link.label}
+                <span>Collections</span>
+                <ChevronDown size={14} strokeWidth={1.5} />
               </Link>
-            ))}
+
+              {desktopDropdownOpen && (
+                <div className={styles.desktopMenu}>
+                  {collections.map((col) => {
+                    const href = getCollectionHref(col.slug);
+                    return (
+                      <Link
+                        key={col.id || col.slug}
+                        href={href}
+                        className={`${styles.desktopMenuItem} ${pathname === href ? styles.active : ""}`}
+                        onClick={() => setDesktopDropdownOpen(false)}
+                      >
+                        <span>{col.name}</span>
+                      </Link>
+                    );
+                  })}
+                  <div className={styles.desktopMenuDivider} />
+                  <Link
+                    href="/collection-hub"
+                    className={`${styles.desktopMenuItem} ${styles.desktopMenuAll}`}
+                    onClick={() => setDesktopDropdownOpen(false)}
+                  >
+                    <span>View All Collections &rarr;</span>
+                  </Link>
+                </div>
+              )}
+            </div>
+
+            <Link
+              href="/custom-order"
+              className={`${styles.navLink} ${pathname === "/custom-order" ? styles.active : ""}`}
+            >
+              Custom Order
+            </Link>
           </nav>
 
           {/* Actions */}
@@ -112,7 +194,7 @@ export default function Header() {
               )}
             </button>
 
-            {/* Mobile Menu Toggle */}
+            {/* Mobile Menu Toggle (Hamburger) */}
             <button
               className={styles.menuBtn}
               onClick={() => setMobileOpen(!mobileOpen)}
@@ -125,7 +207,7 @@ export default function Header() {
         </div>
       </header>
 
-      {/* Mobile Navigation Standalone Drawer */}
+      {/* Mobile Navigation Standalone Drawer (Hamburger Dropdown Menu) */}
       {mobileOpen && (
         <>
           <div className={`${styles.mobileOverlay} ${styles.open}`} onClick={() => setMobileOpen(false)} />
@@ -151,16 +233,82 @@ export default function Header() {
             </div>
 
             <div className={styles.mobileNavBody}>
-              {NAV_LINKS.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`${styles.mobileNavLink} ${pathname === link.href ? styles.active : ""}`}
-                  onClick={() => setMobileOpen(false)}
+              {/* Home Link */}
+              <Link
+                href="/"
+                className={`${styles.mobileNavLink} ${pathname === "/" ? styles.active : ""}`}
+                onClick={() => setMobileOpen(false)}
+              >
+                Home
+              </Link>
+
+              {/* Collections Accordion / Dropdown */}
+              <div>
+                <button
+                  type="button"
+                  className={`${styles.mobileAccordionBtn} ${isCollectionsActive ? styles.active : ""}`}
+                  onClick={() => setMobileCollectionsOpen(!mobileCollectionsOpen)}
+                  aria-expanded={mobileCollectionsOpen}
                 >
-                  {link.label}
-                </Link>
-              ))}
+                  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                    <span>Collections</span>
+                    {collections.length > 0 && (
+                      <span className={styles.collectionCountBadge}>{collections.length}</span>
+                    )}
+                  </div>
+                  <ChevronDown
+                    size={16}
+                    strokeWidth={1.5}
+                    className={`${styles.mobileChevron} ${mobileCollectionsOpen ? styles.mobileChevronOpen : ""}`}
+                  />
+                </button>
+
+                {mobileCollectionsOpen && (
+                  <div className={styles.mobileSubList}>
+                    {collections.map((col) => {
+                      const href = getCollectionHref(col.slug);
+                      const isActive = pathname === href;
+                      return (
+                        <Link
+                          key={col.id || col.slug}
+                          href={href}
+                          className={`${styles.mobileSubLink} ${isActive ? styles.active : ""}`}
+                          onClick={() => setMobileOpen(false)}
+                        >
+                          <span>{col.name}</span>
+                          {isActive && (
+                            <span style={{ 
+                              width: "6px", 
+                              height: "6px", 
+                              borderRadius: "50%", 
+                              background: "var(--color-primary)" 
+                            }} />
+                          )}
+                        </Link>
+                      );
+                    })}
+                    <Link
+                      href="/collection-hub"
+                      className={styles.mobileSubLinkAll}
+                      onClick={() => setMobileOpen(false)}
+                    >
+                      <span>Explore All Collections</span>
+                      <ChevronRight size={14} strokeWidth={1.5} />
+                    </Link>
+                  </div>
+                )}
+              </div>
+
+              {/* Custom Order */}
+              <Link
+                href="/custom-order"
+                className={`${styles.mobileNavLink} ${pathname === "/custom-order" ? styles.active : ""}`}
+                onClick={() => setMobileOpen(false)}
+              >
+                Custom Order
+              </Link>
+
+              {/* Wishlist */}
               <Link
                 href="/wishlist"
                 className={`${styles.mobileNavLink} ${pathname === "/wishlist" ? styles.active : ""}`}
@@ -174,6 +322,7 @@ export default function Header() {
                 {wishlistCount > 0 && <span className={styles.badgeInline}>{wishlistCount}</span>}
               </Link>
 
+              {/* Cart Button */}
               <button
                 className={styles.mobileNavLink}
                 onClick={() => {
@@ -198,6 +347,7 @@ export default function Header() {
                 {itemCount > 0 && <span className={styles.badgeInline}>{itemCount}</span>}
               </button>
 
+              {/* Search Button */}
               <button
                 className={styles.mobileSearchBtn}
                 onClick={() => {

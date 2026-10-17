@@ -24,32 +24,60 @@ export default function CollectionHub() {
       }
     }, 250);
   };
-  const handmadeCategory = categories.find((c) => c.slug === "handmade") || {
+  const [fetchedCollections, setFetchedCollections] = useState([]);
+
+  React.useEffect(() => {
+    async function loadCollections() {
+      try {
+        const res = await fetch("/api/collections");
+        const data = await res.json();
+        if (data.collections && Array.isArray(data.collections)) {
+          setFetchedCollections(data.collections);
+        }
+      } catch (err) {
+        console.error("Failed to load collections hub:", err);
+      }
+    }
+    loadCollections();
+  }, []);
+
+  const handmadeCategory = fetchedCollections.find((c) => c.slug === "handmade") || categories.find((c) => c.slug === "handmade") || {
     name: "Handmade Nails",
     description: "Wearable Art, Made by Hand",
     image: "/images/hero.png",
   };
-  const factoryCategory = categories.find((c) => c.slug === "factory") || {
+  const factoryCategory = fetchedCollections.find((c) => c.slug === "factory") || categories.find((c) => c.slug === "factory") || {
     name: "Factory Made",
     description: "Precision Made, Style Perfected",
     image: "/images/hero.png",
   };
+
+  const customCollections = fetchedCollections.filter(
+    (c) => c.slug !== "handmade" && c.slug !== "factory" && c.is_published !== false
+  );
 
   const hubs = [
     {
       title: handmadeCategory.name,
       description: "wearable art. made by hand.",
       href: "/handmade",
-      image: handmadeCategory.image,
+      image: handmadeCategory.image || "/images/handmade-collection.png",
       strokeColor: "#FF007F", // Neon Pink
     },
     {
       title: factoryCategory.name,
       description: "press-on precision. instant glam.",
       href: "/factory",
-      image: factoryCategory.image,
+      image: factoryCategory.image || "/images/factory-collection.png",
       strokeColor: "#FFB6C1", // Light Pink
     },
+    ...customCollections.map((col, idx) => ({
+      title: col.name,
+      description: col.tagline || col.description || "exclusive press-on collection",
+      href: `/collection/${col.slug}`,
+      image: col.image || "/images/hero.png",
+      strokeColor: idx % 2 === 0 ? "#9333EA" : "#06B6D4",
+    })),
     {
       title: "Custom Orders",
       description: "bring your ideas to life.",

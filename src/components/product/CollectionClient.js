@@ -145,7 +145,14 @@ export default function CollectionClient({ category, allProducts, featuredProduc
   return (
     <div className={pageStyles.collectionPage} id={`${category?.slug}-collection`}>
       <div className="container">
-
+        {category?.name && category.slug !== "handmade" && category.slug !== "factory" && (
+          <div className={pageStyles.collectionHeader} style={{ marginBottom: "var(--space-6)", textAlign: "center" }}>
+            <h1 className={pageStyles.collectionTitle}>{category.name}</h1>
+            {(category.tagline || category.description) && (
+              <p className={pageStyles.collectionDescription}>{category.tagline || category.description}</p>
+            )}
+          </div>
+        )}
 
         <ShapeFilterBar 
           selectedShapes={selectedShapes} 

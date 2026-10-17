@@ -44,12 +44,21 @@ export default async function HandmadePage() {
   // Fetch full catalog for the quiz
   const fullCatalog = await getProducts();
   
-  // Specifically select the ones requested for the marquee
+  // Dynamically select products marked featured/bestseller in admin first,
+  // supplemented by curated marquee designs so the marquee is always vibrant
   const marqueeNames = [
     "Fierce Bloom", "Glazed Pearl", "Vibrant Bloom", 
     "Glazed Dawn", "Matte Dawn", "Velvet Aura", "Vibrant Gem"
   ];
-  const featuredProducts = allProducts.filter(p => marqueeNames.includes(p.name));
+  const dynamicallyFeatured = allProducts.filter(p => p.featured || p.bestseller);
+  const curatedFallback = allProducts.filter(p => marqueeNames.includes(p.name));
+
+  const featuredMap = new Map();
+  dynamicallyFeatured.forEach(p => featuredMap.set(p.id, p));
+  curatedFallback.forEach(p => { if (!featuredMap.has(p.id)) featuredMap.set(p.id, p); });
+  allProducts.forEach(p => { if (!featuredMap.has(p.id) && featuredMap.size < 7) featuredMap.set(p.id, p); });
+
+  const featuredProducts = Array.from(featuredMap.values()).slice(0, Math.max(7, dynamicallyFeatured.length));
 
   return (
     <>
