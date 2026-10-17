@@ -61,9 +61,8 @@ export default async function DynamicCollectionPage({ params }) {
     getProducts(),
   ]);
 
-  const featuredProducts = allProducts
-    .filter((p) => p.bestseller || p.newArrival)
-    .slice(0, 7);
+  // Only include products dynamically marked as featured in admin (featured/bestseller/newArrival)
+  const featuredProducts = allProducts.filter((p) => p.featured || p.bestseller || p.newArrival);
 
   return (
     <>

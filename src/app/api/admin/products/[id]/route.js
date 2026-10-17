@@ -191,19 +191,38 @@ export async function PATCH(request, { params }) {
     const { id } = await params;
     const body = await request.json();
 
-    const updateData = {};
     if (typeof body.stock_count !== 'undefined') {
       updateData.stock_count = body.stock_count;
     }
     if (typeof body.bestseller !== 'undefined') {
       updateData.bestseller = body.bestseller;
     }
+    if (body.category_id) {
+      updateData.category_id = body.category_id;
+    } else if (body.category || body.collection) {
+      const catVal = String(body.category || body.collection).trim();
+      const catLower = catVal.toLowerCase();
+
+      const { data: allCategories } = await supabaseAdmin
+        .from('categories')
+        .select('id, name, slug');
+
+      const found = allCategories?.find(c => 
+        c.id === catVal || 
+        c.slug.toLowerCase() === catLower || 
+        c.name.toLowerCase() === catLower
+      );
+
+      if (found) {
+        updateData.category_id = found.id;
+      }
+    }
 
     const { data: product, error } = await supabaseAdmin
       .from('products')
       .update(updateData)
       .eq('id', id)
-      .select()
+      .select('*, categories(id, name, slug)')
       .single();
 
     if (error) throw error;

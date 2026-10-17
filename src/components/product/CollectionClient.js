@@ -59,45 +59,6 @@ function sortProductsList(productList, sortBy) {
   }
 }
 
-const SPECIAL_MIX_MATCH_NAMES = ["amber haze", "bridal bows", "polka dot", "gothic flora", "emerald flora"];
-
-function distributeSpecialProducts(productList, pageSize) {
-  const specials = [];
-  const normal = [];
-  
-  productList.forEach(p => {
-    if (SPECIAL_MIX_MATCH_NAMES.includes(p.name.toLowerCase())) {
-      specials.push(p);
-    } else {
-      normal.push(p);
-    }
-  });
-
-  if (specials.length === 0) return productList;
-
-  const result = [];
-  let normalIdx = 0;
-  let specialIdx = 0;
-  
-  while (normalIdx < normal.length || specialIdx < specials.length) {
-    const pageItems = [];
-    
-    if (specialIdx < specials.length) {
-      pageItems.push(specials[specialIdx]);
-      specialIdx++;
-    }
-    
-    while (pageItems.length < pageSize && normalIdx < normal.length) {
-      pageItems.push(normal[normalIdx]);
-      normalIdx++;
-    }
-    
-    result.push(...pageItems);
-  }
-  
-  return result;
-}
-
 const PAGE_SIZE = 8;
 
 export default function CollectionClient({ category, allProducts, featuredProducts }) {
@@ -111,8 +72,7 @@ export default function CollectionClient({ category, allProducts, featuredProduc
   const filtered = useMemo(() => {
     const shapeFilters = { nailShape: selectedShapes, lengths: selectedLengths, colors: selectedColors };
     const f = filterProductsList(allProducts, shapeFilters);
-    const sorted = sortProductsList(f, sortBy);
-    return distributeSpecialProducts(sorted, PAGE_SIZE);
+    return sortProductsList(f, sortBy);
   }, [allProducts, selectedShapes, selectedLengths, selectedColors, sortBy]);
 
   const paginated = useMemo(() => {
@@ -163,7 +123,9 @@ export default function CollectionClient({ category, allProducts, featuredProduc
           onToggleColor={toggleColor}
         />
 
-        <CategoryShowcase mini items={featuredProducts} />
+        {featuredProducts && featuredProducts.length > 0 && (
+          <CategoryShowcase mini items={featuredProducts} />
+        )}
 
         <div className={filterStyles.collectionLayout}>
           <div className={filterStyles.collectionMain}>

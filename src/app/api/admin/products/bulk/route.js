@@ -22,21 +22,34 @@ export async function POST(request) {
     const handmadeCategoryId = categories?.find(c => c.slug === 'handmade')?.id || null;
     const defaultCategory = handmadeCategoryId || categories?.[0]?.id || null;
 
+    const categoryMap = new Map();
+    categories?.forEach((cat) => {
+      if (cat.id) categoryMap.set(String(cat.id), cat.id);
+      if (cat.slug) categoryMap.set(cat.slug.toLowerCase().trim(), cat.id);
+      if (cat.name) categoryMap.set(cat.name.toLowerCase().trim(), cat.id);
+    });
+
+    const resolveCategoryId = (val) => {
+      if (!val) return defaultCategory;
+      const str = String(val).trim();
+      const lower = str.toLowerCase();
+      if (categoryMap.has(str)) return categoryMap.get(str);
+      if (categoryMap.has(lower)) return categoryMap.get(lower);
+      if (lower.includes('factory')) return factoryCategoryId || defaultCategory;
+      if (lower.includes('handmade')) return handmadeCategoryId || defaultCategory;
+      return defaultCategory;
+    };
+
     if (mode === 'images_only') {
       const imageFiles = formData.getAll('images');
-      const defaultCategoryName = (formData.get('defaultCategory') || '').toLowerCase().trim();
+      const defaultCategoryName = (formData.get('defaultCategory') || '').trim();
       const defaultPrice = parseFloat(formData.get('defaultPrice') || '12000');
       const defaultStock = parseInt(formData.get('defaultStock') || '10', 10);
       const defaultShape = formData.get('defaultShape') || 'Square';
       const defaultLength = formData.get('defaultLength') || 'Medium';
 
       // 1. Map directly from user's chosen collection in the modal
-      let targetCatId = handmadeCategoryId || defaultCategory;
-      if (defaultCategoryName.includes('factory')) {
-        targetCatId = factoryCategoryId || defaultCategory;
-      } else if (defaultCategoryName.includes('handmade')) {
-        targetCatId = handmadeCategoryId || defaultCategory;
-      }
+      const targetCatId = resolveCategoryId(defaultCategoryName);
 
       if (!imageFiles || imageFiles.length === 0) {
         return NextResponse.json({ success: false, error: 'No images were uploaded' }, { status: 400 });
@@ -127,12 +140,6 @@ export async function POST(request) {
       return NextResponse.json({ success: false, error: 'No products provided for bulk upload' }, { status: 400 });
     }
 
-    const categoryMap = new Map();
-    categories?.forEach((cat) => {
-      categoryMap.set(cat.slug.toLowerCase(), cat.id);
-      categoryMap.set(cat.name.toLowerCase(), cat.id);
-    });
-
     const timestamp = Date.now();
     const preparedProducts = [];
 
@@ -149,13 +156,7 @@ export async function POST(request) {
       const isFeatured = p.featured === true || p.featured === 'true' || p.bestseller === true || p.bestseller === 'true';
 
       // 1. Map directly from row's category column
-      let catId = handmadeCategoryId || defaultCategory;
-      if (p.category) {
-        const catKey = String(p.category).toLowerCase().trim();
-        if (catKey.includes('factory')) catId = factoryCategoryId;
-        else if (catKey.includes('handmade')) catId = handmadeCategoryId;
-        else catId = categoryMap.get(catKey) || catId;
-      }
+      const catId = resolveCategoryId(p.category || p.categoryId || p.category_id);
 
       let imagesArray = [];
       if (Array.isArray(p.images)) {

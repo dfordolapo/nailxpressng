@@ -19,7 +19,8 @@ import {
   ArrowDown, 
   Package, 
   AlertCircle,
-  Calendar
+  Calendar,
+  FolderInput
 } from "lucide-react";
 import styles from "@/styles/admin.module.css";
 import { formatPrice } from "@/lib/utils";
@@ -31,6 +32,7 @@ function ProductsContent({ initialProducts = [] }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const collectionParam = searchParams.get("collection");
+  const [allCollections, setAllCollections] = useState([]);
   const [customCollections, setCustomCollections] = useState([]);
   const activeTab = collectionParam === "handmade" 
     ? "Handmade" 
@@ -45,6 +47,11 @@ function ProductsContent({ initialProducts = [] }) {
   const [productToDelete, setProductToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [updatingStockId, setUpdatingStockId] = useState(null);
+
+  // Moving Product Collection state
+  const [movingProduct, setMovingProduct] = useState(null);
+  const [isMoving, setIsMoving] = useState(false);
+  const [moveToast, setMoveToast] = useState(null);
 
   // Continuous scrolling state
   const [displayCount, setDisplayCount] = useState(25);
@@ -72,7 +79,9 @@ function ProductsContent({ initialProducts = [] }) {
         const res = await fetch("/api/admin/collections");
         const data = await res.json();
         if (data.collections) {
-          setCustomCollections(data.collections.filter(c => c.slug !== "handmade" && c.slug !== "factory"));
+          const list = data.collections;
+          setAllCollections(list);
+          setCustomCollections(list.filter(c => c.slug !== "handmade" && c.slug !== "factory"));
         }
       } catch (e) {
         console.error("Error loading collections:", e);
@@ -300,6 +309,74 @@ function ProductsContent({ initialProducts = [] }) {
       setProductsList(prev => prev.map(p => p.id === id ? product : p));
     } finally {
       setUpdatingStockId(null);
+    }
+  };
+
+  // Move Product between collections
+  const handleMoveProduct = async (targetCol) => {
+    if (!movingProduct || !targetCol) return;
+    setIsMoving(true);
+    const productId = movingProduct.id;
+    const prevProduct = productsList.find(p => p.id === productId);
+
+    const isFactory = targetCol.slug === 'factory' || (targetCol.name && targetCol.name.toLowerCase().includes('factory'));
+
+    // Optimistic UI update
+    setProductsList(prev => prev.map(p => {
+      if (p.id === productId) {
+        return {
+          ...p,
+          category: targetCol.slug,
+          categoryName: targetCol.name,
+          category_id: targetCol.id,
+          sizes: isFactory ? [] : (p.sizes && p.sizes.length > 0 ? p.sizes : ["S", "M", "L"]),
+        };
+      }
+      return p;
+    }));
+
+    try {
+      const res = await fetch(`/api/admin/products/${productId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          category_id: targetCol.id,
+          category: targetCol.slug 
+        })
+      });
+
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || "Failed to move product");
+      }
+
+      if (data.product) {
+        const catSlug = data.product.categories?.slug || targetCol.slug;
+        const catName = data.product.categories?.name || targetCol.name;
+        setProductsList(prev => prev.map(p => {
+          if (p.id === productId) {
+            return {
+              ...p,
+              category: catSlug,
+              categoryName: catName,
+              category_id: data.product.category_id || targetCol.id,
+            };
+          }
+          return p;
+        }));
+      }
+
+      setMoveToast(`Moved "${movingProduct.name}" to ${targetCol.name}`);
+      setTimeout(() => setMoveToast(null), 3500);
+      setMovingProduct(null);
+    } catch (err) {
+      console.error("Error moving product collection:", err);
+      alert(`Error moving product: ${err.message}`);
+      if (prevProduct) {
+        setProductsList(prev => prev.map(p => p.id === productId ? prevProduct : p));
+      }
+    } finally {
+      setIsMoving(false);
     }
   };
 
@@ -667,9 +744,9 @@ function ProductsContent({ initialProducts = [] }) {
         if (data.products && Array.isArray(data.products)) {
           const mapped = data.products.map(p => {
             const rawP = Number(p.price);
-            const catSlug = (p.categories?.slug || defaultCategory || '').toLowerCase();
-            const catName = (p.categories?.name || defaultCategory || '').toLowerCase();
-            const isFactory = catSlug.includes('factory') || catName.includes('factory');
+            const catSlug = p.categories?.slug || (typeof p.category === 'string' ? p.category.toLowerCase() : defaultCategory.toLowerCase());
+            const catName = p.categories?.name || (catSlug === 'factory' ? 'Factory Made' : (catSlug === 'handmade' ? 'Handmade' : defaultCategory));
+            const isFactory = catSlug === 'factory' || (catName && catName.toLowerCase().includes('factory'));
 
             return {
               id: p.id,
@@ -678,8 +755,8 @@ function ProductsContent({ initialProducts = [] }) {
               description: p.description,
               price: rawP,
               compareAtPrice: p.compare_at_price ? Number(p.compare_at_price) : null,
-              category: isFactory ? 'factory' : 'handmade',
-              categoryName: isFactory ? 'Factory Made' : 'Handmade',
+              category: catSlug,
+              categoryName: catName,
               nailShape: p.nail_shape,
               style: p.style,
               lengths: p.lengths || [],
@@ -733,9 +810,9 @@ function ProductsContent({ initialProducts = [] }) {
         if (data.products && Array.isArray(data.products)) {
           const mapped = data.products.map(p => {
             const rawP = Number(p.price);
-            const catSlug = (p.categories?.slug || '').toLowerCase();
-            const catName = (p.categories?.name || '').toLowerCase();
-            const isFactory = catSlug.includes('factory') || catName.includes('factory');
+            const catSlug = p.categories?.slug || (typeof p.category === 'string' ? p.category.toLowerCase() : '');
+            const catName = p.categories?.name || (catSlug === 'factory' ? 'Factory Made' : (catSlug === 'handmade' ? 'Handmade' : (p.category || 'Handmade')));
+            const isFactory = catSlug === 'factory' || (catName && catName.toLowerCase().includes('factory'));
 
             return {
               id: p.id,
@@ -744,8 +821,8 @@ function ProductsContent({ initialProducts = [] }) {
               description: p.description,
               price: rawP,
               compareAtPrice: p.compare_at_price ? Number(p.compare_at_price) : null,
-              category: isFactory ? 'factory' : 'handmade',
-              categoryName: isFactory ? 'Factory Made' : 'Handmade',
+              category: catSlug || (isFactory ? 'factory' : 'handmade'),
+              categoryName: catName || (isFactory ? 'Factory Made' : 'Handmade'),
               nailShape: p.nail_shape,
               style: p.style,
               lengths: p.lengths || [],
@@ -788,7 +865,14 @@ function ProductsContent({ initialProducts = [] }) {
           <button 
             type="button" 
             className={styles.btnSecondary} 
-            onClick={() => setIsBulkOpen(true)}
+            onClick={() => {
+              if (activeTab && activeTab !== "All") {
+                setDefaultCategory(activeTab);
+              } else {
+                setDefaultCategory("Handmade");
+              }
+              setIsBulkOpen(true);
+            }}
             style={{
               background: "#ffffff",
               border: "1px solid var(--color-border)",
@@ -1320,6 +1404,30 @@ function ProductsContent({ initialProducts = [] }) {
             <button className={styles.kebabItem} onClick={() => handleToggleFeature(activeProduct.id)}>
               {activeProduct.bestseller ? "Unmark Featured" : "Mark Featured"}
             </button>
+            {/* Move Collection between collections */}
+            <button 
+              className={styles.kebabItem} 
+              onClick={() => {
+                setMovingProduct(activeProduct);
+                setOpenMenuId(null);
+              }}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gap: "8px",
+                color: "var(--color-primary, #7a403d)",
+                fontWeight: 600,
+                borderTop: "1px solid var(--color-border-light)",
+                borderBottom: "1px solid var(--color-border-light)",
+              }}
+            >
+              <span style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                <FolderInput size={15} />
+                Move Collection
+              </span>
+              <span style={{ fontSize: "0.75rem", opacity: 0.6 }}>→</span>
+            </button>
             <button className={`${styles.kebabItem} ${styles.kebabDelete}`} onClick={() => handleDeleteClick(activeProduct.id)}>Delete Product</button>
           </div>
         );
@@ -1359,6 +1467,157 @@ function ProductsContent({ initialProducts = [] }) {
               </button>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* Move Collection Modal */}
+      {movingProduct && (
+        <div className={styles.modalOverlay} onClick={() => !isMoving && setMovingProduct(null)}>
+          <div 
+            className={styles.modalContent} 
+            style={{ maxWidth: "480px", textAlign: "left", padding: "26px", borderRadius: "14px" }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "16px" }}>
+              <div>
+                <h3 className={styles.modalTitle} style={{ fontSize: "1.3rem", margin: 0 }}>
+                  Move Collection
+                </h3>
+                <p style={{ fontSize: "0.85rem", color: "#666", margin: "4px 0 0" }}>
+                  Select the destination collection for this product.
+                </p>
+              </div>
+              <button 
+                onClick={() => setMovingProduct(null)} 
+                disabled={isMoving}
+                style={{ background: "none", border: "none", cursor: "pointer", color: "#888", padding: "4px" }}
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Product Snapshot */}
+            <div style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "12px",
+              padding: "12px",
+              background: "#F9F9F9",
+              borderRadius: "8px",
+              border: "1px solid var(--color-border-light)",
+              marginBottom: "20px"
+            }}>
+              <Image 
+                src={movingProduct.images?.[0] || '/images/hero.png'} 
+                alt={movingProduct.name} 
+                width={48} 
+                height={48} 
+                style={{ objectFit: 'cover', borderRadius: '6px', flexShrink: 0 }} 
+              />
+              <div style={{ minWidth: 0, flex: 1 }}>
+                <div style={{ fontWeight: 600, fontSize: "0.95rem", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                  {movingProduct.name}
+                </div>
+                <div style={{ fontSize: "0.8rem", color: "#666", marginTop: "2px" }}>
+                  Current collection: <strong style={{ color: "var(--color-primary)" }}>{movingProduct.categoryName || "Handmade"}</strong>
+                </div>
+              </div>
+            </div>
+
+            <div style={{ fontSize: "0.82rem", fontWeight: 600, color: "#555", marginBottom: "10px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+              Choose Destination Collection
+            </div>
+
+            {/* List of Collections to Move To */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "8px", maxHeight: "260px", overflowY: "auto", paddingRight: "4px" }}>
+              {(() => {
+                const availableCols = allCollections.length > 0 ? allCollections : [
+                  { id: 'handmade', slug: 'handmade', name: 'Handmade' },
+                  { id: 'factory', slug: 'factory', name: 'Factory Made' },
+                  ...customCollections
+                ];
+
+                const currentSlug = (movingProduct.category || '').toLowerCase();
+                const currentName = (movingProduct.categoryName || '').toLowerCase();
+
+                return availableCols.map((col) => {
+                  const isCurrent = col.slug.toLowerCase() === currentSlug || col.name.toLowerCase() === currentName;
+                  return (
+                    <button
+                      key={col.id || col.slug}
+                      type="button"
+                      disabled={isCurrent || isMoving}
+                      onClick={() => handleMoveProduct(col)}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        padding: "12px 14px",
+                        borderRadius: "8px",
+                        border: isCurrent ? "1px dashed #d1d5db" : "1px solid var(--color-border)",
+                        background: isCurrent ? "#f3f4f6" : "#ffffff",
+                        cursor: isCurrent ? "not-allowed" : "pointer",
+                        opacity: isCurrent ? 0.65 : 1,
+                        transition: "all 0.15s ease",
+                        textAlign: "left"
+                      }}
+                    >
+                      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                        <FolderInput size={16} color={isCurrent ? "#9ca3af" : "var(--color-primary)"} />
+                        <span style={{ fontWeight: 600, fontSize: "0.9rem", color: isCurrent ? "#6b7280" : "var(--color-text)" }}>
+                          {col.name}
+                        </span>
+                      </div>
+                      {isCurrent ? (
+                        <span style={{ fontSize: "0.75rem", background: "#e5e7eb", color: "#4b5563", padding: "3px 8px", borderRadius: "12px", fontWeight: 500 }}>
+                          Current
+                        </span>
+                      ) : (
+                        <span style={{ fontSize: "0.8rem", color: "var(--color-primary)", fontWeight: 600 }}>
+                          Move Here →
+                        </span>
+                      )}
+                    </button>
+                  );
+                });
+              })()}
+            </div>
+
+            <div style={{ marginTop: "20px", display: "flex", justifyContent: "flex-end" }}>
+              <button 
+                type="button"
+                className={styles.modalBtnCancel} 
+                onClick={() => setMovingProduct(null)} 
+                disabled={isMoving}
+                style={{ padding: "8px 18px", borderRadius: "6px" }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Move Toast Feedback */}
+      {moveToast && (
+        <div style={{
+          position: "fixed",
+          bottom: "30px",
+          right: "30px",
+          background: "#1E293B",
+          color: "#FFFFFF",
+          padding: "14px 22px",
+          borderRadius: "8px",
+          boxShadow: "0 10px 25px rgba(0,0,0,0.25)",
+          display: "flex",
+          alignItems: "center",
+          gap: "10px",
+          zIndex: 100000,
+          fontSize: "0.9rem",
+          fontWeight: 500,
+        }}>
+          <Check size={18} color="#10B981" />
+          <span>{moveToast}</span>
         </div>
       )}
 
@@ -1431,8 +1690,23 @@ function ProductsContent({ initialProducts = [] }) {
                         onChange={(e) => setDefaultCategory(e.target.value)}
                         className={styles.bulkGridSelect}
                       >
-                        <option value="Handmade">Handmade</option>
-                        <option value="Factory Made">Factory</option>
+                        {allCollections && allCollections.length > 0 ? (
+                          allCollections.map((col) => (
+                            <option key={col.id || col.slug} value={col.name}>
+                              {col.name}
+                            </option>
+                          ))
+                        ) : (
+                          <>
+                            <option value="Handmade">Handmade</option>
+                            <option value="Factory Made">Factory Made</option>
+                            {customCollections.map((col) => (
+                              <option key={col.id || col.slug} value={col.name}>
+                                {col.name}
+                              </option>
+                            ))}
+                          </>
+                        )}
                       </select>
                     </div>
 

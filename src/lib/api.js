@@ -34,21 +34,26 @@ const mapProduct = (p, discount = 0) => {
     compareAtPrice = rawPrice; // always show original as strikethrough
   }
 
-  // Relational Category Mapping (Foolproof & Independent of Prices):
-  const rawCatSlug = (p.categories?.slug || p.category || '').toLowerCase().trim();
-  const rawCatName = (p.categories?.name || p.category_name || '').toLowerCase().trim();
-  const rawTags = (p.style || p.tags || '').toLowerCase();
+  // Relational Category Mapping (Honors DB foreign key relation):
+  let resolvedCategory = p.categories?.slug || null;
+  let resolvedCategoryName = p.categories?.name || null;
 
-  let resolvedCategory = 'handmade';
-  if (rawCatSlug.includes('factory') || rawCatName.includes('factory') || rawTags.includes('factory')) {
-    resolvedCategory = 'factory';
-  } else if (rawCatSlug.includes('handmade') || rawCatName.includes('handmade') || rawTags.includes('handmade')) {
-    resolvedCategory = 'handmade';
-  } else if (p.categories?.slug) {
-    resolvedCategory = p.categories.slug;
+  if (!resolvedCategory) {
+    const rawCatSlug = (p.category || '').toLowerCase().trim();
+    const rawCatName = (p.category_name || '').toLowerCase().trim();
+    const rawTags = (p.style || p.tags || '').toLowerCase();
+
+    if (rawCatSlug.includes('factory') || rawCatName.includes('factory') || rawTags.includes('factory')) {
+      resolvedCategory = 'factory';
+      resolvedCategoryName = 'Factory Made';
+    } else if (rawCatSlug.includes('handmade') || rawCatName.includes('handmade') || rawTags.includes('handmade')) {
+      resolvedCategory = 'handmade';
+      resolvedCategoryName = 'Handmade';
+    } else {
+      resolvedCategory = rawCatSlug || 'handmade';
+      resolvedCategoryName = p.category_name || (resolvedCategory === 'factory' ? 'Factory Made' : 'Handmade');
+    }
   }
-
-  const resolvedCategoryName = p.categories?.name || (resolvedCategory === 'factory' ? 'Factory Made' : (resolvedCategory === 'handmade' ? 'Handmade' : (p.category_name || resolvedCategory)));
 
   return {
     id: p.id,
