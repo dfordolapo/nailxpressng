@@ -16,7 +16,7 @@ export async function POST(request) {
       return NextResponse.json({ success: false, error: 'File and fileName are required' }, { status: 400 });
     }
 
-    const buffer = await file.arrayBuffer();
+    const buffer = Buffer.from(await file.arrayBuffer());
 
     const { error: uploadError } = await supabaseAdmin.storage
       .from('product-images')

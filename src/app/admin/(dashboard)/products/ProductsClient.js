@@ -437,40 +437,25 @@ function ProductsContent({ initialProducts = [] }) {
     const isExcel = fileName.endsWith('.xlsx') || fileName.endsWith('.xls');
 
     const reader = new FileReader();
-
-    if (isExcel) {
-      reader.onload = (event) => {
-        try {
-          const data = new Uint8Array(event.target.result);
-          const workbook = XLSX.read(data, { type: 'array' });
-          const firstSheetName = workbook.SheetNames[0];
-          const worksheet = workbook.Sheets[firstSheetName];
-          const rawRows = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-          processTableRows(rawRows);
-        } catch (err) {
-          console.error(err);
-          setBulkError("Failed to parse Excel file: " + err.message);
-          setBulkPreview([]);
-        }
-      };
-      reader.readAsArrayBuffer(file);
-    } else {
-      reader.onload = (event) => {
-        try {
-          const text = event.target.result;
-          const workbook = XLSX.read(text, { type: 'string' });
-          const firstSheetName = workbook.SheetNames[0];
-          const worksheet = workbook.Sheets[firstSheetName];
-          const rawRows = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-          processTableRows(rawRows);
-        } catch (err) {
-          console.error(err);
-          setBulkError("Failed to parse CSV file: " + err.message);
-          setBulkPreview([]);
-        }
-      };
-      reader.readAsText(file);
-    }
+    reader.onload = (event) => {
+      try {
+        const data = new Uint8Array(event.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        const firstSheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[firstSheetName];
+        const rawRows = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+        processTableRows(rawRows);
+      } catch (err) {
+        console.error(err);
+        setBulkError("Failed to parse spreadsheet: " + (err.message || String(err)));
+        setBulkPreview([]);
+      }
+    };
+    reader.onerror = () => {
+      setBulkError("Failed to read the selected file.");
+      setBulkPreview([]);
+    };
+    reader.readAsArrayBuffer(file);
   };
 
   const processTableRows = (rows) => {
@@ -551,6 +536,60 @@ function ProductsContent({ initialProducts = [] }) {
     XLSX.writeFile(workbook, "nailexpress_bulk_products_template.xlsx");
   };
 
+  // Fast in-browser compression to ensure iPhone camera photos (4MB+) are under 300KB before upload
+  const compressPhotoForBulk = async (file, maxDim = 1200, quality = 0.82) => {
+    if (!file || !file.type?.startsWith("image/")) return file;
+    if (file.size <= 300 * 1024) return file;
+
+    return new Promise((resolve) => {
+      try {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new window.Image();
+          img.onload = () => {
+            let { width, height } = img;
+            if (width > maxDim || height > maxDim) {
+              if (width > height) {
+                height = Math.round((height * maxDim) / width);
+                width = maxDim;
+              } else {
+                width = Math.round((width * maxDim) / height);
+                height = maxDim;
+              }
+            }
+            const canvas = document.createElement("canvas");
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0, width, height);
+
+            canvas.toBlob(
+              (blob) => {
+                if (blob) {
+                  const compressed = new File([blob], file.name.replace(/\.[^/.]+$/, ".jpg"), {
+                    type: "image/jpeg",
+                    lastModified: Date.now(),
+                  });
+                  resolve(compressed);
+                } else {
+                  resolve(file);
+                }
+              },
+              "image/jpeg",
+              quality
+            );
+          };
+          img.onerror = () => resolve(file);
+          img.src = e.target.result;
+        };
+        reader.onerror = () => resolve(file);
+        reader.readAsDataURL(file);
+      } catch {
+        resolve(file);
+      }
+    });
+  };
+
   const handleExecuteBulkUpload = async () => {
     setIsUploadingBulk(true);
     setBulkError(null);
@@ -580,8 +619,9 @@ function ProductsContent({ initialProducts = [] }) {
               const fileExt = file.name.split('.').pop() || 'jpg';
               const fileName = `bulk-${slugBase}-${timestamp}-${globalIndex}.${fileExt}`;
 
+              const uploadFile = await compressPhotoForBulk(file);
               const imgFormData = new FormData();
-              imgFormData.append('file', file);
+              imgFormData.append('file', uploadFile);
               imgFormData.append('fileName', fileName);
 
               const uploadRes = await fetch('/api/admin/products/upload-image', {
@@ -1472,7 +1512,12 @@ function ProductsContent({ initialProducts = [] }) {
                   />
                   <div 
                     className={styles.bulkDropZone} 
-                    onClick={() => galleryInputRef.current?.click()}
+                    onClick={() => {
+                      if (galleryInputRef.current) {
+                        galleryInputRef.current.value = "";
+                        galleryInputRef.current.click();
+                      }
+                    }}
                     style={{ padding: "24px 16px" }}
                   >
                     <Upload size={32} color="var(--color-primary)" style={{ marginBottom: "6px" }} />
@@ -1504,7 +1549,11 @@ function ProductsContent({ initialProducts = [] }) {
                         {galleryPreviews.map((item, idx) => (
                           <div key={idx} style={{ border: "1px solid var(--color-border-light)", borderRadius: "8px", overflow: "hidden", background: "white", position: "relative" }}>
                             <div style={{ position: "relative", width: "100%", height: "100px" }}>
-                              <Image src={item.previewUrl} alt={item.name} fill sizes="130px" style={{ objectFit: "cover" }} />
+                              <img 
+                                src={item.previewUrl} 
+                                alt={item.name} 
+                                style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} 
+                              />
                               <button 
                                 type="button"
                                 onClick={() => removeGalleryImage(idx)}
