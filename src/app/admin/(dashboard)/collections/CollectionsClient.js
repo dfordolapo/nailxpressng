@@ -142,15 +142,60 @@ export default function CollectionsClient() {
     setFormSlug(slugify(e.target.value));
   };
 
-  const handleImageFileChange = (e) => {
+  const handleImageFileChange = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    setFormImageFile(file);
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setFormImagePreview(reader.result);
-    };
-    reader.readAsDataURL(file);
+
+    // Fast preview first
+    const objectUrl = URL.createObjectURL(file);
+    setFormImagePreview(objectUrl);
+
+    // Compress in background for ultra-fast, payload-safe upload
+    try {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = new window.Image();
+        img.onload = () => {
+          const maxDim = 1200;
+          let { width, height } = img;
+          if (width > maxDim || height > maxDim) {
+            if (width > height) {
+              height = Math.round((height * maxDim) / width);
+              width = maxDim;
+            } else {
+              width = Math.round((width * maxDim) / height);
+              height = maxDim;
+            }
+          }
+          const canvas = document.createElement("canvas");
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, width, height);
+
+          canvas.toBlob(
+            (blob) => {
+              if (blob) {
+                const compressed = new File([blob], file.name.replace(/\.[^/.]+$/, ".jpg"), {
+                  type: "image/jpeg",
+                  lastModified: Date.now(),
+                });
+                setFormImageFile(compressed);
+                setFormImagePreview(canvas.toDataURL("image/jpeg", 0.85));
+              } else {
+                setFormImageFile(file);
+              }
+            },
+            "image/jpeg",
+            0.85
+          );
+        };
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    } catch {
+      setFormImageFile(file);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -172,7 +217,10 @@ export default function CollectionsClient() {
 
       if (formImageFile) {
         formData.append("image", formImageFile);
-      } else if (formImagePreview && formImagePreview.startsWith("http")) {
+        if (formImagePreview && formImagePreview.startsWith("data:")) {
+          formData.append("image_base64", formImagePreview);
+        }
+      } else if (formImagePreview) {
         formData.append("image_url", formImagePreview);
       }
 
@@ -185,8 +233,15 @@ export default function CollectionsClient() {
         body: formData,
       });
 
-      const data = await res.json();
-      if (!res.ok) {
+      let data;
+      const resText = await res.text();
+      try {
+        data = JSON.parse(resText);
+      } catch {
+        throw new Error(res.status === 413 ? "Cover image is too large." : `Server returned error (${res.status}): ${resText.slice(0, 100)}`);
+      }
+
+      if (!res.ok || !data.success) {
         throw new Error(data.error || "Failed to save collection");
       }
 
@@ -652,7 +707,12 @@ export default function CollectionsClient() {
                         <button
                           type="button"
                           className={styles.btnSecondary}
-                          onClick={() => fileInputRef.current?.click()}
+                          onClick={() => {
+                            if (fileInputRef.current) {
+                              fileInputRef.current.value = "";
+                              fileInputRef.current.click();
+                            }
+                          }}
                           style={{ padding: "6px 12px", fontSize: "0.8rem" }}
                         >
                           Change Image
@@ -662,6 +722,7 @@ export default function CollectionsClient() {
                           onClick={() => {
                             setFormImageFile(null);
                             setFormImagePreview("");
+                            if (fileInputRef.current) fileInputRef.current.value = "";
                           }}
                           style={{ border: "none", background: "none", color: "#dc2626", fontSize: "0.75rem", cursor: "pointer", textAlign: "left", padding: 0 }}
                         >
@@ -670,7 +731,12 @@ export default function CollectionsClient() {
                       </div>
                     </div>
                   ) : (
-                    <div className={styles.uploadArea} onClick={() => fileInputRef.current?.click()}>
+                    <div className={styles.uploadArea} onClick={() => {
+                      if (fileInputRef.current) {
+                        fileInputRef.current.value = "";
+                        fileInputRef.current.click();
+                      }
+                    }}>
                       <UploadCloud size={24} strokeWidth={1.5} color="var(--color-primary)" />
                       <div style={{ fontSize: "0.85rem", fontWeight: 500, color: "var(--color-text)" }}>
                         Click to upload cover image

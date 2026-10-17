@@ -90,24 +90,40 @@ export async function POST(request) {
       imageUrl = formData.get('image_url') || '';
 
       const imageFile = formData.get('image');
-      if (imageFile && typeof imageFile === 'object' && imageFile.size > 0 && !isPlaceholderUrl) {
-        const fileExt = imageFile.name.split('.').pop();
-        const baseSlug = slugify(slug || name);
-        const fileName = `collection-${baseSlug}-${Date.now()}.${fileExt}`;
-        const buffer = await imageFile.arrayBuffer();
+      if (imageFile && typeof imageFile === 'object' && imageFile.size > 0) {
+        if (!isPlaceholderUrl) {
+          try {
+            const fileExt = (imageFile.name?.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '');
+            const baseSlug = slugify(slug || name);
+            const fileName = `collection-${baseSlug}-${Date.now()}.${fileExt}`;
+            const buffer = Buffer.from(await imageFile.arrayBuffer());
 
-        const { error: uploadError } = await supabaseAdmin.storage
-          .from('product-images')
-          .upload(fileName, buffer, {
-            contentType: imageFile.type,
-            upsert: false
-          });
+            const { error: uploadError } = await supabaseAdmin.storage
+              .from('product-images')
+              .upload(fileName, buffer, {
+                contentType: imageFile.type || 'image/jpeg',
+                upsert: true
+              });
 
-        if (!uploadError) {
-          const { data: publicUrlData } = supabaseAdmin.storage
-            .from('product-images')
-            .getPublicUrl(fileName);
-          imageUrl = publicUrlData.publicUrl;
+            if (!uploadError) {
+              const { data: publicUrlData } = supabaseAdmin.storage
+                .from('product-images')
+                .getPublicUrl(fileName);
+              imageUrl = publicUrlData.publicUrl;
+            } else {
+              console.error('Storage upload error in POST:', uploadError.message);
+              if (formData.has('image_base64')) {
+                imageUrl = String(formData.get('image_base64'));
+              }
+            }
+          } catch (storageErr) {
+            console.error('Storage exception in POST:', storageErr);
+            if (formData.has('image_base64')) {
+              imageUrl = String(formData.get('image_base64'));
+            }
+          }
+        } else if (formData.has('image_base64')) {
+          imageUrl = String(formData.get('image_base64'));
         }
       }
     } else {

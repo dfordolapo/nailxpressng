@@ -34,6 +34,44 @@ export async function PUT(request, { params }) {
       if (formData.has('is_published')) updates.is_published = formData.get('is_published') === 'true';
       if (formData.has('display_order')) updates.display_order = parseInt(formData.get('display_order') || '0', 10);
       if (formData.has('image_url')) updates.image = String(formData.get('image_url'));
+
+      const imageFile = formData.get('image');
+      if (imageFile && typeof imageFile === 'object' && imageFile.size > 0) {
+        if (!isPlaceholderUrl) {
+          try {
+            const fileExt = (imageFile.name?.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '');
+            const baseSlug = slugify(updates.slug || id);
+            const fileName = `collection-${baseSlug}-${Date.now()}.${fileExt}`;
+            const buffer = Buffer.from(await imageFile.arrayBuffer());
+
+            const { error: uploadError } = await supabaseAdmin.storage
+              .from('product-images')
+              .upload(fileName, buffer, {
+                contentType: imageFile.type || 'image/jpeg',
+                upsert: true
+              });
+
+            if (!uploadError) {
+              const { data: publicUrlData } = supabaseAdmin.storage
+                .from('product-images')
+                .getPublicUrl(fileName);
+              updates.image = publicUrlData.publicUrl;
+            } else {
+              console.error('Storage upload error in PUT:', uploadError.message);
+              if (formData.has('image_base64')) {
+                updates.image = String(formData.get('image_base64'));
+              }
+            }
+          } catch (storageErr) {
+            console.error('Storage exception in PUT:', storageErr);
+            if (formData.has('image_base64')) {
+              updates.image = String(formData.get('image_base64'));
+            }
+          }
+        } else if (formData.has('image_base64')) {
+          updates.image = String(formData.get('image_base64'));
+        }
+      }
     } else {
       const body = await request.json();
       if (body.name !== undefined) updates.name = String(body.name).trim();
