@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { uploadImageDirect } from "@/lib/uploadImage";
 import { 
   Layers, 
   Plus, 
@@ -142,59 +143,16 @@ export default function CollectionsClient() {
     setFormSlug(slugify(e.target.value));
   };
 
-  const handleImageFileChange = async (e) => {
+  const handleImageFileChange = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Fast preview first
-    const objectUrl = URL.createObjectURL(file);
-    setFormImagePreview(objectUrl);
-
-    // Compress in background for ultra-fast, payload-safe upload
+    setFormImageFile(file);
     try {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const img = new window.Image();
-        img.onload = () => {
-          const maxDim = 1200;
-          let { width, height } = img;
-          if (width > maxDim || height > maxDim) {
-            if (width > height) {
-              height = Math.round((height * maxDim) / width);
-              width = maxDim;
-            } else {
-              width = Math.round((width * maxDim) / height);
-              height = maxDim;
-            }
-          }
-          const canvas = document.createElement("canvas");
-          canvas.width = width;
-          canvas.height = height;
-          const ctx = canvas.getContext("2d");
-          ctx.drawImage(img, 0, 0, width, height);
-
-          canvas.toBlob(
-            (blob) => {
-              if (blob) {
-                const compressed = new File([blob], file.name.replace(/\.[^/.]+$/, ".jpg"), {
-                  type: "image/jpeg",
-                  lastModified: Date.now(),
-                });
-                setFormImageFile(compressed);
-                setFormImagePreview(canvas.toDataURL("image/jpeg", 0.85));
-              } else {
-                setFormImageFile(file);
-              }
-            },
-            "image/jpeg",
-            0.85
-          );
-        };
-        img.src = event.target.result;
-      };
-      reader.readAsDataURL(file);
+      const objectUrl = URL.createObjectURL(file);
+      setFormImagePreview(objectUrl);
     } catch {
-      setFormImageFile(file);
+      setFormImagePreview("");
     }
   };
 
@@ -207,21 +165,31 @@ export default function CollectionsClient() {
 
     setIsSubmitting(true);
     try {
+      const targetSlug = formSlug || slugify(formName);
+      let coverImageUrl = formImagePreview && !formImagePreview.startsWith("blob:") ? formImagePreview : "";
+
+      // Upload cover image directly to Supabase Storage (bypasses Vercel 4.5MB payload limit)
+      if (formImageFile) {
+        showToast("Uploading cover photo...", "info");
+        try {
+          coverImageUrl = await uploadImageDirect(formImageFile, `collection-${targetSlug}`);
+        } catch (uploadErr) {
+          console.warn("Direct upload fallback to server:", uploadErr);
+        }
+      }
+
       const formData = new FormData();
       formData.append("name", formName.trim());
-      formData.append("slug", formSlug || slugify(formName));
+      formData.append("slug", targetSlug);
       formData.append("tagline", formTagline.trim());
       formData.append("description", formDescription.trim());
       formData.append("is_published", formIsPublished ? "true" : "false");
       formData.append("display_order", String(formDisplayOrder));
 
-      if (formImageFile) {
+      if (coverImageUrl) {
+        formData.append("image_url", coverImageUrl);
+      } else if (formImageFile) {
         formData.append("image", formImageFile);
-        if (formImagePreview && formImagePreview.startsWith("data:")) {
-          formData.append("image_base64", formImagePreview);
-        }
-      } else if (formImagePreview) {
-        formData.append("image_url", formImagePreview);
       }
 
       const url = modalMode === "create" 
@@ -581,15 +549,13 @@ export default function CollectionsClient() {
                           >
                             <Edit3 size={15} strokeWidth={1.5} />
                           </button>
-                          {!isCore && (
-                            <button
-                              className={`${styles.iconBtn} ${styles.deleteBtn}`}
-                              onClick={() => setDeleteTarget(col)}
-                              title="Delete collection"
-                            >
-                              <Trash2 size={15} strokeWidth={1.5} />
-                            </button>
-                          )}
+                          <button
+                            className={`${styles.iconBtn} ${styles.deleteBtn}`}
+                            onClick={() => setDeleteTarget(col)}
+                            title="Delete collection"
+                          >
+                            <Trash2 size={15} strokeWidth={1.5} />
+                          </button>
                         </div>
                       </td>
                     </tr>
@@ -695,13 +661,11 @@ export default function CollectionsClient() {
 
                   {formImagePreview ? (
                     <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                      <Image 
+                      <img 
                         src={formImagePreview} 
                         alt="Preview" 
-                        width={72}
-                        height={72}
+                        style={{ width: "72px", height: "72px", objectFit: "cover", borderRadius: "8px", border: "1px solid var(--color-border-light)" }}
                         className={styles.previewThumb} 
-                        unoptimized
                       />
                       <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                         <button

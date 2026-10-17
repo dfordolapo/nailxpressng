@@ -117,11 +117,16 @@ export async function DELETE(request, { params }) {
   try {
     const { id } = await params;
 
-    if (id === 'handmade' || id === 'factory') {
-      return NextResponse.json({ 
-        success: false, 
-        error: 'System collections ("Handmade" and "Factory Made") cannot be deleted.' 
-      }, { status: 400 });
+    // 1. Clean up products referencing this collection to avoid foreign key errors
+    try {
+      if (!isPlaceholderUrl) {
+        await supabaseAdmin
+          .from('products')
+          .update({ category_id: null })
+          .eq('category_id', id);
+      }
+    } catch (cleanErr) {
+      console.warn('Could not nullify category_id on products before category deletion:', cleanErr);
     }
 
     if (isPlaceholderUrl) {
@@ -129,16 +134,18 @@ export async function DELETE(request, { params }) {
       return NextResponse.json({ success: true, message: 'Collection deleted successfully' });
     }
 
-    // Try deleting from Supabase
+    // 2. Try deleting from Supabase
     const { error: deleteError } = await supabaseAdmin
       .from('categories')
       .delete()
       .eq('id', id);
 
     if (deleteError) {
+      console.warn('Supabase delete category error:', deleteError);
       deleteLocalCollection(id);
     }
 
+    deleteLocalCollection(id);
     return NextResponse.json({ success: true, message: 'Collection deleted successfully' });
   } catch (err) {
     console.error('DELETE /api/admin/collections/[id] error:', err);

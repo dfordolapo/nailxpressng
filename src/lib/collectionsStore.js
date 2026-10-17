@@ -104,10 +104,7 @@ export function updateLocalCollection(id, updates) {
 export function deleteLocalCollection(id) {
   const current = getLocalCollections();
   const target = current.find(c => c.id === id || c.slug === id);
-  if (!target) throw new Error('Collection not found');
-  if (target.slug === 'handmade' || target.slug === 'factory') {
-    throw new Error('System collections cannot be deleted.');
-  }
+  if (!target) return true;
   const filtered = current.filter(c => c.id !== id && c.slug !== id);
   saveLocalCollections(filtered);
   return true;

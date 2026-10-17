@@ -9,6 +9,7 @@ import ProductCard from "@/components/product/ProductCard";
 import { useState, useRef, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { supabase } from "@/lib/supabase";
+import { uploadImageDirect } from "@/lib/uploadImage";
 
 const STANDARD_SIZES = ["XS", "S", "M", "L", "Custom"];
 
@@ -330,7 +331,17 @@ function NewProductContent() {
       }
       
       if (imageFile) {
-        formData.append('image', imageFile);
+        try {
+          const directUrl = await uploadImageDirect(imageFile, 'product');
+          if (directUrl) {
+            formData.append('image_url', directUrl);
+          } else {
+            formData.append('image', imageFile);
+          }
+        } catch (uploadErr) {
+          console.warn("Direct image upload fallback:", uploadErr);
+          formData.append('image', imageFile);
+        }
       }
       if (videoFile) {
         formData.append('video', videoFile);
@@ -345,9 +356,15 @@ function NewProductContent() {
         body: formData
       });
       
-      const data = await res.json();
+      let data;
+      const resText = await res.text();
+      try {
+        data = JSON.parse(resText);
+      } catch {
+        throw new Error(res.status === 413 ? "Uploaded files exceed server limit." : `Server returned error (${res.status}): ${resText.slice(0, 100)}`);
+      }
       
-      if (!res.ok) throw new Error(data.error || `Failed to ${isEditMode ? 'update' : 'create'} product`);
+      if (!res.ok) throw new Error(data?.error || `Failed to ${isEditMode ? 'update' : 'create'} product`);
       
       alert(`Product ${isEditMode ? 'updated' : 'created'} successfully!`);
       router.push('/admin/products');

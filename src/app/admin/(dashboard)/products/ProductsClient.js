@@ -25,6 +25,7 @@ import styles from "@/styles/admin.module.css";
 import { formatPrice } from "@/lib/utils";
 import * as XLSX from "xlsx";
 import { supabase } from "@/lib/supabase";
+import { uploadImageDirect } from "@/lib/uploadImage";
 
 function ProductsContent({ initialProducts = [] }) {
   const router = useRouter();
@@ -147,7 +148,12 @@ function ProductsContent({ initialProducts = [] }) {
   // Close menus when clicking outside or scrolling
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (!e.target.closest(`.${styles.kebabMenu}`) && !e.target.closest(`.${styles.excelPopover}`) && !e.target.closest(`.${styles.excelFilterBtn}`) && !e.target.closest(`.${styles.kebabTriggerBtn}`)) {
+      const isInsideKebab = styles.kebabMenu && e.target.closest(`.${styles.kebabMenu}`);
+      const isInsidePopover = styles.excelPopover && e.target.closest(`.${styles.excelPopover}`);
+      const isInsideFilterBtn = styles.excelFilterBtn && e.target.closest(`.${styles.excelFilterBtn}`);
+      const isInsideTriggerBtn = styles.kebabTriggerBtn && e.target.closest(`.${styles.kebabTriggerBtn}`);
+
+      if (!isInsideKebab && !isInsidePopover && !isInsideFilterBtn && !isInsideTriggerBtn) {
         setOpenMenuId(null);
         setActivePopover(null);
       }
@@ -607,39 +613,18 @@ function ProductsContent({ initialProducts = [] }) {
         const timestamp = Date.now();
         const uploadedProducts = [];
 
-        // Upload photos concurrently in chunks of 4
-        for (let i = 0; i < selectedGalleryFiles.length; i += 4) {
-          const batch = selectedGalleryFiles.slice(i, i + 4);
+        // Upload photos concurrently in chunks of 3 directly to Supabase Storage
+        // Bypasses Vercel 4.5MB request payload limit completely
+        for (let i = 0; i < selectedGalleryFiles.length; i += 3) {
+          const batch = selectedGalleryFiles.slice(i, i + 3);
           const batchResults = await Promise.all(
             batch.map(async (file, batchIndex) => {
               const globalIndex = i + batchIndex;
               const previewItem = galleryPreviews[globalIndex];
               const productName = previewItem?.name?.trim() || file.name.replace(/\.[^/.]+$/, "").replace(/[_-]+/g, " ").trim() || `Nail Set ${globalIndex + 1}`;
               const slugBase = productName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '') || `nail-set-${globalIndex}`;
-              const fileExt = file.name.split('.').pop() || 'jpg';
-              const fileName = `bulk-${slugBase}-${timestamp}-${globalIndex}.${fileExt}`;
 
-              const uploadFile = await compressPhotoForBulk(file);
-              const imgFormData = new FormData();
-              imgFormData.append('file', uploadFile);
-              imgFormData.append('fileName', fileName);
-
-              const uploadRes = await fetch('/api/admin/products/upload-image', {
-                method: 'POST',
-                body: imgFormData
-              });
-
-              let uploadData;
-              const resText = await uploadRes.text();
-              try {
-                uploadData = JSON.parse(resText);
-              } catch {
-                throw new Error(`Upload server error (${uploadRes.status}): ${resText.slice(0, 100)}`);
-              }
-
-              if (!uploadRes.ok || !uploadData.success) {
-                throw new Error(`Failed to upload photo "${file.name}": ${uploadData?.error || 'Upload failed'}`);
-              }
+              const imageUrl = await uploadImageDirect(file, `bulk-${slugBase}`);
 
               return {
                 name: productName,
@@ -648,7 +633,7 @@ function ProductsContent({ initialProducts = [] }) {
                 stock: parseInt(defaultStock, 10) || 10,
                 nailShape: defaultShape,
                 length: defaultLength,
-                images: [uploadData.url],
+                images: [imageUrl],
                 description: `Handcrafted ${productName} luxury press-on nail set. Ready to wear.`,
               };
             })
