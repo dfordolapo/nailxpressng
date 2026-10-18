@@ -34,7 +34,10 @@ export async function PUT(request, { params }) {
       if (formData.has('is_published')) updates.is_published = formData.get('is_published') === 'true';
       if (formData.has('display_order')) updates.display_order = parseInt(formData.get('display_order') || '0', 10);
       if (formData.has('image_url')) updates.image = String(formData.get('image_url'));
-      if (formData.has('drop_timer_enabled')) updates.drop_timer_enabled = formData.get('drop_timer_enabled') === 'true';
+      if (formData.has('drop_timer_enabled')) {
+        updates.drop_timer_enabled = formData.get('drop_timer_enabled') === 'true';
+        if (updates.drop_timer_enabled) updates.drop_notification_sent = false;
+      }
       if (formData.has('drop_date')) updates.drop_date = formData.get('drop_date') || null;
       if (formData.has('drop_headline')) updates.drop_headline = String(formData.get('drop_headline') || '').trim() || null;
 
@@ -84,7 +87,10 @@ export async function PUT(request, { params }) {
       if (body.is_published !== undefined) updates.is_published = Boolean(body.is_published);
       if (body.display_order !== undefined) updates.display_order = parseInt(body.display_order || '0', 10);
       if (body.image !== undefined) updates.image = body.image;
-      if (body.drop_timer_enabled !== undefined) updates.drop_timer_enabled = Boolean(body.drop_timer_enabled);
+      if (body.drop_timer_enabled !== undefined) {
+        updates.drop_timer_enabled = Boolean(body.drop_timer_enabled);
+        if (updates.drop_timer_enabled) updates.drop_notification_sent = false;
+      }
       if (body.drop_date !== undefined) updates.drop_date = body.drop_date || null;
       if (body.drop_headline !== undefined) updates.drop_headline = body.drop_headline ? String(body.drop_headline).trim() : null;
     }

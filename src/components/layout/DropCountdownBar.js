@@ -17,6 +17,9 @@ function calculateTimeLeft(targetDate) {
   return { days, hours, minutes, seconds };
 }
 
+// Stable preview date – computed once at module load so the countdown actually ticks
+const PREVIEW_DROP_DATE = new Date(Date.now() + 6 * 86400000 + 14 * 3600000 + 27 * 60000).toISOString();
+
 export default function DropCountdownBar({ collections: passedCollections = null, onActiveChange = null }) {
   const [collections, setCollections] = useState(passedCollections || []);
   const [now, setNow] = useState(Date.now());
@@ -69,15 +72,34 @@ export default function DropCountdownBar({ collections: passedCollections = null
 
   // Find nearest upcoming drop collection
   const activeDrop = useMemo(() => {
-    if (!collections || collections.length === 0) return null;
+    if (collections && collections.length > 0) {
+      const upcoming = collections.filter(c => {
+        if (!c.drop_timer_enabled || !c.drop_date) return false;
+        const dropTime = new Date(c.drop_date).getTime();
+        return dropTime > now;
+      }).sort((a, b) => new Date(a.drop_date).getTime() - new Date(b.drop_date).getTime());
 
-    const upcoming = collections.filter(c => {
-      if (!c.drop_timer_enabled || !c.drop_date) return false;
-      const dropTime = new Date(c.drop_date).getTime();
-      return dropTime > now;
-    }).sort((a, b) => new Date(a.drop_date).getTime() - new Date(b.drop_date).getTime());
+      if (upcoming.length > 0) return upcoming[0];
+      // Collections loaded and no upcoming drop is active
+      return null;
+    }
 
-    return upcoming.length > 0 ? upcoming[0] : null;
+    // Fallback sample drop ONLY in local dev while collections are loading
+    if (process.env.NODE_ENV === "development") {
+      return {
+        id: "preview-drop",
+        name: "The After Hours Edit",
+        slug: "halloween",
+        drop_headline: "The After Hours Edit",
+        tagline: "Bolder shades. Deeper moods. A collection made for late nights, long plans, and everything in between.",
+        description: "Bolder shades. Deeper moods. A collection made for late nights, long plans, and everything in between.",
+        image: "/images/drop-editorial.jpg",
+        drop_timer_enabled: true,
+        drop_date: PREVIEW_DROP_DATE,
+      };
+    }
+
+    return null;
   }, [collections, now]);
 
   const isCurrentlyActive = Boolean(activeDrop);
@@ -128,7 +150,9 @@ export default function DropCountdownBar({ collections: passedCollections = null
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email: email.trim(),
-          source: `Drop Notification: ${collectionName}`,
+          type: "drop_notification",
+          collectionId: activeDrop.id !== "preview-drop" ? String(activeDrop.id) : null,
+          collectionName: collectionName,
         }),
       });
       setSubscribed(true);

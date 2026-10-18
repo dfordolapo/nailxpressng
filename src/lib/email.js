@@ -709,3 +709,116 @@ export async function sendAdminRestockLeadAlert(subscriberEmail, productName = '
   }
 }
 
+// 12. Drop Go-Live Broadcast Email to Waitlist Subscribers
+export async function sendDropGoLiveEmail({
+  toEmail,
+  collectionName,
+  collectionSlug,
+  collectionImage = null,
+  dropHeadline = null,
+  dropDescription = null,
+}) {
+  try {
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nailexpress.ng';
+    const cleanSlug = collectionSlug ? collectionSlug.replace(/^\/+/, '') : '';
+    const dropUrl = cleanSlug ? `${siteUrl}/collection/${cleanSlug}` : `${siteUrl}/shop`;
+    const title = dropHeadline || collectionName || "New Collection";
+    const desc = dropDescription || "The wait is over. The new collection has just officially dropped. Pieces are limited and handmade — get yours before they're gone.";
+    const imageUrl = collectionImage ? getAbsoluteImageUrl(collectionImage) : null;
+
+    const emailHtml = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>${title} Is Live Now</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
+      </head>
+      <body style="margin: 0; padding: 0; background-color: #0d0d0d; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #e5e5e5;">
+        <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; margin: 30px auto; background-color: #141414; border-radius: 16px; overflow: hidden; border: 1px solid #2a2a2a; box-shadow: 0 20px 50px rgba(0,0,0,0.6);">
+          
+          <!-- BRAND TOP BAR -->
+          <tr>
+            <td align="center" style="background-color: #0f0f0f; padding: 32px 20px; border-bottom: 1px solid #222222; text-align: center;">
+              <h1 style="color: #ffffff; margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 26px; letter-spacing: 5px; text-transform: uppercase; font-weight: 600;">NAILEXPRESS</h1>
+              <p style="color: #c9938e; margin: 6px 0 0 0; font-size: 10px; letter-spacing: 4px; text-transform: uppercase;">Private Drop Alert</p>
+            </td>
+          </tr>
+
+          <!-- HERO IMAGE (IF AVAILABLE) -->
+          ${imageUrl ? `
+          <tr>
+            <td style="padding: 0; margin: 0;">
+              <img src="${imageUrl}" alt="${title}" width="100%" style="display: block; width: 100%; max-height: 340px; object-fit: cover;" />
+            </td>
+          </tr>
+          ` : ''}
+
+          <!-- MAIN CONTENT -->
+          <tr>
+            <td style="padding: 40px 32px; text-align: center;">
+              <div style="display: inline-block; padding: 6px 14px; border-radius: 20px; background-color: rgba(201, 147, 142, 0.15); border: 1px solid rgba(201, 147, 142, 0.4); color: #c9938e; font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; font-weight: 600; margin-bottom: 18px;">
+                ✦ THE VAULT IS OPEN
+              </div>
+
+              <h2 style="color: #ffffff; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 34px; line-height: 1.15; font-weight: 600; margin: 0 0 16px 0; letter-spacing: 0.5px;">
+                ${title}
+              </h2>
+
+              <p style="font-size: 15px; color: #a3a3a3; line-height: 1.7; margin: 0 auto 30px auto; max-width: 480px;">
+                ${desc}
+              </p>
+
+              <!-- CTA BUTTON -->
+              <div style="margin: 32px 0 16px 0;">
+                <a href="${dropUrl}" 
+                   style="display: inline-block; padding: 16px 40px; background: linear-gradient(135deg, #c9938e 0%, #7a403d 100%); color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: 2px; box-shadow: 0 8px 24px rgba(122, 64, 61, 0.4);">
+                  Shop The Drop Now ↗
+                </a>
+              </div>
+
+              <p style="font-size: 12px; color: #777777; margin: 16px 0 0 0;">
+                You received this because you requested priority notification for this release.
+              </p>
+            </td>
+          </tr>
+
+          <!-- VALUE PROPS / FOOTER -->
+          <tr>
+            <td style="background-color: #0d0d0d; padding: 28px 24px; text-align: center; border-top: 1px solid #222222;">
+              <p style="margin: 0 0 8px 0; font-size: 12px; color: #888888; letter-spacing: 1px;">
+                HANDMADE • CUSTOM SIZED • REUSABLE UP TO 5X
+              </p>
+              <p style="margin: 0; font-size: 11px; color: #555555;">
+                © ${new Date().getFullYear()} Nailexpress • Lagos, Nigeria
+              </p>
+            </td>
+          </tr>
+        </table>
+      </body>
+      </html>
+    `;
+
+    const { data, error } = await resend.emails.send({
+      from: `Nailexpress <${fromEmail}>`,
+      to: [toEmail],
+      replyTo: adminDefaultEmail,
+      subject: `It's Live: ${title} is now available ✦`,
+      html: emailHtml,
+    });
+
+    if (error) {
+      console.error(`Failed to send go-live email to ${toEmail}:`, error);
+      return { success: false, error };
+    }
+    return { success: true, data };
+  } catch (err) {
+    console.error("sendDropGoLiveEmail error:", err);
+    return { success: false, error: err.message };
+  }
+}
+
+

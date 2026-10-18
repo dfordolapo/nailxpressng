@@ -198,6 +198,21 @@ export default function SubscribersClient() {
           >
             Restock Alerts ({subscribers.filter((s) => s.subscription_type === "restock").length})
           </button>
+          <button
+            onClick={() => setFilterType("drop_notification")}
+            style={{
+              padding: "6px 14px",
+              borderRadius: "20px",
+              border: "none",
+              fontSize: "0.85rem",
+              fontWeight: 600,
+              cursor: "pointer",
+              background: filterType === "drop_notification" ? "var(--color-primary)" : "#f3ebea",
+              color: filterType === "drop_notification" ? "#fff" : "#444",
+            }}
+          >
+            Drop Waitlists ({subscribers.filter((s) => s.subscription_type === "drop_notification").length})
+          </button>
         </div>
 
         {selectedIds.length > 0 && (
@@ -252,7 +267,7 @@ export default function SubscribersClient() {
               </th>
               <th>Customer Email</th>
               <th>Channel / Intent</th>
-              <th>Target Product</th>
+              <th>Target Product / Drop</th>
               <th>Date Captured</th>
             </tr>
           </thead>
@@ -291,15 +306,33 @@ export default function SubscribersClient() {
                         fontSize: "0.75rem",
                         fontWeight: 600,
                         textTransform: "uppercase",
-                        backgroundColor: sub.subscription_type === "restock" ? "#fef3c7" : "#f3e8ff",
-                        color: sub.subscription_type === "restock" ? "#92400e" : "#6b21a8",
+                        backgroundColor: 
+                          sub.subscription_type === "restock" 
+                            ? "#fef3c7" 
+                            : sub.subscription_type === "drop_notification"
+                            ? "#ffe4e6"
+                            : "#f3e8ff",
+                        color: 
+                          sub.subscription_type === "restock" 
+                            ? "#92400e" 
+                            : sub.subscription_type === "drop_notification"
+                            ? "#9f1239"
+                            : "#6b21a8",
                       }}
                     >
-                      {sub.subscription_type === "restock" ? "Restock Request" : "VIP Inner Circle"}
+                      {sub.subscription_type === "restock" 
+                        ? "Restock Request" 
+                        : sub.subscription_type === "drop_notification"
+                        ? "Drop Waitlist"
+                        : "VIP Inner Circle"}
                     </span>
                   </td>
                   <td>
-                    {sub.product_name ? (
+                    {sub.collection_name ? (
+                      <span style={{ fontWeight: 600, color: "var(--color-primary)" }}>
+                        ✦ {sub.collection_name}
+                      </span>
+                    ) : sub.product_name ? (
                       <span style={{ fontWeight: 500, color: "var(--color-primary)" }}>
                         {sub.product_name}
                       </span>

@@ -59,7 +59,9 @@ export default function CollectionTeaserScreen({ category, onUnlock }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email: email.trim(),
-          source: `Drop Teaser: ${category?.name || "Collection"}`,
+          type: "drop_notification",
+          collectionId: category?.id ? String(category.id) : null,
+          collectionName: category?.name || "Collection",
         }),
       });
       setSubscribed(true);

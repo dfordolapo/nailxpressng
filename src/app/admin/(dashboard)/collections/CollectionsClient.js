@@ -21,7 +21,8 @@ import {
   Package,
   AlertCircle,
   Timer,
-  Lock
+  Lock,
+  Bell
 } from "lucide-react";
 import styles from "./collections.module.css";
 
@@ -303,6 +304,34 @@ export default function CollectionsClient() {
     } catch (err) {
       console.error(err);
       showToast(err.message, "error");
+    }
+  };
+
+  const handleBroadcastDrop = async (col) => {
+    const isLive = col.drop_date && new Date(col.drop_date).getTime() <= Date.now();
+    const promptMsg = isLive
+      ? `Broadcast "Collection is Live!" email to all waitlist subscribers for "${col.name}"?`
+      : `The countdown timer for "${col.name}" has not reached zero yet. Broadcast drop notification now anyway?`;
+
+    if (!window.confirm(promptMsg)) {
+      return;
+    }
+
+    showToast(`Broadcasting drop alert for "${col.name}"...`);
+    try {
+      const res = await fetch("/api/cron/send-drop-notifications", {
+        method: "POST",
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast(`Sent ${data.totalEmailsSent || 0} drop alert emails!`);
+        fetchCollections();
+      } else {
+        showToast(data.message || data.error || "No pending notifications to send", "info");
+      }
+    } catch (err) {
+      console.error(err);
+      showToast("Broadcast failed: " + err.message, "error");
     }
   };
 
@@ -602,6 +631,16 @@ export default function CollectionsClient() {
                       {/* Actions */}
                       <td style={{ textAlign: "right" }}>
                         <div className={styles.actionsCell} style={{ justifyContent: "flex-end" }}>
+                          {col.drop_timer_enabled && (
+                            <button
+                              className={styles.iconBtn}
+                              onClick={() => handleBroadcastDrop(col)}
+                              title={col.drop_notification_sent ? "Drop alert already sent (click to broadcast again)" : "Broadcast 'Now Live' email to waitlist subscribers"}
+                              style={{ color: col.drop_notification_sent ? "#059669" : "var(--color-primary)" }}
+                            >
+                              <Bell size={15} strokeWidth={1.5} />
+                            </button>
+                          )}
                           <a
                             href={storeUrl}
                             target="_blank"
