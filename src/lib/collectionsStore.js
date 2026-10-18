@@ -9,6 +9,9 @@ const DEFAULT_COLLECTIONS = [
     is_published: true,
     display_order: 1,
     products_count: 7,
+    drop_timer_enabled: false,
+    drop_date: null,
+    drop_headline: null,
     created_at: new Date().toISOString()
   },
   {
@@ -21,6 +24,9 @@ const DEFAULT_COLLECTIONS = [
     is_published: true,
     display_order: 2,
     products_count: 7,
+    drop_timer_enabled: false,
+    drop_date: null,
+    drop_headline: null,
     created_at: new Date().toISOString()
   }
 ];
@@ -78,6 +84,9 @@ export function addLocalCollection(collection) {
     is_published: collection.is_published !== false,
     display_order: collection.display_order ?? current.length + 1,
     products_count: 0,
+    drop_timer_enabled: Boolean(collection.drop_timer_enabled),
+    drop_date: collection.drop_date || null,
+    drop_headline: collection.drop_headline || null,
     created_at: new Date().toISOString()
   };
   current.push(newCol);

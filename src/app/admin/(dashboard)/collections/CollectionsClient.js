@@ -19,7 +19,9 @@ import {
   X, 
   UploadCloud, 
   Package,
-  AlertCircle
+  AlertCircle,
+  Timer,
+  Lock
 } from "lucide-react";
 import styles from "./collections.module.css";
 
@@ -30,6 +32,18 @@ function slugify(text) {
     .replace(/[^\w\s-]/g, '')
     .replace(/[\s_-]+/g, '-')
     .replace(/^-+|-+$/g, '');
+}
+
+function toDateTimeLocalString(dateStr) {
+  if (!dateStr) return "";
+  try {
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return "";
+    const pad = (n) => String(n).padStart(2, "0");
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  } catch {
+    return "";
+  }
 }
 
 export default function CollectionsClient() {
@@ -55,6 +69,9 @@ export default function CollectionsClient() {
   const [formDisplayOrder, setFormDisplayOrder] = useState(0);
   const [formImageFile, setFormImageFile] = useState(null);
   const [formImagePreview, setFormImagePreview] = useState("");
+  const [formDropTimerEnabled, setFormDropTimerEnabled] = useState(false);
+  const [formDropDate, setFormDropDate] = useState("");
+  const [formDropHeadline, setFormDropHeadline] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const fileInputRef = useRef(null);
 
@@ -112,6 +129,9 @@ export default function CollectionsClient() {
     setFormDisplayOrder(collections.length);
     setFormImageFile(null);
     setFormImagePreview("");
+    setFormDropTimerEnabled(false);
+    setFormDropDate("");
+    setFormDropHeadline("");
     setIsModalOpen(true);
   };
 
@@ -127,6 +147,9 @@ export default function CollectionsClient() {
     setFormDisplayOrder(col.display_order ?? 0);
     setFormImageFile(null);
     setFormImagePreview(col.image || "");
+    setFormDropTimerEnabled(Boolean(col.drop_timer_enabled));
+    setFormDropDate(toDateTimeLocalString(col.drop_date));
+    setFormDropHeadline(col.drop_headline || "");
     setIsModalOpen(true);
   };
 
@@ -185,6 +208,9 @@ export default function CollectionsClient() {
       formData.append("description", formDescription.trim());
       formData.append("is_published", formIsPublished ? "true" : "false");
       formData.append("display_order", String(formDisplayOrder));
+      formData.append("drop_timer_enabled", formDropTimerEnabled ? "true" : "false");
+      formData.append("drop_date", formDropDate ? new Date(formDropDate).toISOString() : "");
+      formData.append("drop_headline", formDropHeadline.trim());
 
       if (coverImageUrl) {
         formData.append("image_url", coverImageUrl);
@@ -456,6 +482,7 @@ export default function CollectionsClient() {
                   <th>Collection</th>
                   <th>Tagline / Description</th>
                   <th>Published in Hamburger</th>
+                  <th>Drop Countdown</th>
                   <th style={{ textAlign: "right" }}>Actions</th>
                 </tr>
               </thead>
@@ -506,7 +533,7 @@ export default function CollectionsClient() {
                       {/* Published in Hamburger Toggle */}
                       <td>
                         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                          <label className={styles.toggleSwitch} title={col.is_published ? "Published (Visible in hamburger)" : "Draft (Hidden from hamburger)"}>
+                          <label className={styles.toggleSwitch} title={col.is_published !== false ? "Published (Visible in hamburger)" : "Draft (Hidden from hamburger)"}>
                             <input
                               type="checkbox"
                               checked={col.is_published !== false}
@@ -528,6 +555,47 @@ export default function CollectionsClient() {
                             )}
                           </span>
                         </div>
+                      </td>
+
+                      {/* Drop Countdown Status */}
+                      <td>
+                        {(() => {
+                          if (!col.drop_timer_enabled || !col.drop_date) {
+                            return (
+                              <span className={styles.badgeTimerOff} title="No drop countdown scheduled">
+                                <Timer size={12} strokeWidth={1.5} />
+                                Inactive
+                              </span>
+                            );
+                          }
+                          const dropTime = new Date(col.drop_date).getTime();
+                          const isUpcoming = dropTime > Date.now();
+                          const formatted = new Date(col.drop_date).toLocaleString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          });
+
+                          if (isUpcoming) {
+                            const diff = dropTime - Date.now();
+                            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+                            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                            return (
+                              <span className={styles.badgeTimerActive} title={`Locked until: ${formatted}`}>
+                                <Lock size={12} strokeWidth={1.7} />
+                                Drops {formatted} {d > 0 ? `(${d}d ${h}h)` : `(${h}h)`}
+                              </span>
+                            );
+                          }
+
+                          return (
+                            <span className={styles.badgeTimerDropped} title={`Dropped on ${formatted} - Live now`}>
+                              <Check size={12} strokeWidth={2} />
+                              Dropped (Live)
+                            </span>
+                          );
+                        })()}
                       </td>
 
                       {/* Actions */}
@@ -730,6 +798,83 @@ export default function CollectionsClient() {
                       <span className={styles.toggleSlider} />
                     </label>
                   </div>
+                </div>
+
+                {/* Drop Countdown Timer Section */}
+                <div className={styles.timerSection}>
+                  <div className={styles.timerSectionHeader}>
+                    <div className={styles.timerTitleGroup}>
+                      <Timer size={18} strokeWidth={1.5} />
+                      <span>Collection Drop Countdown Timer</span>
+                    </div>
+                    <label className={styles.toggleSwitch} title="Toggle Drop Countdown">
+                      <input
+                        type="checkbox"
+                        checked={formDropTimerEnabled}
+                        onChange={(e) => setFormDropTimerEnabled(e.target.checked)}
+                      />
+                      <span className={styles.toggleSlider} />
+                    </label>
+                  </div>
+
+                  <div className={styles.helperText}>
+                    When enabled, this collection will be locked with a live countdown timer and announcement bar across the site until the scheduled drop time.
+                  </div>
+
+                  {formDropTimerEnabled && (
+                    <>
+                      <div className={styles.formGroup} style={{ marginTop: "4px" }}>
+                        <label className={styles.formLabel}>Drop Date & Time *</label>
+                        <input
+                          type="datetime-local"
+                          className={styles.formInput}
+                          value={formDropDate}
+                          onChange={(e) => setFormDropDate(e.target.value)}
+                          required={formDropTimerEnabled}
+                        />
+                        <div className={styles.helperText}>
+                          Select when the countdown reaches zero and the collection automatically unlocks to the public.
+                        </div>
+                      </div>
+
+                      <div className={styles.formGroup}>
+                        <label className={styles.formLabel}>Teaser Headline (Optional)</label>
+                        <input
+                          type="text"
+                          className={styles.formInput}
+                          placeholder="e.g. Exclusive Halloween Capsule Drop"
+                          value={formDropHeadline}
+                          onChange={(e) => setFormDropHeadline(e.target.value)}
+                        />
+                        <div className={styles.helperText}>
+                          Displayed above the countdown timer on the locked teaser screen and announcement bar.
+                        </div>
+                      </div>
+
+                      {formDropDate && (
+                        <div className={styles.timerPreviewBox}>
+                          <div className={styles.timerPreviewLabel}>Drop Status Preview</div>
+                          <div className={styles.timerPreviewContent}>
+                            {new Date(formDropDate).getTime() > Date.now() ? (
+                              <>
+                                <Lock size={15} color="#b45309" strokeWidth={1.7} />
+                                <span>
+                                  <strong>Locked:</strong> Unlocks on {new Date(formDropDate).toLocaleString()}
+                                </span>
+                              </>
+                            ) : (
+                              <>
+                                <Check size={15} color="#059669" strokeWidth={2} />
+                                <span>
+                                  <strong>Already Passed:</strong> Drop date is in the past — collection will be fully unlocked.
+                                </span>
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  )}
                 </div>
               </div>
 

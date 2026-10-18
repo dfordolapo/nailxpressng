@@ -8,6 +8,7 @@ import ProductCard from "@/components/product/ProductCard";
 import ShapeFilterBar from "@/components/product/ShapeFilterBar";
 import CategoryShowcase from "@/components/home/CategoryShowcase";
 import FactoryVideos from "@/components/product/FactoryVideos";
+import CollectionTeaserScreen from "@/components/product/CollectionTeaserScreen";
 import { SORT_OPTIONS } from "@/lib/constants";
 import pageStyles from "@/styles/pages/collection.module.css";
 import filterStyles from "@/styles/components/filter.module.css";
@@ -68,6 +69,23 @@ export default function CollectionClient({ category, allProducts, featuredProduc
   const [sortBy, setSortBy] = useState("newest");
   const [viewMode, setViewMode] = useState("grid");
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+
+  // Check if collection is locked pending drop countdown
+  const isDropLocked = Boolean(
+    category?.drop_timer_enabled &&
+    category?.drop_date &&
+    new Date(category.drop_date).getTime() > Date.now()
+  );
+  const [locked, setLocked] = useState(isDropLocked);
+
+  if (locked) {
+    return (
+      <CollectionTeaserScreen 
+        category={category} 
+        onUnlock={() => setLocked(false)} 
+      />
+    );
+  }
 
   const filtered = useMemo(() => {
     const shapeFilters = { nailShape: selectedShapes, lengths: selectedLengths, colors: selectedColors };

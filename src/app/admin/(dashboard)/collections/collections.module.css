@@ -709,3 +709,96 @@ input:checked + .toggleSlider:before {
     min-height: 44px;
   }
 }
+
+/* ── Drop Timer Badges & Modal Section ───────────────────────────────── */
+.badgeTimerActive {
+  background: rgba(217, 119, 6, 0.1);
+  color: #b45309;
+  border: 1px solid rgba(217, 119, 6, 0.25);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: var(--radius-full, 9999px);
+  font-size: 0.76rem;
+}
+
+.badgeTimerDropped {
+  background: rgba(16, 185, 129, 0.1);
+  color: #059669;
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: var(--radius-full, 9999px);
+  font-size: 0.76rem;
+}
+
+.badgeTimerOff {
+  background: #f1f5f9;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: var(--radius-full, 9999px);
+  font-size: 0.76rem;
+}
+
+.timerSection {
+  background: linear-gradient(135deg, rgba(58, 16, 23, 0.03) 0%, rgba(212, 169, 140, 0.08) 100%);
+  border: 1px solid rgba(139, 44, 61, 0.18);
+  border-radius: var(--radius-lg, 12px);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.timerSectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.timerTitleGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: var(--color-primary, #8b2c3d);
+}
+
+.timerPreviewBox {
+  background: #ffffff;
+  border: 1px dashed rgba(139, 44, 61, 0.3);
+  border-radius: 8px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.timerPreviewLabel {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-secondary, #64748b);
+  font-weight: 600;
+}
+
+.timerPreviewContent {
+  font-size: 0.85rem;
+  color: var(--color-primary-dark, #3a1017);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+

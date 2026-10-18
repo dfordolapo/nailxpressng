@@ -79,6 +79,10 @@ export async function POST(request) {
     let displayOrder = 0;
     let imageUrl = '';
 
+    let dropTimerEnabled = false;
+    let dropDate = null;
+    let dropHeadline = null;
+
     if (contentType.includes('multipart/form-data')) {
       const formData = await request.formData();
       name = formData.get('name') || '';
@@ -88,6 +92,9 @@ export async function POST(request) {
       isPublished = formData.get('is_published') === 'false' ? false : true;
       displayOrder = parseInt(formData.get('display_order') || '0', 10);
       imageUrl = formData.get('image_url') || '';
+      dropTimerEnabled = formData.get('drop_timer_enabled') === 'true';
+      dropDate = formData.get('drop_date') || null;
+      dropHeadline = formData.get('drop_headline') ? String(formData.get('drop_headline')).trim() : null;
 
       const imageFile = formData.get('image');
       if (imageFile && typeof imageFile === 'object' && imageFile.size > 0) {
@@ -135,6 +142,9 @@ export async function POST(request) {
       isPublished = body.is_published !== false;
       displayOrder = parseInt(body.display_order || '0', 10);
       imageUrl = body.image || body.image_url || '';
+      dropTimerEnabled = Boolean(body.drop_timer_enabled);
+      dropDate = body.drop_date || null;
+      dropHeadline = body.drop_headline ? String(body.drop_headline).trim() : null;
     }
 
     if (!name.trim()) {
@@ -154,6 +164,9 @@ export async function POST(request) {
       image: imageUrl || null,
       is_published: isPublished,
       display_order: isNaN(displayOrder) ? 0 : displayOrder,
+      drop_timer_enabled: dropTimerEnabled,
+      drop_date: dropDate,
+      drop_headline: dropHeadline,
     };
 
     if (isPlaceholderUrl) {

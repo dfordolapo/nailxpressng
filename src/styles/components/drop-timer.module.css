@@ -1,0 +1,455 @@
+/* ── Drop Countdown Announcement Bar (Sitewide Top) ─────────────────── */
+.dropBar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  width: 100%;
+  background: linear-gradient(135deg, #3A1017 0%, #1F070C 50%, #3A1017 100%);
+  color: #FFFFFF;
+  border-bottom: 1px solid rgba(212, 169, 140, 0.25);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  padding: 8px 16px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.dropBar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.06), transparent);
+  animation: shimmer 4s infinite linear;
+  background-size: 200% 100%;
+  pointer-events: none;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.dropBarInner {
+  max-width: var(--container-max, 1280px);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.dropBarContent {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.dropBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(212, 169, 140, 0.18);
+  border: 1px solid rgba(212, 169, 140, 0.4);
+  color: #F7D6C8;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: var(--radius-full, 9999px);
+  white-space: nowrap;
+}
+
+.dropBadgePulse {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #E27D60;
+  box-shadow: 0 0 8px #E27D60;
+  animation: pulse 1.8s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+.dropTitle {
+  font-size: 0.86rem;
+  font-weight: 500;
+  color: #FFF;
+  letter-spacing: 0.01em;
+}
+
+.dropTitle strong {
+  color: #F7D6C8;
+  font-weight: 600;
+}
+
+.countdownPills {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-variant-numeric: tabular-nums;
+  font-family: inherit;
+}
+
+.pillSegment {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 2px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+
+.pillNum {
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: #FFFFFF;
+}
+
+.pillUnit {
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.65);
+  text-transform: uppercase;
+}
+
+.pillSep {
+  color: rgba(255, 255, 255, 0.4);
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.dropBarActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dropCtaBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #D4A98C;
+  color: #2A0812;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 5px 14px;
+  border-radius: var(--radius-full, 9999px);
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 2px 10px rgba(212, 169, 140, 0.3);
+  transition: all 0.2s ease;
+}
+
+.dropCtaBtn:hover {
+  background: #E8C3A9;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(212, 169, 140, 0.4);
+}
+
+.dismissBtn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: color 0.15s ease;
+}
+
+.dismissBtn:hover {
+  color: #FFFFFF;
+}
+
+/* ── Collection Locked Teaser Screen ─────────────────────────────────── */
+.teaserContainer {
+  position: relative;
+  min-height: calc(85vh - var(--header-height, 70px));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px 80px;
+  overflow: hidden;
+}
+
+.teaserBackground {
+  position: absolute;
+  inset: -20px;
+  background-size: cover;
+  background-position: center;
+  filter: blur(40px) brightness(0.28);
+  opacity: 0.75;
+  transform: scale(1.08);
+  z-index: 1;
+}
+
+.teaserBackdropOverlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(122, 64, 61, 0.25) 0%, rgba(15, 6, 9, 0.85) 100%);
+  z-index: 2;
+}
+
+.teaserCard {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  max-width: 680px;
+  background: rgba(30, 14, 18, 0.78);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(212, 169, 140, 0.22);
+  border-radius: 28px;
+  padding: 48px 36px;
+  text-align: center;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(122, 64, 61, 0.2);
+  animation: fadeInTeaser 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeInTeaser {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.lockedBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(226, 125, 96, 0.16);
+  border: 1px solid rgba(226, 125, 96, 0.4);
+  color: #F7D6C8;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 6px 16px;
+  border-radius: 9999px;
+  margin-bottom: 24px;
+}
+
+.teaserTitle {
+  font-family: var(--font-heading, 'Cormorant Upright', Georgia, serif);
+  font-size: clamp(2.4rem, 5vw, 3.8rem);
+  font-weight: 600;
+  line-height: 1.1;
+  color: #FFFFFF;
+  margin: 0 0 12px;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+}
+
+.teaserHeadline {
+  font-size: clamp(1rem, 2vw, 1.15rem);
+  color: #F0D5C7;
+  max-width: 500px;
+  margin: 0 auto 32px;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+/* Big Clock Display */
+.clockGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  max-width: 520px;
+  margin: 0 auto 36px;
+}
+
+.clockTile {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border: 1px solid rgba(212, 169, 140, 0.28);
+  border-radius: 18px;
+  padding: 18px 8px 14px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 8px 24px rgba(0,0,0,0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.clockTile::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: rgba(255, 255, 255, 0.03);
+  pointer-events: none;
+}
+
+.clockDigits {
+  font-family: var(--font-heading, 'Cormorant Upright', Georgia, serif);
+  font-size: clamp(2rem, 4.5vw, 3rem);
+  font-weight: 700;
+  color: #FFFFFF;
+  line-height: 1;
+  margin-bottom: 6px;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 16px rgba(212, 169, 140, 0.4);
+}
+
+.clockLabel {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: rgba(247, 214, 200, 0.75);
+  text-transform: uppercase;
+}
+
+/* VIP Waitlist Box */
+.waitlistCard {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 18px;
+  padding: 22px;
+  max-width: 460px;
+  margin: 0 auto 24px;
+}
+
+.waitlistTitle {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #FFFFFF;
+  margin-bottom: 6px;
+}
+
+.waitlistSub {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.65);
+  margin-bottom: 16px;
+  line-height: 1.4;
+}
+
+.waitlistForm {
+  display: flex;
+  gap: 8px;
+}
+
+.waitlistInput {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.09);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-full, 9999px);
+  padding: 10px 18px;
+  color: #FFFFFF;
+  font-size: 0.86rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.waitlistInput:focus {
+  border-color: #D4A98C;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.waitlistInput::placeholder {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.waitlistSubmitBtn {
+  background: #D4A98C;
+  color: #2A0812;
+  border: none;
+  border-radius: var(--radius-full, 9999px);
+  padding: 10px 20px;
+  font-weight: 700;
+  font-size: 0.86rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.waitlistSubmitBtn:hover {
+  background: #E8C3A9;
+  transform: translateY(-1px);
+}
+
+.waitlistSuccess {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #34D399;
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 8px;
+}
+
+.teaserActions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.btnTeaserCustom {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #F7D6C8;
+  border: 1px solid rgba(247, 214, 200, 0.35);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 10px 22px;
+  border-radius: var(--radius-full, 9999px);
+  font-size: 0.86rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.btnTeaserCustom:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: #F7D6C8;
+  color: #FFFFFF;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .dropBar {
+    padding: 8px 12px;
+  }
+  .dropBarInner {
+    justify-content: center;
+  }
+  .dropBarContent {
+    justify-content: center;
+    gap: 8px;
+  }
+  .dropTitle {
+    font-size: 0.8rem;
+    text-align: center;
+  }
+  .teaserCard {
+    padding: 32px 20px;
+    border-radius: 20px;
+  }
+  .clockGrid {
+    gap: 8px;
+  }
+  .clockTile {
+    padding: 14px 4px 10px;
+    border-radius: 12px;
+  }
+  .waitlistForm {
+    flex-direction: column;
+  }
+  .waitlistSubmitBtn {
+    width: 100%;
+  }
+}

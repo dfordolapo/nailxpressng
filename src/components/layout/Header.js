@@ -9,6 +9,7 @@ import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { useSearch } from "@/context/SearchContext";
 import CartDrawer from "@/components/cart/CartDrawer";
+import DropCountdownBar from "@/components/layout/DropCountdownBar";
 import styles from "@/styles/components/header.module.css";
 
 const DEFAULT_COLLECTIONS = [
@@ -24,6 +25,7 @@ export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [hasDropBar, setHasDropBar] = useState(false);
 
   // Collections state for dynamic hamburger menu & navigation
   const [collections, setCollections] = useState(DEFAULT_COLLECTIONS);
@@ -88,7 +90,8 @@ export default function Header() {
 
   return (
     <>
-      <header className={`${styles.header} ${scrolled ? styles.scrolled : ""} ${mobileOpen ? styles.headerHidden : ""}`} id="site-header">
+      <DropCountdownBar collections={collections} onActiveChange={setHasDropBar} />
+      <header className={`${styles.header} ${hasDropBar ? styles.headerWithDropBar : ""} ${scrolled ? styles.scrolled : ""} ${mobileOpen ? styles.headerHidden : ""}`} id="site-header">
         <div className={styles.headerInner}>
           {/* Logo */}
           <Link href="/" className={styles.logo} id="site-logo">
