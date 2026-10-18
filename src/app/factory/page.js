@@ -1,4 +1,4 @@
-import { getProductsByCategory, getFeaturedProducts, getProducts } from "@/lib/api";
+import { getProductsByCategory, getFeaturedProducts, getProducts, getCategoryBySlug } from "@/lib/api";
 import CollectionClient from "@/components/product/CollectionClient";
 import FindYourFitQuiz from "@/components/product/FindYourFitQuiz";
 
@@ -36,7 +36,8 @@ export const metadata = {
 export const revalidate = 3600; // Cache the page for 1 hour for instant load times
 
 export default async function FactoryPage() {
-  const category = { slug: "factory", name: "Factory Made", description: "Precision-crafted nails for perfect consistency and durability." };
+  const dbCategory = await getCategoryBySlug("factory");
+  const category = dbCategory || { slug: "factory", name: "Factory Made", description: "Precision-crafted nails for perfect consistency and durability." };
   
   // Fetch data on the server
   const allProducts = await getProductsByCategory("factory");

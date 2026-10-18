@@ -25,16 +25,21 @@ export default function DropCountdownBar({ collections: passedCollections = null
   const [collections, setCollections] = useState(passedCollections || []);
   const [dismissedId, setDismissedId] = useState(null);
   const [now, setNow] = useState(Date.now());
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    if (passedCollections && Array.isArray(passedCollections)) {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (passedCollections && Array.isArray(passedCollections) && passedCollections.length > 0) {
       setCollections(passedCollections);
     }
   }, [passedCollections]);
 
-  // Fetch collections with active drop timers if not provided as prop
+  // Always fetch fresh collections on mount & route change
   useEffect(() => {
-    if (isAdmin || passedCollections) return;
+    if (isAdmin) return;
     let active = true;
 
     async function loadCollections() {
@@ -51,11 +56,11 @@ export default function DropCountdownBar({ collections: passedCollections = null
 
     loadCollections();
     return () => { active = false; };
-  }, [isAdmin, passedCollections, pathname]);
+  }, [isAdmin, pathname]);
 
   // Keep live second-by-second countdown
   useEffect(() => {
-    if (isAdmin) return;
+    if (isAdmin || !mounted) return;
     const interval = setInterval(() => {
       setNow(Date.now());
     }, 1000);
@@ -93,7 +98,7 @@ export default function DropCountdownBar({ collections: passedCollections = null
     }
   }, [isCurrentlyActive, onActiveChange]);
 
-  if (!isCurrentlyActive) return null;
+  if (!mounted || !isCurrentlyActive) return null;
 
   const timeLeft = calculateTimeLeft(activeDrop.drop_date);
   if (!timeLeft) return null;

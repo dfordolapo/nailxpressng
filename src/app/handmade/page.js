@@ -1,4 +1,4 @@
-import { getProductsByCategory, getProducts } from "@/lib/api";
+import { getProductsByCategory, getProducts, getCategoryBySlug } from "@/lib/api";
 import CollectionClient from "@/components/product/CollectionClient";
 import FindYourFitQuiz from "@/components/product/FindYourFitQuiz";
 
@@ -36,7 +36,8 @@ export const metadata = {
 export const revalidate = 3600; // Cache the page for 1 hour for instant load times
 
 export default async function HandmadePage() {
-  const category = { slug: "handmade", name: "Handmade", description: "Artisan-crafted nail sets painted by hand. Each piece is unique." };
+  const dbCategory = await getCategoryBySlug("handmade");
+  const category = dbCategory || { slug: "handmade", name: "Handmade", description: "Artisan-crafted nail sets painted by hand. Each piece is unique." };
   
   // Fetch data on the server
   const allProducts = await getProductsByCategory("handmade");
