@@ -646,21 +646,35 @@ function ProductsContent({ initialProducts = [] }) {
             const ctx = canvas.getContext("2d");
             ctx.drawImage(img, 0, 0, width, height);
 
-            canvas.toBlob(
-              (blob) => {
-                if (blob) {
-                  const compressed = new File([blob], file.name.replace(/\.[^/.]+$/, ".jpg"), {
-                    type: "image/jpeg",
-                    lastModified: Date.now(),
-                  });
-                  resolve(compressed);
-                } else {
-                  resolve(file);
-                }
-              },
-              "image/jpeg",
-              quality
-            );
+            const handleBlob = (blob) => {
+              if (blob) {
+                const isWebP = blob.type === "image/webp";
+                const ext = isWebP ? ".webp" : ".jpg";
+                const compressed = new File([blob], file.name.replace(/\.[^/.]+$/, ext), {
+                  type: blob.type || (isWebP ? "image/webp" : "image/jpeg"),
+                  lastModified: Date.now(),
+                });
+                resolve(compressed);
+              } else {
+                resolve(file);
+              }
+            };
+
+            try {
+              canvas.toBlob(
+                (blob) => {
+                  if (blob && blob.type === "image/webp") {
+                    handleBlob(blob);
+                  } else {
+                    canvas.toBlob(handleBlob, "image/jpeg", quality);
+                  }
+                },
+                "image/webp",
+                quality
+              );
+            } catch {
+              canvas.toBlob(handleBlob, "image/jpeg", quality);
+            }
           };
           img.onerror = () => resolve(file);
           img.src = e.target.result;

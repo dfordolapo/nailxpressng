@@ -40,23 +40,39 @@ export async function compressImage(file, maxDim = 1200, quality = 0.82) {
           const ctx = canvas.getContext("2d");
           ctx.drawImage(img, 0, 0, width, height);
 
-          canvas.toBlob(
-            (blob) => {
-              URL.revokeObjectURL(objectUrl);
-              if (blob) {
-                const cleanName = fileName.replace(/\.[^/.]+$/, "").replace(/[^a-zA-Z0-9_-]/g, "_") || "photo";
-                const compressed = new File([blob], `${cleanName}.jpg`, {
-                  type: "image/jpeg",
-                  lastModified: Date.now(),
-                });
-                resolve(compressed);
-              } else {
-                resolve(file);
-              }
-            },
-            "image/jpeg",
-            quality
-          );
+          // Convert to WebP automatically, fallback to JPEG if browser lacks WebP canvas export
+          const handleBlob = (blob) => {
+            URL.revokeObjectURL(objectUrl);
+            if (blob) {
+              const isWebP = blob.type === "image/webp";
+              const ext = isWebP ? "webp" : "jpg";
+              const cleanName = fileName.replace(/\.[^/.]+$/, "").replace(/[^a-zA-Z0-9_-]/g, "_") || "photo";
+              const compressed = new File([blob], `${cleanName}.${ext}`, {
+                type: blob.type || (isWebP ? "image/webp" : "image/jpeg"),
+                lastModified: Date.now(),
+              });
+              resolve(compressed);
+            } else {
+              resolve(file);
+            }
+          };
+
+          try {
+            canvas.toBlob(
+              (blob) => {
+                if (blob && blob.type === "image/webp") {
+                  handleBlob(blob);
+                } else {
+                  // Fallback to JPEG if browser canvas returns null or doesn't support WebP export
+                  canvas.toBlob(handleBlob, "image/jpeg", quality);
+                }
+              },
+              "image/webp",
+              quality
+            );
+          } catch {
+            canvas.toBlob(handleBlob, "image/jpeg", quality);
+          }
         } catch {
           URL.revokeObjectURL(objectUrl);
           resolve(file);
@@ -79,18 +95,21 @@ export async function compressImage(file, maxDim = 1200, quality = 0.82) {
  * Multi-tier upload pipeline that completely bypasses Vercel 4.5MB payload limits:
  * 1. Pre-signed upload URL (browser uploads directly to Supabase Storage)
  * 2. Direct Supabase Storage client upload
- * 3. Server route fallback with client-compressed file (< 300KB)
+ * 3. Server route fallback with client-compressed WebP file (< 200KB)
  */
 export async function uploadImageDirect(file, fileNamePrefix = "product") {
   if (!file) throw new Error("No file provided");
 
-  // 1. Compress first to ensure minimal network payload
+  // 1. Compress & convert to WebP first
   const compressed = await compressImage(file);
+  const isWebP = compressed.type === "image/webp";
+  const ext = isWebP ? "webp" : "jpg";
+  const mime = isWebP ? "image/webp" : "image/jpeg";
   const timestamp = Date.now();
   const rawBase = file.name
     ? file.name.replace(/\.[^/.]+$/, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)+/g, "")
     : "image";
-  const fileName = `${fileNamePrefix}-${rawBase || "item"}-${timestamp}.jpg`;
+  const fileName = `${fileNamePrefix}-${rawBase || "item"}-${timestamp}.${ext}`;
 
   // Tier 1: Request signed upload URL to upload directly from browser to Supabase Storage
   // (Zero bytes go through Vercel serverless functions, bypassing 4.5MB limit permanently)
@@ -98,7 +117,7 @@ export async function uploadImageDirect(file, fileNamePrefix = "product") {
     const urlRes = await fetch('/api/admin/products/upload-url', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ fileName, contentType: 'image/jpeg' })
+      body: JSON.stringify({ fileName, contentType: mime })
     });
 
     if (urlRes.ok) {
@@ -114,7 +133,7 @@ export async function uploadImageDirect(file, fileNamePrefix = "product") {
         // Upload directly to Supabase Storage via signed URL
         const putRes = await fetch(urlData.signedUrl, {
           method: 'PUT',
-          headers: { 'Content-Type': 'image/jpeg' },
+          headers: { 'Content-Type': mime },
           body: compressed
         });
 
@@ -133,7 +152,7 @@ export async function uploadImageDirect(file, fileNamePrefix = "product") {
       const { data: uploadData, error: uploadErr } = await supabase.storage
         .from('product-images')
         .upload(fileName, compressed, {
-          contentType: 'image/jpeg',
+          contentType: mime,
           upsert: true,
         });
 
