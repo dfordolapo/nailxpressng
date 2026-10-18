@@ -67,9 +67,13 @@ const mapProduct = (p, discount = 0) => {
     nailShape: p.nail_shape,
     style: p.style,
     lengths: Array.isArray(p.lengths) ? p.lengths : [],
-    sizes: resolvedCategory === 'handmade' 
-      ? (Array.isArray(p.sizes) && p.sizes.length > 0 ? p.sizes : ["S", "M", "L"]) 
-      : [],
+    sizes: (() => {
+      const isFactory = resolvedCategory === 'factory' || (resolvedCategoryName && resolvedCategoryName.toLowerCase().includes('factory'));
+      if (isFactory) return [];
+      if (Array.isArray(p.sizes) && p.sizes.length > 0) return p.sizes;
+      if (resolvedCategory === 'handmade') return ["S", "M", "L"];
+      return [];
+    })(),
     images: p.images,
     image: p.images?.[0] || null,
     videoUrl: p.video_url || null,

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { formatPrice, getDiscountPercent } from "@/lib/utils";
@@ -11,6 +11,7 @@ import ImageZoomModal from "@/components/product/ImageZoomModal";
 import { SOCIAL_LINKS, WHATSAPP_MESSAGES } from "@/lib/constants";
 import EmailCapture from "@/components/ui/EmailCapture";
 import { motion } from "framer-motion";
+import { getSavedNailSize, saveNailSize } from "@/lib/nailSizeMemory";
 import styles from "./handmade-card.module.css";
 
 function HeartIcon({ filled }) {
@@ -46,7 +47,6 @@ function ArrowLeftIcon() {
   );
 }
 
-
 function ZoomInIcon() {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -60,6 +60,7 @@ function ZoomInIcon() {
 
 export default function HandmadeProductCard({ product, index = 0, viewMode = "grid" }) {
   const [flipped, setFlipped] = useState(false);
+  const availableSizes = Array.isArray(product?.sizes) && product.sizes.length > 0 ? product.sizes : ["S", "M", "L"];
   const [selectedSize, setSelectedSize] = useState(null);
   const [selectedLength, setSelectedLength] = useState(product?.lengths?.[0] || null);
   const [qty, setQty] = useState(1);
@@ -70,9 +71,25 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
   const [isHovering, setIsHovering] = useState(false);
   const cardRef = useRef(null);
 
+  useEffect(() => {
+    const saved = getSavedNailSize();
+    if (saved && availableSizes.includes(saved)) {
+      setSelectedSize(saved);
+    }
+    const handleSync = (e) => {
+      const newSaved = e.detail;
+      if (newSaved && availableSizes.includes(newSaved)) {
+        setSelectedSize(newSaved);
+      }
+    };
+    window.addEventListener("nailexpress:nail-size-changed", handleSync);
+    return () => window.removeEventListener("nailexpress:nail-size-changed", handleSync);
+  }, [availableSizes]);
+
   const handleSizeSelect = (size, e) => {
     if (e) e.stopPropagation();
     setSelectedSize(size);
+    saveNailSize(size);
   };
 
   const handleLengthSelect = (length, e) => {

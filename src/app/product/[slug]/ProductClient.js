@@ -14,6 +14,8 @@ import EmailCapture from "@/components/ui/EmailCapture";
 import pageStyles from "@/styles/pages/collection.module.css";
 import btnStyles from "@/styles/components/buttons.module.css";
 
+import { getSavedNailSize, saveNailSize } from "@/lib/nailSizeMemory";
+
 function HeartIcon({ filled }) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill={filled ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" width="22" height="22">
@@ -27,18 +29,45 @@ export default function ProductClient({ product, relatedProducts = [], isModal =
   const { toggleItem, isInWishlist } = useWishlist();
   const { showToast } = useToast();
 
-  const availableSizes = Array.isArray(product?.sizes) && product.sizes.length > 0 ? product.sizes : ["S", "M", "L"];
-  const initialSize = availableSizes.includes("M") ? "M" : (availableSizes[0] || "M");
+  const isFactory = product?.category === 'factory' || (product?.categoryName && product.categoryName.toLowerCase().includes('factory'));
+  const hasSizes = !isFactory && Array.isArray(product?.sizes) && product.sizes.length > 0;
+  const availableSizes = hasSizes ? product.sizes : [];
 
+  const [savedSize, setSavedSize] = useState(null);
   const [selectedImage, setSelectedImage] = useState(0);
-  const [selectedSize, setSelectedSize] = useState(initialSize);
+  const [selectedSize, setSelectedSize] = useState(() => {
+    if (!hasSizes) return null;
+    return availableSizes.includes("M") ? "M" : availableSizes[0];
+  });
   const [selectedLength, setSelectedLength] = useState(product?.lengths?.[0] || "Medium");
 
+  // Load and sync customer's saved nail size preference
   useEffect(() => {
-    if (product?.sizes && product.sizes.length > 0 && !product.sizes.includes(selectedSize)) {
-      setSelectedSize(product.sizes[0]);
+    if (!hasSizes) return;
+    const saved = getSavedNailSize();
+    if (saved) {
+      setSavedSize(saved);
+      if (availableSizes.includes(saved)) {
+        setSelectedSize(saved);
+      }
     }
-  }, [product, selectedSize]);
+
+    const handleSync = (e) => {
+      const newSaved = e.detail;
+      setSavedSize(newSaved);
+      if (newSaved && availableSizes.includes(newSaved)) {
+        setSelectedSize(newSaved);
+      }
+    };
+    window.addEventListener("nailexpress:nail-size-changed", handleSync);
+    return () => window.removeEventListener("nailexpress:nail-size-changed", handleSync);
+  }, [hasSizes, availableSizes]);
+
+  const handleSizeChange = (size) => {
+    setSelectedSize(size);
+    saveNailSize(size);
+    setSavedSize(size);
+  };
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
   const [zoomOrigin, setZoomOrigin] = useState("50% 50%");
@@ -116,7 +145,7 @@ export default function ProductClient({ product, relatedProducts = [], isModal =
   let displayCompareAt = product.compareAtPrice;
 
   const handleAddToCart = () => {
-    const finalSize = product.category === 'handmade' ? selectedSize : null;
+    const finalSize = hasSizes ? selectedSize : null;
     const finalLength = product.category === 'handmade' ? selectedLength : null;
     addItem(product, quantity, finalSize, finalLength);
     setAdded(true);
@@ -278,24 +307,26 @@ export default function ProductClient({ product, relatedProducts = [], isModal =
             {/* Description */}
             <p className={pageStyles.productDescription}>{product.description}</p>
 
-            {/* Size Selector */}
-            {product.category === 'handmade' && (
+            {/* Size Selector (Only for sets that have sizes, never factory made) */}
+            {hasSizes && (
               <div className={pageStyles.selectorGroup}>
-                <span className={pageStyles.selectorLabel}>Size: {selectedSize}</span>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
+                  <span className={pageStyles.selectorLabel}>Size: {selectedSize}</span>
+                  {savedSize === selectedSize && (
+                    <span style={{ fontSize: "0.74rem", color: "var(--color-primary)", fontWeight: 600, letterSpacing: "0.02em" }}>
+                      ✦ Your saved fit
+                    </span>
+                  )}
+                </div>
                 <div className={pageStyles.selectorOptions}>
-                  {Array.from(new Set([...["XS", "S", "M", "L", "Custom"], ...(product.sizes || [])])).map((size) => {
-                    const isAvailable = product.sizes && product.sizes.length > 0
-                      ? product.sizes.includes(size)
-                      : ["S", "M", "L"].includes(size);
+                  {availableSizes.map((size) => {
                     const isSelected = selectedSize === size;
                     return (
                       <button
                         key={size}
                         type="button"
-                        disabled={!isAvailable}
-                        className={`${pageStyles.selectorOption} ${isSelected ? pageStyles.selected : ""} ${!isAvailable ? pageStyles.disabledOption : ""}`}
-                        onClick={() => isAvailable && setSelectedSize(size)}
-                        title={!isAvailable ? `${size} is unavailable for this set` : size}
+                        className={`${pageStyles.selectorOption} ${isSelected ? pageStyles.selected : ""}`}
+                        onClick={() => handleSizeChange(size)}
                       >
                         {size}
                       </button>

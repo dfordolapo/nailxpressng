@@ -10,6 +10,7 @@ import { useModal } from "@/components/ui/ProductModalWrapper";
 import { ChevronRight, Package, Truck, Star } from "lucide-react";
 import ProductReviews from "@/components/product/ProductReviews";
 import EmailCapture from "@/components/ui/EmailCapture";
+import { getSavedNailSize, saveNailSize } from "@/lib/nailSizeMemory";
 import styles from "@/styles/components/quick-view.module.css";
 
 export default function ProductQuickView({ product }) {
@@ -18,15 +19,34 @@ export default function ProductQuickView({ product }) {
   const { showToast } = useToast();
   const { onClose } = useModal();
 
+  const isFactory = product?.category === 'factory' || (product?.categoryName && product.categoryName.toLowerCase().includes('factory'));
+  const hasSizes = !isFactory && Array.isArray(product?.sizes) && product.sizes.length > 0;
+  const availableSizes = hasSizes ? product.sizes : [];
+
+  const [savedSize, setSavedSize] = useState(null);
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedShape, setSelectedShape] = useState(product?.nailShape || "Almond");
   const [selectedLength, setSelectedLength] = useState(product?.lengths?.[0] || "Medium");
-  const [selectedSize, setSelectedSize] = useState(product?.sizes?.[0] || "M");
+  const [selectedSize, setSelectedSize] = useState(() => {
+    if (!hasSizes) return null;
+    return availableSizes.includes("M") ? "M" : availableSizes[0];
+  });
   const [quantity, setQuantity] = useState(1);
   const [openAccordion, setOpenAccordion] = useState(null);
   const [imgError, setImgError] = useState(false);
   const [thumbErrors, setThumbErrors] = useState({});
   const [deliveryPresets, setDeliveryPresets] = useState(null);
+
+  useEffect(() => {
+    if (!hasSizes) return;
+    const saved = getSavedNailSize();
+    if (saved) {
+      setSavedSize(saved);
+      if (availableSizes.includes(saved)) {
+        setSelectedSize(saved);
+      }
+    }
+  }, [hasSizes, availableSizes]);
   
   useEffect(() => {
     fetch('/api/settings')
@@ -43,7 +63,7 @@ export default function ProductQuickView({ product }) {
     setOpenAccordion(openAccordion === index ? null : index);
   };
 
-  const getFinalSize = () => product.category === 'handmade' ? selectedSize : null;
+  const getFinalSize = () => hasSizes ? selectedSize : null;
   const getFinalLength = () => product.category === 'handmade' ? selectedLength : null;
 
   const handleAddToCart = () => {
@@ -119,24 +139,31 @@ export default function ProductQuickView({ product }) {
         {/* Controls */}
         <div className={styles.controlsGrid}>
 
-          {product.category === 'handmade' && (
+          {hasSizes && (
             <div className={styles.formGroup}>
-              <label className={styles.label}>Size</label>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "4px" }}>
+                <label className={styles.label} style={{ margin: 0 }}>Size</label>
+                {savedSize === selectedSize && (
+                  <span style={{ fontSize: "0.72rem", color: "var(--color-primary)", fontWeight: 600 }}>
+                    ✦ Saved fit
+                  </span>
+                )}
+              </div>
               <select 
                 className={styles.select}
-                value={selectedSize}
-                onChange={(e) => setSelectedSize(e.target.value)}
+                value={selectedSize || ""}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setSelectedSize(val);
+                  saveNailSize(val);
+                  setSavedSize(val);
+                }}
               >
-                {Array.from(new Set([...["XS", "S", "M", "L", "Custom"], ...(product.sizes || [])])).map((s) => {
-                  const isAvailable = product.sizes && product.sizes.length > 0 
-                    ? product.sizes.includes(s) 
-                    : ["S", "M", "L"].includes(s);
-                  return (
-                    <option key={s} value={s} disabled={!isAvailable}>
-                      {s}{!isAvailable ? " (Unavailable)" : ""}
-                    </option>
-                  );
-                })}
+                {availableSizes.map((s) => (
+                  <option key={s} value={s}>
+                    {s}
+                  </option>
+                ))}
               </select>
             </div>
           )}
