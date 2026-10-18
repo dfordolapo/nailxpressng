@@ -190,6 +190,7 @@ export async function PATCH(request, { params }) {
   try {
     const { id } = await params;
     const body = await request.json();
+    const updateData = {};
 
     if (typeof body.stock_count !== 'undefined') {
       updateData.stock_count = body.stock_count;

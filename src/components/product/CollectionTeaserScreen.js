@@ -1,13 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { Lock, Clock, Sparkles, Check, ArrowRight, Wand2 } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 import styles from "@/styles/components/drop-timer.module.css";
 
 function calculateTimeLeft(targetDate) {
   if (!targetDate) return null;
-  const diff = new Date(targetDate).getTime() - new Date().getTime();
+  const diff = new Date(targetDate).getTime() - Date.now();
   if (diff <= 0) return null;
 
   const days = Math.floor(diff / (1000 * 60 * 60 * 24));
@@ -23,7 +23,8 @@ export default function CollectionTeaserScreen({ category, onUnlock }) {
   const [email, setEmail] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [subscribed, setSubscribed] = useState(false);
-  const [subscribeError, setSubscribeError] = useState("");
+  const [showNotifyForm, setShowNotifyForm] = useState(false);
+  const emailInputRef = useRef(null);
 
   useEffect(() => {
     const check = () => {
@@ -41,15 +42,19 @@ export default function CollectionTeaserScreen({ category, onUnlock }) {
     return () => clearInterval(interval);
   }, [category?.drop_date, onUnlock]);
 
+  useEffect(() => {
+    if (showNotifyForm && emailInputRef.current) {
+      emailInputRef.current.focus();
+    }
+  }, [showNotifyForm]);
+
   const handleSubscribe = async (e) => {
     e.preventDefault();
     if (!email || !email.includes("@")) return;
 
     setSubmitting(true);
-    setSubscribeError("");
-
     try {
-      const res = await fetch("/api/newsletter", {
+      await fetch("/api/newsletter", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -57,15 +62,9 @@ export default function CollectionTeaserScreen({ category, onUnlock }) {
           source: `Drop Teaser: ${category?.name || "Collection"}`,
         }),
       });
-
-      const data = await res.json();
-      if (!res.ok && !data.success) {
-        throw new Error(data.error || "Subscription failed");
-      }
       setSubscribed(true);
     } catch (err) {
       console.error("Waitlist subscribe error:", err);
-      // Even if network fails or duplicate, reassure user
       setSubscribed(true);
     } finally {
       setSubmitting(false);
@@ -73,104 +72,107 @@ export default function CollectionTeaserScreen({ category, onUnlock }) {
   };
 
   const format2 = (n) => String(n ?? 0).padStart(2, "0");
+  const collectionImg = category?.image || "/images/drop-editorial.jpg";
+  const collectionDesc = category?.tagline || category?.description || "Bolder shades. Deeper moods. A collection made for late nights, long plans, and everything in between.";
 
   return (
-    <div className={styles.teaserContainer} id="drop-teaser-screen">
-      {/* Background blurred ambiance */}
-      {category?.image && (
+    <div style={{ minHeight: "85vh", display: "flex", alignItems: "center", justifyContent: "center", padding: "60px 20px" }}>
+      <div className={styles.modalCard} style={{ margin: "0 auto", position: "relative" }}>
+        {/* Left Column: Full Bleed Editorial Photography */}
         <div 
-          className={styles.teaserBackground} 
-          style={{ backgroundImage: `url(${category.image})` }} 
+          className={styles.modalImageCol} 
+          style={{ backgroundImage: `url(${collectionImg})` }}
+          role="img"
+          aria-label={category?.name || "Collection Drop"}
         />
-      )}
-      <div className={styles.teaserBackdropOverlay} />
 
-      {/* Main Teaser Card */}
-      <div className={styles.teaserCard}>
-        <div className={styles.lockedBadge}>
-          <Lock size={13} strokeWidth={2.5} />
-          <span>Exclusive Drop • Locked</span>
-        </div>
-
-        <h1 className={styles.teaserTitle}>
-          {category?.name || "New Collection"}
-        </h1>
-
-        <p className={styles.teaserHeadline}>
-          {category?.drop_headline || category?.tagline || category?.description || "Something breathtaking is being prepared. Sets unlock automatically at drop time."}
-        </p>
-
-        {/* Big Segmented Luxury Countdown Clock */}
-        {timeLeft && (
-          <div className={styles.clockGrid}>
-            <div className={styles.clockTile}>
-              <div className={styles.clockDigits}>{format2(timeLeft.days)}</div>
-              <div className={styles.clockLabel}>Days</div>
-            </div>
-            <div className={styles.clockTile}>
-              <div className={styles.clockDigits}>{format2(timeLeft.hours)}</div>
-              <div className={styles.clockLabel}>Hours</div>
-            </div>
-            <div className={styles.clockTile}>
-              <div className={styles.clockDigits}>{format2(timeLeft.minutes)}</div>
-              <div className={styles.clockLabel}>Minutes</div>
-            </div>
-            <div className={styles.clockTile}>
-              <div className={styles.clockDigits}>{format2(timeLeft.seconds)}</div>
-              <div className={styles.clockLabel}>Seconds</div>
-            </div>
-          </div>
-        )}
-
-        {/* VIP Early Access Waitlist Box */}
-        <div className={styles.waitlistCard}>
-          <div className={styles.waitlistTitle}>
-            ✨ Be the first to grab your set
-          </div>
-          <div className={styles.waitlistSub}>
-            Drop quantities are strictly limited. Enter your email to receive an instant alert the second the doors open.
+        {/* Right Column: Editorial Drop Content */}
+        <div className={styles.modalContentCol}>
+          <div className={styles.modalSubheading}>
+            UPCOMING COLLECTION
           </div>
 
-          {subscribed ? (
-            <div className={styles.waitlistSuccess}>
-              <Check size={18} strokeWidth={2.5} />
-              <span>You&apos;re on the VIP drop list! We&apos;ll ping you the second it drops.</span>
+          <h1 className={styles.modalTitle}>
+            {category?.name || "New Collection"}
+          </h1>
+
+          <p className={styles.modalDescription}>
+            {collectionDesc}
+          </p>
+
+          {/* Stacked Numbers above Labels */}
+          {timeLeft && (
+            <div className={styles.modalTimerGrid}>
+              <div className={styles.modalTimerUnit}>
+                <div className={styles.modalDigits}>{format2(timeLeft.days)}</div>
+                <div className={styles.modalLabel}>DAYS</div>
+              </div>
+              <div className={styles.modalTimerUnit}>
+                <div className={styles.modalDigits}>{format2(timeLeft.hours)}</div>
+                <div className={styles.modalLabel}>HOURS</div>
+              </div>
+              <div className={styles.modalTimerUnit}>
+                <div className={styles.modalDigits}>{format2(timeLeft.minutes)}</div>
+                <div className={styles.modalLabel}>MINS</div>
+              </div>
+              <div className={styles.modalTimerUnit}>
+                <div key={timeLeft.seconds} className={`${styles.modalDigits} ${styles.tickPulse}`}>
+                  {format2(timeLeft.seconds)}
+                </div>
+                <div className={styles.modalLabel}>SECS</div>
+              </div>
             </div>
-          ) : (
-            <form onSubmit={handleSubscribe} className={styles.waitlistForm}>
-              <input
-                type="email"
-                required
-                placeholder="Enter your email address..."
-                className={styles.waitlistInput}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                disabled={submitting}
-              />
+          )}
+
+          {/* Micro-Interaction Notify Me Section */}
+          <div className={styles.modalActionWrap}>
+            {subscribed ? (
+              <div className={styles.notifySuccess}>
+                <Check size={16} strokeWidth={2.5} />
+                <span>You&apos;re on the VIP list. We&apos;ll notify you at launch.</span>
+              </div>
+            ) : showNotifyForm ? (
+              <form onSubmit={handleSubscribe} className={styles.notifyForm}>
+                <input
+                  ref={emailInputRef}
+                  type="email"
+                  required
+                  placeholder="Enter your email"
+                  className={styles.notifyInput}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  disabled={submitting}
+                />
+                <button 
+                  type="submit" 
+                  className={styles.notifySubmitBtn} 
+                  disabled={submitting}
+                >
+                  {submitting ? "Saving..." : "Notify Me"}
+                </button>
+              </form>
+            ) : (
               <button 
-                type="submit" 
-                className={styles.waitlistSubmitBtn} 
-                disabled={submitting}
+                type="button" 
+                className={styles.notifyPillBtn}
+                onClick={() => setShowNotifyForm(true)}
               >
-                {submitting ? "Joining..." : "Get Notified"}
+                NOTIFY ME
               </button>
-            </form>
-          )}
-          {subscribeError && (
-            <p style={{ color: "#F87171", fontSize: "0.78rem", marginTop: "6px" }}>{subscribeError}</p>
-          )}
-        </div>
+            )}
+          </div>
 
-        {/* Actions / Custom Order */}
-        <div className={styles.teaserActions}>
-          <Link href="/custom-order" className={styles.btnTeaserCustom}>
-            <Wand2 size={15} />
-            <span>Need nails now? Custom Order</span>
-          </Link>
-          <Link href="/shop" className={styles.btnTeaserCustom} style={{ borderStyle: "dashed" }}>
-            <span>Browse Ready Sets</span>
-            <ArrowRight size={14} />
-          </Link>
+          <div style={{ marginTop: "28px" }}>
+            <Link 
+              href="/shop" 
+              style={{ display: "inline-flex", alignItems: "center", gap: "6px", color: "rgba(255,255,255,0.6)", fontSize: "0.8rem", textDecoration: "none", transition: "color 0.2s" }}
+              onMouseEnter={(e) => e.currentTarget.style.color = "#FFFFFF"}
+              onMouseLeave={(e) => e.currentTarget.style.color = "rgba(255,255,255,0.6)"}
+            >
+              <span>Browse ready-to-wear sets</span>
+              <ArrowRight size={13} />
+            </Link>
+          </div>
         </div>
       </div>
     </div>

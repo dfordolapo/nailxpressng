@@ -15,6 +15,14 @@ export const categories = [
     image: "/images/factory-collection.png",
     tagline: "press-on precision • ready to wear",
   },
+  {
+    id: "halloween",
+    name: "Halloween",
+    slug: "halloween",
+    description: "Hauntingly chic press-ons, gothic accents, and midnight glamour.",
+    image: "/images/hero.png",
+    tagline: "Hauntingly chic press-ons, gothic accents, and midnight glamour.",
+  },
 ];
 
 export const nailShapes = [

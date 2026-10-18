@@ -508,4 +508,8 @@
   .logo {
     font-size: var(--text-xl);
   }
+
+  .header.headerWithDropBar {
+    top: calc(42px + var(--space-4) + env(safe-area-inset-top, 0px));
+  }
 }

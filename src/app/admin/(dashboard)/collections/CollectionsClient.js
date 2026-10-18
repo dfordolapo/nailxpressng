@@ -141,8 +141,9 @@ export default function CollectionsClient() {
     setFormName(col.name || "");
     setFormSlug(col.slug || "");
     setSlugManualEdit(true);
-    setFormTagline(col.tagline || "");
-    setFormDescription(col.description || "");
+    const textVal = col.tagline || col.description || "";
+    setFormTagline(textVal);
+    setFormDescription(textVal);
     setFormIsPublished(col.is_published !== false);
     setFormDisplayOrder(col.display_order ?? 0);
     setFormImageFile(null);
@@ -692,28 +693,22 @@ export default function CollectionsClient() {
                   </div>
                 </div>
 
-                {/* Tagline */}
+                {/* Tagline / Short Description (Single field, not verbose) */}
                 <div className={styles.formGroup}>
-                  <label className={styles.formLabel}>Tagline (Optional)</label>
+                  <label className={styles.formLabel}>Tagline / Short Description</label>
                   <input
                     type="text"
                     className={styles.formInput}
                     placeholder="e.g. Timeless luxury for unforgettable moments"
-                    value={formTagline}
-                    onChange={(e) => setFormTagline(e.target.value)}
+                    value={formTagline || formDescription}
+                    onChange={(e) => {
+                      setFormTagline(e.target.value);
+                      setFormDescription(e.target.value);
+                    }}
                   />
-                </div>
-
-                {/* Description */}
-                <div className={styles.formGroup}>
-                  <label className={styles.formLabel}>Description</label>
-                  <textarea
-                    className={styles.formTextarea}
-                    rows={3}
-                    placeholder="Describe what makes this collection unique..."
-                    value={formDescription}
-                    onChange={(e) => setFormDescription(e.target.value)}
-                  />
+                  <div className={styles.helperText}>
+                    A single concise sentence describing the collection (keep it minimal and non-verbose).
+                  </div>
                 </div>
 
                 {/* Cover Image */}
