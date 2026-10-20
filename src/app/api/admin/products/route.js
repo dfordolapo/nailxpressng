@@ -112,14 +112,22 @@ export async function POST(request) {
     const color = formData.get('color');
     const rawSizes = formData.get('sizes');
     let sizesArray = [];
-    if (targetSlug === 'handmade') {
-      if (rawSizes) {
-        try {
-          sizesArray = JSON.parse(rawSizes);
-        } catch {
-          sizesArray = rawSizes.split(',').map(s => s.trim()).filter(Boolean);
-        }
-      } else {
+    if (rawSizes) {
+      try {
+        const parsed = JSON.parse(rawSizes);
+        if (Array.isArray(parsed)) sizesArray = parsed.map(s => String(s).trim()).filter(Boolean);
+        else sizesArray = String(rawSizes).split(',').map(s => s.trim()).filter(Boolean);
+      } catch {
+        sizesArray = String(rawSizes).split(',').map(s => s.trim()).filter(Boolean);
+      }
+    }
+
+    const isFactory = targetSlug === 'factory';
+    const isHalloween = targetSlug === 'halloween' || (name && name.toLowerCase().includes('halloween'));
+    if (sizesArray.length === 0) {
+      if (isHalloween) {
+        sizesArray = ['S', 'M', 'L'];
+      } else if (!isFactory) {
         sizesArray = ['S', 'M', 'L'];
       }
     }

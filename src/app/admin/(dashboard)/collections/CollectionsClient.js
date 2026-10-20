@@ -681,54 +681,57 @@ export default function CollectionsClient() {
           <div className={styles.modalCard} onClick={(e) => e.stopPropagation()}>
             <div className={styles.modalHeader}>
               <h2 className={styles.modalTitle}>
-                {modalMode === "create" ? "Add New Collection" : `Edit Collection "${selectedCollection?.name}"`}
+                {modalMode === "create" ? (
+                  <>
+                    <Sparkles size={18} color="var(--color-primary)" />
+                    <span>New Collection</span>
+                  </>
+                ) : (
+                  <>
+                    <Edit3 size={17} color="var(--color-primary)" />
+                    <span>Edit Collection</span>
+                  </>
+                )}
               </h2>
               <button 
-                className={styles.iconBtn} 
+                type="button"
+                className={styles.modalCloseBtn} 
                 onClick={() => setIsModalOpen(false)} 
                 disabled={isSubmitting}
-                style={{ border: "none" }}
+                aria-label="Close"
               >
-                <X size={18} strokeWidth={1.5} />
+                <X size={16} strokeWidth={2} />
               </button>
             </div>
 
             <form onSubmit={handleSubmit}>
               <div className={styles.modalBody}>
-                {/* Publish notice */}
-                <div className={styles.publishNotice}>
-                  <Sparkles size={18} strokeWidth={1.5} style={{ flexShrink: 0, marginTop: "2px" }} />
-                  <div>
-                    <strong>Hamburger Navigation Visibility:</strong> When &quot;Published&quot; is enabled, this collection will immediately appear in the mobile hamburger dropdown menu for all visitors.
+                {/* 2-Column: Name & Slug */}
+                <div className={styles.formRow}>
+                  <div className={styles.formGroup}>
+                    <label className={styles.formLabel}>Name</label>
+                    <input
+                      type="text"
+                      className={styles.formInput}
+                      placeholder="e.g. Cherry Glaze 🍒"
+                      value={formName}
+                      onChange={handleNameChange}
+                      required
+                    />
                   </div>
-                </div>
-
-                {/* Name */}
-                <div className={styles.formGroup}>
-                  <label className={styles.formLabel}>Collection Name *</label>
-                  <input
-                    type="text"
-                    className={styles.formInput}
-                    placeholder="e.g. Bridal Glam, Luxury Sculpted, Summer Gel"
-                    value={formName}
-                    onChange={handleNameChange}
-                    required
-                  />
-                </div>
-
-                {/* Slug */}
-                <div className={styles.formGroup}>
-                  <label className={styles.formLabel}>URL Slug *</label>
-                  <input
-                    type="text"
-                    className={styles.formInput}
-                    placeholder="e.g. bridal-glam"
-                    value={formSlug}
-                    onChange={handleSlugChange}
-                    required
-                  />
-                  <div className={styles.previewPill}>
-                    URL: /collection/{formSlug || "your-slug"}
+                  <div className={styles.formGroup}>
+                    <label className={styles.formLabel}>Slug</label>
+                    <div className={styles.slugWrapper}>
+                      <span className={styles.slugPrefix}>/</span>
+                      <input
+                        type="text"
+                        className={styles.slugInput}
+                        placeholder="cherry-glaze"
+                        value={formSlug}
+                        onChange={handleSlugChange}
+                        required
+                      />
+                    </div>
                   </div>
                 </div>
 
@@ -750,9 +753,9 @@ export default function CollectionsClient() {
                   </div>
                 </div>
 
-                {/* Cover Image */}
+                {/* Cover Image (clean & minimal) */}
                 <div className={styles.formGroup}>
-                  <label className={styles.formLabel}>Cover Image</label>
+                  <label className={styles.formLabel}>Cover Photo</label>
                   <input
                     type="file"
                     ref={fileInputRef}
@@ -762,14 +765,14 @@ export default function CollectionsClient() {
                   />
 
                   {formImagePreview ? (
-                    <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "12px", background: "#faf6f6", padding: "10px", borderRadius: "10px", border: "1px solid #ebdada" }}>
                       <img 
                         src={formImagePreview} 
                         alt="Preview" 
-                        style={{ width: "72px", height: "72px", objectFit: "cover", borderRadius: "8px", border: "1px solid var(--color-border-light)" }}
+                        style={{ width: "54px", height: "54px", objectFit: "cover", borderRadius: "8px", border: "1px solid #e2d2d5" }}
                         className={styles.previewThumb} 
                       />
-                      <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                      <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
                         <button
                           type="button"
                           className={styles.btnSecondary}
@@ -779,9 +782,9 @@ export default function CollectionsClient() {
                               fileInputRef.current.click();
                             }
                           }}
-                          style={{ padding: "6px 12px", fontSize: "0.8rem" }}
+                          style={{ padding: "4px 10px", fontSize: "0.78rem" }}
                         >
-                          Change Image
+                          Change
                         </button>
                         <button
                           type="button"
@@ -790,74 +793,74 @@ export default function CollectionsClient() {
                             setFormImagePreview("");
                             if (fileInputRef.current) fileInputRef.current.value = "";
                           }}
-                          style={{ border: "none", background: "none", color: "#dc2626", fontSize: "0.75rem", cursor: "pointer", textAlign: "left", padding: 0 }}
+                          style={{ border: "none", background: "none", color: "#dc2626", fontSize: "0.74rem", cursor: "pointer", textAlign: "left", padding: 0 }}
                         >
-                          Remove Image
+                          Remove
                         </button>
                       </div>
                     </div>
                   ) : (
-                    <div className={styles.uploadArea} onClick={() => {
+                    <div className={styles.uploadMinimal} onClick={() => {
                       if (fileInputRef.current) {
                         fileInputRef.current.value = "";
                         fileInputRef.current.click();
                       }
                     }}>
-                      <UploadCloud size={24} strokeWidth={1.5} color="var(--color-primary)" />
-                      <div style={{ fontSize: "0.85rem", fontWeight: 500, color: "var(--color-text)" }}>
-                        Click to upload cover image
-                      </div>
-                      <div className={styles.helperText}>
-                        JPG, PNG, or WEBP (Max 5MB)
+                      <UploadCloud size={20} strokeWidth={1.7} color="var(--color-primary)" />
+                      <div style={{ fontSize: "0.82rem", color: "#5a4347" }}>
+                        <strong>Upload cover photo</strong> <span style={{ color: "#9c8186", fontSize: "0.75rem" }}>(JPG, PNG, WEBP)</span>
                       </div>
                     </div>
                   )}
                 </div>
 
-                {/* Status Switch */}
-                <div className={styles.formGroup} style={{ paddingTop: "8px" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <div>
-                      <div className={styles.formLabel}>Publish Collection</div>
-                      <div className={styles.helperText}>
-                        When enabled, customers can view this collection and find it in the hamburger menu.
-                      </div>
+                {/* Toggle 1: Menu Visibility */}
+                <div className={`${styles.settingsCard} ${formIsPublished ? styles.settingsCardActive : ""}`}>
+                  <div className={styles.settingsCardText}>
+                    <div className={styles.settingsCardTitle}>
+                      <Eye size={15} color="var(--color-primary)" />
+                      <span>Live in Menu</span>
                     </div>
-                    <label className={styles.toggleSwitch}>
-                      <input
-                        type="checkbox"
-                        checked={formIsPublished}
-                        onChange={(e) => setFormIsPublished(e.target.checked)}
-                      />
-                      <span className={styles.toggleSlider} />
-                    </label>
+                    <div className={styles.settingsCardSubtitle}>
+                      Show in mobile hamburger dropdown & navigation
+                    </div>
                   </div>
+                  <label className={styles.toggleSwitch}>
+                    <input
+                      type="checkbox"
+                      checked={formIsPublished}
+                      onChange={(e) => setFormIsPublished(e.target.checked)}
+                    />
+                    <span className={styles.toggleSlider} />
+                  </label>
                 </div>
 
-                {/* Drop Countdown Timer Section */}
-                <div className={styles.timerSection}>
-                  <div className={styles.timerSectionHeader}>
-                    <div className={styles.timerTitleGroup}>
-                      <Timer size={18} strokeWidth={1.5} />
-                      <span>Collection Drop Countdown Timer</span>
+                {/* Toggle 2: Drop Countdown */}
+                <div className={`${styles.settingsCard} ${formDropTimerEnabled ? styles.settingsCardActive : ""}`}>
+                  <div className={styles.settingsCardText}>
+                    <div className={styles.settingsCardTitle}>
+                      <Timer size={15} color="var(--color-primary)" />
+                      <span>Launch Countdown ⏳</span>
                     </div>
-                    <label className={styles.toggleSwitch} title="Toggle Drop Countdown">
-                      <input
-                        type="checkbox"
-                        checked={formDropTimerEnabled}
-                        onChange={(e) => setFormDropTimerEnabled(e.target.checked)}
-                      />
-                      <span className={styles.toggleSlider} />
-                    </label>
+                    <div className={styles.settingsCardSubtitle}>
+                      Lock sets with a teaser clock until launch time
+                    </div>
                   </div>
+                  <label className={styles.toggleSwitch}>
+                    <input
+                      type="checkbox"
+                      checked={formDropTimerEnabled}
+                      onChange={(e) => setFormDropTimerEnabled(e.target.checked)}
+                    />
+                    <span className={styles.toggleSlider} />
+                  </label>
+                </div>
 
-                  <div className={styles.helperText}>
-                    When enabled, this collection will be locked with a live countdown timer and announcement bar across the site until the scheduled drop time.
-                  </div>
-
-                  {formDropTimerEnabled && (
-                    <>
-                      <div className={styles.formGroup} style={{ marginTop: "4px" }}>
+                {/* Drop Countdown Options Drawer */}
+                {formDropTimerEnabled && (
+                  <div className={styles.dropTimerDrawer}>
+                    <div className={styles.formRow}>
+                      <div className={styles.formGroup}>
                         <label className={styles.formLabel}>Drop Date & Time *</label>
                         <input
                           type="datetime-local"
@@ -866,50 +869,36 @@ export default function CollectionsClient() {
                           onChange={(e) => setFormDropDate(e.target.value)}
                           required={formDropTimerEnabled}
                         />
-                        <div className={styles.helperText}>
-                          Select when the countdown reaches zero and the collection automatically unlocks to the public.
-                        </div>
                       </div>
-
                       <div className={styles.formGroup}>
-                        <label className={styles.formLabel}>Teaser Headline (Optional)</label>
+                        <label className={styles.formLabel}>Teaser Headline</label>
                         <input
                           type="text"
                           className={styles.formInput}
-                          placeholder="e.g. Exclusive Halloween Capsule Drop"
+                          placeholder="e.g. Secret Capsule Drop 🔮"
                           value={formDropHeadline}
                           onChange={(e) => setFormDropHeadline(e.target.value)}
                         />
-                        <div className={styles.helperText}>
-                          Displayed above the countdown timer on the locked teaser screen and announcement bar.
-                        </div>
                       </div>
+                    </div>
 
-                      {formDropDate && (
-                        <div className={styles.timerPreviewBox}>
-                          <div className={styles.timerPreviewLabel}>Drop Status Preview</div>
-                          <div className={styles.timerPreviewContent}>
-                            {new Date(formDropDate).getTime() > Date.now() ? (
-                              <>
-                                <Lock size={15} color="#b45309" strokeWidth={1.7} />
-                                <span>
-                                  <strong>Locked:</strong> Unlocks on {new Date(formDropDate).toLocaleString()}
-                                </span>
-                              </>
-                            ) : (
-                              <>
-                                <Check size={15} color="#059669" strokeWidth={2} />
-                                <span>
-                                  <strong>Already Passed:</strong> Drop date is in the past — collection will be fully unlocked.
-                                </span>
-                              </>
-                            )}
+                    {formDropDate && (
+                      <div>
+                        {new Date(formDropDate).getTime() > Date.now() ? (
+                          <div className={`${styles.timerMiniPill} ${styles.timerMiniPillLocked}`}>
+                            <Lock size={12} strokeWidth={2} />
+                            <span>Locked until {new Date(formDropDate).toLocaleString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}</span>
                           </div>
-                        </div>
-                      )}
-                    </>
-                  )}
-                </div>
+                        ) : (
+                          <div className={`${styles.timerMiniPill} ${styles.timerMiniPillLive}`}>
+                            <Check size={12} strokeWidth={2} />
+                            <span>Drop time reached — Unlocked!</span>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
 
               <div className={styles.modalFooter}>
@@ -918,27 +907,29 @@ export default function CollectionsClient() {
                   className={styles.btnSecondary}
                   onClick={() => setIsModalOpen(false)}
                   disabled={isSubmitting}
+                  style={{ border: "none", background: "none", color: "#7a6367", fontSize: "0.85rem" }}
                 >
-                  Cancel
+                  Nevermind
                 </button>
                 <button
                   type="submit"
                   className={styles.btnPrimary}
                   disabled={isSubmitting}
+                  style={{ borderRadius: "10px", padding: "9px 18px" }}
                 >
                   {isSubmitting ? (
                     <>
-                      <RefreshCw size={15} className="animate-spin" />
+                      <RefreshCw size={14} className="animate-spin" />
                       Saving...
                     </>
                   ) : modalMode === "create" ? (
                     <>
-                      <Plus size={16} strokeWidth={1.5} />
+                      <Sparkles size={15} strokeWidth={1.8} />
                       Create Collection
                     </>
                   ) : (
                     <>
-                      <Check size={16} strokeWidth={1.5} />
+                      <Check size={15} strokeWidth={2} />
                       Save Changes
                     </>
                   )}

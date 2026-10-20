@@ -358,12 +358,12 @@ input:checked + .toggleSlider:before {
   border-color: #dc2626;
 }
 
-/* ── Modal ── */
+/* ── Modal (Chic, Aesthetic, Compact) ────────────────── */
 .modalOverlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.45);
-  backdrop-filter: blur(4px);
+  background: rgba(44, 18, 24, 0.45);
+  backdrop-filter: blur(6px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -374,19 +374,20 @@ input:checked + .toggleSlider:before {
 
 .modalCard {
   background: #ffffff;
-  border-radius: var(--radius-xl, 16px);
+  border-radius: 20px;
   width: 100%;
-  max-width: 540px;
-  max-height: 90vh;
+  max-width: 530px;
+  max-height: 92vh;
   overflow-y: auto;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-  border: 1px solid var(--color-border-light, #f0e6e6);
-  animation: scaleUp 0.2s ease-out;
+  box-shadow: 0 24px 60px rgba(58, 16, 23, 0.18), 0 4px 16px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(139, 44, 61, 0.14);
+  animation: scaleUp 0.22s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .modalHeader {
-  padding: 20px 24px;
-  border-bottom: 1px solid var(--color-border-light, #f0e6e6);
+  padding: 18px 22px;
+  background: linear-gradient(180deg, #fdf8f8 0%, #ffffff 100%);
+  border-bottom: 1px solid #f2e7e7;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -394,50 +395,209 @@ input:checked + .toggleSlider:before {
 
 .modalTitle {
   font-family: var(--font-heading, serif);
-  font-size: 1.35rem;
+  font-size: 1.25rem;
   font-weight: 600;
-  color: var(--color-text);
+  color: var(--color-primary, #8b2c3d);
+  display: flex;
+  align-items: center;
+  gap: 8px;
   margin: 0;
 }
 
+.modalCloseBtn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #ebdada;
+  background: #ffffff;
+  color: #71555a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.modalCloseBtn:hover {
+  background: #fdf2f4;
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+  transform: rotate(90deg);
+}
+
 .modalBody {
-  padding: 20px 24px;
+  padding: 18px 22px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 13px;
 }
 
 .modalFooter {
-  padding: 16px 24px;
-  border-top: 1px solid var(--color-border-light, #f0e6e6);
+  padding: 14px 22px;
+  border-top: 1px solid #f2e7e7;
   display: flex;
+  align-items: center;
   justify-content: flex-end;
+  gap: 10px;
+  background: #fdf8f8;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
   gap: 12px;
-  background: #faf8f8;
-  border-bottom-left-radius: var(--radius-xl, 16px);
-  border-bottom-right-radius: var(--radius-xl, 16px);
+}
+
+.slugWrapper {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--color-border, #e5dada);
+  border-radius: var(--radius-md, 8px);
+  background: #ffffff;
+  overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.slugWrapper:focus-within {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(139, 44, 61, 0.1);
+}
+
+.slugPrefix {
+  padding: 0 8px 0 10px;
+  font-size: 0.78rem;
+  color: #a38287;
+  font-family: monospace;
+  background: #faf4f5;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  border-right: 1px solid #eee1e3;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.slugInput {
+  border: none !important;
+  box-shadow: none !important;
+  padding: 8px 10px !important;
+  font-size: 0.85rem !important;
+  height: 38px;
+  width: 100%;
+  outline: none;
+}
+
+.uploadMinimal {
+  border: 1.5px dashed #dfcece;
+  border-radius: 10px;
+  padding: 12px 14px;
+  background: #faf6f6;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.uploadMinimal:hover {
+  background: #fdf2f4;
+  border-color: var(--color-primary);
+}
+
+.settingsCard {
+  background: #faf7f7;
+  border: 1px solid #ede1e1;
+  border-radius: 12px;
+  padding: 11px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  transition: all 0.2s;
+}
+
+.settingsCardActive {
+  background: #fdf5f6;
+  border-color: rgba(139, 44, 61, 0.25);
+}
+
+.settingsCardText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.settingsCardTitle {
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--color-text, #2c1810);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.settingsCardSubtitle {
+  font-size: 0.75rem;
+  color: #8c7377;
+}
+
+.dropTimerDrawer {
+  background: linear-gradient(135deg, rgba(253, 245, 246, 0.9) 0%, rgba(255, 255, 255, 0.95) 100%);
+  border: 1px solid rgba(139, 44, 61, 0.18);
+  border-radius: 12px;
+  padding: 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.timerMiniPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 11px;
+  border-radius: 9999px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  width: fit-content;
+}
+
+.timerMiniPillLocked {
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fde68a;
+}
+
+.timerMiniPillLive {
+  background: #d1fae5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
 }
 
 .formGroup {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 5px;
 }
 
 .formLabel {
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 600;
   color: var(--color-text);
+  letter-spacing: 0.01em;
 }
 
 .formInput,
 .formTextarea {
   width: 100%;
-  padding: 10px 14px;
+  padding: 9px 12px;
   border-radius: var(--radius-md, 8px);
   border: 1px solid var(--color-border, #e5dada);
   background: #ffffff;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   color: var(--color-text);
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
@@ -451,36 +611,9 @@ input:checked + .toggleSlider:before {
 }
 
 .helperText {
-  font-size: 0.78rem;
+  font-size: 0.74rem;
   color: var(--color-text-secondary);
-  line-height: 1.3;
-}
-
-.previewPill {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 10px;
-  background: var(--color-bg, #faf7f7);
-  border-radius: 6px;
-  font-size: 0.78rem;
-  font-family: monospace;
-  color: var(--color-primary);
-  margin-top: 4px;
-}
-
-.uploadArea {
-  border: 2px dashed var(--color-border, #e5dada);
-  border-radius: var(--radius-md, 8px);
-  padding: 18px;
-  text-align: center;
-  cursor: pointer;
-  background: #faf8f8;
-  transition: all 0.2s;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
+  line-height: 1.25;
 }
 
 .uploadArea:hover {

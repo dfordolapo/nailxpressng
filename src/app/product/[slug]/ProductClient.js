@@ -30,8 +30,8 @@ export default function ProductClient({ product, relatedProducts = [], isModal =
   const { showToast } = useToast();
 
   const isFactory = product?.category === 'factory' || (product?.categoryName && product.categoryName.toLowerCase().includes('factory'));
-  const hasSizes = !isFactory && Array.isArray(product?.sizes) && product.sizes.length > 0;
-  const availableSizes = hasSizes ? product.sizes : [];
+  const availableSizes = !isFactory ? (Array.isArray(product?.sizes) && product.sizes.length > 0 ? product.sizes : ["S", "M", "L"]) : [];
+  const hasSizes = availableSizes.length > 0;
 
   const [savedSize, setSavedSize] = useState(null);
   const [selectedImage, setSelectedImage] = useState(0);
@@ -146,7 +146,7 @@ export default function ProductClient({ product, relatedProducts = [], isModal =
 
   const handleAddToCart = () => {
     const finalSize = hasSizes ? selectedSize : null;
-    const finalLength = product.category === 'handmade' ? selectedLength : null;
+    const finalLength = !isFactory && (product.lengths?.length > 0 || product.category === 'handmade') ? selectedLength : null;
     addItem(product, quantity, finalSize, finalLength);
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
@@ -161,8 +161,8 @@ export default function ProductClient({ product, relatedProducts = [], isModal =
           <nav className={pageStyles.breadcrumb} id="breadcrumb">
             <Link href="/">Home</Link>
             <span className={pageStyles.breadcrumbSeparator}>/</span>
-            <Link href={`/${product.category}`}>
-              {product.category === "handmade" ? "Handmade" : "Factory Made"}
+            <Link href={product.category === 'handmade' ? '/handmade' : (product.category === 'factory' ? '/factory' : `/collection/${product.category}`)}>
+              {product.category === "handmade" ? "Handmade" : (product.category === "factory" ? "Factory Made" : (product.categoryName || "Collection"))}
             </Link>
             <span className={pageStyles.breadcrumbSeparator}>/</span>
             <span>{product.name}</span>
@@ -282,8 +282,10 @@ export default function ProductClient({ product, relatedProducts = [], isModal =
           <div className={pageStyles.productInfo}>
             {/* Badges */}
             <div style={{ display: "flex", gap: "var(--space-2)" }}>
-              {product.category === "handmade" && (
-                <span className={`${btnStyles.badge} ${btnStyles.badgeHandmade}`}>Handmade</span>
+              {product.category !== "factory" && (
+                <span className={`${btnStyles.badge} ${btnStyles.badgeHandmade}`}>
+                  {product.category === 'handmade' ? 'Handmade' : (product.categoryName || 'Capsule')}
+                </span>
               )}
               {discount > 0 && (
                 <span className={`${btnStyles.badge} ${btnStyles.badgeSale}`}>-{discount}% OFF</span>

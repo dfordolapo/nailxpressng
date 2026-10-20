@@ -60,7 +60,9 @@ function ZoomInIcon() {
 
 export default function HandmadeProductCard({ product, index = 0, viewMode = "grid" }) {
   const [flipped, setFlipped] = useState(false);
-  const availableSizes = Array.isArray(product?.sizes) && product.sizes.length > 0 ? product.sizes : ["S", "M", "L"];
+  const isFactory = product?.category === 'factory' || (product?.categoryName && product.categoryName.toLowerCase().includes('factory'));
+  const hasSizes = !isFactory && ((Array.isArray(product?.sizes) && product.sizes.length > 0) || product?.category !== 'factory');
+  const availableSizes = !isFactory ? (Array.isArray(product?.sizes) && product.sizes.length > 0 ? product.sizes : ["S", "M", "L"]) : [];
   const [selectedSize, setSelectedSize] = useState(null);
   const [selectedLength, setSelectedLength] = useState(product?.lengths?.[0] || null);
   const [qty, setQty] = useState(1);
@@ -306,7 +308,7 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
                 </div>
               ) : (
                 <>
-                  {product.category === "handmade" && (
+                  {hasSizes && (
                     <div className={styles.selectorGroup}>
                       <span className={styles.selectorLabel}>Size</span>
                       <select
@@ -316,10 +318,8 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
                         onClick={(e) => e.stopPropagation()}
                       >
                         <option value="" disabled>Select Size</option>
-                        {Array.from(new Set([...["XS", "S", "M", "L", "Custom"], ...(product.sizes || [])])).map((size) => {
-                          const isAvailable = product.sizes && product.sizes.length > 0
-                            ? product.sizes.includes(size)
-                            : ["S", "M", "L"].includes(size);
+                        {Array.from(new Set([...["XS", "S", "M", "L", "Custom"], ...(product.sizes || ["S", "M", "L"])])).map((size) => {
+                          const isAvailable = availableSizes.includes(size);
                           return (
                             <option key={size} value={size} disabled={!isAvailable}>
                               {size}{!isAvailable ? " (Unavailable)" : ""}
@@ -330,7 +330,7 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
                     </div>
                   )}
 
-                  {product.category === "handmade" && product.lengths && product.lengths.length > 0 && (
+                  {product.lengths && product.lengths.length > 0 && (
                     <div className={styles.selectorGroup}>
                       <span className={styles.selectorLabel}>Length</span>
                       <select
@@ -397,7 +397,7 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
               <>
                 <p className={styles.backDesc}>{product.shortDescription || product.description}</p>
 
-                {product.category === "handmade" && (
+                {hasSizes && (
                   <div className={styles.selectorGroup}>
                     <span className={styles.selectorLabel}>Size</span>
                     <select
@@ -407,10 +407,8 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
                       onClick={(e) => e.stopPropagation()}
                     >
                       <option value="" disabled>Select Size</option>
-                      {Array.from(new Set([...["XS", "S", "M", "L", "Custom"], ...(product.sizes || [])])).map((size) => {
-                        const isAvailable = product.sizes && product.sizes.length > 0
-                          ? product.sizes.includes(size)
-                          : ["S", "M", "L"].includes(size);
+                      {Array.from(new Set([...["XS", "S", "M", "L", "Custom"], ...(product.sizes || ["S", "M", "L"])])).map((size) => {
+                        const isAvailable = availableSizes.includes(size);
                         return (
                           <option key={size} value={size} disabled={!isAvailable}>
                             {size}{!isAvailable ? " (Unavailable)" : ""}

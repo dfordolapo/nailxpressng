@@ -112,10 +112,10 @@ export default function SuccessClient({ orderDetails, recommendedProducts = [] }
         }}>
           {recommendedProducts.map(product => (
             <div key={product.id} style={{ minWidth: '160px', width: '160px', flexShrink: 0, scrollSnapAlign: 'start' }}>
-              {product.category === 'handmade' ? (
-                <HandmadeProductCard product={product} />
-              ) : (
+              {product.category === 'factory' ? (
                 <ProductCard product={product} />
+              ) : (
+                <HandmadeProductCard product={product} />
               )}
             </div>
           ))}

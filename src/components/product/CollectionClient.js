@@ -258,10 +258,10 @@ export default function CollectionClient({ category, allProducts, featuredProduc
                 <div className={viewMode === "grid" ? gridStyles.masonryGrid : gridStyles.listGrid}>
                   {paginated.map((product, i) => (
                     <div key={product.id} className={gridStyles.masonryItem}>
-                      {product.category === 'handmade' ? (
-                        <HandmadeProductCard product={product} index={i} viewMode={viewMode} />
-                      ) : (
+                      {product.category === 'factory' ? (
                         <ProductCard product={product} index={i} viewMode={viewMode} />
+                      ) : (
+                        <HandmadeProductCard product={product} index={i} viewMode={viewMode} />
                       )}
                     </div>
                   ))}

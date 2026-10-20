@@ -20,8 +20,8 @@ export default function ProductQuickView({ product }) {
   const { onClose } = useModal();
 
   const isFactory = product?.category === 'factory' || (product?.categoryName && product.categoryName.toLowerCase().includes('factory'));
-  const hasSizes = !isFactory && Array.isArray(product?.sizes) && product.sizes.length > 0;
-  const availableSizes = hasSizes ? product.sizes : [];
+  const availableSizes = !isFactory ? (Array.isArray(product?.sizes) && product.sizes.length > 0 ? product.sizes : ["S", "M", "L"]) : [];
+  const hasSizes = availableSizes.length > 0;
 
   const [savedSize, setSavedSize] = useState(null);
   const [selectedImage, setSelectedImage] = useState(0);
@@ -64,7 +64,7 @@ export default function ProductQuickView({ product }) {
   };
 
   const getFinalSize = () => hasSizes ? selectedSize : null;
-  const getFinalLength = () => product.category === 'handmade' ? selectedLength : null;
+  const getFinalLength = () => !isFactory && (product.lengths?.length > 0 || product.category === 'handmade') ? selectedLength : null;
 
   const handleAddToCart = () => {
     addItem(product, quantity, getFinalSize(), getFinalLength());

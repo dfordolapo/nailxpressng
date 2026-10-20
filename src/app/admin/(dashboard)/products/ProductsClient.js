@@ -99,8 +99,8 @@ function ProductsContent({ initialProducts = [] }) {
   const [defaultCategory, setDefaultCategory] = useState("Handmade");
   const [defaultPrice, setDefaultPrice] = useState("12000");
   const [defaultStock, setDefaultStock] = useState("10");
-  const [defaultShape, setDefaultShape] = useState("Square");
   const [defaultLength, setDefaultLength] = useState("Medium");
+  const [defaultSizes, setDefaultSizes] = useState(["S", "M", "L"]);
 
   const [isUploadingBulk, setIsUploadingBulk] = useState(false);
   const [bulkError, setBulkError] = useState(null);
@@ -336,12 +336,16 @@ function ProductsContent({ initialProducts = [] }) {
     }));
 
     try {
+      const isFactory = targetCol.slug === 'factory' || (targetCol.name && targetCol.name.toLowerCase().includes('factory'));
+      const newSizes = isFactory ? [] : (prevProduct?.sizes && prevProduct.sizes.length > 0 ? prevProduct.sizes : ["S", "M", "L"]);
+
       const res = await fetch(`/api/admin/products/${productId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           category_id: targetCol.id,
-          category: targetCol.slug 
+          category: targetCol.slug,
+          sizes: newSizes
         })
       });
 
@@ -581,12 +585,26 @@ function ProductsContent({ initialProducts = [] }) {
             item.nailShape = rawVal;
           } else if (h.includes('color')) {
             item.color = rawVal;
+          } else if (h.includes('length')) {
+            item.lengths = rawVal.split(',').map(s => s.trim()).filter(Boolean);
+          } else if (h.includes('size') || h === 'sizing') {
+            try {
+              const parsed = JSON.parse(rawVal);
+              item.sizes = Array.isArray(parsed) ? parsed.map(s => String(s).trim()).filter(Boolean) : rawVal.split(',').map(s => s.trim().toUpperCase()).filter(Boolean);
+            } catch {
+              item.sizes = rawVal.split(',').map(s => s.trim().toUpperCase()).filter(Boolean);
+            }
           } else if (h.includes('tag') || h.includes('style')) {
             item.tags = rawVal;
           } else if (h.includes('feat') || h.includes('bestseller')) {
             item.featured = rawVal.toLowerCase() === 'true' || rawVal === '1';
           }
         });
+
+        const isCatFactory = String(item.category || '').toLowerCase().includes('factory');
+        if (!item.sizes || item.sizes.length === 0) {
+          item.sizes = isCatFactory ? [] : ['S', 'M', 'L'];
+        }
 
         if (item.name && (item.price || item.price === 0)) {
           parsed.push(item);
@@ -607,10 +625,11 @@ function ProductsContent({ initialProducts = [] }) {
 
   const handleDownloadSample = () => {
     const data = [
-      ["Name", "Category", "Price", "CompareAtPrice", "StockCount", "Description", "Images", "NailShape", "Color", "Tags", "Featured"],
-      ["Ruby Velvet Elegance", "Handmade", 15000, 18000, 10, "Handmade luxury press-on nail set with velvet finish.", "https://images.unsplash.com/photo-1604654894610-df63bc536371", "Almond", "Deep Red", "Solid, Velvet", true],
-      ["French Vanilla Glaze", "Factory Made", 6500, "", 25, "Classic neutral french tips with salon-grade finish.", "https://images.unsplash.com/photo-1632345031435-8727f6897d53", "Square", "Nude", "French, Minimalist", false],
-      ["Emerald Dream Ombre", "Handmade", 16000, 20000, 8, "Rich jewel toned ombre with gold foil accents.", "https://images.unsplash.com/photo-1519014816548-bf5fe059798b", "Coffin", "Green", "Ombre, Art", true]
+      ["Name", "Category", "Price", "CompareAtPrice", "StockCount", "Sizes", "Length", "Description", "Images", "NailShape", "Color", "Tags", "Featured"],
+      ["Ruby Velvet Elegance", "Handmade", 15000, 18000, 10, "S, M, L", "Medium", "Handmade luxury press-on nail set with velvet finish.", "https://images.unsplash.com/photo-1604654894610-df63bc536371", "Almond", "Deep Red", "Solid, Velvet", true],
+      ["French Vanilla Glaze", "Factory Made", 6500, "", 25, "", "Short", "Classic neutral french tips with salon-grade finish.", "https://images.unsplash.com/photo-1632345031435-8727f6897d53", "Square", "Nude", "French, Minimalist", false],
+      ["Midnight Spiderweb Glow", "Halloween Capsule", 14500, 17000, 15, "S, M, L", "Medium", "Spooky Halloween special edition press-on nails.", "https://images.unsplash.com/photo-1519014816548-bf5fe059798b", "Stiletto", "Black, Purple", "Halloween, Glow", true],
+      ["Emerald Dream Ombre", "Handmade", 16000, 20000, 8, "S, M, L", "Long", "Rich jewel toned ombre with gold foil accents.", "https://images.unsplash.com/photo-1519014816548-bf5fe059798b", "Coffin", "Green", "Ombre, Art", true]
     ];
 
     const worksheet = XLSX.utils.aoa_to_sheet(data);
@@ -717,6 +736,11 @@ function ProductsContent({ initialProducts = [] }) {
 
               const imageUrl = await uploadImageDirect(file, `bulk-${slugBase}`);
 
+              const isFactoryCat = defaultCategory.toLowerCase().includes('factory');
+              const finalSizes = isFactoryCat 
+                ? (defaultSizes.length > 0 ? defaultSizes : []) 
+                : (defaultSizes.length > 0 ? defaultSizes : ["S", "M", "L"]);
+
               return {
                 name: productName,
                 category: defaultCategory,
@@ -724,6 +748,7 @@ function ProductsContent({ initialProducts = [] }) {
                 stock: parseInt(defaultStock, 10) || 10,
                 nailShape: defaultShape,
                 length: defaultLength,
+                sizes: finalSizes,
                 images: [imageUrl],
                 description: `Handcrafted ${productName} luxury press-on nail set. Ready to wear.`,
               };
@@ -774,7 +799,7 @@ function ProductsContent({ initialProducts = [] }) {
               nailShape: p.nail_shape,
               style: p.style,
               lengths: p.lengths || [],
-              sizes: isFactory ? [] : (Array.isArray(p.sizes) && p.sizes.length > 0 ? p.sizes : ["S", "M", "L"]),
+              sizes: isFactory ? (Array.isArray(p.sizes) && p.sizes.length > 0 ? p.sizes : []) : (Array.isArray(p.sizes) && p.sizes.length > 0 ? p.sizes : ["S", "M", "L"]),
               color: p.color ? p.color.split(',')[0].trim() : null,
               colors: p.color ? p.color.split(',').map(c => c.trim()).filter(Boolean) : [],
               images: p.images || [],
@@ -840,7 +865,7 @@ function ProductsContent({ initialProducts = [] }) {
               nailShape: p.nail_shape,
               style: p.style,
               lengths: p.lengths || [],
-              sizes: isFactory ? [] : (Array.isArray(p.sizes) && p.sizes.length > 0 ? p.sizes : ["S", "M", "L"]),
+              sizes: isFactory ? (Array.isArray(p.sizes) && p.sizes.length > 0 ? p.sizes : []) : (Array.isArray(p.sizes) && p.sizes.length > 0 ? p.sizes : ["S", "M", "L"]),
               color: p.color ? p.color.split(',')[0].trim() : null,
               colors: p.color ? p.color.split(',').map(c => c.trim()).filter(Boolean) : [],
               images: p.images || [],
@@ -1700,9 +1725,17 @@ function ProductsContent({ initialProducts = [] }) {
                     <div className={styles.bulkGridItem}>
                       <label className={styles.bulkGridLabel}>Collection</label>
                       <select 
-                        value={defaultCategory} 
-                        onChange={(e) => setDefaultCategory(e.target.value)}
+                        value={defaultCategory}
                         className={styles.bulkGridSelect}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          setDefaultCategory(val);
+                          if (val.toLowerCase().includes('factory')) {
+                            setDefaultSizes([]);
+                          } else if (defaultSizes.length === 0) {
+                            setDefaultSizes(["S", "M", "L"]);
+                          }
+                        }}
                       >
                         {allCollections && allCollections.length > 0 ? (
                           allCollections.map((col) => (
@@ -1771,6 +1804,82 @@ function ProductsContent({ initialProducts = [] }) {
                         onChange={(e) => setDefaultStock(e.target.value)}
                         className={styles.bulkGridInput}
                       />
+                    </div>
+                  </div>
+
+                  {/* Bulk Sizing Options Bar */}
+                  <div style={{
+                    background: "#fdf8f8",
+                    border: "1px solid var(--color-border-light)",
+                    borderRadius: "8px",
+                    padding: "10px 14px",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "6px"
+                  }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "6px" }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                        <span style={{ fontSize: "0.78rem", fontWeight: 600, color: "var(--color-primary-800)" }}>
+                          Apply Sizes to All Sets:
+                        </span>
+                        <span style={{ fontSize: "0.72rem", color: "#666" }}>
+                          (Customers can choose between selected sizes)
+                        </span>
+                      </div>
+                      <div style={{ display: "flex", gap: "6px" }}>
+                        <button
+                          type="button"
+                          onClick={() => setDefaultSizes(["S", "M", "L"])}
+                          style={{ fontSize: "0.72rem", padding: "2px 8px", borderRadius: "4px", border: "1px solid #ddd", background: "#fff", cursor: "pointer" }}
+                        >
+                          Standard (S, M, L)
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setDefaultSizes(["XS", "S", "M", "L", "Custom"])}
+                          style={{ fontSize: "0.72rem", padding: "2px 8px", borderRadius: "4px", border: "1px solid #ddd", background: "#fff", cursor: "pointer" }}
+                        >
+                          All Sizes
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setDefaultSizes([])}
+                          style={{ fontSize: "0.72rem", padding: "2px 8px", borderRadius: "4px", border: "1px solid #ddd", background: "#fff", cursor: "pointer", color: "#888" }}
+                        >
+                          None (Factory)
+                        </button>
+                      </div>
+                    </div>
+
+                    <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", alignItems: "center" }}>
+                      {["XS", "S", "M", "L", "Custom"].map(sz => {
+                        const active = defaultSizes.includes(sz);
+                        return (
+                          <button
+                            key={sz}
+                            type="button"
+                            onClick={() => {
+                              setDefaultSizes(prev => active ? prev.filter(s => s !== sz) : [...prev, sz]);
+                            }}
+                            style={{
+                              padding: "4px 12px",
+                              borderRadius: "16px",
+                              fontSize: "0.78rem",
+                              fontWeight: active ? 600 : 400,
+                              background: active ? "var(--color-primary)" : "#fff",
+                              color: active ? "#fff" : "var(--color-text)",
+                              border: active ? "1px solid var(--color-primary)" : "1px solid var(--color-border)",
+                              cursor: "pointer",
+                              transition: "all 0.15s ease"
+                            }}
+                          >
+                            {active ? `✓ ${sz}` : sz}
+                          </button>
+                        );
+                      })}
+                      <span style={{ fontSize: "0.72rem", color: defaultSizes.length > 0 ? "var(--color-primary)" : "#888", marginLeft: "4px" }}>
+                        {defaultSizes.length > 0 ? `Selected: ${defaultSizes.join(', ')}` : 'No size options (1 standard size)'}
+                      </span>
                     </div>
                   </div>
 
@@ -1919,6 +2028,7 @@ function ProductsContent({ initialProducts = [] }) {
                               <th>Price</th>
                               <th>Stock</th>
                               <th>Nail Shape</th>
+                              <th>Sizes</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -1929,6 +2039,11 @@ function ProductsContent({ initialProducts = [] }) {
                                 <td>{formatPrice(item.price)}</td>
                                 <td>{item.stockCount ?? 10}</td>
                                 <td>{item.nailShape || "Square"}</td>
+                                <td style={{ color: "var(--color-primary)", fontWeight: 500 }}>
+                                  {(item.sizes && item.sizes.length > 0) 
+                                    ? item.sizes.join(', ') 
+                                    : (item.category?.toLowerCase()?.includes('factory') ? '—' : 'S, M, L')}
+                                </td>
                               </tr>
                             ))}
                           </tbody>

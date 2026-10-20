@@ -130,15 +130,23 @@ export async function PUT(request, { params }) {
 
     const rawSizes = formData.get('sizes');
     let sizesArray = [];
-    if (targetSlug === 'handmade') {
-      if (rawSizes) {
-        try {
-          sizesArray = JSON.parse(rawSizes);
-        } catch {
-          sizesArray = rawSizes.split(',').map(s => s.trim()).filter(Boolean);
-        }
-      } else {
+    if (rawSizes) {
+      try {
+        const parsed = JSON.parse(rawSizes);
+        if (Array.isArray(parsed)) sizesArray = parsed.map(s => String(s).trim()).filter(Boolean);
+        else sizesArray = String(rawSizes).split(',').map(s => s.trim()).filter(Boolean);
+      } catch {
+        sizesArray = String(rawSizes).split(',').map(s => s.trim()).filter(Boolean);
+      }
+    }
+
+    const isFactory = targetSlug === 'factory';
+    const isHalloween = targetSlug === 'halloween' || (name && name.toLowerCase().includes('halloween'));
+    if (sizesArray.length === 0) {
+      if (isHalloween) {
         sizesArray = ['S', 'M', 'L'];
+      } else if (!isFactory) {
+        sizesArray = existingProduct.sizes && existingProduct.sizes.length > 0 ? existingProduct.sizes : ['S', 'M', 'L'];
       }
     }
 
@@ -197,6 +205,24 @@ export async function PATCH(request, { params }) {
     }
     if (typeof body.bestseller !== 'undefined') {
       updateData.bestseller = body.bestseller;
+    }
+    if (typeof body.sizes !== 'undefined') {
+      let parsedSizes = [];
+      if (Array.isArray(body.sizes)) {
+        parsedSizes = body.sizes.map(s => String(s).trim()).filter(Boolean);
+      } else if (typeof body.sizes === 'string') {
+        try {
+          const j = JSON.parse(body.sizes);
+          if (Array.isArray(j)) parsedSizes = j.map(s => String(s).trim()).filter(Boolean);
+          else parsedSizes = body.sizes.split(',').map(s => s.trim()).filter(Boolean);
+        } catch {
+          parsedSizes = body.sizes.split(',').map(s => s.trim()).filter(Boolean);
+        }
+      }
+      updateData.sizes = parsedSizes;
+    }
+    if (typeof body.lengths !== 'undefined') {
+      updateData.lengths = Array.isArray(body.lengths) ? body.lengths : [body.lengths];
     }
     if (body.category_id) {
       updateData.category_id = body.category_id;

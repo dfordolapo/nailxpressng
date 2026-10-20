@@ -48,8 +48,27 @@ export async function POST(request) {
       const defaultShape = formData.get('defaultShape') || 'Square';
       const defaultLength = formData.get('defaultLength') || 'Medium';
 
+      // Parse custom sizes if provided
+      const rawDefaultSizes = formData.get('defaultSizes') || formData.get('sizes');
+      let defaultSizesArray = [];
+      if (rawDefaultSizes) {
+        try {
+          const parsed = JSON.parse(rawDefaultSizes);
+          if (Array.isArray(parsed)) defaultSizesArray = parsed;
+          else defaultSizesArray = String(rawDefaultSizes).split(',').map(s => s.trim()).filter(Boolean);
+        } catch {
+          defaultSizesArray = String(rawDefaultSizes).split(',').map(s => s.trim()).filter(Boolean);
+        }
+      }
+
       // 1. Map directly from user's chosen collection in the modal
       const targetCatId = resolveCategoryId(defaultCategoryName);
+      const isTargetFactory = targetCatId === factoryCategoryId || defaultCategoryName.toLowerCase().includes('factory');
+      const isTargetHalloween = defaultCategoryName.toLowerCase().includes('halloween');
+      
+      const finalImageSizes = defaultSizesArray.length > 0
+        ? defaultSizesArray
+        : (isTargetHalloween ? ['S', 'M', 'L'] : (isTargetFactory ? [] : ['S', 'M', 'L']));
 
       if (!imageFiles || imageFiles.length === 0) {
         return NextResponse.json({ success: false, error: 'No images were uploaded' }, { status: 400 });
@@ -107,7 +126,7 @@ export async function POST(request) {
           bestseller: false,
           stock_count: defaultStock,
           lengths: defaultLength ? [defaultLength] : ['Short', 'Medium', 'Long'],
-          sizes: ['S', 'M', 'L'],
+          sizes: finalImageSizes,
         };
       });
 
@@ -167,6 +186,40 @@ export async function POST(request) {
         imagesArray = [p.image];
       }
 
+      // Parse sizing from row
+      let rowSizes = [];
+      const rawRowSizes = p.sizes ?? p.size;
+      if (Array.isArray(rawRowSizes)) {
+        rowSizes = rawRowSizes.map(s => String(s).trim()).filter(Boolean);
+      } else if (typeof rawRowSizes === 'string' && rawRowSizes.trim()) {
+        try {
+          const parsed = JSON.parse(rawRowSizes);
+          if (Array.isArray(parsed)) rowSizes = parsed.map(s => String(s).trim()).filter(Boolean);
+          else rowSizes = rawRowSizes.split(',').map(s => s.trim()).filter(Boolean);
+        } catch {
+          rowSizes = rawRowSizes.split(',').map(s => s.trim()).filter(Boolean);
+        }
+      }
+
+      const isFactoryRow = catId === factoryCategoryId || 
+        String(p.category || '').toLowerCase().includes('factory') ||
+        String(p.categoryName || '').toLowerCase().includes('factory');
+
+      const isHalloweenRow = String(p.category || '').toLowerCase().includes('halloween') ||
+        String(p.categoryName || '').toLowerCase().includes('halloween') ||
+        String(p.name || '').toLowerCase().includes('halloween');
+
+      let finalSizes = [];
+      if (rowSizes.length > 0) {
+        finalSizes = rowSizes;
+      } else if (isHalloweenRow) {
+        finalSizes = ['S', 'M', 'L'];
+      } else if (isFactoryRow) {
+        finalSizes = [];
+      } else {
+        finalSizes = ['S', 'M', 'L'];
+      }
+
       preparedProducts.push({
         name: p.name.trim(),
         slug: uniqueSlug,
@@ -181,7 +234,7 @@ export async function POST(request) {
         bestseller: isFeatured,
         stock_count: isNaN(stock) ? 10 : stock,
         lengths: Array.isArray(p.lengths) ? p.lengths : p.length ? [p.length] : ['Short', 'Medium', 'Long'],
-        sizes: ['S', 'M', 'L'],
+        sizes: finalSizes,
       });
     }
 

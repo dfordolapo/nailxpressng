@@ -147,7 +147,7 @@ export default function CartDrawer({ onClose }) {
                       </button>
                     </div>
                     <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
-                      {item.category === 'handmade' && (
+                      {item.category !== 'factory' && item.selectedSize && (
                         <button
                           onClick={() => {
                             const existingSizes = items

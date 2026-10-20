@@ -68,11 +68,36 @@ const mapProduct = (p, discount = 0) => {
     style: p.style,
     lengths: Array.isArray(p.lengths) ? p.lengths : [],
     sizes: (() => {
-      const isFactory = resolvedCategory === 'factory' || (resolvedCategoryName && resolvedCategoryName.toLowerCase().includes('factory'));
+      // 1. Parse sizes if provided in DB
+      let parsed = [];
+      if (Array.isArray(p.sizes)) {
+        parsed = p.sizes.map(s => String(s).trim()).filter(Boolean);
+      } else if (typeof p.sizes === 'string' && p.sizes.trim()) {
+        try {
+          const j = JSON.parse(p.sizes);
+          if (Array.isArray(j)) parsed = j.map(s => String(s).trim()).filter(Boolean);
+          else parsed = p.sizes.split(',').map(s => s.trim()).filter(Boolean);
+        } catch {
+          parsed = p.sizes.split(',').map(s => s.trim()).filter(Boolean);
+        }
+      }
+
+      // If explicit sizes exist, use them
+      if (parsed.length > 0) return parsed;
+
+      // 2. Halloween collection products MUST always have S, M, L sizes
+      const isHalloween = resolvedCategory === 'halloween' || 
+        resolvedCategoryName?.toLowerCase().includes('halloween') ||
+        (typeof p.category === 'string' && p.category.toLowerCase().includes('halloween')) ||
+        (p.name && p.name.toLowerCase().includes('halloween'));
+      if (isHalloween) return ["S", "M", "L"];
+
+      // 3. Factory Made press-ons are 24-piece full covers (no sizes needed unless custom specified)
+      const isFactory = resolvedCategory === 'factory' || resolvedCategoryName?.toLowerCase().includes('factory');
       if (isFactory) return [];
-      if (Array.isArray(p.sizes) && p.sizes.length > 0) return p.sizes;
-      if (resolvedCategory === 'handmade') return ["S", "M", "L"];
-      return [];
+
+      // 4. Default for Handmade and any custom / capsule collections: S, M, L
+      return ["S", "M", "L"];
     })(),
     images: p.images,
     image: p.images?.[0] || null,

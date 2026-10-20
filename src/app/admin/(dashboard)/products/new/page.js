@@ -97,8 +97,9 @@ function NewProductContent() {
           if (error) throw error;
           
           setName(data.name || "");
-          const isHandmade = data.categories?.name === "Handmade" || data.category_id?.toLowerCase()?.includes('handmade');
-          setCollection(isHandmade ? "Handmade" : data.categories?.name || "Factory");
+          const catName = data.categories?.name || data.category || "";
+          const isCatFactory = catName.toLowerCase().includes('factory') || data.categories?.slug === 'factory';
+          setCollection(catName || "Handmade");
           setTags(data.style ? data.style.split(',').map(s => s.trim()) : []);
           setDescription(data.description || "");
           setNailShape(data.nail_shape || "Square");
@@ -107,7 +108,7 @@ function NewProductContent() {
           // Load Sizes
           if (data.sizes && Array.isArray(data.sizes) && data.sizes.length > 0) {
             setAvailableSizes(data.sizes);
-          } else if (isHandmade) {
+          } else if (!isCatFactory) {
             setAvailableSizes(["S", "M", "L"]);
           } else {
             setAvailableSizes([]);
@@ -323,11 +324,12 @@ function NewProductContent() {
       // Multi-colors
       formData.append('color', selectedColors.join(', '));
 
-      // Sizes for handmade
-      if (collection.toLowerCase().includes('handmade')) {
-        formData.append('sizes', JSON.stringify(availableSizes));
+      // Sizes for handmade, Halloween, and custom collections
+      const isFactoryCollection = collection.toLowerCase().includes('factory');
+      if (!isFactoryCollection) {
+        formData.append('sizes', JSON.stringify(availableSizes.length > 0 ? availableSizes : ["S", "M", "L"]));
       } else {
-        formData.append('sizes', JSON.stringify([]));
+        formData.append('sizes', JSON.stringify(availableSizes));
       }
       
       if (imageFile) {
@@ -537,7 +539,7 @@ function NewProductContent() {
                   {/* Real Component Preview */}
                   <div style={{ maxWidth: "200px", justifySelf: "center", transform: "scale(0.9)", transformOrigin: "top center" }}>
                     <div style={{ fontSize: "0.85rem", color: "#666", marginBottom: "10px", textAlign: "center" }}>Preview (As Customer Sees)</div>
-                      {collection.toLowerCase().replace(' ', '-') === 'handmade' ? (
+                      {!collection.toLowerCase().includes('factory') ? (
                         <HandmadeProductCard 
                           product={{
                             id: "preview",
@@ -615,17 +617,17 @@ function NewProductContent() {
                 </div>
               </div>
 
-              {/* Handmade Available Sizes Configuration */}
-              {collection.toLowerCase().includes('handmade') && (
+              {/* Available Sizes Configuration */}
+              {!collection.toLowerCase().includes('factory') && (
                 <div className={styles.formGroup} style={{ marginTop: "10px", padding: "16px", background: "var(--color-surface, #fafafa)", borderRadius: "10px", border: "1px solid var(--color-border-light, #f0e6e6)" }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px", flexWrap: "wrap", gap: "8px" }}>
                     <div>
                       <label className={styles.label} style={{ marginBottom: "2px", display: "flex", alignItems: "center", gap: "6px", fontWeight: 600 }}>
-                        <span>Handmade Available Sizes</span>
-                        <span style={{ fontSize: "0.75rem", background: "var(--color-primary-100)", color: "var(--color-primary-800)", padding: "2px 6px", borderRadius: "4px", fontWeight: 500 }}>Handmade Only</span>
+                        <span>Available Nail Sizes (S, M, L)</span>
+                        <span style={{ fontSize: "0.75rem", background: "var(--color-primary-100)", color: "var(--color-primary-800)", padding: "2px 6px", borderRadius: "4px", fontWeight: 500 }}>Sizing Options</span>
                       </label>
                       <p style={{ fontSize: "0.78rem", color: "#666", margin: 0 }}>
-                        Select the sizes available for this handmade set. Customers will only be able to order the chosen sizes.
+                        Select the sizes available for this set. Customers can select S, M, L when ordering.
                       </p>
                     </div>
                     <div style={{ display: "flex", gap: "6px" }}>

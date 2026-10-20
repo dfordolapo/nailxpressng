@@ -397,10 +397,10 @@ export default function FindYourFitQuiz({ allProducts = [], hideBanner = false, 
                   <div className={styles.resultsGrid}>
                     {recommendations.map((product, i) => (
                       <div key={product.id} onClick={handleClose} className={styles.resultItem}>
-                        {product.category === 'handmade' ? (
-                          <HandmadeProductCard product={product} index={i} />
-                        ) : (
+                        {product.category === 'factory' ? (
                           <ProductCard product={product} index={i} />
+                        ) : (
+                          <HandmadeProductCard product={product} index={i} />
                         )}
                       </div>
                     ))}
