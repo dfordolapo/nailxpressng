@@ -85,15 +85,12 @@ const mapProduct = (p, discount = 0) => {
       // 1. If explicit sizes exist in DB, preserve them exactly (some sets are only in one size)
       if (parsed.length > 0) return parsed;
 
-      // 2. ONLY Halloween collection products default to S, M, L sizes if not explicitly set
-      const isHalloween = resolvedCategory === 'halloween' || 
-        resolvedCategoryName?.toLowerCase().includes('halloween') ||
-        (typeof p.category === 'string' && p.category.toLowerCase().includes('halloween')) ||
-        (p.name && p.name.toLowerCase().includes('halloween'));
-      if (isHalloween) return ["S", "M", "L"];
+      // 2. Factory Made press-ons are 24-piece full covers (only factory made cards don't have sizing)
+      const isFactory = resolvedCategory === 'factory' || resolvedCategoryName?.toLowerCase().includes('factory');
+      if (isFactory) return [];
 
-      // 3. For all other products (factory or non-factory without sizes), do NOT force S, M, L
-      return [];
+      // 3. For all other products (handmade, Halloween, capsules), default to S, M, L
+      return ["S", "M", "L"];
     })(),
     images: p.images,
     image: p.images?.[0] || null,

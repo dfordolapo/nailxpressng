@@ -32,8 +32,11 @@ function resolveProductSizes(product: {
 
   if (isHalloween) return ["S", "M", "L"];
 
-  // For non-Halloween products without explicit sizes, do NOT force S, M, L
-  return [];
+  const isFactory = resolvedCategory === 'factory' || resolvedCategoryName.includes('factory');
+  if (isFactory) return [];
+
+  // Non-factory sets always have sizing so users can choose size before placing order
+  return ["S", "M", "L"];
 }
 
 describe('Product Sizing Rules', () => {
@@ -85,7 +88,7 @@ describe('Product Sizing Rules', () => {
     expect(resolveProductSizes(customStringSet)).toEqual(['S', 'M', 'L', 'Custom']);
   });
 
-  it('sets empty sizes for standard Factory Made products', () => {
+  it('sets empty sizes for standard Factory Made products (only factory made cards dont have sizing)', () => {
     const factorySet = {
       category: 'factory',
       categoryName: 'Factory Made',
@@ -95,12 +98,12 @@ describe('Product Sizing Rules', () => {
     expect(resolveProductSizes(factorySet)).toEqual([]);
   });
 
-  it('does NOT force S, M, L on other non-Halloween products without explicit sizes', () => {
-    const plainSet = {
+  it('provides S, M, L by default for non-factory products so users can choose size before placing order', () => {
+    const handmadeSet = {
       category: 'handmade',
       name: 'Floral Handpainted Set',
       sizes: [],
     };
-    expect(resolveProductSizes(plainSet)).toEqual([]);
+    expect(resolveProductSizes(handmadeSet)).toEqual(['S', 'M', 'L']);
   });
 });

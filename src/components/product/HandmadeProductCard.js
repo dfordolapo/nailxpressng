@@ -61,18 +61,17 @@ function ZoomInIcon() {
 export default function HandmadeProductCard({ product, index = 0, viewMode = "grid" }) {
   const [flipped, setFlipped] = useState(false);
   const isFactory = product?.category === 'factory' || (product?.categoryName && product.categoryName.toLowerCase().includes('factory'));
-  const isHalloween = product?.category === 'halloween' || 
-    product?.categoryName?.toLowerCase().includes('halloween') ||
-    product?.slug?.toLowerCase().includes('halloween') ||
-    product?.name?.toLowerCase().includes('halloween');
 
+  // Only factory made cards don't have sizing. Non-factory cards (handmade, Halloween, capsules) always have sizing.
   const availableSizes = !isFactory 
     ? (Array.isArray(product?.sizes) && product.sizes.length > 0 
         ? product.sizes 
-        : (isHalloween ? ["S", "M", "L"] : []))
+        : ["S", "M", "L"])
     : [];
   const hasSizes = availableSizes.length > 0;
-  const [selectedSize, setSelectedSize] = useState(null);
+  const [selectedSize, setSelectedSize] = useState(() => {
+    return availableSizes.includes("M") ? "M" : (availableSizes[0] || null);
+  });
   const [selectedLength, setSelectedLength] = useState(product?.lengths?.[0] || null);
   const [qty, setQty] = useState(1);
   const [qtyAnim, setQtyAnim] = useState("");
