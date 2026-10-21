@@ -82,22 +82,18 @@ const mapProduct = (p, discount = 0) => {
         }
       }
 
-      // If explicit sizes exist, use them
+      // 1. If explicit sizes exist in DB, preserve them exactly (some sets are only in one size)
       if (parsed.length > 0) return parsed;
 
-      // 2. Halloween collection products MUST always have S, M, L sizes
+      // 2. ONLY Halloween collection products default to S, M, L sizes if not explicitly set
       const isHalloween = resolvedCategory === 'halloween' || 
         resolvedCategoryName?.toLowerCase().includes('halloween') ||
         (typeof p.category === 'string' && p.category.toLowerCase().includes('halloween')) ||
         (p.name && p.name.toLowerCase().includes('halloween'));
       if (isHalloween) return ["S", "M", "L"];
 
-      // 3. Factory Made press-ons are 24-piece full covers (no sizes needed unless custom specified)
-      const isFactory = resolvedCategory === 'factory' || resolvedCategoryName?.toLowerCase().includes('factory');
-      if (isFactory) return [];
-
-      // 4. Default for Handmade and any custom / capsule collections: S, M, L
-      return ["S", "M", "L"];
+      // 3. For all other products (factory or non-factory without sizes), do NOT force S, M, L
+      return [];
     })(),
     images: p.images,
     image: p.images?.[0] || null,

@@ -142,11 +142,13 @@ export async function PUT(request, { params }) {
 
     const isFactory = targetSlug === 'factory';
     const isHalloween = targetSlug === 'halloween' || (name && name.toLowerCase().includes('halloween'));
-    if (sizesArray.length === 0) {
+    if (isFactory) {
+      sizesArray = [];
+    } else if (sizesArray.length === 0) {
       if (isHalloween) {
         sizesArray = ['S', 'M', 'L'];
-      } else if (!isFactory) {
-        sizesArray = existingProduct.sizes && existingProduct.sizes.length > 0 ? existingProduct.sizes : ['S', 'M', 'L'];
+      } else {
+        sizesArray = Array.isArray(existingProduct.sizes) ? existingProduct.sizes : [];
       }
     }
 

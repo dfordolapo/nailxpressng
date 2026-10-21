@@ -320,6 +320,7 @@ function ProductsContent({ initialProducts = [] }) {
     const prevProduct = productsList.find(p => p.id === productId);
 
     const isFactory = targetCol.slug === 'factory' || (targetCol.name && targetCol.name.toLowerCase().includes('factory'));
+    const isTargetHalloween = targetCol.slug === 'halloween' || (targetCol.name && targetCol.name.toLowerCase().includes('halloween'));
 
     // Optimistic UI update
     setProductsList(prev => prev.map(p => {
@@ -329,7 +330,7 @@ function ProductsContent({ initialProducts = [] }) {
           category: targetCol.slug,
           categoryName: targetCol.name,
           category_id: targetCol.id,
-          sizes: isFactory ? [] : (p.sizes && p.sizes.length > 0 ? p.sizes : ["S", "M", "L"]),
+          sizes: isFactory ? [] : (p.sizes && p.sizes.length > 0 ? p.sizes : (isTargetHalloween ? ["S", "M", "L"] : [])),
         };
       }
       return p;
@@ -337,7 +338,7 @@ function ProductsContent({ initialProducts = [] }) {
 
     try {
       const isFactory = targetCol.slug === 'factory' || (targetCol.name && targetCol.name.toLowerCase().includes('factory'));
-      const newSizes = isFactory ? [] : (prevProduct?.sizes && prevProduct.sizes.length > 0 ? prevProduct.sizes : ["S", "M", "L"]);
+      const newSizes = isFactory ? [] : (prevProduct?.sizes && prevProduct.sizes.length > 0 ? prevProduct.sizes : (isTargetHalloween ? ["S", "M", "L"] : []));
 
       const res = await fetch(`/api/admin/products/${productId}`, {
         method: 'PATCH',
@@ -737,9 +738,10 @@ function ProductsContent({ initialProducts = [] }) {
               const imageUrl = await uploadImageDirect(file, `bulk-${slugBase}`);
 
               const isFactoryCat = defaultCategory.toLowerCase().includes('factory');
+              const isHalloweenCat = defaultCategory.toLowerCase().includes('halloween');
               const finalSizes = isFactoryCat 
                 ? (defaultSizes.length > 0 ? defaultSizes : []) 
-                : (defaultSizes.length > 0 ? defaultSizes : ["S", "M", "L"]);
+                : (defaultSizes.length > 0 ? defaultSizes : (isHalloweenCat ? ["S", "M", "L"] : []));
 
               return {
                 name: productName,
@@ -786,6 +788,7 @@ function ProductsContent({ initialProducts = [] }) {
             const catSlug = p.categories?.slug || (typeof p.category === 'string' ? p.category.toLowerCase() : defaultCategory.toLowerCase());
             const catName = p.categories?.name || (catSlug === 'factory' ? 'Factory Made' : (catSlug === 'handmade' ? 'Handmade' : defaultCategory));
             const isFactory = catSlug === 'factory' || (catName && catName.toLowerCase().includes('factory'));
+            const isHalloween = catSlug === 'halloween' || (catName && catName.toLowerCase().includes('halloween'));
 
             return {
               id: p.id,
@@ -799,7 +802,7 @@ function ProductsContent({ initialProducts = [] }) {
               nailShape: p.nail_shape,
               style: p.style,
               lengths: p.lengths || [],
-              sizes: isFactory ? (Array.isArray(p.sizes) && p.sizes.length > 0 ? p.sizes : []) : (Array.isArray(p.sizes) && p.sizes.length > 0 ? p.sizes : ["S", "M", "L"]),
+              sizes: isFactory ? (Array.isArray(p.sizes) && p.sizes.length > 0 ? p.sizes : []) : (Array.isArray(p.sizes) && p.sizes.length > 0 ? p.sizes : (isHalloween ? ["S", "M", "L"] : [])),
               color: p.color ? p.color.split(',')[0].trim() : null,
               colors: p.color ? p.color.split(',').map(c => c.trim()).filter(Boolean) : [],
               images: p.images || [],
@@ -853,6 +856,8 @@ function ProductsContent({ initialProducts = [] }) {
             const catName = p.categories?.name || (catSlug === 'factory' ? 'Factory Made' : (catSlug === 'handmade' ? 'Handmade' : (p.category || 'Handmade')));
             const isFactory = catSlug === 'factory' || (catName && catName.toLowerCase().includes('factory'));
 
+            const isHalloween = catSlug === 'halloween' || (catName && catName.toLowerCase().includes('halloween'));
+
             return {
               id: p.id,
               name: p.name,
@@ -865,7 +870,7 @@ function ProductsContent({ initialProducts = [] }) {
               nailShape: p.nail_shape,
               style: p.style,
               lengths: p.lengths || [],
-              sizes: isFactory ? (Array.isArray(p.sizes) && p.sizes.length > 0 ? p.sizes : []) : (Array.isArray(p.sizes) && p.sizes.length > 0 ? p.sizes : ["S", "M", "L"]),
+              sizes: isFactory ? (Array.isArray(p.sizes) && p.sizes.length > 0 ? p.sizes : []) : (Array.isArray(p.sizes) && p.sizes.length > 0 ? p.sizes : (isHalloween ? ["S", "M", "L"] : [])),
               color: p.color ? p.color.split(',')[0].trim() : null,
               colors: p.color ? p.color.split(',').map(c => c.trim()).filter(Boolean) : [],
               images: p.images || [],

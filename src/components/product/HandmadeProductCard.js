@@ -61,8 +61,17 @@ function ZoomInIcon() {
 export default function HandmadeProductCard({ product, index = 0, viewMode = "grid" }) {
   const [flipped, setFlipped] = useState(false);
   const isFactory = product?.category === 'factory' || (product?.categoryName && product.categoryName.toLowerCase().includes('factory'));
-  const hasSizes = !isFactory && ((Array.isArray(product?.sizes) && product.sizes.length > 0) || product?.category !== 'factory');
-  const availableSizes = !isFactory ? (Array.isArray(product?.sizes) && product.sizes.length > 0 ? product.sizes : ["S", "M", "L"]) : [];
+  const isHalloween = product?.category === 'halloween' || 
+    product?.categoryName?.toLowerCase().includes('halloween') ||
+    product?.slug?.toLowerCase().includes('halloween') ||
+    product?.name?.toLowerCase().includes('halloween');
+
+  const availableSizes = !isFactory 
+    ? (Array.isArray(product?.sizes) && product.sizes.length > 0 
+        ? product.sizes 
+        : (isHalloween ? ["S", "M", "L"] : []))
+    : [];
+  const hasSizes = availableSizes.length > 0;
   const [selectedSize, setSelectedSize] = useState(null);
   const [selectedLength, setSelectedLength] = useState(product?.lengths?.[0] || null);
   const [qty, setQty] = useState(1);
@@ -318,14 +327,11 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
                         onClick={(e) => e.stopPropagation()}
                       >
                         <option value="" disabled>Select Size</option>
-                        {Array.from(new Set([...["XS", "S", "M", "L", "Custom"], ...(product.sizes || ["S", "M", "L"])])).map((size) => {
-                          const isAvailable = availableSizes.includes(size);
-                          return (
-                            <option key={size} value={size} disabled={!isAvailable}>
-                              {size}{!isAvailable ? " (Unavailable)" : ""}
-                            </option>
-                          );
-                        })}
+                        {availableSizes.map((size) => (
+                          <option key={size} value={size}>
+                            {size}
+                          </option>
+                        ))}
                       </select>
                     </div>
                   )}
@@ -407,14 +413,11 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
                       onClick={(e) => e.stopPropagation()}
                     >
                       <option value="" disabled>Select Size</option>
-                      {Array.from(new Set([...["XS", "S", "M", "L", "Custom"], ...(product.sizes || ["S", "M", "L"])])).map((size) => {
-                        const isAvailable = availableSizes.includes(size);
-                        return (
-                          <option key={size} value={size} disabled={!isAvailable}>
-                            {size}{!isAvailable ? " (Unavailable)" : ""}
-                          </option>
-                        );
-                      })}
+                      {availableSizes.map((size) => (
+                        <option key={size} value={size}>
+                          {size}
+                        </option>
+                      ))}
                     </select>
                   </div>
                 )}

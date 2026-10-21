@@ -55,6 +55,7 @@ function cartReducer(state, action) {
             price: product.price,
             image: product.images && product.images.length > 0 ? product.images[0] : null,
             category: product.category,
+            sizes: Array.isArray(product.sizes) ? product.sizes : [],
             selectedSize,
             selectedLength,
             quantity,

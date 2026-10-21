@@ -66,9 +66,11 @@ export async function POST(request) {
       const isTargetFactory = targetCatId === factoryCategoryId || defaultCategoryName.toLowerCase().includes('factory');
       const isTargetHalloween = defaultCategoryName.toLowerCase().includes('halloween');
       
-      const finalImageSizes = defaultSizesArray.length > 0
-        ? defaultSizesArray
-        : (isTargetHalloween ? ['S', 'M', 'L'] : (isTargetFactory ? [] : ['S', 'M', 'L']));
+      const finalImageSizes = isTargetFactory
+        ? []
+        : (defaultSizesArray.length > 0
+            ? defaultSizesArray
+            : (isTargetHalloween ? ['S', 'M', 'L'] : []));
 
       if (!imageFiles || imageFiles.length === 0) {
         return NextResponse.json({ success: false, error: 'No images were uploaded' }, { status: 400 });
@@ -210,14 +212,14 @@ export async function POST(request) {
         String(p.name || '').toLowerCase().includes('halloween');
 
       let finalSizes = [];
-      if (rowSizes.length > 0) {
+      if (isFactoryRow) {
+        finalSizes = [];
+      } else if (rowSizes.length > 0) {
         finalSizes = rowSizes;
       } else if (isHalloweenRow) {
         finalSizes = ['S', 'M', 'L'];
-      } else if (isFactoryRow) {
-        finalSizes = [];
       } else {
-        finalSizes = ['S', 'M', 'L'];
+        finalSizes = [];
       }
 
       preparedProducts.push({

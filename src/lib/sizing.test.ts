@@ -32,10 +32,8 @@ function resolveProductSizes(product: {
 
   if (isHalloween) return ["S", "M", "L"];
 
-  const isFactory = resolvedCategory === 'factory' || resolvedCategoryName.includes('factory');
-  if (isFactory) return [];
-
-  return ["S", "M", "L"];
+  // For non-Halloween products without explicit sizes, do NOT force S, M, L
+  return [];
 }
 
 describe('Product Sizing Rules', () => {
@@ -55,6 +53,22 @@ describe('Product Sizing Rules', () => {
       sizes: null,
     };
     expect(resolveProductSizes(unnamedHalloween)).toEqual(['S', 'M', 'L']);
+  });
+
+  it('preserves single-sized sets exactly as configured in DB', () => {
+    const singleSizeM = {
+      category: 'handmade',
+      name: 'Velvet Plum Nails',
+      sizes: ['M'],
+    };
+    expect(resolveProductSizes(singleSizeM)).toEqual(['M']);
+
+    const singleSizeS = {
+      category: 'capsule',
+      name: 'Pink Aura Nails',
+      sizes: ['S'],
+    };
+    expect(resolveProductSizes(singleSizeS)).toEqual(['S']);
   });
 
   it('respects custom sizes provided in bulk upload (array or string)', () => {
@@ -81,12 +95,12 @@ describe('Product Sizing Rules', () => {
     expect(resolveProductSizes(factorySet)).toEqual([]);
   });
 
-  it('defaults to S, M, L for Handmade products without explicit sizes', () => {
-    const handmadeSet = {
+  it('does NOT force S, M, L on other non-Halloween products without explicit sizes', () => {
+    const plainSet = {
       category: 'handmade',
       name: 'Floral Handpainted Set',
       sizes: [],
     };
-    expect(resolveProductSizes(handmadeSet)).toEqual(['S', 'M', 'L']);
+    expect(resolveProductSizes(plainSet)).toEqual([]);
   });
 });

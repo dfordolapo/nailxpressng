@@ -106,9 +106,13 @@ function NewProductContent() {
           setNailLength(data.lengths && data.lengths.length > 0 ? data.lengths[0] : "medium");
           
           // Load Sizes
+          const isHalloweenCat = data.categories?.slug === 'halloween' || 
+            data.category === 'halloween' || 
+            (data.name && data.name.toLowerCase().includes('halloween'));
+
           if (data.sizes && Array.isArray(data.sizes) && data.sizes.length > 0) {
             setAvailableSizes(data.sizes);
-          } else if (!isCatFactory) {
+          } else if (isHalloweenCat) {
             setAvailableSizes(["S", "M", "L"]);
           } else {
             setAvailableSizes([]);
@@ -324,13 +328,13 @@ function NewProductContent() {
       // Multi-colors
       formData.append('color', selectedColors.join(', '));
 
-      // Sizes for handmade, Halloween, and custom collections
+      // Sizes for products
       const isFactoryCollection = collection.toLowerCase().includes('factory');
-      if (!isFactoryCollection) {
-        formData.append('sizes', JSON.stringify(availableSizes.length > 0 ? availableSizes : ["S", "M", "L"]));
-      } else {
-        formData.append('sizes', JSON.stringify(availableSizes));
-      }
+      const isHalloweenCollection = collection.toLowerCase().includes('halloween');
+      const finalSizes = isFactoryCollection 
+        ? [] 
+        : (availableSizes.length > 0 ? availableSizes : (isHalloweenCollection ? ["S", "M", "L"] : []));
+      formData.append('sizes', JSON.stringify(finalSizes));
       
       if (imageFile) {
         try {

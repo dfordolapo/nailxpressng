@@ -119,9 +119,12 @@ export default function CartDrawer({ onClose }) {
                             );
                           }}
                         >
-                          {["S", "M", "L", "Customize"].map((s) => (
+                          {(Array.isArray(item.sizes) && item.sizes.length > 0
+                            ? item.sizes
+                            : (item.selectedSize ? [item.selectedSize] : ["S", "M", "L"])
+                          ).map((s) => (
                             <option key={s} value={s}>
-                              {s === "M" ? "M (Most Popular)" : s}
+                              {s}
                             </option>
                           ))}
                         </select>
@@ -147,25 +150,30 @@ export default function CartDrawer({ onClose }) {
                       </button>
                     </div>
                     <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
-                      {item.category !== 'factory' && item.selectedSize && (
-                        <button
-                          onClick={() => {
-                            const existingSizes = items
-                              .filter(i => i.id === item.id)
-                              .map(i => i.selectedSize);
-                            const nextSize = ["S", "M", "L"].find(s => !existingSizes.includes(s)) || "M";
-                            addItem(
-                              { id: item.id, slug: item.slug, name: item.name, price: item.price, images: [item.image], category: item.category },
-                              1,
-                              nextSize,
-                              item.selectedLength
-                            );
-                          }}
-                          style={{ background: "none", border: "none", color: "var(--color-primary)", fontSize: "0.75rem", fontWeight: 600, cursor: "pointer", padding: 0, whiteSpace: "nowrap" }}
-                        >
-                          + Add size
-                        </button>
-                      )}
+                      {item.category !== 'factory' && item.selectedSize && (() => {
+                        const productSizes = Array.isArray(item.sizes) && item.sizes.length > 0 ? item.sizes : [];
+                        if (productSizes.length <= 1) return null;
+                        const existingSizes = items
+                          .filter(i => i.id === item.id)
+                          .map(i => i.selectedSize);
+                        const nextSize = productSizes.find(s => !existingSizes.includes(s));
+                        if (!nextSize) return null;
+                        return (
+                          <button
+                            onClick={() => {
+                              addItem(
+                                { id: item.id, slug: item.slug, name: item.name, price: item.price, images: [item.image], category: item.category, sizes: item.sizes },
+                                1,
+                                nextSize,
+                                item.selectedLength
+                              );
+                            }}
+                            style={{ background: "none", border: "none", color: "var(--color-primary)", fontSize: "0.75rem", fontWeight: 600, cursor: "pointer", padding: 0, whiteSpace: "nowrap" }}
+                          >
+                            + Add size
+                          </button>
+                        );
+                      })()}
                       <button
                         className={styles.removeBtn}
                         onClick={() => removeItem(item.id, item.selectedSize, item.selectedLength)}

@@ -30,7 +30,16 @@ export default function ProductClient({ product, relatedProducts = [], isModal =
   const { showToast } = useToast();
 
   const isFactory = product?.category === 'factory' || (product?.categoryName && product.categoryName.toLowerCase().includes('factory'));
-  const availableSizes = !isFactory ? (Array.isArray(product?.sizes) && product.sizes.length > 0 ? product.sizes : ["S", "M", "L"]) : [];
+  const isHalloween = product?.category === 'halloween' || 
+    product?.categoryName?.toLowerCase().includes('halloween') ||
+    product?.slug?.toLowerCase().includes('halloween') ||
+    product?.name?.toLowerCase().includes('halloween');
+
+  const availableSizes = !isFactory 
+    ? (Array.isArray(product?.sizes) && product.sizes.length > 0 
+        ? product.sizes 
+        : (isHalloween ? ["S", "M", "L"] : []))
+    : [];
   const hasSizes = availableSizes.length > 0;
 
   const [savedSize, setSavedSize] = useState(null);

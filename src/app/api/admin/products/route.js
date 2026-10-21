@@ -124,12 +124,10 @@ export async function POST(request) {
 
     const isFactory = targetSlug === 'factory';
     const isHalloween = targetSlug === 'halloween' || (name && name.toLowerCase().includes('halloween'));
-    if (sizesArray.length === 0) {
-      if (isHalloween) {
-        sizesArray = ['S', 'M', 'L'];
-      } else if (!isFactory) {
-        sizesArray = ['S', 'M', 'L'];
-      }
+    if (isFactory) {
+      sizesArray = [];
+    } else if (sizesArray.length === 0 && isHalloween) {
+      sizesArray = ['S', 'M', 'L'];
     }
 
     const productData = {
