@@ -62,13 +62,24 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
   const [flipped, setFlipped] = useState(false);
   const isFactory = product?.category === 'factory' || (product?.categoryName && product.categoryName.toLowerCase().includes('factory'));
 
-  // Only factory made cards don't have sizing. Non-factory cards (handmade, Halloween, capsules) always have sizing.
+  // Standard baseline sizes for handmade / non-factory sets
+  const BASELINE_SIZES = ["S", "M", "L"];
+
+  // Available sizes genuinely in stock for this product:
+  // If product.sizes has entries, those are the available sizes.
+  // Otherwise default to ["S", "M", "L"].
   const availableSizes = !isFactory 
     ? (Array.isArray(product?.sizes) && product.sizes.length > 0 
         ? product.sizes 
-        : ["S", "M", "L"])
+        : BASELINE_SIZES)
     : [];
-  const hasSizes = availableSizes.length > 0;
+
+  // All displayable sizes to show the customer (always showing S, M, L plus any custom sizes):
+  const displaySizes = !isFactory
+    ? Array.from(new Set([...BASELINE_SIZES, ...(Array.isArray(product?.sizes) ? product.sizes : [])]))
+    : [];
+
+  const hasSizes = displaySizes.length > 0;
   const [selectedSize, setSelectedSize] = useState(() => {
     return availableSizes.includes("M") ? "M" : (availableSizes[0] || null);
   });
@@ -98,6 +109,7 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
 
   const handleSizeSelect = (size, e) => {
     if (e) e.stopPropagation();
+    if (!availableSizes.includes(size)) return;
     setSelectedSize(size);
     saveNailSize(size);
   };
@@ -171,8 +183,8 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
     e.stopPropagation();
     const finalSize = selectedSize;
 
-    if (!finalSize) {
-      showToast("Please select a size");
+    if (hasSizes && (!finalSize || !availableSizes.includes(finalSize))) {
+      showToast("Please select an available size");
       return;
     }
 
@@ -326,11 +338,19 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
                         onClick={(e) => e.stopPropagation()}
                       >
                         <option value="" disabled>Select Size</option>
-                        {availableSizes.map((size) => (
-                          <option key={size} value={size}>
-                            {size}
-                          </option>
-                        ))}
+                        {displaySizes.map((size) => {
+                          const isAvailable = availableSizes.includes(size);
+                          return (
+                            <option
+                              key={size}
+                              value={size}
+                              disabled={!isAvailable}
+                              style={!isAvailable ? { color: "var(--color-text-tertiary)" } : {}}
+                            >
+                              {size}{!isAvailable ? " (Unavailable)" : ""}
+                            </option>
+                          );
+                        })}
                       </select>
                     </div>
                   )}
@@ -412,11 +432,19 @@ export default function HandmadeProductCard({ product, index = 0, viewMode = "gr
                       onClick={(e) => e.stopPropagation()}
                     >
                       <option value="" disabled>Select Size</option>
-                      {availableSizes.map((size) => (
-                        <option key={size} value={size}>
-                          {size}
-                        </option>
-                      ))}
+                      {displaySizes.map((size) => {
+                        const isAvailable = availableSizes.includes(size);
+                        return (
+                          <option
+                            key={size}
+                            value={size}
+                            disabled={!isAvailable}
+                            style={!isAvailable ? { color: "var(--color-text-tertiary)" } : {}}
+                          >
+                            {size}{!isAvailable ? " (Unavailable)" : ""}
+                          </option>
+                        );
+                      })}
                     </select>
                   </div>
                 )}

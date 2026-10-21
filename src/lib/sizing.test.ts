@@ -106,4 +106,20 @@ describe('Product Sizing Rules', () => {
     };
     expect(resolveProductSizes(handmadeSet)).toEqual(['S', 'M', 'L']);
   });
+
+  it('determines available and unavailable sizes against baseline S, M, L for handmade display', () => {
+    const BASELINE = ['S', 'M', 'L'];
+    const singleMSet = { category: 'handmade', sizes: ['M'] };
+    const available = resolveProductSizes(singleMSet);
+    const displaySizes = Array.from(new Set([...BASELINE, ...available]));
+
+    expect(displaySizes).toEqual(['S', 'M', 'L']);
+    expect(available.includes('S')).toBe(false); // S -> Unavailable
+    expect(available.includes('M')).toBe(true);  // M -> Available
+    expect(available.includes('L')).toBe(false); // L -> Unavailable
+
+    const initialSelected = available.includes('M') ? 'M' : available[0];
+    expect(initialSelected).toBe('M');
+  });
 });
+

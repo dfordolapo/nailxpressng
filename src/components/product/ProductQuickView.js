@@ -20,13 +20,19 @@ export default function ProductQuickView({ product }) {
   const { onClose } = useModal();
 
   const isFactory = product?.category === 'factory' || (product?.categoryName && product.categoryName.toLowerCase().includes('factory'));
+  const BASELINE_SIZES = ["S", "M", "L"];
 
   const availableSizes = !isFactory 
     ? (Array.isArray(product?.sizes) && product.sizes.length > 0 
         ? product.sizes 
-        : ["S", "M", "L"])
+        : BASELINE_SIZES)
     : [];
-  const hasSizes = availableSizes.length > 0;
+
+  const displaySizes = !isFactory
+    ? Array.from(new Set([...BASELINE_SIZES, ...(Array.isArray(product?.sizes) ? product.sizes : [])]))
+    : [];
+
+  const hasSizes = displaySizes.length > 0;
 
   const [savedSize, setSavedSize] = useState(null);
   const [selectedImage, setSelectedImage] = useState(0);
@@ -34,7 +40,7 @@ export default function ProductQuickView({ product }) {
   const [selectedLength, setSelectedLength] = useState(product?.lengths?.[0] || "Medium");
   const [selectedSize, setSelectedSize] = useState(() => {
     if (!hasSizes) return null;
-    return availableSizes.includes("M") ? "M" : availableSizes[0];
+    return availableSizes.includes("M") ? "M" : (availableSizes[0] || null);
   });
   const [quantity, setQuantity] = useState(1);
   const [openAccordion, setOpenAccordion] = useState(null);
@@ -72,12 +78,20 @@ export default function ProductQuickView({ product }) {
   const getFinalLength = () => !isFactory && (product.lengths?.length > 0 || product.category === 'handmade') ? selectedLength : null;
 
   const handleAddToCart = () => {
+    if (hasSizes && (!selectedSize || !availableSizes.includes(selectedSize))) {
+      showToast("Please select an available size");
+      return;
+    }
     addItem(product, quantity, getFinalSize(), getFinalLength());
     showToast(`"${product.name}" added to cart`);
     onClose();
   };
 
   const handleBuyNow = () => {
+    if (hasSizes && (!selectedSize || !availableSizes.includes(selectedSize))) {
+      showToast("Please select an available size");
+      return;
+    }
     addItem(product, quantity, getFinalSize(), getFinalLength());
     onClose(() => router.push("/checkout"));
   };
@@ -159,16 +173,25 @@ export default function ProductQuickView({ product }) {
                 value={selectedSize || ""}
                 onChange={(e) => {
                   const val = e.target.value;
+                  if (!availableSizes.includes(val)) return;
                   setSelectedSize(val);
                   saveNailSize(val);
                   setSavedSize(val);
                 }}
               >
-                {availableSizes.map((s) => (
-                  <option key={s} value={s}>
-                    {s}
-                  </option>
-                ))}
+                {displaySizes.map((s) => {
+                  const isAvailable = availableSizes.includes(s);
+                  return (
+                    <option
+                      key={s}
+                      value={s}
+                      disabled={!isAvailable}
+                      style={!isAvailable ? { color: "var(--color-text-tertiary)" } : {}}
+                    >
+                      {s}{!isAvailable ? " (Unavailable)" : ""}
+                    </option>
+                  );
+                })}
               </select>
             </div>
           )}

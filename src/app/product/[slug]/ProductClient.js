@@ -30,19 +30,25 @@ export default function ProductClient({ product, relatedProducts = [], isModal =
   const { showToast } = useToast();
 
   const isFactory = product?.category === 'factory' || (product?.categoryName && product.categoryName.toLowerCase().includes('factory'));
+  const BASELINE_SIZES = ["S", "M", "L"];
 
   const availableSizes = !isFactory 
     ? (Array.isArray(product?.sizes) && product.sizes.length > 0 
         ? product.sizes 
-        : ["S", "M", "L"])
+        : BASELINE_SIZES)
     : [];
-  const hasSizes = availableSizes.length > 0;
+
+  const displaySizes = !isFactory
+    ? Array.from(new Set([...BASELINE_SIZES, ...(Array.isArray(product?.sizes) ? product.sizes : [])]))
+    : [];
+
+  const hasSizes = displaySizes.length > 0;
 
   const [savedSize, setSavedSize] = useState(null);
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedSize, setSelectedSize] = useState(() => {
     if (!hasSizes) return null;
-    return availableSizes.includes("M") ? "M" : availableSizes[0];
+    return availableSizes.includes("M") ? "M" : (availableSizes[0] || null);
   });
   const [selectedLength, setSelectedLength] = useState(product?.lengths?.[0] || "Medium");
 
@@ -69,6 +75,7 @@ export default function ProductClient({ product, relatedProducts = [], isModal =
   }, [hasSizes, availableSizes]);
 
   const handleSizeChange = (size) => {
+    if (!availableSizes.includes(size)) return;
     setSelectedSize(size);
     saveNailSize(size);
     setSavedSize(size);
@@ -150,6 +157,10 @@ export default function ProductClient({ product, relatedProducts = [], isModal =
   let displayCompareAt = product.compareAtPrice;
 
   const handleAddToCart = () => {
+    if (hasSizes && (!selectedSize || !availableSizes.includes(selectedSize))) {
+      showToast("Please select an available size");
+      return;
+    }
     const finalSize = hasSizes ? selectedSize : null;
     const finalLength = !isFactory && (product.lengths?.length > 0 || product.category === 'handmade') ? selectedLength : null;
     addItem(product, quantity, finalSize, finalLength);
@@ -326,16 +337,24 @@ export default function ProductClient({ product, relatedProducts = [], isModal =
                   )}
                 </div>
                 <div className={pageStyles.selectorOptions}>
-                  {availableSizes.map((size) => {
+                  {displaySizes.map((size) => {
+                    const isAvailable = availableSizes.includes(size);
                     const isSelected = selectedSize === size;
                     return (
                       <button
                         key={size}
                         type="button"
-                        className={`${pageStyles.selectorOption} ${isSelected ? pageStyles.selected : ""}`}
-                        onClick={() => handleSizeChange(size)}
+                        disabled={!isAvailable}
+                        className={`${pageStyles.selectorOption} ${isSelected ? pageStyles.selected : ""} ${!isAvailable ? pageStyles.disabledOption : ""}`}
+                        onClick={() => isAvailable && handleSizeChange(size)}
+                        title={!isAvailable ? `${size} (Unavailable)` : size}
                       >
-                        {size}
+                        <span>{size}</span>
+                        {!isAvailable && (
+                          <span style={{ fontSize: "0.68rem", display: "inline-block", marginLeft: "6px", color: "var(--color-text-tertiary)", fontWeight: 400 }}>
+                            (Unavailable)
+                          </span>
+                        )}
                       </button>
                     );
                   })}
