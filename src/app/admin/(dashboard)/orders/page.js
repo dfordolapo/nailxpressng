@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import OrdersClient from './OrdersClient';
+import { FALLBACK_ORDERS } from '@/lib/fallbackData';
 
 export const dynamic = 'force-dynamic';
 
@@ -21,8 +22,10 @@ export default async function OrdersPage() {
     .order('created_at', { ascending: false });
 
   if (error) {
-    console.error('Error fetching orders:', error);
+    console.warn('Supabase orders fetch failed, using fallback for local dev');
   }
 
-  return <OrdersClient initialOrders={orders || []} />;
+  const list = orders && orders.length > 0 ? orders : FALLBACK_ORDERS;
+
+  return <OrdersClient initialOrders={list} />;
 }

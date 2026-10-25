@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 import { formatPrice } from "@/lib/utils";
 import styles from "@/styles/admin.module.css";
+import ScrollableTabs from "@/components/admin/ScrollableTabs";
 import { MoreVertical, CheckCircle, MessageCircle, Sparkles } from "lucide-react";
 import { SOCIAL_LINKS } from "@/lib/constants";
 
@@ -101,12 +102,12 @@ export default function CustomOrdersClient({ initialOrders = [] }) {
       <div className={styles.pageHeader}>
         <div>
           <h1 className={styles.pageTitle}>Custom Orders</h1>
-          <p className={styles.pageSubtitle}>Manage and review personalized nail set requests.</p>
+          <p className={styles.pageSubtitle}>Manage & review custom nail requests.</p>
         </div>
       </div>
 
       {/* Filter Tabs */}
-      <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "16px" }}>
+      <ScrollableTabs style={{ marginBottom: "12px" }}>
         {[
           { id: "all", label: `All Custom (${orders.length})` },
           { id: "pending", label: `Pending (${orders.filter(o => o.status === 'pending').length})` },
@@ -117,12 +118,14 @@ export default function CustomOrdersClient({ initialOrders = [] }) {
             key={tab.id}
             onClick={() => setActiveStatusFilter(tab.id)}
             style={{
-              padding: "6px 14px",
+              padding: "5px 12px",
               borderRadius: "20px",
               border: "none",
-              fontSize: "0.82rem",
+              fontSize: "0.78rem",
               fontWeight: 600,
               cursor: "pointer",
+              whiteSpace: "nowrap",
+              flexShrink: 0,
               backgroundColor: activeStatusFilter === tab.id ? "var(--color-primary, #7a403d)" : "#f3ebea",
               color: activeStatusFilter === tab.id ? "#ffffff" : "#444",
               transition: "all 0.2s"
@@ -131,127 +134,222 @@ export default function CustomOrdersClient({ initialOrders = [] }) {
             {tab.label}
           </button>
         ))}
-      </div>
+      </ScrollableTabs>
 
-      <div className={styles.tableContainer}>
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th>Order ID</th>
-              <th>Customer</th>
-              <th>Design Details</th>
-              <th>Status</th>
-              <th>Date</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {orders.filter(o => activeStatusFilter === "all" ? true : o.status === activeStatusFilter).length === 0 ? (
+      {/* Desktop Table View */}
+      <div className={styles.desktopTableOnly}>
+        <div className={styles.tableContainer}>
+          <table className={styles.table}>
+            <thead>
               <tr>
-                <td colSpan="6" style={{ textAlign: "center", padding: "60px 20px" }}>
-                  <div style={{ fontSize: "2.5rem", marginBottom: "var(--space-4)" }}>💅</div>
-                  <h3 style={{ fontSize: "1.125rem", color: "var(--color-primary-800)", marginBottom: "var(--space-2)", fontFamily: "var(--font-heading)" }}>No custom orders found</h3>
-                  <p style={{ color: "var(--color-text-secondary)", fontSize: "0.875rem", marginBottom: "var(--space-6)" }}>No custom orders match this filter.</p>
-                </td>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Design Details</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th></th>
               </tr>
-            ) : (
-              orders.filter(o => activeStatusFilter === "all" ? true : o.status === activeStatusFilter).map((order) => (
-                <tr key={order.id}>
-                  <td style={{ fontFamily: "monospace", fontSize: "0.875rem" }}>
-                    #{order.id.split('-')[0]}
-                  </td>
-                  <td>
-                    <div style={{ fontWeight: 500 }}>{order.customer_name}</div>
-                    <div style={{ fontSize: "0.75rem", color: "#666" }}>{order.customer_email}</div>
-                    {order.customer_phone && <div style={{ fontSize: "0.75rem", color: "#666" }}>{order.customer_phone}</div>}
-                  </td>
-                  <td>
-                    <div style={{ fontWeight: 500 }}>{order.shape} / {order.length} / {order.design}</div>
-                    <div style={{ fontSize: "0.75rem", color: "#666", maxWidth: "250px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                      Color: {order.color_preference || 'N/A'} | Notes: {order.notes || 'None'}
-                    </div>
-                  </td>
-                  <td>
-                    <span className={`${styles.badge} ${order.status === 'completed' ? styles.inStock : (order.status === 'pending' ? styles.outOfStock : '')}`}>
-                      {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
-                    </span>
-                  </td>
-                  <td style={{ color: "#666" }}>
-                    {new Date(order.created_at).toLocaleDateString()}
-                  </td>
-                  <td style={{ textAlign: "right", position: "relative" }}>
-                    <button 
-                      onClick={() => handleMenuClick(order.id)}
-                      style={{ background: "none", border: "none", cursor: "pointer", color: "#888", padding: "4px" }}
-                      disabled={isUpdating}
-                    >
-                      <MoreVertical size={18} />
-                    </button>
-                    {openMenuId === order.id && (
-                      <div className={styles.kebabMenu} style={{ right: 0, zIndex: 10 }}>
-                        <button 
-                          className={styles.kebabItem} 
-                          onClick={() => { setViewOrder(order); setOpenMenuId(null); }}
-                        >
-                          View Details
-                        </button>
-                        <button 
-                          className={styles.kebabItem} 
-                          onClick={() => contactCustomer(order)}
-                          style={{ display: "flex", alignItems: "center", gap: "6px" }}
-                        >
-                          <MessageCircle size={14} /> Contact Customer
-                        </button>
-                        {order.status !== 'processing' && order.status !== 'completed' && (
-                          <button 
-                            className={styles.kebabItem} 
-                            onClick={() => markAsProcessing(order.id)}
-                            style={{ display: "flex", alignItems: "center", gap: "6px", color: "#D97706" }}
-                          >
-                            <Sparkles size={14} /> Mark as Processing (Crafting)
-                          </button>
-                        )}
-                        {order.status !== 'completed' && (
-                          <button 
-                            className={styles.kebabItem} 
-                            onClick={() => markAsDone(order.id)}
-                            style={{ display: "flex", alignItems: "center", gap: "6px", color: "#10B981" }}
-                          >
-                            <CheckCircle size={14} /> Mark as Completed
-                          </button>
-                        )}
-                      </div>
-                    )}
+            </thead>
+            <tbody>
+              {orders.filter(o => activeStatusFilter === "all" ? true : o.status === activeStatusFilter).length === 0 ? (
+                <tr>
+                  <td colSpan="6" style={{ textAlign: "center", padding: "60px 20px" }}>
+                    <div style={{ fontSize: "2.5rem", marginBottom: "var(--space-4)" }}>💅</div>
+                    <h3 style={{ fontSize: "1.125rem", color: "var(--color-primary-800)", marginBottom: "var(--space-2)", fontFamily: "var(--font-heading)" }}>No custom orders found</h3>
+                    <p style={{ color: "var(--color-text-secondary)", fontSize: "0.875rem", marginBottom: "var(--space-6)" }}>No custom orders match this filter.</p>
                   </td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+              ) : (
+                orders.filter(o => activeStatusFilter === "all" ? true : o.status === activeStatusFilter).map((order) => (
+                  <tr key={order.id}>
+                    <td style={{ fontFamily: "monospace", fontSize: "0.875rem" }}>
+                      #{order.id.split('-')[0]}
+                    </td>
+                    <td>
+                      <div style={{ fontWeight: 500 }}>{order.customer_name}</div>
+                      <div style={{ fontSize: "0.75rem", color: "#666" }}>{order.customer_email}</div>
+                      {order.customer_phone && <div style={{ fontSize: "0.75rem", color: "#666" }}>{order.customer_phone}</div>}
+                    </td>
+                    <td>
+                      <div style={{ fontWeight: 500 }}>{order.shape} / {order.length} / {order.design}</div>
+                      <div style={{ fontSize: "0.75rem", color: "#666", maxWidth: "250px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                        Color: {order.color_preference || 'N/A'} | Notes: {order.notes || 'None'}
+                      </div>
+                    </td>
+                    <td>
+                      <span className={`${styles.badge} ${order.status === 'completed' ? styles.inStock : (order.status === 'pending' ? styles.outOfStock : '')}`}>
+                        {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+                      </span>
+                    </td>
+                    <td style={{ color: "#666" }}>
+                      {new Date(order.created_at).toLocaleDateString()}
+                    </td>
+                    <td style={{ textAlign: "right", position: "relative" }}>
+                      <button 
+                        onClick={() => handleMenuClick(order.id)}
+                        style={{ background: "none", border: "none", cursor: "pointer", color: "#888", padding: "4px" }}
+                        disabled={isUpdating}
+                        aria-label="Order actions"
+                      >
+                        <MoreVertical size={18} />
+                      </button>
+                      {openMenuId === order.id && (
+                        <div className={styles.kebabMenu} style={{ right: 0, zIndex: 10 }}>
+                          <button 
+                            className={styles.kebabItem} 
+                            onClick={() => { setViewOrder(order); setOpenMenuId(null); }}
+                          >
+                            View Details
+                          </button>
+                          <button 
+                            className={styles.kebabItem} 
+                            onClick={() => contactCustomer(order)}
+                            style={{ display: "flex", alignItems: "center", gap: "6px" }}
+                          >
+                            <MessageCircle size={14} /> Contact Customer
+                          </button>
+                          {order.status !== 'processing' && order.status !== 'completed' && (
+                            <button 
+                              className={styles.kebabItem} 
+                              onClick={() => markAsProcessing(order.id)}
+                              style={{ display: "flex", alignItems: "center", gap: "6px", color: "#D97706" }}
+                            >
+                              <Sparkles size={14} /> Mark as Processing (Crafting)
+                            </button>
+                          )}
+                          {order.status !== 'completed' && (
+                            <button 
+                              className={styles.kebabItem} 
+                              onClick={() => markAsDone(order.id)}
+                              style={{ display: "flex", alignItems: "center", gap: "6px", color: "#10B981" }}
+                            >
+                              <CheckCircle size={14} /> Mark as Completed
+                            </button>
+                          )}
+                        </div>
+                      )}
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Mobile Stacked Card View */}
+      <div className={styles.mobileCardList}>
+        {orders.filter(o => activeStatusFilter === "all" ? true : o.status === activeStatusFilter).length === 0 ? (
+          <div className={styles.mobileCard} style={{ textAlign: "center", padding: "40px 16px" }}>
+            <div style={{ fontSize: "2rem", marginBottom: "8px" }}>💅</div>
+            <h3 style={{ fontSize: "1rem", color: "var(--color-primary-800)", marginBottom: "4px" }}>No custom orders found</h3>
+            <p style={{ color: "var(--color-text-secondary)", fontSize: "0.82rem" }}>No custom orders match this filter.</p>
+          </div>
+        ) : (
+          orders.filter(o => activeStatusFilter === "all" ? true : o.status === activeStatusFilter).map((order) => (
+            <div key={order.id} className={styles.mobileCard}>
+              <div className={styles.mobileCardHeader}>
+                <div>
+                  <div style={{ fontFamily: "monospace", fontWeight: 700, fontSize: "0.95rem", color: "var(--color-primary)" }}>
+                    #{order.id.split('-')[0]}
+                  </div>
+                  <div style={{ fontWeight: 600, fontSize: "0.9rem", marginTop: "2px" }}>
+                    {order.customer_name}
+                  </div>
+                  <div style={{ fontSize: "0.75rem", color: "var(--color-text-secondary)" }}>
+                    {order.customer_email} {order.customer_phone ? `• ${order.customer_phone}` : ""}
+                  </div>
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "4px" }}>
+                  <span className={`${styles.badge} ${order.status === 'completed' ? styles.inStock : (order.status === 'pending' ? styles.outOfStock : '')}`}>
+                    {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+                  </span>
+                  <span style={{ fontSize: "0.75rem", color: "#888" }}>
+                    {new Date(order.created_at).toLocaleDateString()}
+                  </span>
+                </div>
+              </div>
+
+              <div className={styles.mobileCardBody}>
+                <div className={styles.mobileCardRow}>
+                  <span className={styles.mobileCardLabel}>Shape & Length</span>
+                  <span className={styles.mobileCardValue} style={{ textTransform: "capitalize" }}>
+                    {order.shape} • {order.length}
+                  </span>
+                </div>
+                <div className={styles.mobileCardRow}>
+                  <span className={styles.mobileCardLabel}>Design Style</span>
+                  <span className={styles.mobileCardValue} style={{ textTransform: "capitalize" }}>
+                    {order.design}
+                  </span>
+                </div>
+                {order.color_preference && (
+                  <div className={styles.mobileCardRow}>
+                    <span className={styles.mobileCardLabel}>Color Preference</span>
+                    <span className={styles.mobileCardValue}>
+                      {order.color_preference}
+                    </span>
+                  </div>
+                )}
+                {order.notes && (
+                  <div style={{ background: "#f9f9f9", padding: "8px 10px", borderRadius: "6px", fontSize: "0.78rem", color: "#555", marginTop: "2px", lineHeight: 1.4 }}>
+                    <strong>Note:</strong> {order.notes}
+                  </div>
+                )}
+              </div>
+
+              <div className={styles.mobileCardFooter}>
+                <button 
+                  className={styles.btnSecondary}
+                  style={{ flex: 1, padding: "7px 10px", fontSize: "0.8rem", justifyContent: "center" }}
+                  onClick={() => setViewOrder(order)}
+                >
+                  View Details
+                </button>
+                <button 
+                  className={styles.btnSecondary}
+                  style={{ flex: 1, padding: "7px 10px", fontSize: "0.8rem", justifyContent: "center", gap: "4px" }}
+                  onClick={() => contactCustomer(order)}
+                >
+                  <MessageCircle size={14} /> Contact
+                </button>
+                {order.status !== 'completed' && (
+                  <button 
+                    className={styles.btnPrimary}
+                    style={{ flex: 1, padding: "7px 10px", fontSize: "0.8rem", justifyContent: "center" }}
+                    onClick={() => markAsDone(order.id)}
+                  >
+                    Done
+                  </button>
+                )}
+              </div>
+            </div>
+          ))
+        )}
       </div>
 
       {/* View Order Modal */}
       {viewOrder && (
         <div className={styles.modalOverlay} onClick={() => setViewOrder(null)}>
-          <div className={styles.modalContent} style={{ maxWidth: "600px", width: "90%" }} onClick={(e) => e.stopPropagation()}>
+          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "var(--space-4)", borderBottom: "1px solid #eee", paddingBottom: "var(--space-3)" }}>
               <h3 className={styles.modalTitle} style={{ margin: 0 }}>Custom Order #{viewOrder.id.split('-')[0]}</h3>
-              <button onClick={() => setViewOrder(null)} style={{ background: "none", border: "none", cursor: "pointer", fontSize: "1.2rem", color: "#666" }}>✕</button>
+              <button onClick={() => setViewOrder(null)} aria-label="Close dialog" style={{ background: "none", border: "none", cursor: "pointer", fontSize: "1.2rem", color: "#666", padding: "4px" }}>✕</button>
             </div>
             
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-4)", marginBottom: "var(--space-6)" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "var(--space-3)", marginBottom: "var(--space-4)" }}>
               <div>
-                <h4 style={{ fontSize: "0.875rem", color: "#666", marginBottom: "var(--space-2)", textTransform: "uppercase", letterSpacing: "0.5px" }}>Customer Details</h4>
-                <p style={{ fontWeight: 500, margin: "0 0 4px 0" }}>{viewOrder.customer_name}</p>
-                <p style={{ margin: "0 0 4px 0", color: "#444" }}>{viewOrder.customer_email}</p>
-                <p style={{ margin: "0", color: "#444" }}>{viewOrder.customer_phone || 'No phone provided'}</p>
+                <h4 style={{ fontSize: "0.75rem", color: "#666", marginBottom: "var(--space-1)", textTransform: "uppercase", letterSpacing: "0.5px" }}>Customer Details</h4>
+                <p style={{ fontWeight: 500, margin: "0 0 2px 0", fontSize: "0.875rem" }}>{viewOrder.customer_name}</p>
+                <p style={{ margin: "0 0 2px 0", color: "#444", fontSize: "0.875rem", wordBreak: "break-all" }}>{viewOrder.customer_email}</p>
+                <p style={{ margin: "0", color: "#444", fontSize: "0.875rem" }}>{viewOrder.customer_phone || 'No phone provided'}</p>
               </div>
               <div>
-                <h4 style={{ fontSize: "0.875rem", color: "#666", marginBottom: "var(--space-2)", textTransform: "uppercase", letterSpacing: "0.5px" }}>Status</h4>
+                <h4 style={{ fontSize: "0.75rem", color: "#666", marginBottom: "var(--space-1)", textTransform: "uppercase", letterSpacing: "0.5px" }}>Status</h4>
                 <span className={`${styles.badge} ${viewOrder.status === 'completed' ? styles.inStock : styles.outOfStock}`}>
                   {viewOrder.status.charAt(0).toUpperCase() + viewOrder.status.slice(1)}
                 </span>
-                <p style={{ fontSize: "0.875rem", color: "#666", marginTop: "8px" }}>
+                <p style={{ fontSize: "0.82rem", color: "#666", marginTop: "6px" }}>
                   Requested on {new Date(viewOrder.created_at).toLocaleDateString()}
                 </p>
               </div>

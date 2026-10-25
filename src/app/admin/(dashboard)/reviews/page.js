@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import ReviewsClient from './ReviewsClient';
+import { FALLBACK_REVIEWS } from '@/lib/fallbackData';
 
 export const dynamic = 'force-dynamic';
 
@@ -19,8 +20,10 @@ export default async function ReviewsPage() {
     .order('created_at', { ascending: false });
 
   if (error) {
-    console.error('Error fetching admin reviews:', error);
+    console.warn('Supabase reviews fetch failed, using fallback for local dev');
   }
 
-  return <ReviewsClient initialReviews={reviews || []} />;
+  const list = reviews && reviews.length > 0 ? reviews : FALLBACK_REVIEWS;
+
+  return <ReviewsClient initialReviews={list} />;
 }

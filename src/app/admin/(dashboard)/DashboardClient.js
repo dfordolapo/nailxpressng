@@ -42,7 +42,7 @@ export default function DashboardClient({ initialProducts = [], initialOrders = 
   const [sortConfig, setSortConfig] = useState({ key: 'createdAt', direction: 'desc' });
   const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
 
-  // Close menus on outside click or scroll
+  // Close menus on outside click or resize (not on touch-scroll)
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (!e.target.closest(`.${styles.kebabMenu}`) && !e.target.closest(`.${styles.excelPopover}`) && !e.target.closest(`.${styles.excelFilterBtn}`) && !e.target.closest(`.${styles.kebabTriggerBtn}`)) {
@@ -50,17 +50,17 @@ export default function DashboardClient({ initialProducts = [], initialOrders = 
         setActivePopover(null);
       }
     };
-    const handleScrollOrResize = () => {
+    const handleResize = () => {
       if (openMenuId) setOpenMenuId(null);
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-    window.addEventListener("scroll", handleScrollOrResize, true);
-    window.addEventListener("resize", handleScrollOrResize);
+    document.addEventListener("touchstart", handleClickOutside, { passive: true });
+    window.addEventListener("resize", handleResize);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
-      window.removeEventListener("scroll", handleScrollOrResize, true);
-      window.removeEventListener("resize", handleScrollOrResize);
+      document.removeEventListener("touchstart", handleClickOutside);
+      window.removeEventListener("resize", handleResize);
     };
   }, [openMenuId]);
 
@@ -88,15 +88,24 @@ export default function DashboardClient({ initialProducts = [], initialOrders = 
       setOpenMenuId(null);
     } else {
       const rect = e.currentTarget.getBoundingClientRect();
-      const menuWidth = 175;
-      const menuHeight = 210;
+      const menuWidth = 180;
+      const menuHeight = 220;
       
+      // Calculate vertical position: try below, then above, clamp in viewport
       let top = rect.bottom + 4;
-      if (top + menuHeight > window.innerHeight && rect.top - menuHeight > 0) {
-        top = rect.top - menuHeight - 4;
+      if (top + menuHeight > window.innerHeight - 10) {
+        if (rect.top - menuHeight - 4 > 10) {
+          top = rect.top - menuHeight - 4;
+        } else {
+          top = Math.max(10, window.innerHeight - menuHeight - 10);
+        }
       }
       
-      let left = rect.left;
+      // Calculate horizontal position: align right edge to button, clamp in viewport
+      let left = rect.right - menuWidth;
+      if (left < 10) {
+        left = 10;
+      }
       if (left + menuWidth > window.innerWidth - 10) {
         left = Math.max(10, window.innerWidth - menuWidth - 10);
       }
@@ -311,9 +320,9 @@ export default function DashboardClient({ initialProducts = [], initialOrders = 
         <div style={{
           background: "linear-gradient(135deg, rgba(122, 64, 61, 0.06), rgba(122, 64, 61, 0.02))",
           border: "1px solid rgba(122, 64, 61, 0.15)",
-          borderRadius: "12px",
-          padding: "16px 20px",
-          marginBottom: "30px",
+          borderRadius: "10px",
+          padding: "10px 14px",
+          marginBottom: "12px",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
@@ -367,288 +376,384 @@ export default function DashboardClient({ initialProducts = [], initialOrders = 
         </div>
       </div>
 
-      <div className={styles.tableContainer} style={{ position: "relative" }}>
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              {/* Product Header with Sort Filter */}
-              <th style={{ minWidth: "240px", position: "relative" }}>
-                <div className={styles.filterHeaderCell} onClick={() => setActivePopover(activePopover === 'name' ? null : 'name')}>
-                  <span>Product</span>
-                  <div style={{ display: "flex", alignItems: "center", gap: "2px" }}>
-                    {(sortConfig.key === 'name' || sortConfig.key === 'createdAt') && (
-                      sortConfig.direction === 'asc' ? <ArrowUp size={14} color="var(--color-primary)" /> : <ArrowDown size={14} color="var(--color-primary)" />
-                    )}
-                    <button className={`${styles.excelFilterBtn} ${sortConfig.key === 'name' || sortConfig.key === 'createdAt' ? styles.activeFilter : ''}`} type="button">
+      {/* Recent Products Content */}
+      <div className={styles.desktopTableOnly}>
+        <div className={styles.tableContainer} style={{ position: "relative" }}>
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                {/* Product Header with Sort Filter */}
+                <th style={{ minWidth: "240px", position: "relative" }}>
+                  <div className={styles.filterHeaderCell} onClick={() => setActivePopover(activePopover === 'name' ? null : 'name')}>
+                    <span>Product</span>
+                    <div style={{ display: "flex", alignItems: "center", gap: "2px" }}>
+                      {(sortConfig.key === 'name' || sortConfig.key === 'createdAt') && (
+                        sortConfig.direction === 'asc' ? <ArrowUp size={14} color="var(--color-primary)" /> : <ArrowDown size={14} color="var(--color-primary)" />
+                      )}
+                      <button className={`${styles.excelFilterBtn} ${sortConfig.key === 'name' || sortConfig.key === 'createdAt' ? styles.activeFilter : ''}`} type="button">
+                        <Filter size={13} />
+                      </button>
+                    </div>
+                  </div>
+
+                  {activePopover === 'name' && (
+                    <div className={styles.excelPopover} onClick={(e) => e.stopPropagation()}>
+                      <div className={styles.excelPopoverHeader}>
+                        <span>Sort Product</span>
+                        <X size={14} style={{ cursor: "pointer" }} onClick={() => setActivePopover(null)} />
+                      </div>
+                      <div className={styles.excelSortOptions}>
+                        <button 
+                          className={`${styles.excelSortBtn} ${sortConfig.key === 'createdAt' && sortConfig.direction === 'desc' ? styles.activeSort : ''}`}
+                          onClick={() => handleSort('createdAt', 'desc')}
+                        >
+                          <Calendar size={13} /> Date: Newest First
+                        </button>
+                        <button 
+                          className={`${styles.excelSortBtn} ${sortConfig.key === 'createdAt' && sortConfig.direction === 'asc' ? styles.activeSort : ''}`}
+                          onClick={() => handleSort('createdAt', 'asc')}
+                        >
+                          <Calendar size={13} /> Date: Oldest First
+                        </button>
+                        <button 
+                          className={`${styles.excelSortBtn} ${sortConfig.key === 'name' && sortConfig.direction === 'asc' ? styles.activeSort : ''}`}
+                          onClick={() => handleSort('name', 'asc')}
+                        >
+                          <ArrowUp size={13} /> Name: A to Z
+                        </button>
+                        <button 
+                          className={`${styles.excelSortBtn} ${sortConfig.key === 'name' && sortConfig.direction === 'desc' ? styles.activeSort : ''}`}
+                          onClick={() => handleSort('name', 'desc')}
+                        >
+                          <ArrowDown size={13} /> Name: Z to A
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </th>
+
+                {/* Collection Header */}
+                <th style={{ minWidth: "140px", position: "relative" }}>
+                  <div className={styles.filterHeaderCell} onClick={() => setActivePopover(activePopover === 'category' ? null : 'category')}>
+                    <span>Collection</span>
+                    <button className={`${styles.excelFilterBtn} ${columnFilters.category.length > 0 ? styles.activeFilter : ''}`} type="button">
                       <Filter size={13} />
                     </button>
                   </div>
-                </div>
 
-                {activePopover === 'name' && (
-                  <div className={styles.excelPopover} onClick={(e) => e.stopPropagation()}>
-                    <div className={styles.excelPopoverHeader}>
-                      <span>Sort Product</span>
-                      <X size={14} style={{ cursor: "pointer" }} onClick={() => setActivePopover(null)} />
+                  {activePopover === 'category' && (
+                    <div className={styles.excelPopover} onClick={(e) => e.stopPropagation()}>
+                      <div className={styles.excelPopoverHeader}>
+                        <span>Filter Collection</span>
+                        <X size={14} style={{ cursor: "pointer" }} onClick={() => setActivePopover(null)} />
+                      </div>
+                      <div className={styles.excelValuesList}>
+                        {distinctCategories.map(cat => (
+                          <label key={cat} className={styles.excelValueItem}>
+                            <input 
+                              type="checkbox" 
+                              checked={columnFilters.category.includes(cat)} 
+                              onChange={() => toggleFilter('category', cat)} 
+                            />
+                            <span>{cat}</span>
+                          </label>
+                        ))}
+                      </div>
+                      <div className={styles.excelPopoverFooter}>
+                        <button className={styles.excelClearBtn} onClick={() => { setColumnFilters(prev => ({ ...prev, category: [] })); setActivePopover(null); }}>Clear</button>
+                        <button className={styles.excelApplyBtn} onClick={() => setActivePopover(null)}>Done</button>
+                      </div>
                     </div>
-                    <div className={styles.excelSortOptions}>
-                      <button 
-                        className={`${styles.excelSortBtn} ${sortConfig.key === 'createdAt' && sortConfig.direction === 'desc' ? styles.activeSort : ''}`}
-                        onClick={() => handleSort('createdAt', 'desc')}
-                      >
-                        <Calendar size={13} /> Date: Newest First
-                      </button>
-                      <button 
-                        className={`${styles.excelSortBtn} ${sortConfig.key === 'createdAt' && sortConfig.direction === 'asc' ? styles.activeSort : ''}`}
-                        onClick={() => handleSort('createdAt', 'asc')}
-                      >
-                        <Calendar size={13} /> Date: Oldest First
-                      </button>
-                      <button 
-                        className={`${styles.excelSortBtn} ${sortConfig.key === 'name' && sortConfig.direction === 'asc' ? styles.activeSort : ''}`}
-                        onClick={() => handleSort('name', 'asc')}
-                      >
-                        <ArrowUp size={13} /> Name: A to Z
-                      </button>
-                      <button 
-                        className={`${styles.excelSortBtn} ${sortConfig.key === 'name' && sortConfig.direction === 'desc' ? styles.activeSort : ''}`}
-                        onClick={() => handleSort('name', 'desc')}
-                      >
-                        <ArrowDown size={13} /> Name: Z to A
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </th>
+                  )}
+                </th>
 
-              {/* Collection Header */}
-              <th style={{ minWidth: "140px", position: "relative" }}>
-                <div className={styles.filterHeaderCell} onClick={() => setActivePopover(activePopover === 'category' ? null : 'category')}>
-                  <span>Collection</span>
-                  <button className={`${styles.excelFilterBtn} ${columnFilters.category.length > 0 ? styles.activeFilter : ''}`} type="button">
-                    <Filter size={13} />
-                  </button>
-                </div>
-
-                {activePopover === 'category' && (
-                  <div className={styles.excelPopover} onClick={(e) => e.stopPropagation()}>
-                    <div className={styles.excelPopoverHeader}>
-                      <span>Filter Collection</span>
-                      <X size={14} style={{ cursor: "pointer" }} onClick={() => setActivePopover(null)} />
-                    </div>
-                    <div className={styles.excelValuesList}>
-                      {distinctCategories.map(cat => (
-                        <label key={cat} className={styles.excelValueItem}>
-                          <input 
-                            type="checkbox" 
-                            checked={columnFilters.category.includes(cat)} 
-                            onChange={() => toggleFilter('category', cat)} 
-                          />
-                          <span>{cat}</span>
-                        </label>
-                      ))}
-                    </div>
-                    <div className={styles.excelPopoverFooter}>
-                      <button className={styles.excelClearBtn} onClick={() => { setColumnFilters(prev => ({ ...prev, category: [] })); setActivePopover(null); }}>Clear</button>
-                      <button className={styles.excelApplyBtn} onClick={() => setActivePopover(null)}>Done</button>
-                    </div>
-                  </div>
-                )}
-              </th>
-
-              {/* Price Header */}
-              <th style={{ minWidth: "120px", position: "relative" }}>
-                <div className={styles.filterHeaderCell} onClick={() => setActivePopover(activePopover === 'price' ? null : 'price')}>
-                  <span>Price</span>
-                  <div style={{ display: "flex", alignItems: "center", gap: "2px" }}>
-                    {sortConfig.key === 'price' && (
-                      sortConfig.direction === 'asc' ? <ArrowUp size={14} color="var(--color-primary)" /> : <ArrowDown size={14} color="var(--color-primary)" />
-                    )}
-                    <button className={`${styles.excelFilterBtn} ${sortConfig.key === 'price' ? styles.activeFilter : ''}`} type="button">
-                      <ArrowUpDown size={13} />
-                    </button>
-                  </div>
-                </div>
-
-                {activePopover === 'price' && (
-                  <div className={styles.excelPopover} onClick={(e) => e.stopPropagation()}>
-                    <div className={styles.excelPopoverHeader}>
-                      <span>Sort Price</span>
-                      <X size={14} style={{ cursor: "pointer" }} onClick={() => setActivePopover(null)} />
-                    </div>
-                    <div className={styles.excelSortOptions}>
-                      <button 
-                        className={`${styles.excelSortBtn} ${sortConfig.key === 'price' && sortConfig.direction === 'asc' ? styles.activeSort : ''}`}
-                        onClick={() => handleSort('price', 'asc')}
-                      >
-                        <ArrowUp size={13} /> Lowest to Highest
-                      </button>
-                      <button 
-                        className={`${styles.excelSortBtn} ${sortConfig.key === 'price' && sortConfig.direction === 'desc' ? styles.activeSort : ''}`}
-                        onClick={() => handleSort('price', 'desc')}
-                      >
-                        <ArrowDown size={13} /> Highest to Lowest
+                {/* Price Header */}
+                <th style={{ minWidth: "120px", position: "relative" }}>
+                  <div className={styles.filterHeaderCell} onClick={() => setActivePopover(activePopover === 'price' ? null : 'price')}>
+                    <span>Price</span>
+                    <div style={{ display: "flex", alignItems: "center", gap: "2px" }}>
+                      {sortConfig.key === 'price' && (
+                        sortConfig.direction === 'asc' ? <ArrowUp size={14} color="var(--color-primary)" /> : <ArrowDown size={14} color="var(--color-primary)" />
+                      )}
+                      <button className={`${styles.excelFilterBtn} ${sortConfig.key === 'price' ? styles.activeFilter : ''}`} type="button">
+                        <ArrowUpDown size={13} />
                       </button>
                     </div>
                   </div>
-                )}
-              </th>
 
-              {/* Status Header */}
-              <th style={{ minWidth: "130px", position: "relative" }}>
-                <div className={styles.filterHeaderCell} onClick={() => setActivePopover(activePopover === 'availability' ? null : 'availability')}>
-                  <span>Status</span>
-                  <button className={`${styles.excelFilterBtn} ${columnFilters.availability.length > 0 ? styles.activeFilter : ''}`} type="button">
-                    <Filter size={13} />
-                  </button>
-                </div>
-
-                {activePopover === 'availability' && (
-                  <div className={styles.excelPopover} onClick={(e) => e.stopPropagation()}>
-                    <div className={styles.excelPopoverHeader}>
-                      <span>Filter Status</span>
-                      <X size={14} style={{ cursor: "pointer" }} onClick={() => setActivePopover(null)} />
-                    </div>
-                    <div className={styles.excelValuesList}>
-                      {["In Stock", "Out of Stock"].map(status => (
-                        <label key={status} className={styles.excelValueItem}>
-                          <input 
-                            type="checkbox" 
-                            checked={columnFilters.availability.includes(status)} 
-                            onChange={() => toggleFilter('availability', status)} 
-                          />
-                          <span>{status}</span>
-                        </label>
-                      ))}
-                    </div>
-                    <div className={styles.excelPopoverFooter}>
-                      <button className={styles.excelClearBtn} onClick={() => { setColumnFilters(prev => ({ ...prev, availability: [] })); setActivePopover(null); }}>Clear</button>
-                      <button className={styles.excelApplyBtn} onClick={() => setActivePopover(null)}>Done</button>
-                    </div>
-                  </div>
-                )}
-              </th>
-
-              {/* Added / Date Header */}
-              <th style={{ minWidth: "120px", position: "relative" }}>
-                <div className={styles.filterHeaderCell} onClick={() => setActivePopover(activePopover === 'added' ? null : 'added')}>
-                  <span>Added</span>
-                  <div style={{ display: "flex", alignItems: "center", gap: "2px" }}>
-                    {sortConfig.key === 'createdAt' && (
-                      sortConfig.direction === 'asc' ? <ArrowUp size={14} color="var(--color-primary)" /> : <ArrowDown size={14} color="var(--color-primary)" />
-                    )}
-                    <button className={`${styles.excelFilterBtn} ${sortConfig.key === 'createdAt' ? styles.activeFilter : ''}`} type="button">
-                      <ArrowUpDown size={13} />
-                    </button>
-                  </div>
-                </div>
-
-                {activePopover === 'added' && (
-                  <div className={styles.excelPopover} onClick={(e) => e.stopPropagation()}>
-                    <div className={styles.excelPopoverHeader}>
-                      <span>Sort by Date</span>
-                      <X size={14} style={{ cursor: "pointer" }} onClick={() => setActivePopover(null)} />
-                    </div>
-                    <div className={styles.excelSortOptions}>
-                      <button 
-                        className={`${styles.excelSortBtn} ${sortConfig.key === 'createdAt' && sortConfig.direction === 'desc' ? styles.activeSort : ''}`}
-                        onClick={() => handleSort('createdAt', 'desc')}
-                      >
-                        <ArrowDown size={13} /> Newest to Oldest
-                      </button>
-                      <button 
-                        className={`${styles.excelSortBtn} ${sortConfig.key === 'createdAt' && sortConfig.direction === 'asc' ? styles.activeSort : ''}`}
-                        onClick={() => handleSort('createdAt', 'asc')}
-                      >
-                        <ArrowUp size={13} /> Oldest to Newest
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredRecentProducts.length === 0 ? (
-              <tr>
-                <td colSpan="5" style={{ textAlign: "center", padding: "60px 20px" }}>
-                  <div style={{ fontSize: "2.5rem", marginBottom: "var(--space-4)" }}>💅</div>
-                  <h3 style={{ fontSize: "1.125rem", color: "var(--color-primary-800)", marginBottom: "var(--space-2)", fontFamily: "var(--font-heading)" }}>No products found</h3>
-                  <p style={{ color: "var(--color-text-secondary)", fontSize: "0.875rem", marginBottom: "var(--space-6)" }}>No products matched your filters.</p>
-                  <button 
-                    type="button"
-                    onClick={() => { setColumnFilters({ category: [], availability: [] }); setSortConfig({ key: 'createdAt', direction: 'desc' }); }}
-                    className={styles.btnPrimary} 
-                    style={{ display: "inline-flex", margin: "0 auto" }}
-                  >
-                    Clear Filters
-                  </button>
-                </td>
-              </tr>
-            ) : (
-              filteredRecentProducts.map((product, index, arr) => {
-                const isCurrentlyInStock = product.stockCount > 0 && product.inStock;
-                return (
-                  <tr key={product.id}>
-                    {/* Product cell */}
-                    <td>
-                      <div className={styles.productCell} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px", minWidth: 0 }}>
-                        <div style={{ display: "flex", alignItems: "center", gap: "12px", minWidth: 0, flex: 1 }}>
-                          <Image 
-                            src={product.images?.[0] || '/images/hero.png'} 
-                            alt={product.name} 
-                            className={styles.productImg} 
-                            width={44} 
-                            height={44} 
-                            style={{ objectFit: 'cover', borderRadius: '6px', flexShrink: 0 }} 
-                          />
-                          <span className={styles.productName} style={{ wordBreak: "break-word" }}>{product.name}</span>
-                        </div>
-
-                        {/* 3-dots Action button beside product name */}
+                  {activePopover === 'price' && (
+                    <div className={styles.excelPopover} onClick={(e) => e.stopPropagation()}>
+                      <div className={styles.excelPopoverHeader}>
+                        <span>Sort Price</span>
+                        <X size={14} style={{ cursor: "pointer" }} onClick={() => setActivePopover(null)} />
+                      </div>
+                      <div className={styles.excelSortOptions}>
                         <button 
-                          className={styles.kebabTriggerBtn}
-                          onClick={(e) => handleMenuClick(product.id, e)}
-                          title="Product Actions"
-                          style={{ 
-                            background: openMenuId === product.id ? "rgba(0,0,0,0.06)" : "none", 
-                            border: "1px solid var(--color-border-light)", 
-                            borderRadius: "6px",
-                            cursor: "pointer", 
-                            color: "#666", 
-                            padding: "4px 6px",
-                            display: "inline-flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            flexShrink: 0
-                          }}
+                          className={`${styles.excelSortBtn} ${sortConfig.key === 'price' && sortConfig.direction === 'asc' ? styles.activeSort : ''}`}
+                          onClick={() => handleSort('price', 'asc')}
                         >
-                          <MoreVertical size={16} />
+                          <ArrowUp size={13} /> Lowest to Highest
+                        </button>
+                        <button 
+                          className={`${styles.excelSortBtn} ${sortConfig.key === 'price' && sortConfig.direction === 'desc' ? styles.activeSort : ''}`}
+                          onClick={() => handleSort('price', 'desc')}
+                        >
+                          <ArrowDown size={13} /> Highest to Lowest
                         </button>
                       </div>
-                    </td>
+                    </div>
+                  )}
+                </th>
 
-                    <td>{product.categoryName || "Handmade"}</td>
-                    <td style={{ fontWeight: 500 }}>{formatPrice(product.price)}</td>
-                    <td>
-                      <span 
-                        className={`${styles.badge} ${isCurrentlyInStock ? styles.inStock : styles.outOfStock}`}
-                        style={{ cursor: "pointer" }}
-                        onClick={() => handleToggleStock(product.id)}
-                        title="Click to toggle stock"
-                      >
-                        {updatingStockId === product.id ? "Updating..." : (isCurrentlyInStock ? "In Stock" : "Out of Stock")}
+                {/* Status Header */}
+                <th style={{ minWidth: "130px", position: "relative" }}>
+                  <div className={styles.filterHeaderCell} onClick={() => setActivePopover(activePopover === 'availability' ? null : 'availability')}>
+                    <span>Status</span>
+                    <button className={`${styles.excelFilterBtn} ${columnFilters.availability.length > 0 ? styles.activeFilter : ''}`} type="button">
+                      <Filter size={13} />
+                    </button>
+                  </div>
+
+                  {activePopover === 'availability' && (
+                    <div className={styles.excelPopover} onClick={(e) => e.stopPropagation()}>
+                      <div className={styles.excelPopoverHeader}>
+                        <span>Filter Status</span>
+                        <X size={14} style={{ cursor: "pointer" }} onClick={() => setActivePopover(null)} />
+                      </div>
+                      <div className={styles.excelValuesList}>
+                        {["In Stock", "Out of Stock"].map(status => (
+                          <label key={status} className={styles.excelValueItem}>
+                            <input 
+                              type="checkbox" 
+                              checked={columnFilters.availability.includes(status)} 
+                              onChange={() => toggleFilter('availability', status)} 
+                            />
+                            <span>{status}</span>
+                          </label>
+                        ))}
+                      </div>
+                      <div className={styles.excelPopoverFooter}>
+                        <button className={styles.excelClearBtn} onClick={() => { setColumnFilters(prev => ({ ...prev, availability: [] })); setActivePopover(null); }}>Clear</button>
+                        <button className={styles.excelApplyBtn} onClick={() => setActivePopover(null)}>Done</button>
+                      </div>
+                    </div>
+                  )}
+                </th>
+
+                {/* Added / Date Header */}
+                <th style={{ minWidth: "120px", position: "relative" }}>
+                  <div className={styles.filterHeaderCell} onClick={() => setActivePopover(activePopover === 'added' ? null : 'added')}>
+                    <span>Added</span>
+                    <div style={{ display: "flex", alignItems: "center", gap: "2px" }}>
+                      {sortConfig.key === 'createdAt' && (
+                        sortConfig.direction === 'asc' ? <ArrowUp size={14} color="var(--color-primary)" /> : <ArrowDown size={14} color="var(--color-primary)" />
+                      )}
+                      <button className={`${styles.excelFilterBtn} ${sortConfig.key === 'createdAt' ? styles.activeFilter : ''}`} type="button">
+                        <ArrowUpDown size={13} />
+                      </button>
+                    </div>
+                  </div>
+
+                  {activePopover === 'added' && (
+                    <div className={styles.excelPopover} onClick={(e) => e.stopPropagation()}>
+                      <div className={styles.excelPopoverHeader}>
+                        <span>Sort by Date</span>
+                        <X size={14} style={{ cursor: "pointer" }} onClick={() => setActivePopover(null)} />
+                      </div>
+                      <div className={styles.excelSortOptions}>
+                        <button 
+                          className={`${styles.excelSortBtn} ${sortConfig.key === 'createdAt' && sortConfig.direction === 'desc' ? styles.activeSort : ''}`}
+                          onClick={() => handleSort('createdAt', 'desc')}
+                        >
+                          <ArrowDown size={13} /> Newest to Oldest
+                        </button>
+                        <button 
+                          className={`${styles.excelSortBtn} ${sortConfig.key === 'createdAt' && sortConfig.direction === 'asc' ? styles.activeSort : ''}`}
+                          onClick={() => handleSort('createdAt', 'asc')}
+                        >
+                          <ArrowUp size={13} /> Oldest to Newest
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredRecentProducts.length === 0 ? (
+                <tr>
+                  <td colSpan="5" style={{ textAlign: "center", padding: "60px 20px" }}>
+                    <div style={{ fontSize: "2.5rem", marginBottom: "var(--space-4)" }}>💅</div>
+                    <h3 style={{ fontSize: "1.125rem", color: "var(--color-primary-800)", marginBottom: "var(--space-2)", fontFamily: "var(--font-heading)" }}>No products found</h3>
+                    <p style={{ color: "var(--color-text-secondary)", fontSize: "0.875rem", marginBottom: "var(--space-6)" }}>No products matched your filters.</p>
+                    <button 
+                      type="button" 
+                      onClick={() => { setColumnFilters({ category: [], availability: [] }); setSortConfig({ key: 'createdAt', direction: 'desc' }); }}
+                      className={styles.btnPrimary} 
+                      style={{ display: "inline-flex", margin: "0 auto" }}
+                    >
+                      Clear Filters
+                    </button>
+                  </td>
+                </tr>
+              ) : (
+                filteredRecentProducts.map((product) => {
+                  const isCurrentlyInStock = product.stockCount > 0 && product.inStock;
+                  return (
+                    <tr key={product.id}>
+                      {/* Product cell */}
+                      <td>
+                        <div className={styles.productCell} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px", minWidth: 0 }}>
+                          <div style={{ display: "flex", alignItems: "center", gap: "12px", minWidth: 0, flex: 1 }}>
+                            <Image 
+                              src={product.images?.[0] || '/images/hero.png'} 
+                              alt={product.name} 
+                              className={styles.productImg} 
+                              width={44} 
+                              height={44} 
+                              style={{ objectFit: 'cover', borderRadius: '6px', flexShrink: 0 }} 
+                            />
+                            <span className={styles.productName} style={{ wordBreak: "break-word" }}>{product.name}</span>
+                          </div>
+
+                          {/* 3-dots Action button beside product name */}
+                          <button 
+                            className={styles.kebabTriggerBtn}
+                            onClick={(e) => handleMenuClick(product.id, e)}
+                            title="Product Actions"
+                            style={{ 
+                              background: openMenuId === product.id ? "rgba(0,0,0,0.06)" : "none", 
+                              border: "1px solid var(--color-border-light)", 
+                              borderRadius: "6px",
+                              cursor: "pointer", 
+                              color: "#666", 
+                              padding: "4px 6px",
+                              display: "inline-flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              flexShrink: 0
+                            }}
+                          >
+                            <MoreVertical size={16} />
+                          </button>
+                        </div>
+                      </td>
+
+                      <td>{product.categoryName || "Handmade"}</td>
+                      <td style={{ fontWeight: 500 }}>{formatPrice(product.price)}</td>
+                      <td>
+                        <span 
+                          className={`${styles.badge} ${isCurrentlyInStock ? styles.inStock : styles.outOfStock}`}
+                          style={{ cursor: "pointer" }}
+                          onClick={() => handleToggleStock(product.id)}
+                          title="Click to toggle stock"
+                        >
+                          {updatingStockId === product.id ? "Updating..." : (isCurrentlyInStock ? "In Stock" : "Out of Stock")}
+                        </span>
+                      </td>
+                      <td style={{ color: "#666", fontSize: "0.82rem" }}>
+                        {product.createdAt ? new Date(product.createdAt).toLocaleDateString() : "Recent"}
+                      </td>
+                    </tr>
+                  );
+                })
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Mobile Stacked Cards for Recent Products */}
+      <div className={styles.mobileCardList}>
+        {filteredRecentProducts.length === 0 ? (
+          <div className={styles.mobileCard} style={{ textAlign: "center", padding: "40px 16px" }}>
+            <div style={{ fontSize: "2rem", marginBottom: "8px" }}>💅</div>
+            <h3 style={{ fontSize: "1rem", color: "var(--color-primary-800)", marginBottom: "4px" }}>No products found</h3>
+            <p style={{ color: "var(--color-text-secondary)", fontSize: "0.82rem", marginBottom: "16px" }}>No products match your filters.</p>
+            <button 
+              type="button" 
+              onClick={() => { setColumnFilters({ category: [], availability: [] }); setSortConfig({ key: 'createdAt', direction: 'desc' }); }}
+              className={styles.btnPrimary} 
+              style={{ display: "inline-flex", margin: "0 auto", padding: "6px 14px", fontSize: "0.8rem" }}
+            >
+              Clear Filters
+            </button>
+          </div>
+        ) : (
+          filteredRecentProducts.map((product) => {
+            const isCurrentlyInStock = product.stockCount > 0 && product.inStock;
+            return (
+              <div key={product.id} className={styles.mobileCard}>
+                <div className={styles.mobileCardHeader}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "10px", minWidth: 0, flex: 1 }}>
+                    <Image 
+                      src={product.images?.[0] || '/images/hero.png'} 
+                      alt={product.name} 
+                      width={44} 
+                      height={44} 
+                      style={{ objectFit: 'cover', borderRadius: '6px', flexShrink: 0 }} 
+                    />
+                    <div style={{ minWidth: 0, flex: 1 }}>
+                      <div style={{ fontWeight: 600, fontSize: "0.9rem", color: "var(--color-text)", wordBreak: "break-word" }}>
+                        {product.name}
+                      </div>
+                      <span style={{ fontSize: "0.75rem", color: "var(--color-text-secondary)", background: "#f5f5f5", padding: "2px 6px", borderRadius: "4px", display: "inline-block", marginTop: "2px" }}>
+                        {product.categoryName || "Handmade"}
                       </span>
-                    </td>
-                    <td style={{ color: "#666", fontSize: "0.82rem" }}>
+                    </div>
+                  </div>
+
+                  <button 
+                    className={styles.kebabTriggerBtn}
+                    onClick={(e) => handleMenuClick(product.id, e)}
+                    title="Product Actions"
+                    aria-label="Product actions"
+                    style={{ 
+                      background: openMenuId === product.id ? "rgba(0,0,0,0.06)" : "#fafafa", 
+                      border: "1px solid var(--color-border-light)", 
+                      borderRadius: "6px",
+                      cursor: "pointer", 
+                      color: "#666", 
+                      padding: "6px 8px",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexShrink: 0
+                    }}
+                  >
+                    <MoreVertical size={16} />
+                  </button>
+                </div>
+
+                <div className={styles.mobileCardBody}>
+                  <div className={styles.mobileCardRow}>
+                    <span className={styles.mobileCardLabel}>Price</span>
+                    <span style={{ fontWeight: 600, color: "var(--color-text)", fontSize: "0.9rem" }}>
+                      {formatPrice(product.price)}
+                    </span>
+                  </div>
+                  <div className={styles.mobileCardRow}>
+                    <span className={styles.mobileCardLabel}>Status</span>
+                    <span 
+                      className={`${styles.badge} ${isCurrentlyInStock ? styles.inStock : styles.outOfStock}`}
+                      style={{ cursor: "pointer" }}
+                      onClick={() => handleToggleStock(product.id)}
+                      title="Tap to toggle stock"
+                    >
+                      {updatingStockId === product.id ? "Updating..." : (isCurrentlyInStock ? "In Stock" : "Out of Stock")}
+                    </span>
+                  </div>
+                  <div className={styles.mobileCardRow}>
+                    <span className={styles.mobileCardLabel}>Added Date</span>
+                    <span style={{ color: "#777", fontSize: "0.8rem" }}>
                       {product.createdAt ? new Date(product.createdAt).toLocaleDateString() : "Recent"}
-                    </td>
-                  </tr>
-                );
-              })
-            )}
-          </tbody>
-        </table>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            );
+          })
+        )}
       </div>
 
       {/* Floating Kebab Action Menu (Rendered outside table container so it escapes overflow clipping) */}
@@ -658,38 +763,56 @@ export default function DashboardClient({ initialProducts = [], initialOrders = 
         const isCurrentlyInStock = activeProduct.stockCount > 0 && activeProduct.inStock;
 
         return (
-          <div 
-            className={styles.kebabMenu}
-            style={{
-              position: "fixed",
-              top: `${menuPosition.top}px`,
-              left: `${menuPosition.left}px`,
-              zIndex: 99999,
-              minWidth: "175px",
-              background: "#ffffff",
-              borderRadius: "8px",
-              boxShadow: "0 10px 30px rgba(0,0,0,0.22)",
-              border: "1px solid var(--color-border)"
-            }}
-          >
-            <button 
-              className={styles.kebabItem} 
-              onClick={() => handleToggleStock(activeProduct.id)}
-              style={{ 
-                fontWeight: 600,
-                color: isCurrentlyInStock ? "#DC2626" : "#16A34A",
-                borderBottom: "1px solid var(--color-border-light)"
+          <>
+            <div 
+              style={{
+                position: "fixed",
+                inset: 0,
+                zIndex: 99998,
+                background: "transparent"
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+                setOpenMenuId(null);
+              }}
+              onTouchStart={(e) => {
+                e.stopPropagation();
+                setOpenMenuId(null);
+              }}
+            />
+            <div 
+              className={styles.kebabMenu}
+              style={{
+                position: "fixed",
+                top: `${menuPosition.top}px`,
+                left: `${menuPosition.left}px`,
+                zIndex: 99999,
+                minWidth: "180px",
+                background: "#ffffff",
+                borderRadius: "8px",
+                boxShadow: "0 10px 30px rgba(0,0,0,0.22)",
+                border: "1px solid var(--color-border)"
               }}
             >
-              {isCurrentlyInStock ? "Mark Out of Stock" : "Mark In Stock"}
-            </button>
-            <button className={styles.kebabItem} onClick={() => handleEdit(activeProduct.id)}>Edit Details</button>
-            <button className={styles.kebabItem} onClick={() => handleDuplicate(activeProduct.id)}>Duplicate</button>
-            <button className={styles.kebabItem} onClick={() => handleToggleFeature(activeProduct.id)}>
-              {activeProduct.bestseller ? "Unmark Featured" : "Mark Featured"}
-            </button>
-            <button className={`${styles.kebabItem} ${styles.kebabDelete}`} onClick={() => handleDeleteClick(activeProduct.id)}>Delete Product</button>
-          </div>
+              <button 
+                className={styles.kebabItem} 
+                onClick={() => handleToggleStock(activeProduct.id)}
+                style={{ 
+                  fontWeight: 600,
+                  color: isCurrentlyInStock ? "#DC2626" : "#16A34A",
+                  borderBottom: "1px solid var(--color-border-light)"
+                }}
+              >
+                {isCurrentlyInStock ? "Mark Out of Stock" : "Mark In Stock"}
+              </button>
+              <button className={styles.kebabItem} onClick={() => handleEdit(activeProduct.id)}>Edit Details</button>
+              <button className={styles.kebabItem} onClick={() => handleDuplicate(activeProduct.id)}>Duplicate</button>
+              <button className={styles.kebabItem} onClick={() => handleToggleFeature(activeProduct.id)}>
+                {activeProduct.bestseller ? "Unmark Featured" : "Mark Featured"}
+              </button>
+              <button className={`${styles.kebabItem} ${styles.kebabDelete}`} onClick={() => handleDeleteClick(activeProduct.id)}>Delete Product</button>
+            </div>
+          </>
         );
       })()}
 

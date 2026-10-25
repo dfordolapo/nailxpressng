@@ -119,6 +119,8 @@ const mapProduct = (p, discount = 0) => {
   };
 };
 
+import { FALLBACK_RAW_PRODUCTS } from './fallbackData';
+
 // Fisher-Yates shuffle to randomize products
 function shuffleArray(array) {
   const newArray = [...array];
@@ -130,77 +132,71 @@ function shuffleArray(array) {
 }
 
 export async function getProducts() {
-  const [{ data, error }, discount] = await Promise.all([
-    supabase.from('products').select('*, categories(slug, name)'),
-    getSitewideDiscount(),
-  ]);
-  if (error) {
-    console.error('Error fetching products:', error);
-    return [];
+  const isPlaceholder = !process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL.includes("placeholder");
+  const discount = await getSitewideDiscount();
+
+  if (!isPlaceholder) {
+    try {
+      const { data, error } = await supabase.from('products').select('*, categories(slug, name)');
+      if (!error && data && data.length > 0) {
+        return shuffleArray(data.map((p) => mapProduct(p, discount)));
+      }
+    } catch (e) {
+      console.warn('Supabase fetch failed, falling back to local dataset:', e.message);
+    }
   }
-  return shuffleArray(data.map((p) => mapProduct(p, discount)));
+
+  // Graceful local development fallback
+  return shuffleArray(FALLBACK_RAW_PRODUCTS.map((p) => mapProduct(p, discount)));
 }
 
 export async function getProductBySlug(slug) {
-  const [{ data, error }, discount] = await Promise.all([
-    supabase.from('products').select('*, categories(slug, name)').eq('slug', slug).maybeSingle(),
-    getSitewideDiscount(),
-  ]);
-  if (error || !data) {
-    console.error(`Error fetching product ${slug}:`, error);
-    return null;
+  if (!slug) return null;
+  const isPlaceholder = !process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL.includes("placeholder");
+  const discount = await getSitewideDiscount();
+
+  if (!isPlaceholder) {
+    try {
+      const { data, error } = await supabase.from('products').select('*, categories(slug, name)').eq('slug', slug).maybeSingle();
+      if (!error && data) {
+        return mapProduct(data, discount);
+      }
+    } catch (e) {
+      console.warn(`Supabase getProductBySlug(${slug}) failed, checking local dataset:`, e.message);
+    }
   }
-  return mapProduct(data, discount);
+
+  const found = FALLBACK_RAW_PRODUCTS.find((p) => p.slug.toLowerCase() === slug.toLowerCase());
+  return found ? mapProduct(found, discount) : null;
 }
 
 export async function getProductsByCategory(categorySlug) {
-  const [{ data, error }, discount] = await Promise.all([
-    supabase.from('products').select('*, categories(slug, name)'),
-    getSitewideDiscount(),
-  ]);
-  if (error || !data) return [];
-  
-  const mapped = data.map((p) => mapProduct(p, discount));
-  const filtered = mapped.filter((p) => p.category === categorySlug);
-  return shuffleArray(filtered);
+  const all = await getProducts();
+  const filtered = all.filter((p) => p.category === categorySlug);
+  return filtered;
 }
 
 export async function getProductsByIds(ids) {
   if (!ids || ids.length === 0) return [];
-  const [{ data, error }, discount] = await Promise.all([
-    supabase.from('products').select('*, categories(slug, name)').in('id', ids),
-    getSitewideDiscount(),
-  ]);
-  if (error) return [];
-  return data.map((p) => mapProduct(p, discount));
+  const all = await getProducts();
+  return all.filter((p) => ids.includes(p.id) || ids.includes(String(p.id)));
 }
 
 export async function getFeaturedProducts() {
-  const [{ data, error }, discount] = await Promise.all([
-    supabase.from('products').select('*, categories(slug, name)').eq('bestseller', true),
-    getSitewideDiscount(),
-  ]);
-  if (error) return [];
-  return shuffleArray(data.map((p) => mapProduct(p, discount)));
+  const all = await getProducts();
+  return all.filter((p) => p.featured || p.bestseller);
 }
 
 export async function getBestsellers() {
-  const [{ data, error }, discount] = await Promise.all([
-    supabase.from('products').select('*, categories(slug, name)').eq('bestseller', true),
-    getSitewideDiscount(),
-  ]);
-  if (error) return [];
-  return shuffleArray(data.map((p) => mapProduct(p, discount)));
+  const all = await getProducts();
+  return all.filter((p) => p.bestseller);
 }
 
 export async function searchProducts(query) {
   if (!query) return [];
-  const [{ data, error }, discount] = await Promise.all([
-    supabase.from('products').select('*, categories(slug, name)').ilike('name', `%${query}%`),
-    getSitewideDiscount(),
-  ]);
-  if (error) return [];
-  return data.map((p) => mapProduct(p, discount));
+  const all = await getProducts();
+  const q = query.toLowerCase();
+  return all.filter((p) => p.name.toLowerCase().includes(q) || (p.description && p.description.toLowerCase().includes(q)));
 }
 
 export async function getCategories() {

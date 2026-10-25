@@ -169,46 +169,59 @@ export default function SettingsClient() {
         <form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)', maxWidth: '600px' }}>
           
           <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
-            {locations.map((loc, index) => (
-              <div key={loc.id} style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                <div style={{ flex: 1.5 }}>
-                  <label style={{ display: index === 0 ? 'block' : 'none', fontSize: '0.75rem', fontWeight: 500, marginBottom: '4px' }}>Location Name</label>
+            {locations.map((loc) => (
+              <div 
+                key={loc.id} 
+                style={{ 
+                  display: 'flex', 
+                  flexWrap: 'wrap', 
+                  gap: '10px', 
+                  alignItems: 'flex-end',
+                  padding: '12px',
+                  background: 'var(--color-bg-subtle, #f9fafb)',
+                  border: '1px solid var(--color-border-light)',
+                  borderRadius: 'var(--radius-md)'
+                }}
+              >
+                <div style={{ flex: '1 1 180px', minWidth: '140px' }}>
+                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 500, marginBottom: '4px', color: 'var(--color-text-secondary)' }}>Location Name</label>
                   <input 
                     type="text" 
                     value={loc.name}
                     onChange={(e) => handleLocationChange(loc.id, 'name', e.target.value)}
-                    style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)' }}
+                    style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)', background: '#fff' }}
                     placeholder="e.g. Lagos - Island"
                     required
                   />
                 </div>
-                <div style={{ flex: 1.2 }}>
-                  <label style={{ display: index === 0 ? 'block' : 'none', fontSize: '0.75rem', fontWeight: 500, marginBottom: '4px' }}>Est. Delivery Time</label>
+                <div style={{ flex: '1 1 140px', minWidth: '120px' }}>
+                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 500, marginBottom: '4px', color: 'var(--color-text-secondary)' }}>Est. Delivery Time</label>
                   <input 
                     type="text" 
                     value={loc.estimated_time || ''}
                     onChange={(e) => handleLocationChange(loc.id, 'estimated_time', e.target.value)}
-                    style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)' }}
+                    style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)', background: '#fff' }}
                     placeholder="e.g. 3-5 Hours"
                   />
                 </div>
-                <div style={{ width: '110px' }}>
-                  <label style={{ display: index === 0 ? 'block' : 'none', fontSize: '0.75rem', fontWeight: 500, marginBottom: '4px' }}>Fee (₦)</label>
+                <div style={{ flex: '0 1 110px', minWidth: '90px' }}>
+                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 500, marginBottom: '4px', color: 'var(--color-text-secondary)' }}>Fee (₦)</label>
                   <input 
                     type="number" 
                     value={loc.fee}
                     onChange={(e) => handleLocationChange(loc.id, 'fee', e.target.value)}
-                    style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)' }}
+                    style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)', background: '#fff' }}
                     placeholder="2500"
                     required
                   />
                 </div>
-                <div style={{ marginTop: index === 0 ? '20px' : '0' }}>
+                <div style={{ paddingBottom: '2px' }}>
                   <button 
                     type="button" 
                     onClick={() => handleRemoveLocation(loc.id)}
-                    style={{ background: 'none', border: 'none', color: 'var(--color-danger)', cursor: 'pointer', padding: '10px' }}
+                    style={{ background: 'none', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)', color: 'var(--color-danger)', cursor: 'pointer', padding: '9px 12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                     title="Remove Location"
+                    aria-label="Remove Location"
                   >
                     <Trash2 size={18} />
                   </button>
@@ -236,8 +249,8 @@ export default function SettingsClient() {
               {/* Factory Made */}
               <div>
                 <h3 style={{ fontSize: '0.875rem', fontWeight: 600, marginBottom: '8px' }}>Factory Made</h3>
-                <div style={{ display: 'flex', gap: '10px' }}>
-                  <div style={{ flex: 1 }}>
+                <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                  <div style={{ flex: '1 1 160px', minWidth: '140px' }}>
                     <label style={{ fontSize: '0.75rem', fontWeight: 500, marginBottom: '4px', display: 'block' }}>Within Lagos</label>
                     <input 
                       type="text" 
@@ -246,7 +259,7 @@ export default function SettingsClient() {
                       style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)' }}
                     />
                   </div>
-                  <div style={{ flex: 1 }}>
+                  <div style={{ flex: '1 1 160px', minWidth: '140px' }}>
                     <label style={{ fontSize: '0.75rem', fontWeight: 500, marginBottom: '4px', display: 'block' }}>Outside Lagos</label>
                     <input 
                       type="text" 
@@ -261,8 +274,8 @@ export default function SettingsClient() {
               {/* Handmade */}
               <div>
                 <h3 style={{ fontSize: '0.875rem', fontWeight: 600, marginBottom: '8px' }}>Handmade</h3>
-                <div style={{ display: 'flex', gap: '10px' }}>
-                  <div style={{ flex: 1 }}>
+                <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                  <div style={{ flex: '1 1 160px', minWidth: '140px' }}>
                     <label style={{ fontSize: '0.75rem', fontWeight: 500, marginBottom: '4px', display: 'block' }}>Within Lagos</label>
                     <input 
                       type="text" 
@@ -271,7 +284,7 @@ export default function SettingsClient() {
                       style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)' }}
                     />
                   </div>
-                  <div style={{ flex: 1 }}>
+                  <div style={{ flex: '1 1 160px', minWidth: '140px' }}>
                     <label style={{ fontSize: '0.75rem', fontWeight: 500, marginBottom: '4px', display: 'block' }}>Outside Lagos</label>
                     <input 
                       type="text" 
@@ -286,8 +299,8 @@ export default function SettingsClient() {
               {/* Custom Orders */}
               <div>
                 <h3 style={{ fontSize: '0.875rem', fontWeight: 600, marginBottom: '8px' }}>Custom Orders</h3>
-                <div style={{ display: 'flex', gap: '10px' }}>
-                  <div style={{ flex: 1 }}>
+                <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                  <div style={{ flex: '1 1 160px', minWidth: '140px' }}>
                     <label style={{ fontSize: '0.75rem', fontWeight: 500, marginBottom: '4px', display: 'block' }}>Within Lagos</label>
                     <input 
                       type="text" 
@@ -296,7 +309,7 @@ export default function SettingsClient() {
                       style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)' }}
                     />
                   </div>
-                  <div style={{ flex: 1 }}>
+                  <div style={{ flex: '1 1 160px', minWidth: '140px' }}>
                     <label style={{ fontSize: '0.75rem', fontWeight: 500, marginBottom: '4px', display: 'block' }}>Outside Lagos</label>
                     <input 
                       type="text" 
@@ -315,7 +328,7 @@ export default function SettingsClient() {
               type="submit" 
               className={`${btnStyles.btn} ${btnStyles.primary} ${btnStyles.lg}`} 
               disabled={isSaving}
-              style={{ width: 'fit-content' }}
+              style={{ width: '100%', maxWidth: '280px' }}
             >
               {isSaving ? <Loader2 size={18} className="spin" /> : <Save size={18} />}
               {isSaving ? 'Saving Settings...' : 'Save Settings'}

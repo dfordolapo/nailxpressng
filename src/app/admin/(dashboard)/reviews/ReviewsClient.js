@@ -18,6 +18,7 @@ import {
   BadgeCheck
 } from "lucide-react";
 import styles from "@/styles/admin.module.css";
+import ScrollableTabs from "@/components/admin/ScrollableTabs";
 
 export default function ReviewsClient({ initialReviews }) {
   const [reviews, setReviews] = useState(initialReviews || []);
@@ -193,9 +194,7 @@ export default function ReviewsClient({ initialReviews }) {
       <div className={styles.pageHeader}>
         <div>
           <h1 className={styles.pageTitle}>Customer Reviews</h1>
-          <p className={styles.pageSubtitle}>
-            Moderate, verify, edit, and curate real customer reviews and nail photos.
-          </p>
+          <p className={styles.pageSubtitle}>Moderate reviews & testimonials.</p>
         </div>
       </div>
 
@@ -232,7 +231,7 @@ export default function ReviewsClient({ initialReviews }) {
 
       {/* Toolbar: Tabs & Search / Filter */}
       <div className={styles.toolbar}>
-        <div className={styles.tabs}>
+        <ScrollableTabs>
           <button
             type="button"
             className={`${styles.tab} ${activeTab === "all" ? styles.active : ""}`}
@@ -261,7 +260,7 @@ export default function ReviewsClient({ initialReviews }) {
           >
             Hidden ({hiddenCount})
           </button>
-        </div>
+        </ScrollableTabs>
 
         <div className={styles.filters}>
           <div className={styles.searchBox}>

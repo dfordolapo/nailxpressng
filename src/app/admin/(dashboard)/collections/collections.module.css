@@ -385,8 +385,11 @@ input:checked + .toggleSlider:before {
 }
 
 .modalHeader {
-  padding: 18px 22px;
-  background: linear-gradient(180deg, #fdf8f8 0%, #ffffff 100%);
+  position: sticky;
+  top: 0;
+  z-index: 25;
+  padding: 16px 20px;
+  background: #ffffff;
   border-bottom: 1px solid #f2e7e7;
   display: flex;
   align-items: center;
@@ -1027,7 +1030,7 @@ input:checked + .toggleSlider:before {
 
   /* Compact Stats Cards on Mobile */
   .statsGrid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
     gap: 8px;
   }
 

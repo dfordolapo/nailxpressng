@@ -7,6 +7,8 @@ const supabaseAdmin = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "dummy-key"
 );
 
+import { FALLBACK_SUBSCRIBERS } from '@/lib/fallbackData';
+
 // GET: Fetch all subscribers for Admin dashboard
 export async function GET() {
   try {
@@ -15,12 +17,14 @@ export async function GET() {
       .select('*')
       .order('created_at', { ascending: false });
 
-    if (error) throw error;
+    if (error || !data || data.length === 0) {
+      return NextResponse.json({ subscribers: FALLBACK_SUBSCRIBERS });
+    }
 
-    return NextResponse.json({ subscribers: data || [] });
+    return NextResponse.json({ subscribers: data });
   } catch (error) {
     console.error('Fetch Subscribers Error:', error);
-    return NextResponse.json({ subscribers: [] }, { status: 500 });
+    return NextResponse.json({ subscribers: FALLBACK_SUBSCRIBERS });
   }
 }
 

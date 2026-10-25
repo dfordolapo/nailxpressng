@@ -25,6 +25,8 @@ import {
   Bell
 } from "lucide-react";
 import styles from "./collections.module.css";
+import adminStyles from "@/styles/admin.module.css";
+import ScrollableTabs from "@/components/admin/ScrollableTabs";
 
 function slugify(text) {
   return String(text)
@@ -387,7 +389,7 @@ export default function CollectionsClient() {
         <div className={styles.titleArea}>
           <h1 className={styles.pageTitle}>Collections Management</h1>
           <p className={styles.pageSubtitle}>
-            Create and organize product collections. Any collection marked as <strong>Published</strong> will automatically appear in the storefront hamburger dropdown menu.
+            Organize & publish storefront collections.
           </p>
         </div>
         <div style={{ display: "flex", gap: "10px" }}>
@@ -460,7 +462,7 @@ export default function CollectionsClient() {
           )}
         </div>
 
-        <div className={styles.filterTabs}>
+        <ScrollableTabs style={{ marginBottom: 0 }}>
           <button
             className={`${styles.filterTab} ${statusFilter === "all" ? styles.active : ""}`}
             onClick={() => setStatusFilter("all")}
@@ -479,7 +481,7 @@ export default function CollectionsClient() {
           >
             Drafts ({totalDraft})
           </button>
-        </div>
+        </ScrollableTabs>
       </div>
 
       {/* Table Card */}
@@ -505,173 +507,322 @@ export default function CollectionsClient() {
             )}
           </div>
         ) : (
-          <div className={styles.tableWrapper}>
-            <table className={styles.table}>
-              <thead>
-                <tr>
-                  <th>Collection</th>
-                  <th>Tagline / Description</th>
-                  <th>Published in Hamburger</th>
-                  <th>Drop Countdown</th>
-                  <th style={{ textAlign: "right" }}>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filtered.map((col) => {
-                  const isCore = col.slug === "handmade" || col.slug === "factory";
-                  const storeUrl = getCollectionStoreUrl(col.slug);
+          <>
+            <div className={adminStyles.desktopTableOnly}>
+              <div className={styles.tableWrapper}>
+                <table className={styles.table}>
+                  <thead>
+                    <tr>
+                      <th>Collection</th>
+                      <th>Tagline / Description</th>
+                      <th>Published in Hamburger</th>
+                      <th>Drop Countdown</th>
+                      <th style={{ textAlign: "right" }}>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filtered.map((col) => {
+                      const isCore = col.slug === "handmade" || col.slug === "factory";
+                      const storeUrl = getCollectionStoreUrl(col.slug);
 
-                  return (
-                    <tr key={col.id || col.slug}>
-                      {/* Collection Info */}
-                      <td>
-                        <div className={styles.collectionCell}>
-                          <div className={styles.thumbWrapper}>
-                            {col.image ? (
-                              <Image 
-                                src={col.image} 
-                                alt={col.name} 
-                                fill
-                                sizes="52px"
-                                className={styles.thumbImg} 
-                                unoptimized
-                              />
-                            ) : (
-                              <Layers size={20} strokeWidth={1.5} color="var(--color-primary)" />
-                            )}
-                          </div>
-                          <div className={styles.collectionMeta}>
-                            <div className={styles.collectionName}>
-                              {col.name}
-                              {isCore && <span className={styles.systemBadge}>Core</span>}
+                      return (
+                        <tr key={col.id || col.slug}>
+                          {/* Collection Info */}
+                          <td>
+                            <div className={styles.collectionCell}>
+                              <div className={styles.thumbWrapper}>
+                                {col.image ? (
+                                  <Image 
+                                    src={col.image} 
+                                    alt={col.name} 
+                                    fill
+                                    sizes="52px"
+                                    className={styles.thumbImg} 
+                                    unoptimized
+                                  />
+                                ) : (
+                                  <Layers size={20} strokeWidth={1.5} color="var(--color-primary)" />
+                                )}
+                              </div>
+                              <div className={styles.collectionMeta}>
+                                <div className={styles.collectionName}>
+                                  {col.name}
+                                  {isCore && <span className={styles.systemBadge}>Core</span>}
+                                </div>
+                                <span className={styles.collectionSlug}>/{col.slug}</span>
+                              </div>
                             </div>
-                            <span className={styles.collectionSlug}>/{col.slug}</span>
-                          </div>
-                        </div>
-                      </td>
+                          </td>
 
-                      {/* Description */}
-                      <td style={{ maxWidth: "260px" }}>
-                        <div style={{ fontWeight: 500, fontSize: "0.85rem", color: "var(--color-text)" }}>
-                          {col.tagline || "—"}
-                        </div>
-                        <div style={{ fontSize: "0.78rem", color: "var(--color-text-secondary)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                          {col.description || "No description"}
-                        </div>
-                      </td>
+                          {/* Description */}
+                          <td style={{ maxWidth: "260px" }}>
+                            <div style={{ fontWeight: 500, fontSize: "0.85rem", color: "var(--color-text)" }}>
+                              {col.tagline || "—"}
+                            </div>
+                            <div style={{ fontSize: "0.78rem", color: "var(--color-text-secondary)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                              {col.description || "No description"}
+                            </div>
+                          </td>
 
-                      {/* Published in Hamburger Toggle */}
-                      <td>
-                        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                          <label className={styles.toggleSwitch} title={col.is_published !== false ? "Published (Visible in hamburger)" : "Draft (Hidden from hamburger)"}>
-                            <input
-                              type="checkbox"
-                              checked={col.is_published !== false}
-                              onChange={() => handleTogglePublish(col)}
+                          {/* Published in Hamburger Toggle */}
+                          <td>
+                            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                              <label className={styles.toggleSwitch} title={col.is_published !== false ? "Published (Visible in hamburger)" : "Draft (Hidden from hamburger)"}>
+                                <input
+                                  type="checkbox"
+                                  checked={col.is_published !== false}
+                                  onChange={() => handleTogglePublish(col)}
+                                />
+                                <span className={styles.toggleSlider} />
+                              </label>
+                              <span className={`${styles.badge} ${col.is_published !== false ? styles.badgePublished : styles.badgeDraft}`}>
+                                {col.is_published !== false ? (
+                                  <>
+                                    <Check size={11} strokeWidth={2} />
+                                    Published
+                                  </>
+                                ) : (
+                                  <>
+                                    <EyeOff size={11} strokeWidth={2} />
+                                    Draft
+                                  </>
+                                )}
+                              </span>
+                            </div>
+                          </td>
+
+                          {/* Drop Countdown Status */}
+                          <td>
+                            {(() => {
+                              if (!col.drop_timer_enabled || !col.drop_date) {
+                                return (
+                                  <span className={styles.badgeTimerOff} title="No drop countdown scheduled">
+                                    <Timer size={12} strokeWidth={1.5} />
+                                    Inactive
+                                  </span>
+                                );
+                              }
+                              const dropTime = new Date(col.drop_date).getTime();
+                              const isUpcoming = dropTime > Date.now();
+                              const formatted = new Date(col.drop_date).toLocaleString("en-US", {
+                                month: "short",
+                                day: "numeric",
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              });
+
+                              if (isUpcoming) {
+                                const diff = dropTime - Date.now();
+                                const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+                                const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                                return (
+                                  <span className={styles.badgeTimerActive} title={`Locked until: ${formatted}`}>
+                                    <Lock size={12} strokeWidth={1.7} />
+                                    Drops {formatted} {d > 0 ? `(${d}d ${h}h)` : `(${h}h)`}
+                                  </span>
+                                );
+                              }
+
+                              return (
+                                <span className={styles.badgeTimerDropped} title={`Dropped on ${formatted} - Live now`}>
+                                  <Check size={12} strokeWidth={2} />
+                                  Dropped (Live)
+                                </span>
+                              );
+                            })()}
+                          </td>
+
+                          {/* Actions */}
+                          <td style={{ textAlign: "right" }}>
+                            <div className={styles.actionsCell} style={{ justifyContent: "flex-end" }}>
+                              {col.drop_timer_enabled && (
+                                <button
+                                  className={styles.iconBtn}
+                                  onClick={() => handleBroadcastDrop(col)}
+                                  title={col.drop_notification_sent ? "Drop alert already sent (click to broadcast again)" : "Broadcast 'Now Live' email to waitlist subscribers"}
+                                  style={{ color: col.drop_notification_sent ? "#059669" : "var(--color-primary)" }}
+                                >
+                                  <Bell size={15} strokeWidth={1.5} />
+                                </button>
+                              )}
+                              <a
+                                href={storeUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={styles.iconBtn}
+                                title="View on storefront"
+                              >
+                                <ExternalLink size={15} strokeWidth={1.5} />
+                              </a>
+                              <button
+                                className={styles.iconBtn}
+                                onClick={() => openEditModal(col)}
+                                title="Edit collection"
+                              >
+                                <Edit3 size={15} strokeWidth={1.5} />
+                              </button>
+                              <button
+                                className={`${styles.iconBtn} ${styles.deleteBtn}`}
+                                onClick={() => setDeleteTarget(col)}
+                                title="Delete collection"
+                              >
+                                <Trash2 size={15} strokeWidth={1.5} />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* Mobile Stacked Cards */}
+            <div className={adminStyles.mobileCardList}>
+              {filtered.map((col) => {
+                const isCore = col.slug === "handmade" || col.slug === "factory";
+                const storeUrl = getCollectionStoreUrl(col.slug);
+
+                return (
+                  <div key={col.id || col.slug} className={adminStyles.mobileCard}>
+                    <div className={adminStyles.mobileCardHeader}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "10px", flex: 1, minWidth: 0 }}>
+                        <div className={styles.thumbWrapper} style={{ width: 42, height: 42, position: "relative", flexShrink: 0 }}>
+                          {col.image ? (
+                            <Image 
+                              src={col.image} 
+                              alt={col.name} 
+                              fill
+                              sizes="42px"
+                              className={styles.thumbImg} 
+                              unoptimized
                             />
-                            <span className={styles.toggleSlider} />
-                          </label>
-                          <span className={`${styles.badge} ${col.is_published !== false ? styles.badgePublished : styles.badgeDraft}`}>
-                            {col.is_published !== false ? (
-                              <>
-                                <Check size={11} strokeWidth={2} />
-                                Published
-                              </>
-                            ) : (
-                              <>
-                                <EyeOff size={11} strokeWidth={2} />
-                                Draft
-                              </>
-                            )}
+                          ) : (
+                            <Layers size={18} strokeWidth={1.5} color="var(--color-primary)" />
+                          )}
+                        </div>
+                        <div style={{ overflow: "hidden" }}>
+                          <div style={{ fontWeight: 600, fontSize: "0.92rem", color: "var(--color-text)", display: "flex", alignItems: "center", gap: "6px" }}>
+                            <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{col.name}</span>
+                            {isCore && <span className={styles.systemBadge}>Core</span>}
+                          </div>
+                          <span style={{ fontSize: "0.75rem", color: "var(--color-text-secondary)" }}>/{col.slug}</span>
+                        </div>
+                      </div>
+
+                      <div style={{ display: "flex", alignItems: "center", gap: "6px", flexShrink: 0 }}>
+                        <label className={styles.toggleSwitch} title={col.is_published !== false ? "Published" : "Draft"}>
+                          <input
+                            type="checkbox"
+                            checked={col.is_published !== false}
+                            onChange={() => handleTogglePublish(col)}
+                          />
+                          <span className={styles.toggleSlider} />
+                        </label>
+                      </div>
+                    </div>
+
+                    <div className={adminStyles.mobileCardBody}>
+                      {col.tagline && (
+                        <div className={adminStyles.mobileCardRow}>
+                          <span className={adminStyles.mobileCardLabel}>Tagline</span>
+                          <span className={adminStyles.mobileCardValue} style={{ maxWidth: "65%", textAlign: "right" }}>
+                            {col.tagline}
                           </span>
                         </div>
-                      </td>
+                      )}
 
-                      {/* Drop Countdown Status */}
-                      <td>
-                        {(() => {
-                          if (!col.drop_timer_enabled || !col.drop_date) {
+                      <div className={adminStyles.mobileCardRow}>
+                        <span className={adminStyles.mobileCardLabel}>Status</span>
+                        <span className={adminStyles.mobileCardValue}>
+                          <span className={`${styles.badge} ${col.is_published !== false ? styles.badgePublished : styles.badgeDraft}`}>
+                            {col.is_published !== false ? "Published" : "Draft"}
+                          </span>
+                        </span>
+                      </div>
+
+                      <div className={adminStyles.mobileCardRow}>
+                        <span className={adminStyles.mobileCardLabel}>Countdown</span>
+                        <span className={adminStyles.mobileCardValue}>
+                          {(() => {
+                            if (!col.drop_timer_enabled || !col.drop_date) {
+                              return (
+                                <span className={styles.badgeTimerOff}>
+                                  <Timer size={11} strokeWidth={1.5} /> Inactive
+                                </span>
+                              );
+                            }
+                            const dropTime = new Date(col.drop_date).getTime();
+                            const isUpcoming = dropTime > Date.now();
+                            const formatted = new Date(col.drop_date).toLocaleDateString("en-US", {
+                              month: "short",
+                              day: "numeric",
+                            });
+
+                            if (isUpcoming) {
+                              return (
+                                <span className={styles.badgeTimerActive}>
+                                  <Lock size={11} strokeWidth={1.7} /> Drops {formatted}
+                                </span>
+                              );
+                            }
                             return (
-                              <span className={styles.badgeTimerOff} title="No drop countdown scheduled">
-                                <Timer size={12} strokeWidth={1.5} />
-                                Inactive
+                              <span className={styles.badgeTimerDropped}>
+                                <Check size={11} strokeWidth={2} /> Live
                               </span>
                             );
-                          }
-                          const dropTime = new Date(col.drop_date).getTime();
-                          const isUpcoming = dropTime > Date.now();
-                          const formatted = new Date(col.drop_date).toLocaleString("en-US", {
-                            month: "short",
-                            day: "numeric",
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          });
+                          })()}
+                        </span>
+                      </div>
+                    </div>
 
-                          if (isUpcoming) {
-                            const diff = dropTime - Date.now();
-                            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-                            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                            return (
-                              <span className={styles.badgeTimerActive} title={`Locked until: ${formatted}`}>
-                                <Lock size={12} strokeWidth={1.7} />
-                                Drops {formatted} {d > 0 ? `(${d}d ${h}h)` : `(${h}h)`}
-                              </span>
-                            );
-                          }
-
-                          return (
-                            <span className={styles.badgeTimerDropped} title={`Dropped on ${formatted} - Live now`}>
-                              <Check size={12} strokeWidth={2} />
-                              Dropped (Live)
-                            </span>
-                          );
-                        })()}
-                      </td>
-
-                      {/* Actions */}
-                      <td style={{ textAlign: "right" }}>
-                        <div className={styles.actionsCell} style={{ justifyContent: "flex-end" }}>
-                          {col.drop_timer_enabled && (
-                            <button
-                              className={styles.iconBtn}
-                              onClick={() => handleBroadcastDrop(col)}
-                              title={col.drop_notification_sent ? "Drop alert already sent (click to broadcast again)" : "Broadcast 'Now Live' email to waitlist subscribers"}
-                              style={{ color: col.drop_notification_sent ? "#059669" : "var(--color-primary)" }}
-                            >
-                              <Bell size={15} strokeWidth={1.5} />
-                            </button>
-                          )}
-                          <a
-                            href={storeUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className={styles.iconBtn}
-                            title="View on storefront"
-                          >
-                            <ExternalLink size={15} strokeWidth={1.5} />
-                          </a>
-                          <button
-                            className={styles.iconBtn}
-                            onClick={() => openEditModal(col)}
-                            title="Edit collection"
-                          >
-                            <Edit3 size={15} strokeWidth={1.5} />
-                          </button>
-                          <button
-                            className={`${styles.iconBtn} ${styles.deleteBtn}`}
-                            onClick={() => setDeleteTarget(col)}
-                            title="Delete collection"
-                          >
-                            <Trash2 size={15} strokeWidth={1.5} />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+                    <div className={adminStyles.mobileCardActions}>
+                      {col.drop_timer_enabled && (
+                        <button
+                          type="button"
+                          className={styles.iconBtn}
+                          onClick={() => handleBroadcastDrop(col)}
+                          title="Broadcast drop alert"
+                          style={{ width: "36px", height: "36px", color: col.drop_notification_sent ? "#059669" : "var(--color-primary)" }}
+                        >
+                          <Bell size={16} strokeWidth={1.5} />
+                        </button>
+                      )}
+                      <a
+                        href={storeUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={styles.iconBtn}
+                        title="View on storefront"
+                        style={{ width: "36px", height: "36px", display: "inline-flex", alignItems: "center", justifyContent: "center" }}
+                      >
+                        <ExternalLink size={16} strokeWidth={1.5} />
+                      </a>
+                      <button
+                        type="button"
+                        className={styles.iconBtn}
+                        onClick={() => openEditModal(col)}
+                        title="Edit collection"
+                        style={{ width: "36px", height: "36px" }}
+                      >
+                        <Edit3 size={16} strokeWidth={1.5} />
+                      </button>
+                      <button
+                        type="button"
+                        className={`${styles.iconBtn} ${styles.deleteBtn}`}
+                        onClick={() => setDeleteTarget(col)}
+                        title="Delete collection"
+                        style={{ width: "36px", height: "36px" }}
+                      >
+                        <Trash2 size={16} strokeWidth={1.5} />
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </>
         )}
       </div>
 

@@ -23,6 +23,7 @@ import {
   FolderInput
 } from "lucide-react";
 import styles from "@/styles/admin.module.css";
+import ScrollableTabs from "@/components/admin/ScrollableTabs";
 import { formatPrice } from "@/lib/utils";
 import * as XLSX from "xlsx";
 import { supabase } from "@/lib/supabase";
@@ -154,7 +155,7 @@ function ProductsContent({ initialProducts = [] }) {
     setGalleryPreviews(prev => prev.map((item, i) => i === index ? { ...item, name: newName } : item));
   };
 
-  // Close menus when clicking outside or scrolling
+  // Close menus when clicking outside (not on touch-scroll)
   useEffect(() => {
     const handleClickOutside = (e) => {
       const isInsideKebab = styles.kebabMenu && e.target.closest(`.${styles.kebabMenu}`);
@@ -167,17 +168,17 @@ function ProductsContent({ initialProducts = [] }) {
         setActivePopover(null);
       }
     };
-    const handleScrollOrResize = () => {
+    const handleResize = () => {
       if (openMenuId) setOpenMenuId(null);
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-    window.addEventListener("scroll", handleScrollOrResize, true);
-    window.addEventListener("resize", handleScrollOrResize);
+    document.addEventListener("touchstart", handleClickOutside, { passive: true });
+    window.addEventListener("resize", handleResize);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
-      window.removeEventListener("scroll", handleScrollOrResize, true);
-      window.removeEventListener("resize", handleScrollOrResize);
+      document.removeEventListener("touchstart", handleClickOutside);
+      window.removeEventListener("resize", handleResize);
     };
   }, [openMenuId]);
 
@@ -208,17 +209,24 @@ function ProductsContent({ initialProducts = [] }) {
       setOpenMenuId(null);
     } else {
       const rect = e.currentTarget.getBoundingClientRect();
-      const menuWidth = 175;
-      const menuHeight = 210;
+      const menuWidth = 180;
+      const menuHeight = 220;
       
-      // Calculate top position (open downwards if space, else upwards)
+      // Calculate top position: try below first, else above, clamp inside viewport
       let top = rect.bottom + 4;
-      if (top + menuHeight > window.innerHeight && rect.top - menuHeight > 0) {
-        top = rect.top - menuHeight - 4;
+      if (top + menuHeight > window.innerHeight - 10) {
+        if (rect.top - menuHeight - 4 > 10) {
+          top = rect.top - menuHeight - 4;
+        } else {
+          top = Math.max(10, window.innerHeight - menuHeight - 10);
+        }
       }
       
-      // Calculate left position (prefer aligning to trigger left, keep within screen)
-      let left = rect.left;
+      // Calculate left position: right-align to button, clamp inside viewport
+      let left = rect.right - menuWidth;
+      if (left < 10) {
+        left = 10;
+      }
       if (left + menuWidth > window.innerWidth - 10) {
         left = Math.max(10, window.innerWidth - menuWidth - 10);
       }
@@ -903,7 +911,7 @@ function ProductsContent({ initialProducts = [] }) {
       <div className={styles.pageHeader}>
         <div>
           <h1 className={styles.pageTitle}>Products</h1>
-          <p className={styles.pageSubtitle}>Manage all your products, stock, and pricing in real time.</p>
+          <p className={styles.pageSubtitle}>Manage catalog, stock & pricing.</p>
         </div>
         <div className={styles.pageHeaderActions}>
           <button 
@@ -921,13 +929,14 @@ function ProductsContent({ initialProducts = [] }) {
               background: "#ffffff",
               border: "1px solid var(--color-border)",
               color: "var(--color-text)",
-              padding: "8px 16px",
+              padding: "8px 14px",
               borderRadius: "8px",
               fontFamily: "'Cormorant Upright', Georgia, serif",
-              fontSize: "1.1rem",
+              fontSize: "1rem",
               fontWeight: 500,
               display: "inline-flex",
               alignItems: "center",
+              justifyContent: "center",
               gap: "6px",
               cursor: "pointer",
             }}
@@ -939,13 +948,14 @@ function ProductsContent({ initialProducts = [] }) {
             href="/admin/products/new" 
             className={styles.btnPrimary} 
             style={{ 
-              padding: "8px 16px", 
+              padding: "8px 14px", 
               gap: "6px",
               fontFamily: "'Cormorant Upright', Georgia, serif",
-              fontSize: "1.1rem",
+              fontSize: "1rem",
               fontWeight: 500,
               display: "inline-flex",
               alignItems: "center",
+              justifyContent: "center",
             }}
           >
             <Plus size={16} />
@@ -959,21 +969,21 @@ function ProductsContent({ initialProducts = [] }) {
         background: "rgba(var(--color-primary-rgb), 0.1)",
         border: "1px solid var(--color-primary)",
         color: "var(--color-primary-700)",
-        padding: "12px 16px",
+        padding: "8px 12px",
         borderRadius: "var(--radius-md)",
-        marginBottom: "24px",
-        fontSize: "0.9rem",
+        marginBottom: "10px",
+        fontSize: "0.82rem",
         display: "flex",
         alignItems: "center",
         gap: "8px"
       }}>
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-        <span><strong>Performance Caching Enabled:</strong> Any changes made to products or prices may take up to 5 minutes to appear on the live storefront.</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        <span><strong>Caching:</strong> Changes may take up to 5 mins on storefront.</span>
       </div>
 
       {/* Toolbar */}
       <div className={styles.toolbar}>
-        <div className={styles.tabs}>
+        <ScrollableTabs>
           <button 
             className={`${styles.tab} ${activeTab === "All" ? styles.active : ""}`}
             onClick={() => handleTabClick("All", null)}
@@ -1001,7 +1011,7 @@ function ProductsContent({ initialProducts = [] }) {
               {cc.name} ({productsList.filter(p => p.category === cc.slug || p.categoryName?.toLowerCase() === cc.name?.toLowerCase()).length})
             </button>
           ))}
-        </div>
+        </ScrollableTabs>
         
         <div className={styles.filters}>
           <div className={styles.searchBox}>
@@ -1035,8 +1045,9 @@ function ProductsContent({ initialProducts = [] }) {
         </div>
       </div>
 
-      {/* Table Container */}
-      <div className={styles.tableContainer} style={{ position: "relative" }}>
+      {/* Table Container for Desktop */}
+      <div className={styles.desktopTableOnly}>
+        <div className={styles.tableContainer} style={{ position: "relative" }}>
         <table className={styles.table}>
           <thead>
             <tr>
@@ -1409,6 +1420,154 @@ function ProductsContent({ initialProducts = [] }) {
           </tbody>
         </table>
       </div>
+    </div>
+
+      {/* Mobile Stacked Card View */}
+      <div className={styles.mobileCardList}>
+        {visibleProducts.map((product) => {
+          const isCurrentlyInStock = product.stockCount > 0 && product.inStock;
+          return (
+            <div key={product.id} className={styles.mobileCard}>
+              <div className={styles.mobileCardHeader}>
+                <div style={{ display: "flex", alignItems: "center", gap: "10px", minWidth: 0, flex: 1 }}>
+                  <Image 
+                    src={product.images?.[0] || '/images/hero.png'} 
+                    alt={product.name} 
+                    className={styles.productImg} 
+                    width={46} 
+                    height={46} 
+                    style={{ objectFit: 'cover', borderRadius: '8px', flexShrink: 0 }} 
+                  />
+                  <div style={{ minWidth: 0, flex: 1 }}>
+                    <div style={{ fontWeight: 600, fontSize: "0.9rem", color: "var(--color-text)", wordBreak: "break-word" }}>
+                      {product.name}
+                    </div>
+                    <span style={{ fontSize: "0.72rem", color: "var(--color-text-secondary)", background: "#f5f5f5", padding: "2px 6px", borderRadius: "4px", display: "inline-block", marginTop: "2px" }}>
+                      {product.categoryName || "Handmade"}
+                    </span>
+                  </div>
+                </div>
+
+                <div style={{ display: "flex", alignItems: "center", gap: "6px", flexShrink: 0 }}>
+                  <button 
+                    onClick={() => handleToggleFeature(product.id)}
+                    style={{ background: "none", border: "none", cursor: "pointer", padding: "6px" }}
+                    title={product.bestseller ? "Featured" : "Not featured"}
+                    aria-label="Toggle featured"
+                  >
+                    <Star 
+                      size={18} 
+                      color={product.bestseller ? "#F59E0B" : "#D1D5DB"} 
+                      fill={product.bestseller ? "#F59E0B" : "none"} 
+                    />
+                  </button>
+                  <button 
+                    className={styles.kebabTriggerBtn}
+                    onClick={(e) => handleMenuClick(product.id, e)}
+                    title="Product Actions"
+                    aria-label="Product actions"
+                    style={{ 
+                      background: openMenuId === product.id ? "rgba(0,0,0,0.06)" : "#fafafa", 
+                      border: "1px solid var(--color-border-light)", 
+                      borderRadius: "6px",
+                      cursor: "pointer", 
+                      color: "#666", 
+                      padding: "6px 8px",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center"
+                    }}
+                  >
+                    <MoreVertical size={16} />
+                  </button>
+                </div>
+              </div>
+
+              <div className={styles.mobileCardBody}>
+                <div className={styles.mobileCardRow}>
+                  <span className={styles.mobileCardLabel}>Price</span>
+                  <div>
+                    <span style={{ fontWeight: 600, color: "var(--color-text)", fontSize: "0.92rem" }}>
+                      {formatPrice(product.price)}
+                    </span>
+                    {product.compareAtPrice && (
+                      <span style={{ textDecoration: "line-through", color: "#999", fontSize: "0.75rem", marginLeft: "6px" }}>
+                        {formatPrice(product.compareAtPrice)}
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                <div className={styles.mobileCardRow}>
+                  <span className={styles.mobileCardLabel}>Stock Count</span>
+                  <span style={{ color: product.stockCount > 0 ? "#444" : "#DC2626", fontWeight: 600 }}>
+                    {updatingStockId === product.id ? "Updating..." : `${product.stockCount} units`}
+                  </span>
+                </div>
+
+                <div className={styles.mobileCardRow}>
+                  <span className={styles.mobileCardLabel}>Availability</span>
+                  <span 
+                    className={`${styles.badge} ${isCurrentlyInStock ? styles.inStock : styles.outOfStock}`}
+                    style={{ cursor: "pointer" }}
+                    onClick={() => handleToggleStock(product.id)}
+                    title="Tap to toggle stock"
+                  >
+                    {isCurrentlyInStock ? "In Stock" : "Out of Stock"}
+                  </span>
+                </div>
+              </div>
+
+              <div className={styles.mobileCardFooter}>
+                <button 
+                  className={styles.btnSecondary}
+                  style={{ flex: 1, padding: "7px 10px", fontSize: "0.8rem", justifyContent: "center" }}
+                  onClick={() => handleEdit(product.id)}
+                >
+                  Edit Details
+                </button>
+                <button 
+                  className={styles.btnSecondary}
+                  style={{ flex: 1, padding: "7px 10px", fontSize: "0.8rem", justifyContent: "center" }}
+                  onClick={() => handleDuplicate(product.id)}
+                >
+                  Duplicate
+                </button>
+                <button 
+                  className={styles.btnPrimary}
+                  style={{ 
+                    flex: 1, 
+                    padding: "7px 10px", 
+                    fontSize: "0.8rem", 
+                    justifyContent: "center",
+                    background: isCurrentlyInStock ? "#DC2626" : "#16A34A"
+                  }}
+                  onClick={() => handleToggleStock(product.id)}
+                >
+                  {isCurrentlyInStock ? "Out of Stock" : "In Stock"}
+                </button>
+              </div>
+            </div>
+          );
+        })}
+
+        {filteredAndSortedProducts.length === 0 && (
+          <div className={styles.mobileCard} style={{ textAlign: "center", padding: "40px 16px" }}>
+            <div style={{ fontSize: "2rem", marginBottom: "8px" }}>🔍</div>
+            <h3 style={{ fontSize: "1rem", color: "var(--color-primary-800)", marginBottom: "4px" }}>No products found</h3>
+            <p style={{ color: "var(--color-text-secondary)", fontSize: "0.82rem", marginBottom: "16px" }}>
+              No products matched your search or filters.
+            </p>
+            <button 
+              onClick={clearAllFilters} 
+              className={styles.btnPrimary} 
+              style={{ display: "inline-flex", margin: "0 auto", padding: "6px 14px", fontSize: "0.8rem" }}
+            >
+              Clear Filters
+            </button>
+          </div>
+        )}
+      </div>
 
       {/* Floating Kebab Action Menu (Rendered outside table container so it escapes overflow clipping) */}
       {openMenuId && (() => {
@@ -1417,20 +1576,37 @@ function ProductsContent({ initialProducts = [] }) {
         const isCurrentlyInStock = activeProduct.stockCount > 0 && activeProduct.inStock;
 
         return (
-          <div 
-            className={styles.kebabMenu}
-            style={{
-              position: "fixed",
-              top: `${menuPosition.top}px`,
-              left: `${menuPosition.left}px`,
-              zIndex: 99999,
-              minWidth: "175px",
-              background: "#ffffff",
-              borderRadius: "8px",
-              boxShadow: "0 10px 30px rgba(0,0,0,0.22)",
-              border: "1px solid var(--color-border)"
-            }}
-          >
+          <>
+            <div 
+              style={{
+                position: "fixed",
+                inset: 0,
+                zIndex: 99998,
+                background: "transparent"
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+                setOpenMenuId(null);
+              }}
+              onTouchStart={(e) => {
+                e.stopPropagation();
+                setOpenMenuId(null);
+              }}
+            />
+            <div 
+              className={styles.kebabMenu}
+              style={{
+                position: "fixed",
+                top: `${menuPosition.top}px`,
+                left: `${menuPosition.left}px`,
+                zIndex: 99999,
+                minWidth: "180px",
+                background: "#ffffff",
+                borderRadius: "8px",
+                boxShadow: "0 10px 30px rgba(0,0,0,0.22)",
+                border: "1px solid var(--color-border)"
+              }}
+            >
             {/* In Stock / Out of Stock Instant Toggle */}
             <button 
               className={styles.kebabItem} 
@@ -1474,6 +1650,7 @@ function ProductsContent({ initialProducts = [] }) {
             </button>
             <button className={`${styles.kebabItem} ${styles.kebabDelete}`} onClick={() => handleDeleteClick(activeProduct.id)}>Delete Product</button>
           </div>
+          </>
         );
       })()}
 

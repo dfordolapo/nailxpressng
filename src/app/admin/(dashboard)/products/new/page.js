@@ -498,7 +498,7 @@ function NewProductContent() {
                <h2 className={styles.formSectionTitle}>Product Images</h2>
                <p style={{color: "#666", fontSize: "0.9rem", marginBottom: "20px"}}>Upload high quality images of your product.</p>
                
-               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }}>
+               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 250px), 1fr))", gap: "20px" }}>
                   <div>
                     <input type="file" accept="image/*" ref={fileInputRef} onChange={handleImageChange} style={{ display: 'none' }} />
                     <div 

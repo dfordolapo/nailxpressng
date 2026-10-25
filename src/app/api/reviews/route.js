@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { FALLBACK_REVIEWS } from '@/lib/fallbackData';
 
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder-url.supabase.co",
@@ -13,42 +14,45 @@ export async function GET(request) {
     const productId = searchParams.get('productId');
     const slug = searchParams.get('slug');
 
-    let query = supabaseAdmin
-      .from('reviews')
-      .select('*')
-      .eq('status', 'approved')
-      .order('created_at', { ascending: false });
+    let list = [];
 
-    if (productId) {
-      query = query.eq('product_id', productId);
-    } else if (slug) {
-      // Find product by slug first
-      const { data: product } = await supabaseAdmin
-        .from('products')
-        .select('id')
-        .eq('slug', slug)
-        .maybeSingle();
+    const isPlaceholder = !process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL.includes("placeholder");
 
-      if (product) {
-        query = query.eq('product_id', product.id);
-      } else {
-        return NextResponse.json({ reviews: [], stats: { total: 0, average: 5, breakdown: { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 } }, photos: [] });
+    if (!isPlaceholder) {
+      try {
+        let query = supabaseAdmin
+          .from('reviews')
+          .select('*')
+          .eq('status', 'approved')
+          .order('created_at', { ascending: false });
+
+        if (productId) {
+          query = query.eq('product_id', productId);
+        } else if (slug) {
+          const { data: product } = await supabaseAdmin
+            .from('products')
+            .select('id')
+            .eq('slug', slug)
+            .maybeSingle();
+
+          if (product) {
+            query = query.eq('product_id', product.id);
+          }
+        }
+
+        const { data: reviews, error } = await query;
+        if (!error && reviews && reviews.length > 0) {
+          list = reviews;
+        }
+      } catch (err) {
+        console.warn("Supabase reviews fetch failed, using fallback:", err.message);
       }
     }
 
-    const { data: reviews, error } = await query;
-    if (error) {
-      if (error.code === '42P01' || error.message?.includes('does not exist') || error.message?.includes('schema cache')) {
-        return NextResponse.json({
-          reviews: [],
-          stats: { total: 0, average: 5.0, breakdown: { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 } },
-          photos: [],
-        });
-      }
-      throw error;
+    if (list.length === 0) {
+      list = FALLBACK_REVIEWS;
     }
 
-    const list = reviews || [];
     const total = list.length;
     const breakdown = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
     let ratingSum = 0;

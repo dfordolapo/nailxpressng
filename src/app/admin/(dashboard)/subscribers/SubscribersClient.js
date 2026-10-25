@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Mail, Bell, RefreshCw, Send, CheckCircle, Users, Sparkles, Filter } from "lucide-react";
 import styles from "@/styles/admin.module.css";
+import ScrollableTabs from "@/components/admin/ScrollableTabs";
 
 export default function SubscribersClient() {
   const [subscribers, setSubscribers] = useState([]);
@@ -84,7 +85,7 @@ export default function SubscribersClient() {
         <div>
           <h1 className={styles.title}>Restock Leads & Alerts</h1>
           <p className={styles.subtitle}>
-            Manage and notify customers waiting for sold-out product restocks.
+            Manage restock leads & subscriber alerts.
           </p>
         </div>
         <button
@@ -143,25 +144,26 @@ export default function SubscribersClient() {
           justifyContent: "space-between",
           alignItems: "center",
           flexWrap: "wrap",
-          gap: "12px",
-          marginBottom: "16px",
+          gap: "8px",
+          marginBottom: "12px",
           backgroundColor: "#fff",
-          padding: "16px 20px",
-          borderRadius: "12px",
+          padding: "10px 14px",
+          borderRadius: "10px",
           border: "1px solid var(--border-color)",
         }}
       >
-        <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
-          <Filter size={16} color="#777" />
+        <ScrollableTabs style={{ marginBottom: 0, flex: 1, minWidth: 0 }}>
           <button
             onClick={() => setFilterType("all")}
             style={{
-              padding: "6px 14px",
+              padding: "5px 12px",
               borderRadius: "20px",
               border: "none",
-              fontSize: "0.85rem",
+              fontSize: "0.78rem",
               fontWeight: 600,
               cursor: "pointer",
+              whiteSpace: "nowrap",
+              flexShrink: 0,
               background: filterType === "all" ? "var(--color-primary)" : "#f3ebea",
               color: filterType === "all" ? "#fff" : "#444",
             }}
@@ -171,12 +173,14 @@ export default function SubscribersClient() {
           <button
             onClick={() => setFilterType("newsletter")}
             style={{
-              padding: "6px 14px",
+              padding: "5px 12px",
               borderRadius: "20px",
               border: "none",
-              fontSize: "0.85rem",
+              fontSize: "0.78rem",
               fontWeight: 600,
               cursor: "pointer",
+              whiteSpace: "nowrap",
+              flexShrink: 0,
               background: filterType === "newsletter" ? "var(--color-primary)" : "#f3ebea",
               color: filterType === "newsletter" ? "#fff" : "#444",
             }}
@@ -186,12 +190,14 @@ export default function SubscribersClient() {
           <button
             onClick={() => setFilterType("restock")}
             style={{
-              padding: "6px 14px",
+              padding: "5px 12px",
               borderRadius: "20px",
               border: "none",
-              fontSize: "0.85rem",
+              fontSize: "0.78rem",
               fontWeight: 600,
               cursor: "pointer",
+              whiteSpace: "nowrap",
+              flexShrink: 0,
               background: filterType === "restock" ? "var(--color-primary)" : "#f3ebea",
               color: filterType === "restock" ? "#fff" : "#444",
             }}
@@ -201,24 +207,26 @@ export default function SubscribersClient() {
           <button
             onClick={() => setFilterType("drop_notification")}
             style={{
-              padding: "6px 14px",
+              padding: "5px 12px",
               borderRadius: "20px",
               border: "none",
-              fontSize: "0.85rem",
+              fontSize: "0.78rem",
               fontWeight: 600,
               cursor: "pointer",
+              whiteSpace: "nowrap",
+              flexShrink: 0,
               background: filterType === "drop_notification" ? "var(--color-primary)" : "#f3ebea",
               color: filterType === "drop_notification" ? "#fff" : "#444",
             }}
           >
             Drop Waitlists ({subscribers.filter((s) => s.subscription_type === "drop_notification").length})
           </button>
-        </div>
+        </ScrollableTabs>
 
         {selectedIds.length > 0 && (
-          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap", width: "100%", justifyContent: "space-between", paddingTop: "8px", borderTop: "1px solid #f0f0f0" }}>
             <span style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--color-primary)" }}>
-              {selectedIds.length} selected
+              {selectedIds.length} subscriber{selectedIds.length > 1 ? "s" : ""} selected
             </span>
             <button
               onClick={handleSendRestockAlert}
@@ -253,107 +261,197 @@ export default function SubscribersClient() {
         </div>
       )}
 
-      {/* Subscribers Table */}
-      <div className={styles.tableContainer}>
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th style={{ width: "40px" }}>
-                <input
-                  type="checkbox"
-                  checked={filtered.length > 0 && selectedIds.length === filtered.length}
-                  onChange={handleSelectAll}
-                />
-              </th>
-              <th>Customer Email</th>
-              <th>Channel / Intent</th>
-              <th>Target Product / Drop</th>
-              <th>Date Captured</th>
-            </tr>
-          </thead>
-          <tbody>
-            {loading ? (
+      {/* Desktop Subscribers Table */}
+      <div className={styles.desktopTableOnly}>
+        <div className={styles.tableContainer}>
+          <table className={styles.table}>
+            <thead>
               <tr>
-                <td colSpan={5} style={{ textAlign: "center", padding: "40px" }}>
-                  Loading captured leads...
-                </td>
+                <th style={{ width: "40px" }}>
+                  <input
+                    type="checkbox"
+                    checked={filtered.length > 0 && selectedIds.length === filtered.length}
+                    onChange={handleSelectAll}
+                  />
+                </th>
+                <th>Customer Email</th>
+                <th>Channel / Intent</th>
+                <th>Target Product / Drop</th>
+                <th>Date Captured</th>
               </tr>
-            ) : filtered.length === 0 ? (
-              <tr>
-                <td colSpan={5} style={{ textAlign: "center", padding: "40px", color: "#888" }}>
-                  No subscribers found for this filter.
-                </td>
-              </tr>
-            ) : (
-              filtered.map((sub) => (
-                <tr key={sub.id}>
-                  <td>
-                    <input
-                      type="checkbox"
-                      checked={selectedIds.includes(sub.id)}
-                      onChange={() => toggleSelect(sub.id)}
-                    />
-                  </td>
-                  <td>
-                    <div style={{ fontWeight: 600, color: "#222" }}>{sub.email}</div>
-                  </td>
-                  <td>
-                    <span
-                      style={{
-                        display: "inline-block",
-                        padding: "4px 10px",
-                        borderRadius: "12px",
-                        fontSize: "0.75rem",
-                        fontWeight: 600,
-                        textTransform: "uppercase",
-                        backgroundColor: 
-                          sub.subscription_type === "restock" 
-                            ? "#fef3c7" 
-                            : sub.subscription_type === "drop_notification"
-                            ? "#ffe4e6"
-                            : "#f3e8ff",
-                        color: 
-                          sub.subscription_type === "restock" 
-                            ? "#92400e" 
-                            : sub.subscription_type === "drop_notification"
-                            ? "#9f1239"
-                            : "#6b21a8",
-                      }}
-                    >
-                      {sub.subscription_type === "restock" 
-                        ? "Restock Request" 
-                        : sub.subscription_type === "drop_notification"
-                        ? "Drop Waitlist"
-                        : "VIP Inner Circle"}
-                    </span>
-                  </td>
-                  <td>
-                    {sub.collection_name ? (
-                      <span style={{ fontWeight: 600, color: "var(--color-primary)" }}>
-                        ✦ {sub.collection_name}
-                      </span>
-                    ) : sub.product_name ? (
-                      <span style={{ fontWeight: 500, color: "var(--color-primary)" }}>
-                        {sub.product_name}
-                      </span>
-                    ) : (
-                      <span style={{ color: "#999", fontSize: "0.85rem" }}>All Drops (Site-wide)</span>
-                    )}
-                  </td>
-                  <td style={{ color: "#666", fontSize: "0.85rem" }}>
-                    {new Date(sub.created_at).toLocaleDateString("en-NG", {
-                      year: "numeric",
-                      month: "short",
-                      day: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
+            </thead>
+            <tbody>
+              {loading ? (
+                <tr>
+                  <td colSpan={5} style={{ textAlign: "center", padding: "40px" }}>
+                    Loading captured leads...
                   </td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+              ) : filtered.length === 0 ? (
+                <tr>
+                  <td colSpan={5} style={{ textAlign: "center", padding: "40px", color: "#888" }}>
+                    No subscribers found for this filter.
+                  </td>
+                </tr>
+              ) : (
+                filtered.map((sub) => (
+                  <tr key={sub.id}>
+                    <td>
+                      <input
+                        type="checkbox"
+                        checked={selectedIds.includes(sub.id)}
+                        onChange={() => toggleSelect(sub.id)}
+                      />
+                    </td>
+                    <td>
+                      <div style={{ fontWeight: 600, color: "#222" }}>{sub.email}</div>
+                    </td>
+                    <td>
+                      <span
+                        style={{
+                          display: "inline-block",
+                          padding: "4px 10px",
+                          borderRadius: "12px",
+                          fontSize: "0.75rem",
+                          fontWeight: 600,
+                          textTransform: "uppercase",
+                          backgroundColor: 
+                            sub.subscription_type === "restock" 
+                              ? "#fef3c7" 
+                              : sub.subscription_type === "drop_notification"
+                              ? "#ffe4e6"
+                              : "#f3e8ff",
+                          color: 
+                            sub.subscription_type === "restock" 
+                              ? "#92400e" 
+                              : sub.subscription_type === "drop_notification"
+                              ? "#9f1239"
+                              : "#6b21a8",
+                        }}
+                      >
+                        {sub.subscription_type === "restock" 
+                          ? "Restock Request" 
+                          : sub.subscription_type === "drop_notification"
+                          ? "Drop Waitlist"
+                          : "VIP Inner Circle"}
+                      </span>
+                    </td>
+                    <td>
+                      {sub.collection_name ? (
+                        <span style={{ fontWeight: 600, color: "var(--color-primary)" }}>
+                          ✦ {sub.collection_name}
+                        </span>
+                      ) : sub.product_name ? (
+                        <span style={{ fontWeight: 500, color: "var(--color-primary)" }}>
+                          {sub.product_name}
+                        </span>
+                      ) : (
+                        <span style={{ color: "#999", fontSize: "0.85rem" }}>All Drops (Site-wide)</span>
+                      )}
+                    </td>
+                    <td style={{ color: "#666", fontSize: "0.85rem" }}>
+                      {new Date(sub.created_at).toLocaleDateString("en-NG", {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Mobile Subscribers Stacked Cards */}
+      <div className={styles.mobileCardList}>
+        {loading ? (
+          <div style={{ textAlign: "center", padding: "40px", background: "#fff", borderRadius: "12px" }}>
+            Loading captured leads...
+          </div>
+        ) : filtered.length === 0 ? (
+          <div style={{ textAlign: "center", padding: "40px", background: "#fff", borderRadius: "12px", color: "#888" }}>
+            No subscribers found for this filter.
+          </div>
+        ) : (
+          filtered.map((sub) => {
+            const isSelected = selectedIds.includes(sub.id);
+            return (
+              <div 
+                key={sub.id} 
+                className={styles.mobileCard}
+                style={{
+                  borderLeft: isSelected ? "3px solid var(--color-primary)" : "1px solid var(--color-border-light)"
+                }}
+              >
+                <div className={styles.mobileCardHeader}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "10px", flex: 1, minWidth: 0 }}>
+                    <input
+                      type="checkbox"
+                      checked={isSelected}
+                      onChange={() => toggleSelect(sub.id)}
+                      style={{ width: "18px", height: "18px", accentColor: "var(--color-primary)", flexShrink: 0 }}
+                    />
+                    <div style={{ fontWeight: 600, fontSize: "0.92rem", color: "var(--color-text)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                      {sub.email}
+                    </div>
+                  </div>
+                  <span
+                    style={{
+                      display: "inline-block",
+                      padding: "3px 8px",
+                      borderRadius: "10px",
+                      fontSize: "0.72rem",
+                      fontWeight: 600,
+                      textTransform: "uppercase",
+                      flexShrink: 0,
+                      backgroundColor: 
+                        sub.subscription_type === "restock" 
+                          ? "#fef3c7" 
+                          : sub.subscription_type === "drop_notification"
+                          ? "#ffe4e6"
+                          : "#f3e8ff",
+                      color: 
+                        sub.subscription_type === "restock" 
+                          ? "#92400e" 
+                          : sub.subscription_type === "drop_notification"
+                          ? "#9f1239"
+                          : "#6b21a8",
+                    }}
+                  >
+                    {sub.subscription_type === "restock" 
+                      ? "Restock" 
+                      : sub.subscription_type === "drop_notification"
+                      ? "Waitlist"
+                      : "VIP"}
+                  </span>
+                </div>
+
+                <div className={styles.mobileCardBody}>
+                  <div className={styles.mobileCardRow}>
+                    <span className={styles.mobileCardLabel}>Target</span>
+                    <span className={styles.mobileCardValue} style={{ fontWeight: 600, color: "var(--color-primary)" }}>
+                      {sub.collection_name ? `✦ ${sub.collection_name}` : sub.product_name || "All Drops (Site-wide)"}
+                    </span>
+                  </div>
+                  <div className={styles.mobileCardRow}>
+                    <span className={styles.mobileCardLabel}>Date Captured</span>
+                    <span className={styles.mobileCardValue}>
+                      {new Date(sub.created_at).toLocaleDateString("en-NG", {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                      })}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            );
+          })
+        )}
       </div>
     </div>
   );

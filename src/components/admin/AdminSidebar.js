@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
-import { useState, Suspense } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { 
   LayoutDashboard, 
   ShoppingBag, 
@@ -28,30 +28,72 @@ function SidebarContent() {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const router = useRouter();
 
+  // Lock body scroll and listen for Escape key when mobile menu is open
+  useEffect(() => {
+    if (isMobileOpen) {
+      document.body.style.overflow = "hidden";
+      const handleKeyDown = (e) => {
+        if (e.key === "Escape") {
+          setIsMobileOpen(false);
+        }
+      };
+      window.addEventListener("keydown", handleKeyDown);
+      return () => {
+        document.body.style.overflow = "";
+        window.removeEventListener("keydown", handleKeyDown);
+      };
+    } else {
+      document.body.style.overflow = "";
+    }
+  }, [isMobileOpen]);
+
   return (
     <>
       <div className={styles.mobileHeader}>
-        <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
-          <button className={styles.hamburgerBtn} onClick={() => setIsMobileOpen(true)}>
-            <Menu size={22} strokeWidth={1.5} />
-          </button>
-          <div style={{ fontWeight: 700, fontSize: "1.3rem", fontFamily: "'Cormorant Upright', Georgia, serif", color: "var(--color-primary)" }}>
-            Nail Express Admin
+        <div style={{ display: "flex", alignItems: "center", gap: "12px", width: "100%", justifyContent: "space-between" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            <button 
+              className={styles.hamburgerBtn} 
+              onClick={() => setIsMobileOpen(true)}
+              aria-label="Open navigation menu"
+              aria-expanded={isMobileOpen}
+            >
+              <Menu size={20} strokeWidth={1.75} />
+            </button>
+            <Link href="/admin" style={{ textDecoration: "none" }}>
+              <div style={{ fontWeight: 700, fontSize: "1.25rem", fontFamily: "'Cormorant Upright', Georgia, serif", color: "var(--color-primary)", lineHeight: 1 }}>
+                Nail Express <span style={{ fontSize: "0.75rem", fontFamily: "var(--font-primary, sans-serif)", textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 600, color: "var(--color-text-secondary)", marginLeft: "4px" }}>Admin</span>
+              </div>
+            </Link>
           </div>
+          <Link href="/" className={styles.visitStoreBtn} style={{ fontSize: "0.78rem", color: "var(--color-primary)", textDecoration: "none", fontWeight: 500, padding: "5px 10px", borderRadius: "6px", background: "var(--color-primary-100, #fdf2f4)" }}>
+            View Store →
+          </Link>
         </div>
       </div>
 
       {isMobileOpen && (
-        <div className={styles.sidebarOverlay} onClick={() => setIsMobileOpen(false)} />
+        <div 
+          className={styles.sidebarOverlay} 
+          onClick={() => setIsMobileOpen(false)} 
+          aria-hidden="true"
+        />
       )}
 
-      <aside className={`${styles.sidebar} ${isMobileOpen ? styles.sidebarOpen : ""}`}>
+      <aside 
+        className={`${styles.sidebar} ${isMobileOpen ? styles.sidebarOpen : ""}`}
+        aria-label="Admin Navigation"
+      >
         <div className={styles.sidebarLogo}>
           <Link href="/" className={styles.logoText}>
             Nail Express
           </Link>
-          <button className={styles.closeSidebarBtn} onClick={() => setIsMobileOpen(false)}>
-            <X size={20} strokeWidth={1.5} />
+          <button 
+            className={styles.closeSidebarBtn} 
+            onClick={() => setIsMobileOpen(false)}
+            aria-label="Close navigation menu"
+          >
+            <X size={20} strokeWidth={1.75} />
           </button>
         </div>
 

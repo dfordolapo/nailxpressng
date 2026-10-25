@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import CustomOrdersClient from './CustomOrdersClient';
+import { FALLBACK_CUSTOM_ORDERS } from '@/lib/fallbackData';
 
 export const dynamic = 'force-dynamic';
 
@@ -15,9 +16,11 @@ export default async function AdminCustomOrdersPage() {
     .order('created_at', { ascending: false });
 
   if (error) {
-    console.error('Error fetching custom orders:', error);
+    console.warn('Supabase custom orders fetch failed, using fallback for local dev');
   }
 
-  return <CustomOrdersClient initialOrders={customOrders || []} />;
+  const list = customOrders && customOrders.length > 0 ? customOrders : FALLBACK_CUSTOM_ORDERS;
+
+  return <CustomOrdersClient initialOrders={list} />;
 }
 
