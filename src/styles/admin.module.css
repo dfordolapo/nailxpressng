@@ -528,7 +528,7 @@
   background: white;
   border-radius: 14px;
   width: 92%;
-  max-width: 560px;
+  max-width: 500px;
   max-height: calc(100dvh - 36px);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.16);
   display: flex;
@@ -1502,16 +1502,16 @@
 .reviewCard {
   background: #FFFFFF;
   border: 1px solid var(--color-border-light);
-  border-radius: 12px;
-  padding: 20px;
+  border-radius: 10px;
+  padding: 12px 14px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 8px;
   transition: box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .reviewCard:hover {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
   border-color: var(--color-border);
 }
 
@@ -1525,23 +1525,23 @@
   justify-content: space-between;
   align-items: flex-start;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 10px;
 }
 
 .reviewCustomerInfo {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
 }
 
 .reviewAvatar {
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   background: var(--color-primary-100, #FDF2F4);
   color: var(--color-primary);
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 0.75rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1551,33 +1551,33 @@
 .reviewMeta {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 2px;
 }
 
 .reviewNameRow {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   flex-wrap: wrap;
 }
 
 .reviewCustomerName {
-  font-size: 1rem;
+  font-size: 0.82rem;
   font-weight: 600;
   color: var(--color-text);
 }
 
 .reviewLocation {
-  font-size: 0.8rem;
+  font-size: 0.72rem;
   color: var(--color-text-tertiary);
 }
 
 .reviewVerifiedBadge {
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   background-color: #ECFDF5;
   color: #10B981;
-  padding: 2px 8px;
-  border-radius: 12px;
+  padding: 2px 7px;
+  border-radius: 10px;
   font-weight: 600;
   display: inline-flex;
   align-items: center;
@@ -1585,9 +1585,9 @@
 }
 
 .reviewStatusBadge {
-  font-size: 0.72rem;
-  padding: 2px 8px;
-  border-radius: 12px;
+  font-size: 0.68rem;
+  padding: 2px 7px;
+  border-radius: 10px;
   font-weight: 600;
 }
 
@@ -1602,13 +1602,13 @@
 }
 
 .reviewProductLink {
-  font-size: 0.82rem;
+  font-size: 0.72rem;
   color: var(--color-primary);
   text-decoration: none;
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  margin-top: 2px;
+  margin-top: 1px;
   font-weight: 500;
 }
 
@@ -1619,7 +1619,7 @@
 .reviewRatingRow {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .reviewStars {
@@ -1629,29 +1629,29 @@
 }
 
 .reviewDate {
-  font-size: 0.78rem;
+  font-size: 0.7rem;
   color: var(--color-text-tertiary);
 }
 
 .reviewBody {
-  font-size: 0.95rem;
+  font-size: 0.78rem;
   color: var(--color-text);
-  line-height: 1.6;
+  line-height: 1.4;
   margin: 0;
 }
 
 .reviewPhotos {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
-  margin-top: 4px;
+  margin-top: 2px;
 }
 
 .reviewPhotoThumb {
   position: relative;
-  width: 80px;
-  height: 80px;
-  border-radius: 8px;
+  width: 64px;
+  height: 64px;
+  border-radius: 6px;
   overflow: hidden;
   border: 1px solid var(--color-border);
   cursor: pointer;
@@ -1682,20 +1682,20 @@
 .reviewControls {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   flex-wrap: wrap;
 }
 
 .reviewControlBtn {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  padding: 6px 12px;
+  gap: 4px;
+  padding: 5px 10px;
   border-radius: 6px;
   border: 1px solid var(--color-border);
   background: #FFFFFF;
   color: var(--color-text);
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -1710,13 +1710,13 @@
 .reviewDeleteBtn {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  padding: 6px 12px;
+  gap: 4px;
+  padding: 5px 10px;
   border-radius: 6px;
   border: 1px solid #FECACA;
   background: #FEF2F2;
   color: #EF4444;
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -1728,16 +1728,26 @@
 }
 
 @media (max-width: 768px) {
+  .reviewCard {
+    padding: 10px 12px;
+    gap: 6px;
+  }
+
   .reviewHeader {
     flex-direction: column;
     align-items: stretch;
-    gap: 12px;
+    gap: 8px;
+  }
+
+  .reviewBody {
+    font-size: 0.75rem;
+    line-height: 1.38;
   }
 
   .reviewControls {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
+    gap: 6px;
     width: 100%;
   }
 
@@ -1745,9 +1755,9 @@
   .reviewDeleteBtn {
     justify-content: center;
     width: 100%;
-    min-height: 38px;
-    padding: 7px 10px;
-    font-size: 0.78rem;
+    min-height: 34px;
+    padding: 6px 8px;
+    font-size: 0.76rem;
     box-sizing: border-box;
   }
 }

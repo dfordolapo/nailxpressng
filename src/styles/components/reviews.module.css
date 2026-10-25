@@ -295,8 +295,8 @@
 
 .reviewText {
   color: #4a3e3d;
-  font-size: var(--text-sm, 0.875rem);
-  line-height: 1.6;
+  font-size: 0.8125rem;
+  line-height: 1.5;
   margin: 0;
 }
 

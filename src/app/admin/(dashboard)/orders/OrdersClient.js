@@ -427,9 +427,14 @@ export default function OrdersClient({ initialOrders }) {
       {/* View Order Modal */}
       {viewOrder && (
         <div className={styles.modalOverlay} onClick={() => setViewOrder(null)}>
-          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+          <div className={styles.modalContent} style={{ maxWidth: "540px" }} onClick={(e) => e.stopPropagation()}>
             <div className={styles.modalHeader}>
-              <h3 className={styles.modalTitle} style={{ margin: 0, fontSize: "1.15rem" }}>Order #{viewOrder.id.split('-')[0]}</h3>
+              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                <h3 className={styles.modalTitle} style={{ margin: 0, fontSize: "1.05rem" }}>Order #{viewOrder.id.split('-')[0]}</h3>
+                <span className={`${styles.badge} ${styles['badge' + viewOrder.status.charAt(0).toUpperCase() + viewOrder.status.slice(1)]}`} style={{ fontSize: "0.7rem", padding: "2px 8px" }}>
+                  {viewOrder.status}
+                </span>
+              </div>
               <button 
                 type="button"
                 className={styles.modalCloseBtn}
@@ -440,130 +445,67 @@ export default function OrdersClient({ initialOrders }) {
               </button>
             </div>
             
-            <div className={styles.modalBody}>
-              <div>
-                <h4 style={{ fontSize: "0.75rem", color: "#666", marginBottom: "var(--space-1)", textTransform: "uppercase", letterSpacing: "0.5px" }}>Customer Details</h4>
-                <p style={{ fontWeight: 500, margin: "0 0 2px 0", fontSize: "0.875rem" }}>{viewOrder.customer_first_name} {viewOrder.customer_last_name}</p>
-                <p style={{ margin: "0 0 2px 0", color: "#444", fontSize: "0.875rem", wordBreak: "break-all" }}>{viewOrder.customer_email}</p>
-                <p style={{ margin: "0", color: "#444", fontSize: "0.875rem" }}>{viewOrder.customer_phone}</p>
+            <div className={styles.modalBody} style={{ padding: "16px 20px", display: "flex", flexDirection: "column", gap: "14px" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "12px", background: "#fcf8f8", border: "1px solid #f2e9ea", borderRadius: "10px", padding: "12px 14px" }}>
+                <div>
+                  <span style={{ fontSize: "0.68rem", fontWeight: 700, color: "var(--color-primary)", textTransform: "uppercase", letterSpacing: "0.5px", display: "block", marginBottom: "4px" }}>Customer Details</span>
+                  <p style={{ fontWeight: 600, margin: "0 0 2px 0", fontSize: "0.82rem", color: "#111" }}>{viewOrder.customer_first_name} {viewOrder.customer_last_name}</p>
+                  <p style={{ margin: "0 0 2px 0", color: "#555", fontSize: "0.76rem", wordBreak: "break-all" }}>{viewOrder.customer_email}</p>
+                  <p style={{ margin: "0", color: "#555", fontSize: "0.76rem" }}>{viewOrder.customer_phone}</p>
+                </div>
+                <div>
+                  <span style={{ fontSize: "0.68rem", fontWeight: 700, color: "var(--color-primary)", textTransform: "uppercase", letterSpacing: "0.5px", display: "block", marginBottom: "4px" }}>Shipping Address</span>
+                  <p style={{ margin: "0 0 2px 0", color: "#333", fontSize: "0.76rem", lineHeight: 1.35 }}>{viewOrder.shipping_address}</p>
+                  <p style={{ margin: "0 0 2px 0", color: "#555", fontSize: "0.76rem" }}>{viewOrder.shipping_city}, {viewOrder.shipping_state}</p>
+                </div>
               </div>
-              <div>
-                <h4 style={{ fontSize: "0.75rem", color: "#666", marginBottom: "var(--space-1)", textTransform: "uppercase", letterSpacing: "0.5px" }}>Shipping Address</h4>
-                <p style={{ margin: "0 0 2px 0", color: "#444", fontSize: "0.875rem" }}>{viewOrder.shipping_address}</p>
-                <p style={{ margin: "0 0 2px 0", color: "#444", fontSize: "0.875rem" }}>{viewOrder.shipping_city}, {viewOrder.shipping_state}</p>
-              </div>
-            </div>
 
-            <div>
-              <h4 style={{ fontSize: "0.75rem", color: "#666", marginBottom: "var(--space-2)", textTransform: "uppercase", letterSpacing: "0.5px" }}>Items Ordered</h4>
-              <div style={{ background: "#f9f9f9", borderRadius: "8px", padding: "var(--space-3)", maxHeight: "35vh", overflowY: "auto" }}>
-                {viewOrder.order_items?.map((item, idx) => (
-                  <div key={idx} style={{ display: "flex", justifyContent: "space-between", paddingBottom: "var(--space-2)", marginBottom: "var(--space-2)", borderBottom: idx !== viewOrder.order_items.length - 1 ? "1px solid #eaeaea" : "none", gap: "10px" }}>
-                    <div style={{ minWidth: 0, flex: 1 }}>
-                      <p style={{ fontWeight: 500, margin: "0 0 2px 0", fontSize: "0.875rem", wordBreak: "break-word" }}>{item.product_name}</p>
-                      <p style={{ fontSize: "0.75rem", color: "#666", margin: 0 }}>Size: {item.selected_size} | Length: {item.selected_length} | Qty: {item.quantity}</p>
+              <div style={{ border: "1px solid #ebebeb", borderRadius: "10px", overflow: "hidden", background: "#fafafa" }}>
+                <div style={{ padding: "8px 12px", background: "#f5f5f5", borderBottom: "1px solid #ebebeb", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <span style={{ fontSize: "0.68rem", fontWeight: 700, color: "#555", textTransform: "uppercase", letterSpacing: "0.5px" }}>Items Ordered ({viewOrder.order_items?.length || 0})</span>
+                </div>
+                <div style={{ padding: "10px 12px", maxHeight: "28vh", overflowY: "auto", display: "flex", flexDirection: "column", gap: "8px" }}>
+                  {viewOrder.order_items?.map((item, idx) => (
+                    <div key={idx} style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", paddingBottom: "8px", borderBottom: idx !== viewOrder.order_items.length - 1 ? "1px solid #f0f0f0" : "none", gap: "10px" }}>
+                      <div style={{ minWidth: 0, flex: 1 }}>
+                        <p style={{ fontWeight: 600, margin: "0 0 2px 0", fontSize: "0.8rem", color: "#111", wordBreak: "break-word" }}>{item.product_name}</p>
+                        <p style={{ fontSize: "0.72rem", color: "#666", margin: 0 }}>Size: {item.selected_size} • Length: {item.selected_length} • Qty: {item.quantity}</p>
+                      </div>
+                      <span style={{ fontWeight: 600, fontSize: "0.8rem", flexShrink: 0, color: "#111" }}>{formatPrice(item.price * item.quantity)}</span>
                     </div>
-                    <span style={{ fontWeight: 600, fontSize: "0.875rem", flexShrink: 0 }}>{formatPrice(item.price * item.quantity)}</span>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
 
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "var(--space-4)", paddingTop: "var(--space-3)", borderTop: "1px solid #eee", gap: "8px", flexWrap: "wrap" }}>
-              <span style={{ color: "#666", fontSize: "0.85rem" }}>Total Paid (includes shipping):</span>
-              <span style={{ fontSize: "1.125rem", fontWeight: 700, color: "var(--color-primary)" }}>{formatPrice(viewOrder.total_amount)}</span>
-            </div>
-
-            <div className={styles.modalActions} style={{ marginTop: "var(--space-6)", display: "flex", gap: "10px", flexDirection: "column" }}>
-              {viewOrder.status !== 'shipped' && viewOrder.status !== 'delivered' && viewOrder.status !== 'cancelled' && (
-                <button 
-                  className={styles.btnSecondary} 
-                  style={{ width: "100%", justifyContent: "center", borderColor: "#2563EB", color: "#2563EB", display: "flex", alignItems: "center", gap: "8px" }}
-                  onClick={() => { markAsShipped(viewOrder.id); setViewOrder(null); }}
-                  disabled={isUpdating}
-                >
-                  <Truck size={16} /> Mark as Shipped (Dispatches Shipping Email)
-                </button>
-              )}
-              {viewOrder.status !== 'delivered' && viewOrder.status !== 'cancelled' && (
-                <button 
-                  className={styles.btnPrimary} 
-                  style={{ width: "100%", justifyContent: "center", display: "flex", alignItems: "center", gap: "8px" }}
-                  onClick={() => { markAsDone(viewOrder.id); setViewOrder(null); }}
-                  disabled={isUpdating}
-                >
-                  <CheckCircle size={16} /> Mark as Delivered (Dispatches Delivered Email)
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Cancel Order Modal */}
-      {cancelOrder && (
-        <div className={styles.modalOverlay} onClick={() => setCancelOrder(null)}>
-          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "var(--space-4)", borderBottom: "1px solid #eee", paddingBottom: "var(--space-3)" }}>
-              <h3 className={styles.modalTitle} style={{ margin: 0, color: "var(--color-error)" }}>Cancel Order #{cancelOrder.id.split('-')[0]}</h3>
-              <button onClick={() => setCancelOrder(null)} aria-label="Close dialog" style={{ background: "none", border: "none", cursor: "pointer", fontSize: "1.2rem", color: "#666", padding: "4px" }}>✕</button>
-            </div>
-            
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-3)", marginBottom: "var(--space-4)" }}>
-              <div>
-                <h4 style={{ fontSize: "0.75rem", color: "#666", marginBottom: "var(--space-1)", textTransform: "uppercase", letterSpacing: "0.5px" }}>Customer Details</h4>
-                <p style={{ fontWeight: 500, margin: "0 0 2px 0", fontSize: "0.875rem" }}>{viewOrder.customer_first_name} {viewOrder.customer_last_name}</p>
-                <p style={{ margin: "0 0 2px 0", color: "#444", fontSize: "0.875rem" }}>{viewOrder.customer_email}</p>
-                <p style={{ margin: "0", color: "#444", fontSize: "0.875rem" }}>{viewOrder.customer_phone}</p>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 14px", background: "#fcf8f8", border: "1px solid #f2e9ea", borderRadius: "10px" }}>
+                <span style={{ color: "#666", fontSize: "0.78rem", fontWeight: 500 }}>Total Paid (includes shipping):</span>
+                <span style={{ fontSize: "0.98rem", fontWeight: 700, color: "var(--color-primary)" }}>{formatPrice(viewOrder.total_amount)}</span>
               </div>
-              <div>
-                <h4 style={{ fontSize: "0.75rem", color: "#666", marginBottom: "var(--space-1)", textTransform: "uppercase", letterSpacing: "0.5px" }}>Shipping Address</h4>
-                <p style={{ margin: "0 0 2px 0", color: "#444", fontSize: "0.875rem" }}>{viewOrder.shipping_address}</p>
-                <p style={{ margin: "0 0 2px 0", color: "#444", fontSize: "0.875rem" }}>{viewOrder.shipping_city}, {viewOrder.shipping_state}</p>
+
+              <div className={styles.modalActions} style={{ display: "flex", gap: "8px", flexDirection: "column", marginTop: "4px" }}>
+                {viewOrder.status !== 'shipped' && viewOrder.status !== 'delivered' && viewOrder.status !== 'cancelled' && (
+                  <button 
+                    type="button"
+                    className={styles.btnSecondary} 
+                    style={{ width: "100%", justifyContent: "center", borderColor: "#2563EB", color: "#2563EB", display: "flex", alignItems: "center", gap: "6px", padding: "8px 12px", fontSize: "0.78rem", fontWeight: 600, borderRadius: "8px" }}
+                    onClick={() => { markAsShipped(viewOrder.id); setViewOrder(null); }}
+                    disabled={isUpdating}
+                  >
+                    <Truck size={15} /> Mark as Shipped (Dispatches Shipping Email)
+                  </button>
+                )}
+                {viewOrder.status !== 'delivered' && viewOrder.status !== 'cancelled' && (
+                  <button 
+                    type="button"
+                    className={styles.btnPrimary} 
+                    style={{ width: "100%", justifyContent: "center", display: "flex", alignItems: "center", gap: "6px", padding: "8px 12px", fontSize: "0.78rem", fontWeight: 600, borderRadius: "8px" }}
+                    onClick={() => { markAsDone(viewOrder.id); setViewOrder(null); }}
+                    disabled={isUpdating}
+                  >
+                    <CheckCircle size={15} /> Mark as Delivered (Dispatches Delivered Email)
+                  </button>
+                )}
               </div>
-            </div>
-
-            <div>
-              <h4 style={{ fontSize: "0.75rem", color: "#666", marginBottom: "var(--space-2)", textTransform: "uppercase", letterSpacing: "0.5px" }}>Items Ordered</h4>
-              <div style={{ background: "#f9f9f9", borderRadius: "8px", padding: "var(--space-3)", maxHeight: "35vh", overflowY: "auto" }}>
-                {viewOrder.order_items?.map((item, idx) => (
-                  <div key={idx} style={{ display: "flex", justifyContent: "space-between", paddingBottom: "var(--space-2)", marginBottom: "var(--space-2)", borderBottom: idx !== viewOrder.order_items.length - 1 ? "1px solid #eaeaea" : "none" }}>
-                    <div>
-                      <p style={{ fontWeight: 500, margin: "0 0 2px 0", fontSize: "0.875rem" }}>{item.product_name}</p>
-                      <p style={{ fontSize: "0.75rem", color: "#666", margin: 0 }}>Size: {item.selected_size} | Length: {item.selected_length} | Qty: {item.quantity}</p>
-                    </div>
-                    <span style={{ fontWeight: 500, fontSize: "0.875rem" }}>{formatPrice(item.price * item.quantity)}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "var(--space-4)", paddingTop: "var(--space-3)", borderTop: "1px solid #eee" }}>
-              <span style={{ color: "#666", fontSize: "0.875rem" }}>Total Paid (includes shipping):</span>
-              <span style={{ fontSize: "1.125rem", fontWeight: 700, color: "var(--color-primary)" }}>{formatPrice(viewOrder.total_amount)}</span>
-            </div>
-
-            <div className={styles.modalActions} style={{ marginTop: "var(--space-6)", display: "flex", gap: "10px", flexDirection: "column" }}>
-              {viewOrder.status !== 'shipped' && viewOrder.status !== 'delivered' && viewOrder.status !== 'cancelled' && (
-                <button 
-                  className={styles.btnSecondary} 
-                  style={{ width: "100%", justifyContent: "center", borderColor: "#2563EB", color: "#2563EB", display: "flex", alignItems: "center", gap: "8px" }}
-                  onClick={() => { markAsShipped(viewOrder.id); setViewOrder(null); }}
-                  disabled={isUpdating}
-                >
-                  <Truck size={16} /> Mark as Shipped (Dispatches Shipping Email)
-                </button>
-              )}
-              {viewOrder.status !== 'delivered' && viewOrder.status !== 'cancelled' && (
-                <button 
-                  className={styles.btnPrimary} 
-                  style={{ width: "100%", justifyContent: "center", display: "flex", alignItems: "center", gap: "8px" }}
-                  onClick={() => { markAsDone(viewOrder.id); setViewOrder(null); }}
-                  disabled={isUpdating}
-                >
-                  <CheckCircle size={16} /> Mark as Delivered (Dispatches Delivered Email)
-                </button>
-              )}
             </div>
           </div>
         </div>

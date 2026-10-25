@@ -490,9 +490,9 @@ export default function ReviewsClient({ initialReviews }) {
       {/* Edit Review Modal */}
       {editingReview && (
         <div className={styles.modalOverlay} onClick={() => setEditingReview(null)}>
-          <div className={styles.editModalContent} onClick={(e) => e.stopPropagation()}>
+          <div className={styles.editModalContent} style={{ maxWidth: "500px" }} onClick={(e) => e.stopPropagation()}>
             <div className={styles.modalHeader}>
-              <h3 className={styles.modalTitle} style={{ margin: 0, fontSize: "1.15rem" }}>
+              <h3 className={styles.modalTitle} style={{ margin: 0, fontSize: "1.05rem" }}>
                 Edit Review
               </h3>
               <button
@@ -505,62 +505,65 @@ export default function ReviewsClient({ initialReviews }) {
               </button>
             </div>
 
-            <form onSubmit={handleSaveEdit} className={styles.modalBody}>
+            <form onSubmit={handleSaveEdit} className={styles.modalBody} style={{ padding: "14px 18px", display: "flex", flexDirection: "column", gap: "10px" }}>
               {/* Customer Name & Location */}
-              <div className={styles.grid2} style={{ marginBottom: "15px" }}>
+              <div className={styles.grid2} style={{ gap: "10px", marginBottom: "0" }}>
                 <div>
-                  <label className={styles.label}>Customer Name</label>
+                  <label className={styles.label} style={{ fontSize: "0.75rem", marginBottom: "3px" }}>Customer Name</label>
                   <input
                     type="text"
                     className={styles.input}
                     value={editingReview.customer_name}
                     onChange={(e) => setEditingReview({ ...editingReview, customer_name: e.target.value })}
                     required
+                    style={{ padding: "6px 10px", fontSize: "0.82rem", height: "34px" }}
                   />
                 </div>
                 <div>
-                  <label className={styles.label}>Customer Location</label>
+                  <label className={styles.label} style={{ fontSize: "0.75rem", marginBottom: "3px" }}>Customer Location</label>
                   <input
                     type="text"
                     className={styles.input}
                     placeholder="e.g. Lagos, Abuja"
                     value={editingReview.customer_location}
                     onChange={(e) => setEditingReview({ ...editingReview, customer_location: e.target.value })}
+                    style={{ padding: "6px 10px", fontSize: "0.82rem", height: "34px" }}
                   />
                 </div>
               </div>
 
               {/* Rating & Status */}
-              <div className={styles.grid2} style={{ marginBottom: "15px" }}>
+              <div className={styles.grid2} style={{ gap: "10px", marginBottom: "0" }}>
                 <div>
-                  <label className={styles.label}>Rating (Stars)</label>
-                  <div style={{ display: "flex", gap: "6px", alignItems: "center", marginTop: "6px" }}>
+                  <label className={styles.label} style={{ fontSize: "0.75rem", marginBottom: "3px" }}>Rating (Stars)</label>
+                  <div style={{ display: "flex", gap: "4px", alignItems: "center", marginTop: "4px" }}>
                     {[1, 2, 3, 4, 5].map((star) => (
                       <button
                         key={star}
                         type="button"
                         onClick={() => setEditingReview({ ...editingReview, rating: star })}
-                        style={{ background: "none", border: "none", cursor: "pointer", padding: "2px" }}
+                        style={{ background: "none", border: "none", cursor: "pointer", padding: "1px" }}
                       >
                         <Star
-                          size={24}
+                          size={18}
                           fill={star <= editingReview.rating ? "#F59E0B" : "none"}
                           color={star <= editingReview.rating ? "#F59E0B" : "#D1D5DB"}
                         />
                       </button>
                     ))}
-                    <span style={{ fontSize: "0.9rem", fontWeight: 600, marginLeft: "6px", color: "var(--color-text)" }}>
+                    <span style={{ fontSize: "0.8rem", fontWeight: 600, marginLeft: "4px", color: "var(--color-text)" }}>
                       {editingReview.rating} / 5
                     </span>
                   </div>
                 </div>
 
                 <div>
-                  <label className={styles.label}>Status</label>
+                  <label className={styles.label} style={{ fontSize: "0.75rem", marginBottom: "3px" }}>Status</label>
                   <select
                     className={styles.select}
                     value={editingReview.status}
                     onChange={(e) => setEditingReview({ ...editingReview, status: e.target.value })}
+                    style={{ padding: "6px 10px", fontSize: "0.82rem", height: "34px" }}
                   >
                     <option value="approved">Approved (Live)</option>
                     <option value="hidden">Hidden</option>
@@ -569,45 +572,47 @@ export default function ReviewsClient({ initialReviews }) {
               </div>
 
               {/* Review Text */}
-              <div style={{ marginBottom: "20px" }}>
-                <label className={styles.label}>Review Content</label>
+              <div>
+                <label className={styles.label} style={{ fontSize: "0.75rem", marginBottom: "3px" }}>Review Content</label>
                 <textarea
                   className={styles.textarea}
-                  rows={4}
+                  rows={3}
                   value={editingReview.review_text}
                   onChange={(e) => setEditingReview({ ...editingReview, review_text: e.target.value })}
                   required
+                  style={{ fontSize: "0.82rem", padding: "8px 10px", minHeight: "68px", resize: "vertical" }}
                 />
               </div>
 
               {/* Verified Buyer Checkbox */}
-              <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "25px", cursor: "pointer" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "8px", margin: "2px 0 4px 0", cursor: "pointer" }}>
                 <input
                   type="checkbox"
                   id="editVerifiedBuyer"
                   checked={editingReview.verified_buyer}
                   onChange={(e) => setEditingReview({ ...editingReview, verified_buyer: e.target.checked })}
-                  style={{ width: "18px", height: "18px", accentColor: "var(--color-primary)", cursor: "pointer" }}
+                  style={{ width: "16px", height: "16px", accentColor: "var(--color-primary)", cursor: "pointer" }}
                 />
-                <label htmlFor="editVerifiedBuyer" style={{ fontSize: "0.95rem", color: "var(--color-text)", cursor: "pointer", userSelect: "none" }}>
+                <label htmlFor="editVerifiedBuyer" style={{ fontSize: "0.8rem", color: "var(--color-text)", cursor: "pointer", userSelect: "none" }}>
                   Mark as <strong>Verified Buyer</strong> (verified purchase badge)
                 </label>
               </div>
 
               {/* Modal Actions */}
-              <div className={styles.modalActions} style={{ justifyContent: "flex-end" }}>
+              <div className={styles.modalActions} style={{ justifyContent: "flex-end", gap: "8px", paddingTop: "8px", borderTop: "1px solid #f0f0f0", marginTop: "4px" }}>
                 <button
                   type="button"
                   className={styles.modalBtnCancel}
                   onClick={() => setEditingReview(null)}
                   disabled={isSavingEdit}
+                  style={{ padding: "6px 14px", fontSize: "0.8rem" }}
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   className={styles.btnPrimary}
-                  style={{ minWidth: "120px" }}
+                  style={{ minWidth: "110px", padding: "6px 14px", fontSize: "0.8rem" }}
                   disabled={isSavingEdit}
                 >
                   {isSavingEdit ? "Saving..." : "Save Changes"}
