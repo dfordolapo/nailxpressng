@@ -7,6 +7,7 @@ import styles from "@/styles/admin.module.css";
 import ScrollableTabs from "@/components/admin/ScrollableTabs";
 import { MoreVertical, CheckCircle, MessageCircle, Sparkles, X } from "lucide-react";
 import { SOCIAL_LINKS } from "@/lib/constants";
+import { useLockBodyScroll } from "@/lib/useLockBodyScroll";
 
 export default function CustomOrdersClient({ initialOrders = [] }) {
   const [orders, setOrders] = useState(initialOrders);
@@ -14,6 +15,9 @@ export default function CustomOrdersClient({ initialOrders = [] }) {
   const [openMenuId, setOpenMenuId] = useState(null);
   const [isUpdating, setIsUpdating] = useState(false);
   const [viewOrder, setViewOrder] = useState(null);
+
+  // Lock background scroll when viewOrder modal is open
+  useLockBodyScroll(Boolean(viewOrder));
 
   const fetchOrders = async () => {
     try {

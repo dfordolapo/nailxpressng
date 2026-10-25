@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import styles from "@/styles/admin.module.css";
 import ScrollableTabs from "@/components/admin/ScrollableTabs";
+import { useLockBodyScroll } from "@/lib/useLockBodyScroll";
 
 export default function ReviewsClient({ initialReviews }) {
   const [reviews, setReviews] = useState(initialReviews || []);
@@ -33,6 +34,9 @@ export default function ReviewsClient({ initialReviews }) {
   // Edit Review Modal State
   const [editingReview, setEditingReview] = useState(null);
   const [isSavingEdit, setIsSavingEdit] = useState(false);
+
+  // Prevent background scrolling when any modal is open
+  useLockBodyScroll(Boolean(editingReview || reviewToDelete || selectedImage));
 
   // 1-Click Status Toggle (Approve / Hide)
   const toggleStatus = async (id, currentStatus) => {
@@ -343,24 +347,15 @@ export default function ReviewsClient({ initialReviews }) {
                         {rev.customer_location && (
                           <span className={styles.reviewLocation}>• {rev.customer_location}</span>
                         )}
-                        {rev.verified_buyer ? (
+                        {rev.status === "approved" ? (
                           <span className={styles.reviewVerifiedBadge}>
-                            <CheckCircle2 size={12} /> Verified Buyer
+                            <CheckCircle2 size={12} /> Approved
                           </span>
                         ) : (
-                          <span style={{ fontSize: "0.72rem", background: "#f3f4f6", color: "#6b7280", padding: "2px 8px", borderRadius: "12px", fontWeight: 500 }}>
-                            Unverified
+                          <span className={styles.reviewStatusHiddenBadge}>
+                            <EyeOff size={12} /> Hidden
                           </span>
                         )}
-                        <span
-                          className={`${styles.reviewStatusBadge} ${
-                            rev.status === "approved"
-                              ? styles.reviewStatusApproved
-                              : styles.reviewStatusHidden
-                          }`}
-                        >
-                          {rev.status === "approved" ? "Approved" : "Hidden"}
-                        </span>
                       </div>
 
                       {rev.products && (
@@ -377,18 +372,6 @@ export default function ReviewsClient({ initialReviews }) {
 
                   {/* Actions */}
                   <div className={styles.reviewControls}>
-                    {/* 1-Click Verify Toggle */}
-                    <button
-                      type="button"
-                      onClick={() => toggleVerified(rev.id, rev.verified_buyer)}
-                      disabled={loadingId === rev.id}
-                      className={styles.reviewControlBtn}
-                      title={rev.verified_buyer ? "Mark as unverified" : "Mark as verified buyer"}
-                    >
-                      <BadgeCheck size={14} color={rev.verified_buyer ? "#10B981" : "#888"} />
-                      {rev.verified_buyer ? "Verified" : "Verify"}
-                    </button>
-
                     {/* 1-Click Approve / Hide Toggle */}
                     <button
                       type="button"
@@ -582,20 +565,6 @@ export default function ReviewsClient({ initialReviews }) {
                   required
                   style={{ fontSize: "0.82rem", padding: "8px 10px", minHeight: "68px", resize: "vertical" }}
                 />
-              </div>
-
-              {/* Verified Buyer Checkbox */}
-              <div style={{ display: "flex", alignItems: "center", gap: "8px", margin: "2px 0 4px 0", cursor: "pointer" }}>
-                <input
-                  type="checkbox"
-                  id="editVerifiedBuyer"
-                  checked={editingReview.verified_buyer}
-                  onChange={(e) => setEditingReview({ ...editingReview, verified_buyer: e.target.checked })}
-                  style={{ width: "16px", height: "16px", accentColor: "var(--color-primary)", cursor: "pointer" }}
-                />
-                <label htmlFor="editVerifiedBuyer" style={{ fontSize: "0.8rem", color: "var(--color-text)", cursor: "pointer", userSelect: "none" }}>
-                  Mark as <strong>Verified Buyer</strong> (verified purchase badge)
-                </label>
               </div>
 
               {/* Modal Actions */}

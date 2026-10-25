@@ -28,6 +28,7 @@ import { formatPrice } from "@/lib/utils";
 import * as XLSX from "xlsx";
 import { supabase } from "@/lib/supabase";
 import { uploadImageDirect } from "@/lib/uploadImage";
+import { useLockBodyScroll } from "@/lib/useLockBodyScroll";
 
 function ProductsContent({ initialProducts = [] }) {
   const router = useRouter();
@@ -53,6 +54,9 @@ function ProductsContent({ initialProducts = [] }) {
   const [movingProduct, setMovingProduct] = useState(null);
   const [isMoving, setIsMoving] = useState(false);
   const [moveToast, setMoveToast] = useState(null);
+
+  // Lock background scroll when modals are open
+  useLockBodyScroll(Boolean(productToDelete || movingProduct));
 
   // Continuous scrolling state
   const [displayCount, setDisplayCount] = useState(25);

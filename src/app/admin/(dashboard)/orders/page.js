@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
+import { supabaseAdmin } from '@/lib/supabaseAdmin';
 import OrdersClient from './OrdersClient';
 import { FALLBACK_ORDERS } from '@/lib/fallbackData';
 
@@ -7,12 +7,6 @@ export const dynamic = 'force-dynamic';
 export const metadata = {
   title: 'Orders | Admin Dashboard',
 };
-
-// Initialize Supabase with service role key for admin pages
-const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder-url.supabase.co",
-  process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "dummy-key"
-);
 
 export default async function OrdersPage() {
   // Fetch all orders

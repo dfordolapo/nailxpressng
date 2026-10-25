@@ -131,7 +131,7 @@ function shuffleArray(array) {
   return newArray;
 }
 
-export async function getProducts() {
+export const getProducts = cache(async () => {
   const isPlaceholder = !process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL.includes("placeholder");
   const discount = await getSitewideDiscount();
 
@@ -148,7 +148,7 @@ export async function getProducts() {
 
   // Graceful local development fallback
   return shuffleArray(FALLBACK_RAW_PRODUCTS.map((p) => mapProduct(p, discount)));
-}
+});
 
 export async function getProductBySlug(slug) {
   if (!slug) return null;

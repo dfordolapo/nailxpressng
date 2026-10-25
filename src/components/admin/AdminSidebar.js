@@ -101,6 +101,7 @@ function SidebarContent() {
           <div className={styles.navGroup}>
             <Link
               href="/admin"
+              prefetch={true}
               className={`${styles.navItem} ${pathname === "/admin" ? styles.active : ""}`}
               onClick={() => setIsMobileOpen(false)}
             >
@@ -112,6 +113,7 @@ function SidebarContent() {
           <div className={styles.navGroup}>
             <Link
               href="/admin/orders"
+              prefetch={true}
               className={`${styles.navItem} ${pathname === "/admin/orders" ? styles.active : ""}`}
               onClick={() => setIsMobileOpen(false)}
             >
@@ -123,6 +125,7 @@ function SidebarContent() {
           <div className={styles.navGroup}>
             <Link
               href="/admin/custom-orders"
+              prefetch={true}
               className={`${styles.navItem} ${pathname.startsWith("/admin/custom-orders") ? styles.active : ""}`}
               onClick={() => setIsMobileOpen(false)}
             >
@@ -134,6 +137,7 @@ function SidebarContent() {
           <div className={styles.navGroup}>
             <Link
               href="/admin/reviews"
+              prefetch={true}
               className={`${styles.navItem} ${pathname.startsWith("/admin/reviews") ? styles.active : ""}`}
               onClick={() => setIsMobileOpen(false)}
             >
@@ -145,6 +149,7 @@ function SidebarContent() {
           <div className={styles.navGroup}>
             <Link
               href="/admin/subscribers"
+              prefetch={true}
               className={`${styles.navItem} ${pathname.startsWith("/admin/subscribers") ? styles.active : ""}`}
               onClick={() => setIsMobileOpen(false)}
             >
@@ -156,6 +161,7 @@ function SidebarContent() {
           <div className={styles.navGroup}>
             <Link
               href="/admin/collections"
+              prefetch={true}
               className={`${styles.navItem} ${pathname.startsWith("/admin/collections") ? styles.active : ""}`}
               onClick={() => setIsMobileOpen(false)}
             >
@@ -186,6 +192,7 @@ function SidebarContent() {
               <div className={styles.navSub}>
                 <Link 
                   href="/admin/products" 
+                  prefetch={true}
                   className={styles.navSubItem}
                   style={{ color: pathname === "/admin/products" && !collection ? "var(--color-primary)" : "", fontWeight: pathname === "/admin/products" && !collection ? 600 : 400 }}
                   onClick={() => setIsMobileOpen(false)}
@@ -194,6 +201,7 @@ function SidebarContent() {
                 </Link>
                 <Link 
                   href="/admin/products?collection=handmade" 
+                  prefetch={true}
                   className={styles.navSubItem}
                   style={{ color: collection === "handmade" ? "var(--color-primary)" : "", fontWeight: collection === "handmade" ? 600 : 400 }}
                   onClick={() => setIsMobileOpen(false)}
@@ -202,6 +210,7 @@ function SidebarContent() {
                 </Link>
                 <Link 
                   href="/admin/products?collection=factory" 
+                  prefetch={true}
                   className={styles.navSubItem}
                   style={{ color: collection === "factory" ? "var(--color-primary)" : "", fontWeight: collection === "factory" ? 600 : 400 }}
                   onClick={() => setIsMobileOpen(false)}
@@ -234,6 +243,7 @@ function SidebarContent() {
               <div className={styles.navSub}>
                 <Link 
                   href="/admin/settings/attributes" 
+                  prefetch={true}
                   className={styles.navSubItem}
                   style={{ color: pathname === "/admin/settings/attributes" ? "var(--color-primary)" : "", fontWeight: pathname === "/admin/settings/attributes" ? 600 : 400 }}
                   onClick={() => setIsMobileOpen(false)}
@@ -242,6 +252,7 @@ function SidebarContent() {
                 </Link>
                 <Link 
                   href="/admin/settings" 
+                  prefetch={true}
                   className={styles.navSubItem}
                   style={{ color: pathname === "/admin/settings" ? "var(--color-primary)" : "", fontWeight: pathname === "/admin/settings" ? 600 : 400 }}
                   onClick={() => setIsMobileOpen(false)}

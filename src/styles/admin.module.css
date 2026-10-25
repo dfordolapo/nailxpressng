@@ -496,6 +496,7 @@
 }
 
 /* Modal */
+
 .modalOverlay {
   position: fixed;
   top: 0;
@@ -508,6 +509,9 @@
   justify-content: center;
   z-index: 1000;
   backdrop-filter: blur(4px);
+  overscroll-behavior: contain;
+  touch-action: none;
+  -webkit-overflow-scrolling: auto;
 }
 
 .modalContent {
@@ -522,6 +526,8 @@
   overflow: hidden;
   position: relative;
   text-align: left;
+  overscroll-behavior: contain;
+  touch-action: auto;
 }
 
 .editModalContent {
@@ -557,6 +563,8 @@
   padding: 18px;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
   flex: 1;
   min-height: 0;
   display: flex;
@@ -1576,6 +1584,18 @@
   font-size: 0.68rem;
   background-color: #ECFDF5;
   color: #10B981;
+  padding: 2px 7px;
+  border-radius: 10px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.reviewStatusHiddenBadge {
+  font-size: 0.68rem;
+  background-color: #FEF2F2;
+  color: #EF4444;
   padding: 2px 7px;
   border-radius: 10px;
   font-weight: 600;

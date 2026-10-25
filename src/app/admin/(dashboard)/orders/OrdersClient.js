@@ -5,6 +5,7 @@ import { formatPrice } from "@/lib/utils";
 import styles from "@/styles/admin.module.css";
 import ScrollableTabs from "@/components/admin/ScrollableTabs";
 import { MoreVertical, CheckCircle, Truck, Sparkles, X } from "lucide-react";
+import { useLockBodyScroll } from "@/lib/useLockBodyScroll";
 
 export default function OrdersClient({ initialOrders }) {
   const [orders, setOrders] = useState(initialOrders);
@@ -14,6 +15,10 @@ export default function OrdersClient({ initialOrders }) {
   const [activeStatusFilter, setActiveStatusFilter] = useState("all");
   const [sendingRecoveryId, setSendingRecoveryId] = useState(null);
   const [recoverySuccessMsg, setRecoverySuccessMsg] = useState("");
+  const [cancelOrder, setCancelOrder] = useState(null);
+
+  // Prevent background scrolling when viewOrder or cancelOrder modal is open
+  useLockBodyScroll(Boolean(viewOrder || cancelOrder));
 
   const sendRecoveryEmail = async (id) => {
     setSendingRecoveryId(id);
@@ -44,7 +49,6 @@ export default function OrdersClient({ initialOrders }) {
     return order.status === activeStatusFilter;
   });
   
-  const [cancelOrder, setCancelOrder] = useState(null);
   const [cancelReason, setCancelReason] = useState("");
   const [cancelNextSteps, setCancelNextSteps] = useState("Any payments made will be fully refunded to your original payment method. Please allow a few business days for the refund to reflect in your account.");
   

@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import styles from "@/styles/admin.module.css";
 import { formatPrice } from "@/lib/utils";
+import { useLockBodyScroll } from "@/lib/useLockBodyScroll";
 
 export default function DashboardClient({ initialProducts = [], initialOrders = [], initialCustomOrders = [] }) {
   const [productsList, setProductsList] = useState(initialProducts || []);
@@ -32,6 +33,9 @@ export default function DashboardClient({ initialProducts = [], initialOrders = 
   const [isDeleting, setIsDeleting] = useState(false);
   const [updatingStockId, setUpdatingStockId] = useState(null);
   const router = useRouter();
+
+  // Lock background scroll when modal is open
+  useLockBodyScroll(Boolean(productToDelete));
 
   // Excel-like Filter & Sort State for Recent Products
   const [activePopover, setActivePopover] = useState(null);

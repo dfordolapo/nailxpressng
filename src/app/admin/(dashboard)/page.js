@@ -1,6 +1,6 @@
 import DashboardClient from './DashboardClient';
 import { getProducts } from '@/lib/api';
-import { createClient } from '@supabase/supabase-js';
+import { supabaseAdmin } from '@/lib/supabaseAdmin';
 import { FALLBACK_ORDERS, FALLBACK_CUSTOM_ORDERS } from '@/lib/fallbackData';
 
 export const dynamic = 'force-dynamic';
@@ -8,11 +8,6 @@ export const dynamic = 'force-dynamic';
 export const metadata = {
   title: 'Admin Dashboard | NailExpress',
 };
-
-const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder-url.supabase.co",
-  process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "dummy-key"
-);
 
 export default async function AdminDashboardPage() {
   const [products, ordersRes, customOrdersRes] = await Promise.all([

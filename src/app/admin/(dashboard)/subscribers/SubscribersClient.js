@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import styles from "@/styles/admin.module.css";
 import ScrollableTabs from "@/components/admin/ScrollableTabs";
+import { useLockBodyScroll } from "@/lib/useLockBodyScroll";
 
 export default function SubscribersClient() {
   const [subscribers, setSubscribers] = useState([]);
@@ -29,6 +30,9 @@ export default function SubscribersClient() {
   const [sendSuccess, setSendSuccess] = useState(false);
   const [modalTarget, setModalTarget] = useState(null); // null, "bulk", or a specific sub object
   const [customMsg, setCustomMsg] = useState("");
+
+  // Lock background scroll when modal is open
+  useLockBodyScroll(Boolean(modalTarget));
 
   const fetchSubscribers = async () => {
     setLoading(true);

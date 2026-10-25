@@ -27,6 +27,7 @@ import {
 import styles from "./collections.module.css";
 import adminStyles from "@/styles/admin.module.css";
 import ScrollableTabs from "@/components/admin/ScrollableTabs";
+import { useLockBodyScroll } from "@/lib/useLockBodyScroll";
 
 function slugify(text) {
   return String(text)
@@ -61,6 +62,9 @@ export default function CollectionsClient() {
   const [modalMode, setModalMode] = useState("create"); // 'create' or 'edit'
   const [selectedCollection, setSelectedCollection] = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null);
+
+  // Lock background scroll when modal is open
+  useLockBodyScroll(Boolean(isModalOpen || deleteTarget));
 
   // Form State
   const [formName, setFormName] = useState("");
