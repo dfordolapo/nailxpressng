@@ -11,8 +11,13 @@ export const metadata = {
 export default async function AdminLayout({ children }) {
   const cookieStore = await cookies();
   const session = cookieStore.get("admin_session");
+  const stayLoggedIn = cookieStore.get("admin_stay_logged_in");
 
-  if (!session || session.value !== "authenticated_funmi") {
+  const isAuthenticated =
+    (session && session.value === "authenticated_funmi") ||
+    (stayLoggedIn && stayLoggedIn.value === "true");
+
+  if (!isAuthenticated) {
     redirect("/admin/login");
   }
 
