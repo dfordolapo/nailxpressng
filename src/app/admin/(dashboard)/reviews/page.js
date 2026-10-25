@@ -12,7 +12,8 @@ export default async function ReviewsPage() {
   const { data: reviews, error } = await supabaseAdmin
     .from('reviews')
     .select('*, products(name, slug, images)')
-    .order('created_at', { ascending: false });
+    .order('created_at', { ascending: false })
+    .limit(200);
 
   if (error) {
     console.warn('Supabase reviews fetch failed, using fallback for local dev');

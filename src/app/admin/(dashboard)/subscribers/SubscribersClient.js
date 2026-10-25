@@ -20,9 +20,9 @@ import styles from "@/styles/admin.module.css";
 import ScrollableTabs from "@/components/admin/ScrollableTabs";
 import { useLockBodyScroll } from "@/lib/useLockBodyScroll";
 
-export default function SubscribersClient() {
-  const [subscribers, setSubscribers] = useState([]);
-  const [loading, setLoading] = useState(true);
+export default function SubscribersClient({ initialSubscribers = [] }) {
+  const [subscribers, setSubscribers] = useState(initialSubscribers);
+  const [loading, setLoading] = useState(initialSubscribers.length === 0);
   const [filterType, setFilterType] = useState("all"); // "all", "newsletter", "restock", "drop_notification"
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedIds, setSelectedIds] = useState([]);
@@ -50,8 +50,9 @@ export default function SubscribersClient() {
   };
 
   useEffect(() => {
+    if (initialSubscribers && initialSubscribers.length > 0) return;
     fetchSubscribers();
-  }, []);
+  }, [initialSubscribers]);
 
   const filtered = useMemo(() => {
     return subscribers.filter((sub) => {

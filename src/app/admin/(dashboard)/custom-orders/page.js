@@ -1,19 +1,15 @@
-import { createClient } from '@supabase/supabase-js';
+import { supabaseAdmin } from '@/lib/supabaseAdmin';
 import CustomOrdersClient from './CustomOrdersClient';
 import { FALLBACK_CUSTOM_ORDERS } from '@/lib/fallbackData';
 
 export const dynamic = 'force-dynamic';
 
-const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder-url.supabase.co",
-  process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "dummy-key"
-);
-
 export default async function AdminCustomOrdersPage() {
   const { data: customOrders, error } = await supabaseAdmin
     .from('custom_orders')
     .select('*')
-    .order('created_at', { ascending: false });
+    .order('created_at', { ascending: false })
+    .limit(200);
 
   if (error) {
     console.warn('Supabase custom orders fetch failed, using fallback for local dev');

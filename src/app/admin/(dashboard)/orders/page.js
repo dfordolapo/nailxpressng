@@ -9,11 +9,12 @@ export const metadata = {
 };
 
 export default async function OrdersPage() {
-  // Fetch all orders
+  // Fetch recent orders
   const { data: orders, error } = await supabaseAdmin
     .from('orders')
     .select('*, order_items(*)')
-    .order('created_at', { ascending: false });
+    .order('created_at', { ascending: false })
+    .limit(200);
 
   if (error) {
     console.warn('Supabase orders fetch failed, using fallback for local dev');

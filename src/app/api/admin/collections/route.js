@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import { supabaseAdmin } from '@/lib/supabaseAdmin';
+import { supabaseAdmin, invalidateAdminCache } from '@/lib/supabaseAdmin';
+import { getAdminCollections } from '@/lib/api';
 import { getLocalCollections, addLocalCollection } from '@/lib/collectionsStore';
 
 const isPlaceholderUrl = !process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL.includes("placeholder");
@@ -17,49 +18,11 @@ function slugify(text) {
 
 export async function GET() {
   try {
-    if (isPlaceholderUrl) {
-      return NextResponse.json({ success: true, collections: getLocalCollections() });
-    }
-
-    // 1. Fetch all categories
-    const { data: categories, error } = await supabaseAdmin
-      .from('categories')
-      .select('*')
-      .order('display_order', { ascending: true, nullsFirst: false })
-      .order('created_at', { ascending: false });
-
-    if (error) {
-      console.error('Error fetching admin categories:', error);
-      return NextResponse.json({ success: true, collections: getLocalCollections() });
-    }
-
-    // 2. Fetch products to calculate count per category
-    const { data: products } = await supabaseAdmin
-      .from('products')
-      .select('id, category_id, categories(slug, name)');
-
-    const countMap = {};
-    if (products) {
-      for (const p of products) {
-        if (p.category_id) {
-          countMap[p.category_id] = (countMap[p.category_id] || 0) + 1;
-        }
-        if (p.categories?.slug) {
-          countMap[p.categories.slug] = (countMap[p.categories.slug] || 0) + 1;
-        }
-      }
-    }
-
-    const enhanced = (categories || []).map((c) => ({
-      ...c,
-      is_published: c.is_published !== false,
-      products_count: countMap[c.id] || countMap[c.slug] || 0,
-    }));
-
-    return NextResponse.json({ success: true, collections: enhanced });
+    const collections = await getAdminCollections();
+    return NextResponse.json({ success: true, collections });
   } catch (err) {
-    console.error('GET /api/admin/collections error:', err);
-    return NextResponse.json({ success: true, collections: getLocalCollections() });
+    console.error('Error fetching admin collections:', err);
+    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }
 }
 

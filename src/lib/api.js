@@ -1,11 +1,12 @@
 import { cache } from 'react';
 import { supabase } from './supabase';
+import { supabaseAdmin } from './supabaseAdmin';
 
 // Fetch the sitewide discount % from store settings (0 = no discount)
 // Wrapped in React cache to ensure it only runs once per server request
 export const getSitewideDiscount = cache(async () => {
   try {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseAdmin
       .from('store_settings')
       .select('sitewide_discount')
       .eq('id', 1)
@@ -133,11 +134,13 @@ function shuffleArray(array) {
 
 export const getProducts = cache(async () => {
   const isPlaceholder = !process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL.includes("placeholder");
-  const discount = await getSitewideDiscount();
 
   if (!isPlaceholder) {
     try {
-      const { data, error } = await supabase.from('products').select('*, categories(slug, name)');
+      const [discount, { data, error }] = await Promise.all([
+        getSitewideDiscount(),
+        supabaseAdmin.from('products').select('*, categories(slug, name)').order('created_at', { ascending: false }),
+      ]);
       if (!error && data && data.length > 0) {
         return shuffleArray(data.map((p) => mapProduct(p, discount)));
       }
@@ -147,7 +150,74 @@ export const getProducts = cache(async () => {
   }
 
   // Graceful local development fallback
+  const discount = await getSitewideDiscount();
   return shuffleArray(FALLBACK_RAW_PRODUCTS.map((p) => mapProduct(p, discount)));
+});
+
+// Admin product list: chronological ordering (newest first) without random shuffle
+export const getAdminProducts = cache(async () => {
+  const isPlaceholder = !process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL.includes("placeholder");
+
+  if (!isPlaceholder) {
+    try {
+      const [discount, { data, error }] = await Promise.all([
+        getSitewideDiscount(),
+        supabaseAdmin.from('products').select('*, categories(slug, name)').order('created_at', { ascending: false }),
+      ]);
+      if (!error && data && data.length > 0) {
+        return data.map((p) => mapProduct(p, discount));
+      }
+    } catch (e) {
+      console.warn('Supabase admin products fetch failed, falling back to local dataset:', e.message);
+    }
+  }
+
+  const discount = await getSitewideDiscount();
+  return FALLBACK_RAW_PRODUCTS.map((p) => mapProduct(p, discount));
+});
+
+// Admin collections list: categories + product counts in parallel
+export const getAdminCollections = cache(async () => {
+  const isPlaceholder = !process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL.includes("placeholder");
+  if (isPlaceholder) {
+    const { getLocalCollections } = await import('./collectionsStore');
+    return getLocalCollections();
+  }
+
+  try {
+    const [{ data: categories, error: catError }, { data: products }] = await Promise.all([
+      supabaseAdmin
+        .from('categories')
+        .select('*')
+        .order('display_order', { ascending: true, nullsFirst: false })
+        .order('created_at', { ascending: false }),
+      supabaseAdmin
+        .from('products')
+        .select('id, category_id, categories(slug, name)'),
+    ]);
+
+    if (catError || !categories || categories.length === 0) {
+      const { getLocalCollections } = await import('./collectionsStore');
+      return getLocalCollections();
+    }
+
+    const countMap = {};
+    if (products) {
+      for (const p of products) {
+        if (p.category_id) countMap[p.category_id] = (countMap[p.category_id] || 0) + 1;
+        if (p.categories?.slug) countMap[p.categories.slug] = (countMap[p.categories.slug] || 0) + 1;
+      }
+    }
+
+    return categories.map((c) => ({
+      ...c,
+      is_published: c.is_published !== false,
+      products_count: countMap[c.id] || countMap[c.slug] || 0,
+    }));
+  } catch {
+    const { getLocalCollections } = await import('./collectionsStore');
+    return getLocalCollections();
+  }
 });
 
 export async function getProductBySlug(slug) {

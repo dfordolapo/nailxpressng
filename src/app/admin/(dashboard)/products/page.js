@@ -1,5 +1,5 @@
 import ProductsClient from './ProductsClient';
-import { getProducts } from '@/lib/api';
+import { getAdminProducts, getAdminCollections } from '@/lib/api';
 
 export const dynamic = 'force-dynamic';
 
@@ -8,7 +8,10 @@ export const metadata = {
 };
 
 export default async function AdminProductsPage() {
-  const products = await getProducts();
+  const [products, collections] = await Promise.all([
+    getAdminProducts(),
+    getAdminCollections(),
+  ]);
   
-  return <ProductsClient initialProducts={products} />;
+  return <ProductsClient initialProducts={products} initialCollections={collections} />;
 }

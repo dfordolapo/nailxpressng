@@ -4,19 +4,29 @@ import { useState, useEffect } from 'react';
 import { Save, Loader2, Plus, Trash2, Tag } from 'lucide-react';
 import btnStyles from '@/styles/components/buttons.module.css';
 
-export default function SettingsClient() {
-  const [locations, setLocations] = useState([]);
-  const [presets, setPresets] = useState({
+export default function SettingsClient({ initialSettings = null }) {
+  const [locations, setLocations] = useState(() => {
+    if (initialSettings?.delivery_locations && initialSettings.delivery_locations.length > 0) {
+      return initialSettings.delivery_locations;
+    }
+    return [
+      { id: 'loc-1', name: 'Lagos - Island', fee: 2500 },
+      { id: 'loc-2', name: 'Lagos - Mainland', fee: 3000 },
+      { id: 'loc-3', name: 'Outside Lagos', fee: 5000 }
+    ];
+  });
+  const [presets, setPresets] = useState(() => initialSettings?.delivery_presets || {
     factory: { lagos: '24-48 hours', outside: '3-5 working days' },
     handmade: { lagos: '3-5 working days', outside: '5-7 working days' },
     custom: { lagos: '5-7 working days', outside: '7-10 working days' }
   });
-  const [discount, setDiscount] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
+  const [discount, setDiscount] = useState(() => typeof initialSettings?.sitewide_discount === 'number' ? initialSettings.sitewide_discount : 0);
+  const [isLoading, setIsLoading] = useState(!initialSettings);
   const [isSaving, setIsSaving] = useState(false);
   const [message, setMessage] = useState('');
 
   useEffect(() => {
+    if (initialSettings) return;
     async function fetchSettings() {
       try {
         const res = await fetch('/api/settings');
@@ -45,7 +55,7 @@ export default function SettingsClient() {
       }
     }
     fetchSettings();
-  }, []);
+  }, [initialSettings]);
 
   const handleAddLocation = () => {
     setLocations([...locations, { id: `loc-${Date.now()}`, name: '', fee: 0 }]);

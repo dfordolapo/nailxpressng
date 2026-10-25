@@ -30,12 +30,14 @@ import { supabase } from "@/lib/supabase";
 import { uploadImageDirect } from "@/lib/uploadImage";
 import { useLockBodyScroll } from "@/lib/useLockBodyScroll";
 
-function ProductsContent({ initialProducts = [] }) {
+function ProductsContent({ initialProducts = [], initialCollections = [] }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const collectionParam = searchParams.get("collection");
-  const [allCollections, setAllCollections] = useState([]);
-  const [customCollections, setCustomCollections] = useState([]);
+  const [allCollections, setAllCollections] = useState(initialCollections);
+  const [customCollections, setCustomCollections] = useState(() =>
+    initialCollections.filter(c => c.slug !== "handmade" && c.slug !== "factory")
+  );
   const activeTab = collectionParam === "handmade" 
     ? "Handmade" 
     : collectionParam === "factory" 
@@ -79,6 +81,7 @@ function ProductsContent({ initialProducts = [] }) {
   const [isBulkOpen, setIsBulkOpen] = useState(false);
 
   useEffect(() => {
+    if (initialCollections && initialCollections.length > 0) return;
     async function loadCollections() {
       try {
         const res = await fetch("/api/admin/collections");
@@ -93,7 +96,7 @@ function ProductsContent({ initialProducts = [] }) {
       }
     }
     loadCollections();
-  }, []);
+  }, [initialCollections]);
   const [bulkMode, setBulkMode] = useState("gallery"); // "gallery" | "spreadsheet"
   const [bulkFile, setBulkFile] = useState(null);
   const [bulkPreview, setBulkPreview] = useState([]);
@@ -2307,10 +2310,10 @@ function ProductsContent({ initialProducts = [] }) {
   );
 }
 
-export default function ProductsClient({ initialProducts }) {
+export default function ProductsClient({ initialProducts, initialCollections = [] }) {
   return (
     <Suspense fallback={<div className={styles.tableContainer} style={{ padding: "40px", textAlign: "center" }}>Loading products...</div>}>
-      <ProductsContent initialProducts={initialProducts} />
+      <ProductsContent initialProducts={initialProducts} initialCollections={initialCollections} />
     </Suspense>
   );
 }

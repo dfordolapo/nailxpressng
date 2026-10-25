@@ -1,15 +1,15 @@
-import { supabase } from "@/lib/supabase";
+import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { NextResponse } from "next/server";
 
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
   try {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseAdmin
       .from('store_settings')
       .select('shipping_standard, shipping_express, delivery_locations, delivery_presets, sitewide_discount')
       .eq('id', 1)
-      .single();
+      .maybeSingle();
 
     if (error) {
       console.error('Error fetching settings:', error);

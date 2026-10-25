@@ -50,9 +50,9 @@ function toDateTimeLocalString(dateStr) {
   }
 }
 
-export default function CollectionsClient() {
-  const [collections, setCollections] = useState([]);
-  const [loading, setLoading] = useState(true);
+export default function CollectionsClient({ initialCollections = [] }) {
+  const [collections, setCollections] = useState(initialCollections);
+  const [loading, setLoading] = useState(initialCollections.length === 0);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all"); // 'all', 'published', 'draft'
   const [toast, setToast] = useState(null);
@@ -104,6 +104,7 @@ export default function CollectionsClient() {
   };
 
   useEffect(() => {
+    if (initialCollections && initialCollections.length > 0) return;
     let active = true;
     fetch("/api/admin/collections")
       .then((res) => res.json())
@@ -122,7 +123,7 @@ export default function CollectionsClient() {
     return () => {
       active = false;
     };
-  }, []);
+  }, [initialCollections]);
 
   const openCreateModal = () => {
     setModalMode("create");

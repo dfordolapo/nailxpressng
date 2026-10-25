@@ -17,6 +17,15 @@ export default function AdminLogin() {
 
   // If already logged in, automatically redirect to admin
   useEffect(() => {
+    // Fast path: immediate client check
+    if (typeof window !== "undefined") {
+      const hasStoredStay = localStorage.getItem("admin_stay_logged_in") === "true";
+      const hasCookie = document.cookie.includes("admin_stay_logged_in=true");
+      if (hasStoredStay || hasCookie) {
+        router.replace("/admin");
+      }
+    }
+
     async function verifyExistingSession() {
       try {
         const res = await fetch("/api/admin/login");
