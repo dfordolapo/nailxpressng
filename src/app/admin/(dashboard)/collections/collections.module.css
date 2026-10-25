@@ -1030,41 +1030,55 @@ input:checked + .toggleSlider:before {
 
   /* Compact Stats Cards on Mobile */
   .statsGrid {
-    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-    gap: 8px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .statCard:last-child {
+    grid-column: span 2;
   }
 
   .statCard {
-    padding: 10px 10px;
-    gap: 8px;
-    border-radius: 8px;
+    padding: 12px 14px;
+    gap: 12px;
+    border-radius: 10px;
     min-width: 0;
+    align-items: center;
   }
 
   .statIcon {
-    width: 32px;
-    height: 32px;
-    border-radius: 6px;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    flex-shrink: 0;
   }
 
   .statIcon svg {
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
+  }
+
+  .statInfo {
+    min-width: 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
   }
 
   .statValue {
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     font-weight: 700;
+    line-height: 1.2;
   }
 
   .statLabel {
-    font-size: 0.62rem;
+    font-size: 0.72rem;
     letter-spacing: 0.02em;
-    line-height: 1.15;
-    margin-top: 1px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    line-height: 1.25;
+    margin-top: 2px;
+    white-space: normal;
+    word-break: break-word;
+    overflow: visible;
   }
 
   /* Compact Controls & Table */

@@ -819,13 +819,27 @@ export default function DashboardClient({ initialProducts = [], initialOrders = 
       {productToDelete && (
         <div className={styles.modalOverlay} onClick={() => setProductToDelete(null)}>
           <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-            <h3 className={styles.modalTitle}>Delete Product</h3>
-            <p className={styles.modalText}>Are you sure you want to delete this product? Any associated review or cart references will be cleaned up safely.</p>
-            <div className={styles.modalActions}>
-              <button className={styles.modalBtnCancel} onClick={() => setProductToDelete(null)} disabled={isDeleting}>Cancel</button>
-              <button className={styles.modalBtnDelete} onClick={confirmDelete} disabled={isDeleting}>
-                {isDeleting ? "Deleting..." : "Delete"}
+            <div className={styles.modalHeader}>
+              <h3 className={styles.modalTitle} style={{ margin: 0, fontSize: "1.15rem", color: "#dc2626" }}>Delete Product?</h3>
+              <button
+                type="button"
+                className={styles.modalCloseBtn}
+                onClick={() => setProductToDelete(null)}
+                aria-label="Close dialog"
+              >
+                <X size={18} />
               </button>
+            </div>
+            <div className={styles.modalBody}>
+              <p className={styles.modalText} style={{ margin: 0, fontSize: "0.85rem" }}>
+                Are you sure you want to permanently delete this product? Any associated review or cart references will be cleaned up safely.
+              </p>
+              <div className={styles.modalActions} style={{ marginTop: "12px" }}>
+                <button className={styles.modalBtnCancel} onClick={() => setProductToDelete(null)} disabled={isDeleting}>Cancel</button>
+                <button className={styles.modalBtnDelete} onClick={confirmDelete} disabled={isDeleting}>
+                  {isDeleting ? "Deleting..." : "Delete Product"}
+                </button>
+              </div>
             </div>
           </div>
         </div>

@@ -422,22 +422,22 @@ export default function CollectionsClient() {
         </div>
 
         <div className={styles.statCard}>
-          <div className={styles.statIcon} style={{ background: "rgba(16, 185, 129, 0.1)", color: "#10b981" }}>
-            <Eye size={22} strokeWidth={1.5} />
-          </div>
-          <div className={styles.statInfo}>
-            <span className={styles.statValue}>{totalPublished}</span>
-            <span className={styles.statLabel}>Live in Hamburger Menu</span>
-          </div>
-        </div>
-
-        <div className={styles.statCard}>
           <div className={styles.statIcon} style={{ background: "rgba(245, 158, 11, 0.1)", color: "#f59e0b" }}>
             <EyeOff size={22} strokeWidth={1.5} />
           </div>
           <div className={styles.statInfo}>
             <span className={styles.statValue}>{totalDraft}</span>
             <span className={styles.statLabel}>Draft / Hidden</span>
+          </div>
+        </div>
+
+        <div className={styles.statCard}>
+          <div className={styles.statIcon} style={{ background: "rgba(16, 185, 129, 0.1)", color: "#10b981" }}>
+            <Eye size={22} strokeWidth={1.5} />
+          </div>
+          <div className={styles.statInfo}>
+            <span className={styles.statValue}>{totalPublished}</span>
+            <span className={styles.statLabel}>Live in Hamburger Menu</span>
           </div>
         </div>
       </div>

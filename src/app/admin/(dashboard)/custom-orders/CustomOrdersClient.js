@@ -5,7 +5,7 @@ import { supabase } from "@/lib/supabase";
 import { formatPrice } from "@/lib/utils";
 import styles from "@/styles/admin.module.css";
 import ScrollableTabs from "@/components/admin/ScrollableTabs";
-import { MoreVertical, CheckCircle, MessageCircle, Sparkles } from "lucide-react";
+import { MoreVertical, CheckCircle, MessageCircle, Sparkles, X } from "lucide-react";
 import { SOCIAL_LINKS } from "@/lib/constants";
 
 export default function CustomOrdersClient({ initialOrders = [] }) {
@@ -99,7 +99,7 @@ export default function CustomOrdersClient({ initialOrders = [] }) {
 
   return (
     <>
-      <div className={styles.pageHeader}>
+      <div className={styles.pageHeader} style={{ marginBottom: "12px", marginTop: 0 }}>
         <div>
           <h1 className={styles.pageTitle}>Custom Orders</h1>
           <p className={styles.pageSubtitle}>Manage & review custom nail requests.</p>
@@ -117,19 +117,7 @@ export default function CustomOrdersClient({ initialOrders = [] }) {
           <button
             key={tab.id}
             onClick={() => setActiveStatusFilter(tab.id)}
-            style={{
-              padding: "5px 12px",
-              borderRadius: "20px",
-              border: "none",
-              fontSize: "0.78rem",
-              fontWeight: 600,
-              cursor: "pointer",
-              whiteSpace: "nowrap",
-              flexShrink: 0,
-              backgroundColor: activeStatusFilter === tab.id ? "var(--color-primary, #7a403d)" : "#f3ebea",
-              color: activeStatusFilter === tab.id ? "#ffffff" : "#444",
-              transition: "all 0.2s"
-            }}
+            className={`${styles.tab} ${activeStatusFilter === tab.id ? styles.active : ""}`}
           >
             {tab.label}
           </button>
@@ -332,74 +320,87 @@ export default function CustomOrdersClient({ initialOrders = [] }) {
       {viewOrder && (
         <div className={styles.modalOverlay} onClick={() => setViewOrder(null)}>
           <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "var(--space-4)", borderBottom: "1px solid #eee", paddingBottom: "var(--space-3)" }}>
-              <h3 className={styles.modalTitle} style={{ margin: 0 }}>Custom Order #{viewOrder.id.split('-')[0]}</h3>
-              <button onClick={() => setViewOrder(null)} aria-label="Close dialog" style={{ background: "none", border: "none", cursor: "pointer", fontSize: "1.2rem", color: "#666", padding: "4px" }}>✕</button>
+            <div className={styles.modalHeader}>
+              <h3 className={styles.modalTitle} style={{ margin: 0, fontSize: "1.15rem" }}>
+                Custom Order #{viewOrder.id.split('-')[0]}
+              </h3>
+              <button
+                type="button"
+                className={styles.modalCloseBtn}
+                onClick={() => setViewOrder(null)}
+                aria-label="Close dialog"
+              >
+                <X size={18} />
+              </button>
             </div>
             
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "var(--space-3)", marginBottom: "var(--space-4)" }}>
-              <div>
-                <h4 style={{ fontSize: "0.75rem", color: "#666", marginBottom: "var(--space-1)", textTransform: "uppercase", letterSpacing: "0.5px" }}>Customer Details</h4>
-                <p style={{ fontWeight: 500, margin: "0 0 2px 0", fontSize: "0.875rem" }}>{viewOrder.customer_name}</p>
-                <p style={{ margin: "0 0 2px 0", color: "#444", fontSize: "0.875rem", wordBreak: "break-all" }}>{viewOrder.customer_email}</p>
-                <p style={{ margin: "0", color: "#444", fontSize: "0.875rem" }}>{viewOrder.customer_phone || 'No phone provided'}</p>
-              </div>
-              <div>
-                <h4 style={{ fontSize: "0.75rem", color: "#666", marginBottom: "var(--space-1)", textTransform: "uppercase", letterSpacing: "0.5px" }}>Status</h4>
-                <span className={`${styles.badge} ${viewOrder.status === 'completed' ? styles.inStock : styles.outOfStock}`}>
-                  {viewOrder.status.charAt(0).toUpperCase() + viewOrder.status.slice(1)}
-                </span>
-                <p style={{ fontSize: "0.82rem", color: "#666", marginTop: "6px" }}>
-                  Requested on {new Date(viewOrder.created_at).toLocaleDateString()}
-                </p>
-              </div>
-            </div>
-
-            <div>
-              <h4 style={{ fontSize: "0.875rem", color: "#666", marginBottom: "var(--space-3)", textTransform: "uppercase", letterSpacing: "0.5px" }}>Design Request</h4>
-              <div style={{ background: "#f9f9f9", borderRadius: "8px", padding: "var(--space-4)" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
-                  <span style={{ color: "#666" }}>Shape:</span>
-                  <span style={{ fontWeight: 500, textTransform: "capitalize" }}>{viewOrder.shape}</span>
+            <div className={styles.modalBody}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "10px" }}>
+                <div style={{ background: "#fafafa", padding: "10px 12px", borderRadius: "8px", border: "1px solid #eee" }}>
+                  <h4 style={{ fontSize: "0.72rem", color: "#666", margin: "0 0 6px 0", textTransform: "uppercase", letterSpacing: "0.5px" }}>Customer Details</h4>
+                  <p style={{ fontWeight: 600, margin: "0 0 2px 0", fontSize: "0.85rem", color: "var(--color-text)" }}>{viewOrder.customer_name}</p>
+                  <p style={{ margin: "0 0 2px 0", color: "#555", fontSize: "0.8rem", wordBreak: "break-all" }}>{viewOrder.customer_email}</p>
+                  <p style={{ margin: "0", color: "#555", fontSize: "0.8rem" }}>{viewOrder.customer_phone || 'No phone provided'}</p>
                 </div>
-                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
-                  <span style={{ color: "#666" }}>Length:</span>
-                  <span style={{ fontWeight: 500, textTransform: "capitalize" }}>{viewOrder.length}</span>
-                </div>
-                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
-                  <span style={{ color: "#666" }}>Design Style:</span>
-                  <span style={{ fontWeight: 500, textTransform: "capitalize" }}>{viewOrder.design}</span>
-                </div>
-                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "16px", paddingBottom: "16px", borderBottom: "1px solid #eaeaea" }}>
-                  <span style={{ color: "#666" }}>Color Pref:</span>
-                  <span style={{ fontWeight: 500 }}>{viewOrder.color_preference || "Not specified"}</span>
-                </div>
-                <div>
-                  <span style={{ color: "#666", display: "block", marginBottom: "8px" }}>Notes / Instructions:</span>
-                  <p style={{ margin: 0, color: "#333", whiteSpace: "pre-wrap", background: "white", padding: "12px", border: "1px solid #eaeaea", borderRadius: "4px" }}>
-                    {viewOrder.notes || "None provided"}
+                <div style={{ background: "#fafafa", padding: "10px 12px", borderRadius: "8px", border: "1px solid #eee" }}>
+                  <h4 style={{ fontSize: "0.72rem", color: "#666", margin: "0 0 6px 0", textTransform: "uppercase", letterSpacing: "0.5px" }}>Status</h4>
+                  <span className={`${styles.badge} ${viewOrder.status === 'completed' ? styles.inStock : styles.outOfStock}`}>
+                    {viewOrder.status.charAt(0).toUpperCase() + viewOrder.status.slice(1)}
+                  </span>
+                  <p style={{ fontSize: "0.78rem", color: "#666", marginTop: "6px", margin: "6px 0 0 0" }}>
+                    Requested on {new Date(viewOrder.created_at).toLocaleDateString()}
                   </p>
                 </div>
               </div>
-            </div>
 
-            <div className={styles.modalActions} style={{ marginTop: "var(--space-6)" }}>
-              <button 
-                className={`${styles.btnOutline}`} 
-                style={{ flex: 1, justifyContent: "center" }}
-                onClick={() => contactCustomer(viewOrder)}
-              >
-                Contact Customer
-              </button>
-              {viewOrder.status !== 'completed' && (
+              <div>
+                <h4 style={{ fontSize: "0.75rem", color: "#666", margin: "6px 0 8px 0", textTransform: "uppercase", letterSpacing: "0.5px" }}>Design Request</h4>
+                <div style={{ background: "#fafafa", borderRadius: "8px", padding: "12px", border: "1px solid #eee", fontSize: "0.82rem" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px" }}>
+                    <span style={{ color: "#666" }}>Shape:</span>
+                    <span style={{ fontWeight: 600, textTransform: "capitalize" }}>{viewOrder.shape}</span>
+                  </div>
+                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px" }}>
+                    <span style={{ color: "#666" }}>Length:</span>
+                    <span style={{ fontWeight: 600, textTransform: "capitalize" }}>{viewOrder.length}</span>
+                  </div>
+                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px" }}>
+                    <span style={{ color: "#666" }}>Design Style:</span>
+                    <span style={{ fontWeight: 600, textTransform: "capitalize" }}>{viewOrder.design}</span>
+                  </div>
+                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "10px", paddingBottom: "10px", borderBottom: "1px solid #eaeaea" }}>
+                    <span style={{ color: "#666" }}>Color Pref:</span>
+                    <span style={{ fontWeight: 600 }}>{viewOrder.color_preference || "Not specified"}</span>
+                  </div>
+                  <div>
+                    <span style={{ color: "#666", display: "block", marginBottom: "4px" }}>Notes / Instructions:</span>
+                    <p style={{ margin: 0, color: "#333", whiteSpace: "pre-wrap", background: "white", padding: "10px", border: "1px solid #eaeaea", borderRadius: "6px", fontSize: "0.8rem", lineHeight: 1.4 }}>
+                      {viewOrder.notes || "None provided"}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className={styles.modalActions} style={{ marginTop: "8px" }}>
                 <button 
-                  className={styles.btnPrimary} 
+                  type="button"
+                  className={styles.modalBtnCancel} 
                   style={{ flex: 1, justifyContent: "center" }}
-                  onClick={() => { markAsDone(viewOrder.id); setViewOrder(null); }}
+                  onClick={() => contactCustomer(viewOrder)}
                 >
-                  Mark as Completed
+                  Contact Customer
                 </button>
-              )}
+                {viewOrder.status !== 'completed' && (
+                  <button 
+                    type="button"
+                    className={styles.btnPrimary} 
+                    style={{ flex: 1, justifyContent: "center" }}
+                    onClick={() => { markAsDone(viewOrder.id); setViewOrder(null); }}
+                  >
+                    Mark as Completed
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         </div>

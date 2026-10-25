@@ -4,7 +4,7 @@ import { useState } from "react";
 import { formatPrice } from "@/lib/utils";
 import styles from "@/styles/admin.module.css";
 import ScrollableTabs from "@/components/admin/ScrollableTabs";
-import { MoreVertical, CheckCircle, Truck, Sparkles } from "lucide-react";
+import { MoreVertical, CheckCircle, Truck, Sparkles, X } from "lucide-react";
 
 export default function OrdersClient({ initialOrders }) {
   const [orders, setOrders] = useState(initialOrders);
@@ -428,12 +428,19 @@ export default function OrdersClient({ initialOrders }) {
       {viewOrder && (
         <div className={styles.modalOverlay} onClick={() => setViewOrder(null)}>
           <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "var(--space-4)", borderBottom: "1px solid #eee", paddingBottom: "var(--space-3)" }}>
-              <h3 className={styles.modalTitle} style={{ margin: 0 }}>Order #{viewOrder.id.split('-')[0]}</h3>
-              <button onClick={() => setViewOrder(null)} aria-label="Close dialog" style={{ background: "none", border: "none", cursor: "pointer", fontSize: "1.2rem", color: "#666", padding: "4px" }}>✕</button>
+            <div className={styles.modalHeader}>
+              <h3 className={styles.modalTitle} style={{ margin: 0, fontSize: "1.15rem" }}>Order #{viewOrder.id.split('-')[0]}</h3>
+              <button 
+                type="button"
+                className={styles.modalCloseBtn}
+                onClick={() => setViewOrder(null)} 
+                aria-label="Close dialog"
+              >
+                <X size={18} />
+              </button>
             </div>
             
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "var(--space-3)", marginBottom: "var(--space-4)" }}>
+            <div className={styles.modalBody}>
               <div>
                 <h4 style={{ fontSize: "0.75rem", color: "#666", marginBottom: "var(--space-1)", textTransform: "uppercase", letterSpacing: "0.5px" }}>Customer Details</h4>
                 <p style={{ fontWeight: 500, margin: "0 0 2px 0", fontSize: "0.875rem" }}>{viewOrder.customer_first_name} {viewOrder.customer_last_name}</p>
@@ -565,55 +572,72 @@ export default function OrdersClient({ initialOrders }) {
       {/* Cancel Order Modal */}
       {cancelOrder && (
         <div className={styles.modalOverlay} onClick={() => setCancelOrder(null)}>
-          <div className={styles.modalContent} style={{ maxWidth: "500px", width: "90%" }} onClick={(e) => e.stopPropagation()}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "var(--space-4)", borderBottom: "1px solid #eee", paddingBottom: "var(--space-3)" }}>
-              <h3 className={styles.modalTitle} style={{ margin: 0, color: "var(--color-error)" }}>Cancel Order #{cancelOrder.id.split('-')[0]}</h3>
-              <button onClick={() => setCancelOrder(null)} style={{ background: "none", border: "none", cursor: "pointer", fontSize: "1.2rem", color: "#666" }}>✕</button>
+          <div className={styles.modalContent} style={{ maxWidth: "500px" }} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.modalHeader}>
+              <h3 className={styles.modalTitle} style={{ margin: 0, fontSize: "1.15rem", color: "var(--color-error)" }}>
+                Cancel Order #{cancelOrder.id.split('-')[0]}
+              </h3>
+              <button 
+                type="button"
+                className={styles.modalCloseBtn}
+                onClick={() => setCancelOrder(null)}
+                aria-label="Close dialog"
+              >
+                <X size={18} />
+              </button>
             </div>
             
-            <p style={{ color: "#555", fontSize: "0.875rem", marginBottom: "var(--space-4)" }}>
-              Are you sure you want to cancel this order? An email will be sent to <strong>{cancelOrder.customer_email}</strong> to notify them.
-            </p>
+            <div className={styles.modalBody}>
+              <p style={{ color: "#555", fontSize: "0.85rem", margin: "0 0 12px 0" }}>
+                Are you sure you want to cancel this order? An email will be sent to <strong>{cancelOrder.customer_email}</strong> to notify them.
+              </p>
 
-            <div style={{ marginBottom: "var(--space-4)" }}>
-              <label style={{ display: "block", fontSize: "0.875rem", fontWeight: 500, marginBottom: "4px" }}>Reason for Cancellation <span style={{ color: "var(--color-error)" }}>*</span></label>
-              <textarea 
-                className={styles.input}
-                value={cancelReason}
-                onChange={(e) => setCancelReason(e.target.value)}
-                placeholder="e.g. Out of stock, Requested by customer..."
-                rows={3}
-                style={{ width: "100%", padding: "8px 12px", border: "1px solid var(--color-border)", borderRadius: "8px", resize: "vertical" }}
-              />
-            </div>
+              <div style={{ marginBottom: "12px" }}>
+                <label style={{ display: "block", fontSize: "0.82rem", fontWeight: 600, marginBottom: "4px" }}>
+                  Reason for Cancellation <span style={{ color: "var(--color-error)" }}>*</span>
+                </label>
+                <textarea 
+                  className={styles.input}
+                  value={cancelReason}
+                  onChange={(e) => setCancelReason(e.target.value)}
+                  placeholder="e.g. Out of stock, Requested by customer..."
+                  rows={3}
+                  style={{ width: "100%", padding: "8px 12px", border: "1px solid var(--color-border)", borderRadius: "8px", resize: "vertical", fontSize: "0.85rem" }}
+                />
+              </div>
 
-            <div style={{ marginBottom: "var(--space-6)" }}>
-              <label style={{ display: "block", fontSize: "0.875rem", fontWeight: 500, marginBottom: "4px" }}>Next Steps for Buyer</label>
-              <textarea 
-                className={styles.input}
-                value={cancelNextSteps}
-                onChange={(e) => setCancelNextSteps(e.target.value)}
-                rows={3}
-                style={{ width: "100%", padding: "8px 12px", border: "1px solid var(--color-border)", borderRadius: "8px", resize: "vertical" }}
-              />
-            </div>
+              <div style={{ marginBottom: "12px" }}>
+                <label style={{ display: "block", fontSize: "0.82rem", fontWeight: 600, marginBottom: "4px" }}>
+                  Next Steps for Buyer
+                </label>
+                <textarea 
+                  className={styles.input}
+                  value={cancelNextSteps}
+                  onChange={(e) => setCancelNextSteps(e.target.value)}
+                  rows={3}
+                  style={{ width: "100%", padding: "8px 12px", border: "1px solid var(--color-border)", borderRadius: "8px", resize: "vertical", fontSize: "0.85rem" }}
+                />
+              </div>
 
-            <div className={styles.modalActions} style={{ display: "flex", gap: "12px" }}>
-              <button 
-                className={styles.btnSecondary} 
-                style={{ flex: 1, justifyContent: "center" }}
-                onClick={() => setCancelOrder(null)}
-              >
-                Keep Order
-              </button>
-              <button 
-                className={styles.btnPrimary} 
-                style={{ flex: 1, justifyContent: "center", background: "var(--color-error)" }}
-                onClick={submitCancelOrder}
-                disabled={isUpdating || !cancelReason.trim()}
-              >
-                {isUpdating ? 'Cancelling...' : 'Confirm Cancellation'}
-              </button>
+              <div className={styles.modalActions} style={{ display: "flex", gap: "10px", marginTop: "8px" }}>
+                <button 
+                  type="button"
+                  className={styles.modalBtnCancel} 
+                  style={{ flex: 1, justifyContent: "center" }}
+                  onClick={() => setCancelOrder(null)}
+                >
+                  Keep Order
+                </button>
+                <button 
+                  type="button"
+                  className={styles.btnPrimary} 
+                  style={{ flex: 1, justifyContent: "center", background: "var(--color-error)" }}
+                  onClick={submitCancelOrder}
+                  disabled={isUpdating || !cancelReason.trim()}
+                >
+                  {isUpdating ? 'Cancelling...' : 'Confirm Cancellation'}
+                </button>
+              </div>
             </div>
           </div>
         </div>

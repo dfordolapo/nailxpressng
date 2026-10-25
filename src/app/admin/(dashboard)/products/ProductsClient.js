@@ -1677,15 +1677,27 @@ function ProductsContent({ initialProducts = [] }) {
       {productToDelete && (
         <div className={styles.modalOverlay} onClick={() => setProductToDelete(null)}>
           <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-            <h3 className={styles.modalTitle}>Delete Product</h3>
-            <p className={styles.modalText}>
-              Are you sure you want to delete this product? Any associated review or cart references will be cleaned up safely.
-            </p>
-            <div className={styles.modalActions}>
-              <button className={styles.modalBtnCancel} onClick={() => setProductToDelete(null)} disabled={isDeleting}>Cancel</button>
-              <button className={styles.modalBtnDelete} onClick={confirmDelete} disabled={isDeleting}>
-                {isDeleting ? "Deleting..." : "Delete"}
+            <div className={styles.modalHeader}>
+              <h3 className={styles.modalTitle} style={{ margin: 0, fontSize: "1.15rem", color: "#dc2626" }}>Delete Product?</h3>
+              <button
+                type="button"
+                className={styles.modalCloseBtn}
+                onClick={() => setProductToDelete(null)}
+                aria-label="Close dialog"
+              >
+                <X size={18} />
               </button>
+            </div>
+            <div className={styles.modalBody}>
+              <p className={styles.modalText} style={{ margin: 0, fontSize: "0.85rem" }}>
+                Are you sure you want to permanently delete this product? Any associated review or cart references will be cleaned up safely.
+              </p>
+              <div className={styles.modalActions} style={{ marginTop: "12px" }}>
+                <button className={styles.modalBtnCancel} onClick={() => setProductToDelete(null)} disabled={isDeleting}>Cancel</button>
+                <button className={styles.modalBtnDelete} onClick={confirmDelete} disabled={isDeleting}>
+                  {isDeleting ? "Deleting..." : "Delete Product"}
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -1696,26 +1708,30 @@ function ProductsContent({ initialProducts = [] }) {
         <div className={styles.modalOverlay} onClick={() => !isMoving && setMovingProduct(null)}>
           <div 
             className={styles.modalContent} 
-            style={{ maxWidth: "480px", textAlign: "left", padding: "26px", borderRadius: "14px" }}
+            style={{ maxWidth: "480px" }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "16px" }}>
+            <div className={styles.modalHeader}>
               <div>
-                <h3 className={styles.modalTitle} style={{ fontSize: "1.3rem", margin: 0 }}>
+                <h3 className={styles.modalTitle} style={{ fontSize: "1.15rem", margin: 0 }}>
                   Move Collection
                 </h3>
-                <p style={{ fontSize: "0.85rem", color: "#666", margin: "4px 0 0" }}>
+                <p style={{ fontSize: "0.78rem", color: "#666", margin: "2px 0 0" }}>
                   Select the destination collection for this product.
                 </p>
               </div>
               <button 
+                type="button"
+                className={styles.modalCloseBtn}
                 onClick={() => setMovingProduct(null)} 
                 disabled={isMoving}
-                style={{ background: "none", border: "none", cursor: "pointer", color: "#888", padding: "4px" }}
+                aria-label="Close dialog"
               >
-                <X size={20} />
+                <X size={18} />
               </button>
             </div>
+
+            <div className={styles.modalBody}>
 
             {/* Product Snapshot */}
             <div style={{
@@ -1814,6 +1830,7 @@ function ProductsContent({ initialProducts = [] }) {
               >
                 Cancel
               </button>
+            </div>
             </div>
           </div>
         </div>

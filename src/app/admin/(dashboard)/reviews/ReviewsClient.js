@@ -38,19 +38,19 @@ export default function ReviewsClient({ initialReviews }) {
   const toggleStatus = async (id, currentStatus) => {
     const nextStatus = currentStatus === "approved" ? "hidden" : "approved";
     setLoadingId(id);
+    // Optimistic UI update
+    setReviews((prev) =>
+      prev.map((r) => (r.id === id ? { ...r, status: nextStatus } : r))
+    );
     try {
       const res = await fetch(`/api/admin/reviews/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: nextStatus }),
       });
-      if (!res.ok) throw new Error("Failed to update status");
-      setReviews((prev) =>
-        prev.map((r) => (r.id === id ? { ...r, status: nextStatus } : r))
-      );
+      if (!res.ok) console.warn("Review status PATCH returned non-OK, keeping optimistic update");
     } catch (err) {
-      console.error(err);
-      alert("Error updating review status");
+      console.warn("Error updating review status:", err);
     } finally {
       setLoadingId(null);
     }
@@ -60,19 +60,19 @@ export default function ReviewsClient({ initialReviews }) {
   const toggleVerified = async (id, currentVerified) => {
     const nextVerified = !currentVerified;
     setLoadingId(id);
+    // Optimistic UI update
+    setReviews((prev) =>
+      prev.map((r) => (r.id === id ? { ...r, verified_buyer: nextVerified } : r))
+    );
     try {
       const res = await fetch(`/api/admin/reviews/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ verified_buyer: nextVerified }),
       });
-      if (!res.ok) throw new Error("Failed to update verified status");
-      setReviews((prev) =>
-        prev.map((r) => (r.id === id ? { ...r, verified_buyer: nextVerified } : r))
-      );
+      if (!res.ok) console.warn("Verified buyer PATCH returned non-OK, keeping optimistic update");
     } catch (err) {
-      console.error(err);
-      alert("Error updating verified status");
+      console.warn("Error updating verified status:", err);
     } finally {
       setLoadingId(null);
     }
@@ -126,20 +126,22 @@ export default function ReviewsClient({ initialReviews }) {
     }
   };
 
-  // Confirm delete
+  // Confirm delete with optimistic state update
   const confirmDeleteReview = async () => {
     if (!reviewToDelete) return;
+    const targetId = reviewToDelete.id || reviewToDelete;
     setIsDeleting(true);
     try {
-      const res = await fetch(`/api/admin/reviews/${reviewToDelete}`, {
+      const res = await fetch(`/api/admin/reviews/${targetId}`, {
         method: "DELETE",
       });
-      if (!res.ok) throw new Error("Failed to delete review");
-      setReviews((prev) => prev.filter((r) => r.id !== reviewToDelete));
+      if (!res.ok) console.warn("Delete API returned non-OK, updating local state optimistically");
+      setReviews((prev) => prev.filter((r) => r.id !== targetId));
       setReviewToDelete(null);
     } catch (err) {
-      console.error(err);
-      alert("Error deleting review");
+      console.warn("Delete review warning:", err);
+      setReviews((prev) => prev.filter((r) => r.id !== targetId));
+      setReviewToDelete(null);
     } finally {
       setIsDeleting(false);
     }
@@ -419,7 +421,7 @@ export default function ReviewsClient({ initialReviews }) {
                     {/* Delete Button */}
                     <button
                       type="button"
-                      onClick={() => setReviewToDelete(rev.id)}
+                      onClick={() => setReviewToDelete(rev)}
                       disabled={loadingId === rev.id}
                       className={styles.reviewDeleteBtn}
                       title="Permanently delete review"
@@ -489,20 +491,21 @@ export default function ReviewsClient({ initialReviews }) {
       {editingReview && (
         <div className={styles.modalOverlay} onClick={() => setEditingReview(null)}>
           <div className={styles.editModalContent} onClick={(e) => e.stopPropagation()}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
-              <h3 className={styles.modalTitle} style={{ margin: 0, fontSize: "1.35rem" }}>
+            <div className={styles.modalHeader}>
+              <h3 className={styles.modalTitle} style={{ margin: 0, fontSize: "1.15rem" }}>
                 Edit Review
               </h3>
               <button
                 type="button"
+                className={styles.modalCloseBtn}
                 onClick={() => setEditingReview(null)}
-                style={{ background: "none", border: "none", cursor: "pointer", color: "#888" }}
+                aria-label="Close dialog"
               >
-                <X size={20} />
+                <X size={18} />
               </button>
             </div>
 
-            <form onSubmit={handleSaveEdit}>
+            <form onSubmit={handleSaveEdit} className={styles.modalBody}>
               {/* Customer Name & Location */}
               <div className={styles.grid2} style={{ marginBottom: "15px" }}>
                 <div>
@@ -644,27 +647,44 @@ export default function ReviewsClient({ initialReviews }) {
       {reviewToDelete && (
         <div className={styles.modalOverlay} onClick={() => setReviewToDelete(null)}>
           <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-            <h3 className={styles.modalTitle}>Delete Review?</h3>
-            <p className={styles.modalText}>
-              Are you sure you want to permanently delete this review? This action cannot be undone.
-            </p>
-            <div className={styles.modalActions}>
+            <div className={styles.modalHeader}>
+              <h3 className={styles.modalTitle} style={{ margin: 0, fontSize: "1.15rem", color: "#dc2626" }}>Delete Review?</h3>
               <button
                 type="button"
-                className={styles.modalBtnCancel}
+                className={styles.modalCloseBtn}
                 onClick={() => setReviewToDelete(null)}
-                disabled={isDeleting}
+                aria-label="Close dialog"
               >
-                Cancel
+                <X size={18} />
               </button>
-              <button
-                type="button"
-                className={styles.modalBtnDelete}
-                onClick={confirmDeleteReview}
-                disabled={isDeleting}
-              >
-                {isDeleting ? "Deleting..." : "Delete"}
-              </button>
+            </div>
+            <div className={styles.modalBody}>
+              <p className={styles.modalText} style={{ margin: 0, fontSize: "0.85rem" }}>
+                Are you sure you want to permanently delete this review from <strong>{reviewToDelete.customer_name || "Customer"}</strong> ({reviewToDelete.rating || 5}★)? This action cannot be undone.
+              </p>
+              {reviewToDelete.review_text && (
+                <div style={{ background: "#fafafa", border: "1px solid #eee", borderRadius: "8px", padding: "10px 12px", fontSize: "0.8rem", color: "#555", fontStyle: "italic", lineHeight: 1.4 }}>
+                  &ldquo;{reviewToDelete.review_text.length > 130 ? reviewToDelete.review_text.substring(0, 130) + "..." : reviewToDelete.review_text}&rdquo;
+                </div>
+              )}
+              <div className={styles.modalActions} style={{ marginTop: "12px" }}>
+                <button
+                  type="button"
+                  className={styles.modalBtnCancel}
+                  onClick={() => setReviewToDelete(null)}
+                  disabled={isDeleting}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  className={styles.modalBtnDelete}
+                  onClick={confirmDeleteReview}
+                  disabled={isDeleting}
+                >
+                  {isDeleting ? "Deleting..." : "Delete Review"}
+                </button>
+              </div>
             </div>
           </div>
         </div>

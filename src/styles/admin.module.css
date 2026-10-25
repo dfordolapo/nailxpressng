@@ -435,9 +435,40 @@
   transform: translateX(1px);
 }
 
+.tabsScrollChevronLeft {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 4px;
+  width: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(to left, rgba(255, 255, 255, 0.2), #ffffff 65%);
+  border: none;
+  color: var(--color-primary);
+  cursor: pointer;
+  padding: 0 8px 0 4px;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+  z-index: 10;
+  transition: opacity 0.2s ease, transform 0.15s ease;
+  animation: pulseChevronLeft 2s infinite ease-in-out;
+}
+
+.tabsScrollChevronLeft:hover {
+  opacity: 1;
+  transform: translateX(-1px);
+}
+
 @keyframes pulseChevron {
   0%, 100% { transform: translateX(0); opacity: 0.85; }
   50% { transform: translateX(3px); opacity: 1; }
+}
+
+@keyframes pulseChevronLeft {
+  0%, 100% { transform: translateX(0); opacity: 0.85; }
+  50% { transform: translateX(-3px); opacity: 1; }
 }
 
 .kebabItem {
@@ -621,20 +652,29 @@
 }
 
 .tab {
-  padding: 8px 16px;
+  padding: 7px 15px;
   border-radius: 20px;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: var(--color-text-secondary);
-  background: none;
-  border: 1px solid transparent;
+  background: #ffffff;
+  border: 1px solid var(--color-border);
   cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.tab:hover {
+  border-color: var(--color-primary-100);
+  color: var(--color-primary);
 }
 
 .tab.active {
-  background-color: var(--color-bg-warm);
-  color: var(--color-primary);
-  font-weight: 500;
-  border-color: var(--color-bg-warm);
+  background-color: var(--color-primary) !important;
+  color: #ffffff !important;
+  font-weight: 600;
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 2px 6px rgba(122, 64, 61, 0.28);
 }
 
 .filters {
@@ -1226,7 +1266,7 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
-    margin-bottom: 24px;
+    margin-bottom: 14px;
   }
 
   .pageHeaderActions {
@@ -1362,7 +1402,7 @@
   .pageSubtitle { font-size: 0.74rem; }
 
   .pageHeader {
-    margin-bottom: 16px;
+    margin-bottom: 12px;
   }
 
   .pageHeaderActions {
@@ -1643,6 +1683,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-wrap: wrap;
 }
 
 .reviewControlBtn {
@@ -1684,6 +1725,31 @@
 .reviewDeleteBtn:hover {
   background-color: #FEE2E2;
   border-color: #FCA5A5;
+}
+
+@media (max-width: 768px) {
+  .reviewHeader {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .reviewControls {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    width: 100%;
+  }
+
+  .reviewControlBtn,
+  .reviewDeleteBtn {
+    justify-content: center;
+    width: 100%;
+    min-height: 38px;
+    padding: 7px 10px;
+    font-size: 0.78rem;
+    box-sizing: border-box;
+  }
 }
 
 .lightboxOverlay {
