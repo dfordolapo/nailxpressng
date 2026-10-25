@@ -119,7 +119,7 @@
   min-width: 0;
   width: 100%;
   max-width: 100%;
-  padding: 40px;
+  padding: 24px 32px;
   background-color: #FFFFFF;
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
@@ -1013,8 +1013,8 @@
   }
 
   .mainContent {
-    padding: 22px 18px;
-    padding-top: 18px !important;
+    padding: 18px 16px;
+    padding-top: 12px !important;
     margin: 0;
     border-radius: 0;
     min-width: 0;
@@ -1032,8 +1032,8 @@
 /* Mobile Screens */
 @media (max-width: 768px) {
   .mainContent {
-    padding: 18px 14px;
-    padding-top: 16px !important;
+    padding: 14px 12px;
+    padding-top: 10px !important;
   }
 
   /* Switch Table to Stacked Cards */
@@ -1354,8 +1354,8 @@
 /* Narrow Mobile Screens (<= 480px, including iPhone SE, iPhone 12/13/14/15, Galaxy S) */
 @media (max-width: 480px) {
   .mainContent {
-    padding: 14px 10px;
-    padding-top: 72px !important;
+    padding: 12px 10px;
+    padding-top: 8px !important;
   }
 
   .pageTitle { font-size: 1.1rem; }
