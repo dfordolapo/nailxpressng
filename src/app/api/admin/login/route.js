@@ -1,5 +1,13 @@
 import { NextResponse } from "next/server";
 
+export async function GET(request) {
+  const session = request.cookies.get("admin_session");
+  if (session && session.value === "authenticated_funmi") {
+    return NextResponse.json({ authenticated: true });
+  }
+  return NextResponse.json({ authenticated: false }, { status: 401 });
+}
+
 export async function POST(request) {
   try {
     const body = await request.json().catch(() => ({}));
@@ -18,30 +26,34 @@ export async function POST(request) {
 
     const response = NextResponse.json({ success: true });
 
-    // Set auth cookie
-    const isProduction = process.env.NODE_ENV === "production";
+    // Set auth cookie safely: only use secure if actually running over HTTPS
     const forwardedProto = request.headers.get("x-forwarded-proto");
-    const isHttps = forwardedProto ? forwardedProto === "https" : isProduction;
+    const isHttps = forwardedProto === "https" || request.url.startsWith("https://");
+
+    // 1-Year (365 days) for stay logged in, otherwise 30 days
+    const maxAgeSeconds = rememberMe ? 60 * 60 * 24 * 365 : 60 * 60 * 24 * 30;
+    const expiresDate = new Date(Date.now() + maxAgeSeconds * 1000);
 
     const cookieOptions = {
       httpOnly: true,
       secure: isHttps,
       sameSite: "lax",
       path: "/",
+      maxAge: maxAgeSeconds,
+      expires: expiresDate,
     };
 
-    // If rememberMe is checked, persist for 60 days; otherwise 1 day
-    if (rememberMe) {
-      const maxAge = 60 * 60 * 24 * 60; // 60 days
-      cookieOptions.maxAge = maxAge;
-      cookieOptions.expires = new Date(Date.now() + maxAge * 1000);
-    } else {
-      const maxAge = 60 * 60 * 24 * 1; // 1 day
-      cookieOptions.maxAge = maxAge;
-      cookieOptions.expires = new Date(Date.now() + maxAge * 1000);
-    }
-
     response.cookies.set("admin_session", "authenticated_funmi", cookieOptions);
+    
+    // Also set a readable stay-logged-in indicator cookie for client-side state
+    response.cookies.set("admin_stay_logged_in", rememberMe ? "true" : "false", {
+      httpOnly: false,
+      secure: isHttps,
+      sameSite: "lax",
+      path: "/",
+      maxAge: maxAgeSeconds,
+      expires: expiresDate,
+    });
 
     return response;
   } catch (err) {

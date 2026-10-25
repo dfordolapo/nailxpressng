@@ -1,6 +1,6 @@
 "use client";
  
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Lock, User, Eye, EyeOff } from "lucide-react";
 import styles from "@/styles/login.module.css";
 import { useRouter } from "next/navigation";
@@ -11,8 +11,30 @@ export default function AdminLogin() {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [checkingSession, setCheckingSession] = useState(true);
   const [error, setError] = useState("");
   const router = useRouter();
+
+  // If already logged in, automatically redirect to admin
+  useEffect(() => {
+    async function verifyExistingSession() {
+      try {
+        const res = await fetch("/api/admin/login");
+        if (res.ok) {
+          const data = await res.json();
+          if (data?.authenticated) {
+            router.replace("/admin");
+            return;
+          }
+        }
+      } catch (e) {
+        // Not authenticated or network check skipped
+      } finally {
+        setCheckingSession(false);
+      }
+    }
+    verifyExistingSession();
+  }, [router]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -40,6 +62,11 @@ export default function AdminLogin() {
       }
 
       if (res.ok && data?.success) {
+        if (rememberMe) {
+          try { localStorage.setItem("admin_stay_logged_in", "true"); } catch {}
+        } else {
+          try { localStorage.removeItem("admin_stay_logged_in"); } catch {}
+        }
         router.push("/admin");
         router.refresh();
       } else {

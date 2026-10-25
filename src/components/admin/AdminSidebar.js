@@ -268,6 +268,9 @@ function SidebarContent() {
           className={styles.logoutBtn}
           onClick={async () => {
             try {
+              localStorage.removeItem("admin_stay_logged_in");
+            } catch {}
+            try {
               await fetch("/api/admin/logout", { method: "POST" });
             } catch (e) {
               console.error(e);
