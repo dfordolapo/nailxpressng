@@ -108,6 +108,7 @@ function ProductsContent({ initialProducts = [], initialCollections = [] }) {
   const [defaultPrice, setDefaultPrice] = useState("12000");
   const [defaultStock, setDefaultStock] = useState("10");
   const [defaultLength, setDefaultLength] = useState("Medium");
+  const [defaultShape, setDefaultShape] = useState("Square");
   const [defaultSizes, setDefaultSizes] = useState(["S", "M", "L"]);
 
   const [isUploadingBulk, setIsUploadingBulk] = useState(false);
